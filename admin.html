@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Admin Panel</title>
+<link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h2>Admin Balance Manager</h2>
+
+<input type="text" id="email" placeholder="User Email">
+<input type="number" id="amount" placeholder="Add Balance">
+
+<button onclick="addBalance()">Add Balance</button>
+
+<p id="msg"></p>
+
+<script>
+
+function addBalance(){
+
+let email = document.getElementById("email").value;
+let amount = document.getElementById("amount").value;
+
+let users = JSON.parse(localStorage.getItem("users")) || [];
+
+users.forEach(user => {
+
+if(user.email === email){
+
+user.balance = Number(user.balance) + Number(amount);
+
+}
+
+});
+
+localStorage.setItem("users", JSON.stringify(users));
+
+document.getElementById("msg").innerText = "Balance Updated";
+
+}
+
+</script>
+
+</body>
+</html>
