@@ -1,82 +1,359 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>StargicInvestment</title>
-<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:white;
+color:#0f172a;
+}
+
+/* NAVBAR */
+
+nav{
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:15px 40px;
+background:#0f172a;
+color:white;
+}
+
+nav a{
+color:white;
+text-decoration:none;
+margin:0 10px;
+font-weight:bold;
+}
+
+.logo{
+font-size:22px;
+font-weight:bold;
+}
+
+/* SLIDER */
+
+.slider{
+width:100%;
+height:420px;
+overflow:hidden;
+}
+
+.slider img{
+width:100%;
+height:420px;
+object-fit:cover;
+}
+
+/* CRYPTO TICKER */
+
+.ticker{
+background:#111827;
+color:white;
+padding:10px;
+display:flex;
+justify-content:center;
+gap:30px;
+font-weight:bold;
+}
+
+/* STATS */
+
+.stats{
+display:flex;
+justify-content:center;
+gap:80px;
+padding:50px;
+text-align:center;
+}
+
+.stats h2{
+font-size:35px;
+color:#2563eb;
+}
+
+/* PLANS */
+
+.plans{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+padding:40px;
+}
+
+.plan{
+border:1px solid #ddd;
+padding:20px;
+text-align:center;
+border-radius:8px;
+}
+
+.plan h3{
+color:#2563eb;
+}
+
+/* LIVE FEED */
+
+.feed{
+position:fixed;
+bottom:20px;
+left:20px;
+background:#0f172a;
+color:white;
+padding:10px 15px;
+border-radius:6px;
+font-size:14px;
+}
+
+/* CHAT BUTTON */
+
+.chat{
+position:fixed;
+bottom:20px;
+right:20px;
+background:#2563eb;
+color:white;
+padding:15px;
+border-radius:50%;
+cursor:pointer;
+}
+
+/* FOOTER */
+
+footer{
+background:#0f172a;
+color:white;
+padding:40px;
+margin-top:40px;
+}
+
+</style>
+
 </head>
 
 <body>
-<div class="crypto-ticker">
-<span id="btc"></span>
-<span id="eth"></span>
-<span id="usdt"></span>
-</div>
 
-<script>
-async function prices(){
-const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd");
-const d = await r.json();
-
-document.getElementById("btc").innerHTML="BTC $" + d.bitcoin.usd;
-document.getElementById("eth").innerHTML="ETH $" + d.ethereum.usd;
-document.getElementById("usdt").innerHTML="USDT $" + d.tether.usd;
-}
-
-prices();
-setInterval(prices,10000);
-</script>
-<header>
-<section class="hero">
-<h1>Smart Crypto Investment Platform</h1>
-
-<p>
-Earn daily profits with our automated crypto trading and mining system.
-Secure. Fast. Reliable.
-</p>
-
-<div class="hero-buttons">
-<a href="/register.html" class="btn">Start Investing</a>
-<a href="/login.html" class="btn2">Login</a>
-</div>
-</section>
+<!-- NAVBAR -->
 
 <nav>
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="plans.html">Plans</a>
+
+<div class="logo">StargicInvestment</div>
+
+<div>
 <a href="login.html">Login</a>
 <a href="register.html">Create Account</a>
+</div>
+
 </nav>
-</header>
+
+<!-- SLIDER -->
 
 <div class="slider">
 
-<img class="slide active" src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d">
-
-<img class="slide" src="https://images.unsplash.com/photo-1560518883-ce09059eeffa">
-
-<img class="slide" src="https://images.unsplash.com/photo-1581094794329-c8112a89af12">
-
-<img class="slide" src="https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3">
+<img id="slide" src="https://images.unsplash.com/photo-1518546305927-5a555bb7020d">
 
 </div>
 
-<section>
+<!-- CRYPTO PRICES -->
 
-<h2>Secure Digital Investment Platform</h2>
+<div class="ticker">
 
-<p>
-We specialize in cryptocurrency mining, real estate investment,
-oil and gas trading, and global financial markets.
-</p>
+<span id="btc">BTC loading...</span>
+<span id="eth">ETH loading...</span>
+<span id="usdt">USDT loading...</span>
 
-<a class="btn" href="register.html">Start Investing</a>
+</div>
+
+<!-- STATISTICS -->
+
+<section class="stats">
+
+<div>
+<h2 id="investors">1200</h2>
+<p>Active Investors</p>
+</div>
+
+<div>
+<h2>$8.4M</h2>
+<p>Total Invested</p>
+</div>
+
+<div>
+<h2>96</h2>
+<p>Countries</p>
+</div>
 
 </section>
 
-<script src="script.js"></script>
+<!-- INVESTMENT PLANS -->
+
+<section class="plans">
+
+<div class="plan">
+<h3>Starter Plan</h3>
+<p>3%</p>
+<p>$300 - $999</p>
+</div>
+
+<div class="plan">
+<h3>Silver Plan</h3>
+<p>4%</p>
+<p>$1000 - $4999</p>
+</div>
+
+<div class="plan">
+<h3>Elite Plan</h3>
+<p>5%</p>
+<p>$5000 - $9999</p>
+</div>
+
+<div class="plan">
+<h3>Premium Plan</h3>
+<p>6%</p>
+<p>$10000 - $49999</p>
+</div>
+
+<div class="plan">
+<h3>VIP Plan</h3>
+<p>7%</p>
+<p>$50000 - $1000000</p>
+</div>
+
+</section>
+
+<!-- TRUST BADGES -->
+
+<section style="text-align:center;padding:40px">
+
+<h2>Trusted Investment Platform</h2>
+
+<p>Secure crypto investments with professional portfolio management.</p>
+
+</section>
+
+<!-- LIVE DEPOSIT FEED -->
+
+<div class="feed" id="feed">
+
+John deposited $3,000
+
+</div>
+
+<!-- SUPPORT CHAT -->
+
+<div class="chat">
+
+💬
+
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+
+<p>© 2026 StargicInvestment</p>
+
+<p>Bitcoin • Real Estate • Oil & Gas • Trading</p>
+
+</footer>
+
+<script>
+
+/* IMAGE SLIDER */
+
+let images = [
+
+"https://images.unsplash.com/photo-1518546305927-5a555bb7020d",
+
+"https://images.unsplash.com/photo-1560518883-ce09059eeffa",
+
+"https://images.unsplash.com/photo-1581091870622-3e7c2c1c6c3b",
+
+"https://images.unsplash.com/photo-1640161704729-cbe966a08476"
+
+];
+
+let index = 0;
+
+setInterval(()=>{
+
+index++;
+
+if(index>=images.length){index=0;}
+
+document.getElementById("slide").src=images[index];
+
+},4000);
+
+/* CRYPTO PRICE */
+
+async function prices(){
+
+let r = await fetch(
+"https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd"
+);
+
+let p = await r.json();
+
+document.getElementById("btc").innerHTML =
+"BTC $" + p.bitcoin.usd;
+
+document.getElementById("eth").innerHTML =
+"ETH $" + p.ethereum.usd;
+
+document.getElementById("usdt").innerHTML =
+"USDT $" + p.tether.usd;
+
+}
+
+prices();
+
+setInterval(prices,10000);
+
+/* INVESTOR COUNTER */
+
+setInterval(()=>{
+
+let investors = document.getElementById("investors");
+
+investors.innerHTML = parseInt(investors.innerHTML)+1;
+
+},8000);
+
+/* LIVE FEED */
+
+let feeds = [
+
+"John deposited $3,000",
+
+"Maria deposited $5,200",
+
+"David deposited $980",
+
+"Ali deposited $11,000",
+
+"Chen deposited $2,400"
+
+];
+
+setInterval(()=>{
+
+let f = feeds[Math.floor(Math.random()*feeds.length)];
+
+document.getElementById("feed").innerHTML = f;
+
+},5000);
+
+</script>
 
 </body>
-</html>
-<a href="https://t.me/YOURUSERNAME" class="support-btn">Support</a>
-  
+
+  </html>
