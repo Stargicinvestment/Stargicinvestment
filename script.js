@@ -186,3 +186,23 @@ document.getElementById("balance").innerText =
 },5000);
 
 }
+let balance = localStorage.getItem("balance") || 0;
+let percent = localStorage.getItem("percent") || 0;
+
+balance = parseFloat(balance);
+percent = parseFloat(percent);
+
+function updateProfit(){
+
+let profit = (balance * percent) / 100;
+
+balance = balance + profit/24;
+
+localStorage.setItem("balance", balance);
+
+document.getElementById("balance").innerHTML =
+"$" + balance.toFixed(2);
+
+}
+
+setInterval(updateProfit, 5000);
