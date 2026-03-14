@@ -6,7 +6,25 @@
 </head>
 
 <body>
+<div class="crypto-ticker">
+<span id="btc"></span>
+<span id="eth"></span>
+<span id="usdt"></span>
+</div>
 
+<script>
+async function prices(){
+const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether&vs_currencies=usd");
+const d = await r.json();
+
+document.getElementById("btc").innerHTML="BTC $" + d.bitcoin.usd;
+document.getElementById("eth").innerHTML="ETH $" + d.ethereum.usd;
+document.getElementById("usdt").innerHTML="USDT $" + d.tether.usd;
+}
+
+prices();
+setInterval(prices,10000);
+</script>
 <header>
 <section class="hero">
 <h1>Smart Crypto Investment Platform</h1>
