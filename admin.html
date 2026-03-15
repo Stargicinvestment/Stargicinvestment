@@ -1,64 +1,155 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Login</title><style>
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Admin Dashboard</title>
+
+<style>
 
 body{
-background:#0b0f1a;
-color:#00ff9d;
-font-family:Poppins;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
+font-family:Arial;
+background:#0f172a;
+color:white;
+padding:20px;
 }
 
-.box{
-background:#111827;
-padding:40px;
-border-radius:10px;
-width:320px;
-text-align:center;
+h1{
+margin-bottom:20px;
 }
 
-input{
+table{
 width:100%;
+border-collapse:collapse;
+}
+
+th,td{
 padding:12px;
-margin-top:10px;
-background:#1f2937;
-border:none;
-color:#00ff9d;
-border-radius:6px;
+border-bottom:1px solid #333;
+text-align:left;
 }
 
 button{
-width:100%;
-padding:12px;
-margin-top:15px;
-background:#00ff9d;
+background:#22c55e;
 border:none;
-border-radius:6px;
+padding:8px 12px;
 cursor:pointer;
+color:white;
+border-radius:4px;
 }
 
-</style></head><body><div class="box"><h2>Admin Login</h2><input id="pass" placeholder="Admin Password" type="password"><button onclick="login()">Login</button>
+</style>
 
-</div><script>
+</head>
 
-function login(){
+<body>
 
-let p=document.getElementById("pass").value;
+<h1>Admin Panel</h1>
 
-if(p==="Chukwunonso2020"){
+<table>
 
-window.location="admin-dashboard.html";
+<thead>
 
-}else{
+<tr>
+<th>Email</th>
+<th>Name</th>
+<th>Balance</th>
+<th>Add Balance</th>
+</tr>
 
-alert("Wrong password");
+</thead>
+
+<tbody id="usersTable"></tbody>
+
+</table>
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+getFirestore,
+collection,
+getDocs,
+doc,
+updateDoc,
+getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+authDomain: "stargicinvestment.firebaseapp.com",
+projectId: "stargicinvestment",
+storageBucket: "stargicinvestment.firebasestorage.app",
+messagingSenderId: "1053305294931",
+appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const db = getFirestore(app);
+
+const table = document.getElementById("usersTable");
+
+
+
+async function loadUsers(){
+
+const snapshot = await getDocs(collection(db,"users"));
+
+snapshot.forEach((docSnap)=>{
+
+const data = docSnap.data();
+
+const row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${data.email}</td>
+<td>${data.name}</td>
+<td>$${data.balance}</td>
+<td><button onclick="addBalance('${docSnap.id}')">Add</button></td>
+`;
+
+table.appendChild(row);
+
+});
 
 }
 
+
+window.addBalance = async function(id){
+
+const amount = prompt("Enter amount to add");
+
+if(!amount) return;
+
+const ref = doc(db,"users",id);
+
+const snap = await getDoc(ref);
+
+const data = snap.data();
+
+const currentBalance = data.balance || 0;
+
+await updateDoc(ref,{
+balance: currentBalance + Number(amount),
+planPercent: 5,
+planDays: 14,
+startDate: Date.now()
+});
+
+alert("Balance added and mining started");
+
+location.reload();
+
 }
 
-</script></body>
+
+loadUsers();
+
+</script>
+
+</body>
+
 </html>
