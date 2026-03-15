@@ -10,7 +10,34 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
 <style>
+.crypto-slider{
+display:flex;
+align-items:center;
+gap:40px;
+overflow:hidden;
+white-space:nowrap;
+background:#020617;
+padding:10px 20px;
+}
 
+.coin{
+display:flex;
+align-items:center;
+gap:8px;
+color:#00ffa6;
+font-weight:500;
+min-width:150px;
+}
+
+.crypto-track{
+display:flex;
+animation:scroll 20s linear infinite;
+}
+
+@keyframes scroll{
+0%{transform:translateX(100%)}
+100%{transform:translateX(-100%)}
+  }
 body{
 margin:0;
 font-family:Poppins;
