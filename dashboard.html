@@ -170,6 +170,66 @@ window.location.href="login.html";
 };
 
 </script>
+<script type="module">
 
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore,doc,getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.firebasestorage.app",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+onAuthStateChanged(auth, async (user)=>{
+
+if(user){
+
+const ref = doc(db,"users",user.uid);
+const snap = await getDoc(ref);
+
+const data = snap.data();
+
+document.getElementById("investorName").innerText = data.name;
+
+let balance = data.balance || 0;
+
+if(data.startDate){
+
+let now = Date.now();
+
+let daysPassed = Math.floor((now - data.startDate) / (1000*60*60*24));
+
+if(daysPassed > data.planDays){
+
+daysPassed = data.planDays;
+
+}
+
+let profit = balance * (data.planPercent/100) * daysPassed;
+
+let total = balance + profit;
+
+document.getElementById("balance").innerText = "$"+total.toFixed(2);
+
+}else{
+
+document.getElementById("balance").innerText = "$"+balance;
+
+}
+
+}
+
+});
+
+  </script>
 </body>
 </html>
