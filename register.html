@@ -1,95 +1,132 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create Account | StargicInvestment</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Create Account</title>
+
+<style>
 
 body{
-margin:0;
 font-family:Poppins;
 background:#0b0f1a;
-color:#00ff9d;
 display:flex;
-align-items:center;
 justify-content:center;
+align-items:center;
 height:100vh;
+color:white;
 }
 
-.container{
+.box{
 background:#111827;
 padding:40px;
 border-radius:10px;
-width:350px;
-box-shadow:0 0 20px rgba(0,0,0,0.6);
+width:320px;
 }
 
-h2{
-text-align:center;
-margin-bottom:25px;
-}
-
-input, select{
+input{
 width:100%;
 padding:12px;
 margin-top:10px;
 border:none;
-border-radius:6px;
-background:#1f2937;
-color:#00ff9d;
+border-radius:5px;
 }
 
 button{
 width:100%;
 padding:12px;
-margin-top:18px;
-border:none;
-border-radius:6px;
+margin-top:15px;
 background:#00ff9d;
-color:black;
-font-weight:600;
+border:none;
 cursor:pointer;
 }
 
-button:hover{
-opacity:0.9;
+</style>
+
+</head>
+
+<body>
+
+<div class="box">
+
+<h2>Create Account</h2>
+
+<input id="name" placeholder="Full Name">
+
+<input id="email" placeholder="Email">
+
+<input id="password" type="password" placeholder="Password">
+
+<button id="registerBtn">Register</button>
+
+</div>
+
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.firebasestorage.app",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+document.getElementById("registerBtn").onclick = async function(){
+
+const name = document.getElementById("name").value;
+const email = document.getElementById("email").value;
+const password = document.getElementById("password").value;
+
+
+try{
+
+const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+
+const user = userCredential.user;
+
+
+await setDoc(doc(db,"users",user.uid),{
+
+name: name,
+email: email,
+balance: 0
+
+});
+
+
+alert("Account created successfully");
+
+window.location.href="login.html";
+
 }
 
-.terms{
-margin-top:12px;
-font-size:13px;
-color:#9ca3af;
+catch(error){
+
+alert(error.message);
+
 }
 
-.login-link{
-text-align:center;
-margin-top:20px;
-font-size:14px;
-}
+};
 
-.login-link a{
-color:#00ff9d;
-text-decoration:none;
-}
+</script>
 
-.logo{
-text-align:center;
-font-size:22px;
-font-weight:600;
-margin-bottom:10px;
-}
-
-</style></head><body><div class="container"><div class="logo">StargicInvestment</div><h2>Create Account</h2><form><input type="text" placeholder="Full Name" required><input type="email" placeholder="Email Address" required><select required>
-<option value="">Select Country</option>
-<option>United States</option>
-<option>United Kingdom</option>
-<option>Canada</option>
-<option>Germany</option>
-<option>France</option>
-<option>Australia</option>
-<option>Italy</option>
-</select><input type="password" placeholder="Password" required><input type="password" placeholder="Confirm Password" required><div class="terms">
-<input type="checkbox" required> I agree to the Terms and Conditions
-</div><button type="submit">Create Account</button>
-
-</form><div class="login-link">
-Already have an account? <a href="login.html">Login</a>
-</div></div></body>
+</body>
 </html>
