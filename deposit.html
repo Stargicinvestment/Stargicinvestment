@@ -1,10 +1,184 @@
-<h2>Deposit</h2>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Deposit | StargicInvestment</title><style>
 
-<p>BTC</p>
-<p>bc1q25x3r2faeahcvxf0c423za7qlsw82jdg7l0kx4</p>
+body{
+margin:0;
+font-family:Arial;
+background:#0b0f1a;
+color:#00ff9d;
+}
 
-<p>USDT BEP20</p>
-<p>0x5321f56a04f684f5d4869905c2171e0bb9241e32</p>
+nav{
+background:#111827;
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
 
-<p>ETH</p>
-<p>0x5321f56a04f684f5d4869905c2171e0bb9241e32</p>
+.logo{
+font-size:20px;
+font-weight:600;
+}
+
+.menu a{
+color:#00ff9d;
+text-decoration:none;
+margin-left:20px;
+}
+
+.container{
+max-width:1100px;
+margin:auto;
+padding:60px 20px;
+}
+
+h2{
+text-align:center;
+margin-bottom:40px;
+}
+
+.plan-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+gap:25px;
+}
+
+.plan{
+background:#111827;
+padding:25px;
+border-radius:10px;
+text-align:center;
+}
+
+.plan h3{
+margin-top:0;
+}
+
+.plan p{
+margin:6px 0;
+}
+
+.btn{
+background:#00ff9d;
+color:black;
+padding:10px 20px;
+border:none;
+border-radius:6px;
+cursor:pointer;
+margin-top:12px;
+}
+
+.wallet-section{
+display:none;
+margin-top:60px;
+}
+
+.wallet-box{
+background:#111827;
+padding:25px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+.wallet-address{
+background:#0b0f1a;
+padding:10px;
+border-radius:6px;
+margin-top:10px;
+word-break:break-all;
+}
+
+.copy-btn{
+margin-top:10px;
+padding:8px 16px;
+background:#00ff9d;
+border:none;
+border-radius:5px;
+cursor:pointer;
+}
+
+footer{
+text-align:center;
+padding:40px;
+background:#111827;
+margin-top:80px;
+}
+
+</style></head><body><nav><div class="logo">StargicInvestment</div><div class="menu">
+<a href="dashboard.html">Dashboard</a>
+<a href="deposit.html">Deposit</a>
+<a href="#">Withdraw</a>
+</div></nav><div class="container"><h2>Select Investment Plan</h2><div class="plan-grid"><div class="plan">
+<h3>Starter Plan</h3>
+<p>Deposit: $300 – $999</p>
+<p>Return: 5%</p>
+<p>Duration: 14 Days</p>
+<button class="btn" onclick="showWallet()">Invest</button>
+</div><div class="plan">
+<h3>Silver Plan</h3>
+<p>Deposit: $1,000 – $4,999</p>
+<p>Return: 7%</p>
+<p>Duration: 14 Days</p>
+<button class="btn" onclick="showWallet()">Invest</button>
+</div><div class="plan">
+<h3>Gold Plan</h3>
+<p>Deposit: $5,000 – $19,999</p>
+<p>Return: 9%</p>
+<p>Duration: 14 Days</p>
+<button class="btn" onclick="showWallet()">Invest</button>
+</div><div class="plan">
+<h3>Platinum Plan</h3>
+<p>Deposit: $20,000 – $49,999</p>
+<p>Return: 10%</p>
+<p>Duration: 14 Days</p>
+<button class="btn" onclick="showWallet()">Invest</button>
+</div><div class="plan">
+<h3>VIP Plan</h3>
+<p>Deposit: $50,000 – $9,999,999</p>
+<p>Return: 12%</p>
+<p>Duration: 14 Days</p>
+<button class="btn" onclick="showWallet()">Invest</button>
+</div></div><div class="wallet-section" id="walletSection"><h2>Send Deposit To One Of These Wallets</h2><div class="wallet-box"><h3>Bitcoin (BTC)</h3><div class="wallet-address" id="btc">
+bc1q25x3r2faeahcvxf0c423za7qlsw82jdg7l0kx4
+</div><button class="copy-btn" onclick="copyWallet('btc')">Copy Address</button>
+
+</div><div class="wallet-box"><h3>Tether (USDT BEP20)</h3><div class="wallet-address" id="usdt">
+0x5321f56a04f684f5d4869905c2171e0bb9241e32
+</div><button class="copy-btn" onclick="copyWallet('usdt')">Copy Address</button>
+
+</div><div class="wallet-box"><h3>Ethereum (ETH)</h3><div class="wallet-address" id="eth">
+0x5321f56a04f684f5d4869905c2171e0bb9241e32
+</div><button class="copy-btn" onclick="copyWallet('eth')">Copy Address</button>
+
+</div><p style="margin-top:20px;text-align:center;">
+After sending your deposit, contact support to confirm your investment.
+</p></div></div><footer>Support Email
+<br><br>
+
+stargicinvestment987@gmail.com
+
+<br><br>
+
+© 2026 StargicInvestment. All Rights Reserved.
+
+</footer><script>
+
+function showWallet(){
+document.getElementById("walletSection").style.display="block";
+window.scrollTo(0,document.body.scrollHeight);
+}
+
+function copyWallet(id){
+
+let text=document.getElementById(id).innerText;
+
+navigator.clipboard.writeText(text);
+
+alert("Wallet address copied");
+
+}
+
+</script></body>
+  </html>
