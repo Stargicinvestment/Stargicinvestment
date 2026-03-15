@@ -1,7 +1,170 @@
-<h2>Withdraw Funds</h2>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Withdraw | StargicInvestment</title><style>
 
-<input type="text" placeholder="Wallet Address">
+body{
+margin:0;
+font-family:Arial;
+background:#0b0f1a;
+color:#00ff9d;
+}
 
-<input type="number" placeholder="Amount">
+nav{
+background:#111827;
+padding:15px 25px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
 
-<button>Withdraw</button>
+.logo{
+font-size:20px;
+font-weight:600;
+}
+
+.menu a{
+color:#00ff9d;
+text-decoration:none;
+margin-left:20px;
+}
+
+.container{
+max-width:900px;
+margin:auto;
+padding:50px 20px;
+}
+
+.card{
+background:#111827;
+padding:30px;
+border-radius:10px;
+}
+
+input, select{
+width:100%;
+padding:10px;
+margin-top:10px;
+border:none;
+border-radius:5px;
+}
+
+button{
+margin-top:15px;
+width:100%;
+padding:12px;
+background:#00ff9d;
+border:none;
+border-radius:5px;
+font-weight:bold;
+cursor:pointer;
+}
+
+.history{
+margin-top:40px;
+background:#111827;
+padding:25px;
+border-radius:10px;
+}
+
+.item{
+border-bottom:1px solid #222;
+padding:10px 0;
+}
+
+footer{
+text-align:center;
+padding:35px;
+background:#111827;
+margin-top:60px;
+}
+
+</style></head><body><nav><div class="logo">StargicInvestment</div><div class="menu">
+<a href="dashboard.html">Dashboard</a>
+<a href="deposit.html">Deposit</a>
+<a href="withdraw.html">Withdraw</a>
+</div></nav><div class="container"><h2>Withdraw Funds</h2><div class="card"><label>Amount</label>
+<input id="amount" type="number" placeholder="Enter withdrawal amount">
+
+<label>Crypto Currency</label>
+<select id="coin">
+
+<option>Bitcoin (BTC)</option>
+<option>Tether (USDT)</option>
+<option>Ethereum (ETH)</option>
+</select><label>Your Wallet Address</label>
+<input id="wallet" placeholder="Enter wallet address">
+
+<button onclick="withdraw()">Submit Withdrawal</button>
+
+</div><div class="history"><h3>Withdrawal History</h3><div id="history"></div></div></div><footer>Support Email
+<br><br>
+
+stargicinvestment987@gmail.com
+
+<br><br>
+
+© 2026 StargicInvestment. All Rights Reserved.
+
+</footer><script>
+
+let balance = parseFloat(localStorage.getItem("balance")) || 0;
+let history = JSON.parse(localStorage.getItem("withdrawHistory")) || [];
+
+function withdraw(){
+
+let amount = parseFloat(document.getElementById("amount").value);
+let coin = document.getElementById("coin").value;
+let wallet = document.getElementById("wallet").value;
+
+if(amount > balance){
+
+alert("Insufficient balance");
+
+return;
+
+}
+
+balance -= amount;
+
+localStorage.setItem("balance", balance);
+
+history.push({
+
+amount:amount,
+coin:coin,
+wallet:wallet,
+date:new Date().toLocaleString()
+
+});
+
+localStorage.setItem("withdrawHistory", JSON.stringify(history));
+
+alert("Withdrawal request submitted");
+
+loadHistory();
+
+}
+
+function loadHistory(){
+
+let box = document.getElementById("history");
+
+box.innerHTML="";
+
+history.forEach(item=>{
+
+box.innerHTML += `
+<div class="item">
+$${item.amount} - ${item.coin} <br>
+${item.date}
+</div>
+`;
+
+});
+
+}
+
+loadHistory();
+
+</script></body>
+  </html>
