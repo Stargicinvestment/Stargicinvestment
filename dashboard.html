@@ -1,170 +1,175 @@
-<!DOCTYPE html><html lang="en">
-<head><meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Investor Dashboard | StargicInvestment</title><style>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Investor Dashboard</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
 
 body{
 margin:0;
-font-family:Arial;
+font-family:Poppins;
 background:#0b0f1a;
-color:#00ff9d;
+color:white;
 }
 
-nav{
+header{
 background:#111827;
-padding:15px 25px;
+padding:15px;
 display:flex;
 justify-content:space-between;
 align-items:center;
 }
 
-.logo{
-font-size:20px;
-font-weight:600;
-}
-
-.menu a{
-color:#00ff9d;
-text-decoration:none;
-margin-left:20px;
-}
-
 .container{
-max-width:1100px;
-margin:auto;
-padding:40px 20px;
+padding:25px;
 }
 
-.welcome{
-font-size:22px;
-margin-bottom:30px;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
-
-.card{
+.balance-box{
 background:#111827;
 padding:25px;
 border-radius:10px;
+margin-top:20px;
 }
 
 .balance{
-font-size:26px;
-font-weight:bold;
+font-size:30px;
+color:#00ff9d;
+margin-top:10px;
 }
 
-.actions{
-margin-top:30px;
+.btns{
+margin-top:20px;
+display:flex;
+gap:10px;
 }
 
-.btn{
-background:#00ff9d;
-color:black;
-padding:10px 18px;
+button{
+padding:12px 20px;
 border:none;
 border-radius:6px;
 cursor:pointer;
-margin-right:10px;
+font-weight:600;
 }
 
-.plan-box{
-margin-top:40px;
-background:#111827;
-padding:25px;
-border-radius:10px;
+.deposit{
+background:#00ff9d;
 }
 
-footer{
-text-align:center;
-padding:35px;
-background:#111827;
-margin-top:60px;
+.withdraw{
+background:#ff5757;
+color:white;
 }
 
-</style></head><body><nav><div class="logo">StargicInvestment</div><div class="menu">
-<a href="dashboard.html">Dashboard</a>
-<a href="deposit.html">Deposit</a>
-<a href="#">Withdraw</a>
-<a href="index.html">Logout</a>
-</div></nav><div class="container"><div class="welcome">
-Welcome Investor: <span id="investorName"></span>
-</div><div class="grid"><div class="card">
-<h3>Account Balance</h3>
-<div class="balance">$<span id="balance">0.00</span></div>
-</div><div class="card">
-<h3>Total Profit</h3>
-<div class="balance">$<span id="profit">0.00</span></div>
-</div><div class="card">
-<h3>Active Investment</h3>
-<div class="balance">$<span id="active">0.00</span></div>
-</div><div class="card">
-<h3>Referral Bonus</h3>
-<div class="balance">$0.00</div>
-</div></div><div class="actions"><button class="btn" onclick="location.href='deposit.html'">Deposit</button>
+</style>
 
-<button class="btn">Withdraw</button>
+</head>
 
-</div><div class="plan-box"><h3>Investment Plans</h3><p>Starter Plan — 5% Return | 14 Days</p>
-<p>Silver Plan — 7% Return | 14 Days</p>
-<p>Gold Plan — 9% Return | 14 Days</p>
-<p>Platinum Plan — 10% Return | 14 Days</p>
-<p>VIP Plan — 12% Return | 14 Days</p></div></div><footer>Support Email
-<br><br>
+<body>
 
-stargicinvestment987@gmail.com
+<header>
 
-<br><br>
+<h3>Investor Dashboard</h3>
 
-© 2026 StargicInvestment. All Rights Reserved.
+<button id="logout">Logout</button>
 
-</footer><script>
+</header>
 
-/* SHOW INVESTOR NAME */
+<div class="container">
 
-let name = localStorage.getItem("investorName");
+<h2>Welcome, <span id="username">Investor</span></h2>
 
-if(name){
-document.getElementById("investorName").innerText = name;
-}else{
-document.getElementById("investorName").innerText = "Investor";
-}
+<div class="balance-box">
 
-/* BALANCE SYSTEM */
+<h4>Your Balance</h4>
 
-let balance = parseFloat(localStorage.getItem("balance")) || 0;
-let profit = parseFloat(localStorage.getItem("profit")) || 0;
-let active = parseFloat(localStorage.getItem("activeInvestment")) || 0;
+<div class="balance">$<span id="balance">0</span></div>
 
-function updateUI(){
-document.getElementById("balance").innerText = balance.toFixed(2);
-document.getElementById("profit").innerText = profit.toFixed(2);
-document.getElementById("active").innerText = active.toFixed(2);
-}
+</div>
 
-updateUI();
+<div class="btns">
 
-/* SIMULATED PROFIT MINING */
+<button class="deposit" onclick="window.location='deposit.html'">Deposit</button>
 
-setInterval(function(){
+<button class="withdraw" onclick="window.location='withdraw.html'">Withdraw</button>
 
-if(active > 0){
+</div>
 
-let gain = active * 0.0005;
+</div>
 
-profit += gain;
-balance += gain;
 
-localStorage.setItem("balance", balance);
-localStorage.setItem("profit", profit);
 
-updateUI();
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.firebasestorage.app",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+
+/* Protect dashboard */
+
+onAuthStateChanged(auth, async (user) => {
+
+if(!user){
+
+window.location.href = "login.html";
 
 }
 
-},5000);
+else{
 
-</script></body>
+const ref = doc(db,"users",user.uid);
+
+const snap = await getDoc(ref);
+
+if(snap.exists()){
+
+const data = snap.data();
+
+document.getElementById("username").innerText = data.name;
+
+document.getElementById("balance").innerText = data.balance;
+
+}
+
+}
+
+});
+
+
+/* Logout */
+
+document.getElementById("logout").onclick = function(){
+
+signOut(auth).then(()=>{
+
+window.location.href="login.html";
+
+});
+
+};
+
+</script>
+
+</body>
 </html>
