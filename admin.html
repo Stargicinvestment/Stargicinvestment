@@ -7,13 +7,73 @@
 <style>
 
 body{
+margin:0;
 font-family:Arial;
 background:#0f172a;
 color:white;
+}
+
+#loginScreen{
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+background:#020617;
+}
+
+.loginBox{
+background:#1e293b;
+padding:30px;
+border-radius:8px;
+text-align:center;
+}
+
+input{
+padding:10px;
+width:200px;
+margin-top:10px;
+border:none;
+border-radius:4px;
+}
+
+button{
+background:#22c55e;
+border:none;
+padding:10px 15px;
+color:white;
+cursor:pointer;
+border-radius:4px;
+margin-top:10px;
+}
+
+.sidebar{
+width:220px;
+background:#020617;
+height:100vh;
+position:fixed;
 padding:20px;
 }
 
-h1{
+.sidebar h2{
+margin-bottom:30px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+margin:10px 0;
+}
+
+.main{
+margin-left:240px;
+padding:20px;
+}
+
+.card{
+background:#1e293b;
+padding:20px;
+border-radius:8px;
 margin-bottom:20px;
 }
 
@@ -23,18 +83,8 @@ border-collapse:collapse;
 }
 
 th,td{
-padding:12px;
+padding:10px;
 border-bottom:1px solid #333;
-text-align:left;
-}
-
-button{
-background:#22c55e;
-border:none;
-padding:8px 12px;
-cursor:pointer;
-color:white;
-border-radius:4px;
 }
 
 </style>
@@ -43,24 +93,89 @@ border-radius:4px;
 
 <body>
 
-<h1>Admin Panel</h1>
+<div id="loginScreen">
+
+<div class="loginBox">
+
+<h2>Admin Login</h2>
+
+<input type="password" id="adminPass" placeholder="Enter password">
+
+<br>
+
+<button onclick="checkPassword()">Login</button>
+
+</div>
+
+</div>
+
+
+<div id="dashboard" style="display:none;">
+
+<div class="sidebar">
+
+<h2>Admin</h2>
+
+<a href="#">Dashboard</a>
+<a href="#">Users</a>
+<a href="#">Deposits</a>
+<a href="#">Withdrawals</a>
+<a href="#">Settings</a>
+
+</div>
+
+<div class="main">
+
+<div class="card">
+<h3>Total Users: <span id="totalUsers">0</span></h3>
+</div>
+
+<div class="card">
+
+<h3>Users</h3>
 
 <table>
 
 <thead>
-
 <tr>
 <th>Email</th>
 <th>Name</th>
 <th>Balance</th>
 <th>Add Balance</th>
 </tr>
-
 </thead>
 
 <tbody id="usersTable"></tbody>
 
 </table>
+
+</div>
+
+</div>
+
+</div>
+
+
+<script>
+
+function checkPassword(){
+
+const pass = document.getElementById("adminPass").value;
+
+if(pass === "Chukwunonso2020@"){
+
+document.getElementById("loginScreen").style.display="none";
+document.getElementById("dashboard").style.display="block";
+
+}else{
+
+alert("Wrong password");
+
+}
+
+}
+
+</script>
 
 
 <script type="module">
@@ -92,11 +207,11 @@ const db = getFirestore(app);
 
 const table = document.getElementById("usersTable");
 
-
-
 async function loadUsers(){
 
 const snapshot = await getDocs(collection(db,"users"));
+
+document.getElementById("totalUsers").innerText = snapshot.size;
 
 snapshot.forEach((docSnap)=>{
 
@@ -117,10 +232,9 @@ table.appendChild(row);
 
 }
 
-
 window.addBalance = async function(id){
 
-const amount = prompt("Enter amount to add");
+const amount = prompt("Enter amount");
 
 if(!amount) return;
 
@@ -139,17 +253,15 @@ planDays: 14,
 startDate: Date.now()
 });
 
-alert("Balance added and mining started");
+alert("Balance updated");
 
 location.reload();
 
 }
-
 
 loadUsers();
 
 </script>
 
 </body>
-
 </html>
