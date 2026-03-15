@@ -1,0 +1,82 @@
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Dashboard</title><style>
+
+body{
+margin:0;
+background:#0b0f1a;
+color:#00ff9d;
+font-family:Poppins;
+}
+
+header{
+background:#111827;
+padding:20px;
+font-size:20px;
+}
+
+.container{
+padding:30px;
+max-width:900px;
+margin:auto;
+}
+
+.card{
+background:#111827;
+padding:25px;
+border-radius:10px;
+margin-bottom:20px;
+}
+
+input{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+background:#1f2937;
+color:#00ff9d;
+}
+
+button{
+width:100%;
+padding:12px;
+margin-top:15px;
+background:#00ff9d;
+border:none;
+border-radius:6px;
+cursor:pointer;
+}
+
+</style></head><body><header>
+Admin Dashboard
+</header><div class="container"><div class="card"><h3>Add Balance To User</h3><input id="username" placeholder="Username"><input id="amount" placeholder="Amount $" type="number"><button onclick="addBalance()">Add Balance</button>
+
+</div><div class="card"><h3>Check User Balance</h3><input id="checkUser" placeholder="Username"><button onclick="checkBalance()">Check Balance</button>
+
+<p id="result"></p></div></div><script>
+
+function addBalance(){
+
+let user=document.getElementById("username").value;
+
+let amount=document.getElementById("amount").value;
+
+localStorage.setItem(user+"_balance",amount);
+
+alert("Balance added");
+
+}
+
+function checkBalance(){
+
+let user=document.getElementById("checkUser").value;
+
+let balance=localStorage.getItem(user+"_balance");
+
+document.getElementById("result").innerText="Balance: $"+balance;
+
+}
+
+</script></body>
+  </html>
