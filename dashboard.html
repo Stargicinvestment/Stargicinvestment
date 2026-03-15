@@ -1,32 +1,159 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Dashboard</title>
-<script src="script.js"></script>
-</head>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Investor Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
 
-<body onload="loadDashboard();startLive()">
+body{
+margin:0;
+font-family:Poppins;
+background:#0b0f1a;
+color:#00ff9d;
+}
 
-<h2>Dashboard</h2>
+header{
+background:#111827;
+padding:20px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
 
-<h1 id="balance">$0</h1>
+.logo{
+font-size:20px;
+font-weight:600;
+}
 
-<p>Welcome Investor</p>
+.logout{
+background:#00ff9d;
+color:black;
+padding:8px 15px;
+border-radius:5px;
+text-decoration:none;
+}
 
-<h3>Live Deposits</h3>
-<ul id="deposits"></ul>
+.container{
+max-width:1100px;
+margin:auto;
+padding:30px 20px;
+}
 
-<h3>Live Withdrawals</h3>
-<ul id="withdrawals"></ul>
+.welcome{
+margin-bottom:20px;
+}
 
-<h3>Active Investors</h3>
-<h2 id="investors">0</h2>
-<a href="deposit.html">Deposit</a>
+.balance-box{
+background:#111827;
+padding:30px;
+border-radius:10px;
+margin-bottom:30px;
+}
 
-<a href="withdraw.html">Withdraw</a>
+.balance{
+font-size:40px;
+margin-top:10px;
+}
 
-</body>
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:#111827;
+padding:25px;
+border-radius:10px;
+text-align:center;
+}
+
+.card h3{
+margin:0;
+color:#9ca3af;
+font-size:14px;
+}
+
+.card p{
+font-size:22px;
+margin-top:10px;
+}
+
+.actions{
+margin-top:30px;
+display:flex;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.btn{
+background:#00ff9d;
+color:black;
+padding:12px 20px;
+border-radius:6px;
+text-decoration:none;
+}
+
+.plan{
+margin-top:40px;
+background:#111827;
+padding:25px;
+border-radius:10px;
+}
+
+footer{
+text-align:center;
+margin-top:50px;
+color:#9ca3af;
+}
+
+</style></head><body><header><div class="logo">StargicInvestment Dashboard</div><a class="logout" href="index.html">Logout</a>
+
+</header><div class="container"><div class="welcome">
+<h2>Welcome, <span id="username">Investor</span></h2>
+</div><div class="balance-box"><h3>Live Account Balance</h3><div class="balance" id="balance">$0.00</div></div><div class="grid"><div class="card"><h3>Total Deposit</h3><p id="deposit">$0</p></div><div class="card"><h3>Total Profit</h3><p id="profit">$0</p></div><div class="card"><h3>Active Investment</h3><p id="active">$0</p></div></div><div class="actions"><a class="btn">Deposit</a>
+<a class="btn">Withdraw</a>
+<a class="btn">Investment Plans</a>
+
+</div><div class="plan"><h3>Active Plan</h3><p>
+Starter Plan<br>
+Return: 5% in 14 Days
+</p></div></div><footer>© 2026 StargicInvestment — All Rights Reserved
+
+</footer><script>
+
+/* GET USER NAME FROM LOGIN */
+
+let user = localStorage.getItem("userName");
+
+if(user){
+document.getElementById("username").innerText = user;
+}
+
+/* ACCOUNT DATA */
+
+let balance = 0;
+let profit = 0;
+let deposit = 0;
+
+/* PROFIT SYSTEM */
+
+function growProfit(){
+
+if(balance > 0){
+
+let increase = balance * 0.00005;
+
+profit += increase;
+balance += increase;
+
+document.getElementById("profit").innerText="$"+profit.toFixed(2);
+document.getElementById("balance").innerText="$"+balance.toFixed(2);
+
+}
+
+}
+
+/* RUN EVERY 5 SECONDS */
+
+setInterval(growProfit,5000);
+
+</script></body>
 </html>
-<h3>Active Plan</h3>
-
-<p id="plan">None</p>
