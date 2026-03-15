@@ -1,15 +1,95 @@
-<h2>Create Account</h2>
+<!DOCTYPE html><html lang="en">
+<head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Create Account | StargicInvestment</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet"><style>
 
-<form>
+body{
+margin:0;
+font-family:Poppins;
+background:#0b0f1a;
+color:#00ff9d;
+display:flex;
+align-items:center;
+justify-content:center;
+height:100vh;
+}
 
-<input type="text" placeholder="Username">
+.container{
+background:#111827;
+padding:40px;
+border-radius:10px;
+width:350px;
+box-shadow:0 0 20px rgba(0,0,0,0.6);
+}
 
-<input type="email" placeholder="Email">
+h2{
+text-align:center;
+margin-bottom:25px;
+}
 
-<input type="password" placeholder="Password">
+input, select{
+width:100%;
+padding:12px;
+margin-top:10px;
+border:none;
+border-radius:6px;
+background:#1f2937;
+color:#00ff9d;
+}
 
-<input type="text" placeholder="Referral (optional)">
+button{
+width:100%;
+padding:12px;
+margin-top:18px;
+border:none;
+border-radius:6px;
+background:#00ff9d;
+color:black;
+font-weight:600;
+cursor:pointer;
+}
 
-<button>Create Account</button>
+button:hover{
+opacity:0.9;
+}
 
-</form>
+.terms{
+margin-top:12px;
+font-size:13px;
+color:#9ca3af;
+}
+
+.login-link{
+text-align:center;
+margin-top:20px;
+font-size:14px;
+}
+
+.login-link a{
+color:#00ff9d;
+text-decoration:none;
+}
+
+.logo{
+text-align:center;
+font-size:22px;
+font-weight:600;
+margin-bottom:10px;
+}
+
+</style></head><body><div class="container"><div class="logo">StargicInvestment</div><h2>Create Account</h2><form><input type="text" placeholder="Full Name" required><input type="email" placeholder="Email Address" required><select required>
+<option value="">Select Country</option>
+<option>United States</option>
+<option>United Kingdom</option>
+<option>Canada</option>
+<option>Germany</option>
+<option>France</option>
+<option>Australia</option>
+<option>Nigeria</option>
+</select><input type="password" placeholder="Password" required><input type="password" placeholder="Confirm Password" required><div class="terms">
+<input type="checkbox" required> I agree to the Terms and Conditions
+</div><button type="submit">Create Account</button>
+
+</form><div class="login-link">
+Already have an account? <a href="login.html">Login</a>
+</div></div></body>
+         </html>
