@@ -217,6 +217,7 @@ daysPassed = data.planDays;
 let profit = balance * (data.planPercent/100) * daysPassed;
 
 let total = balance + profit;
+  localStorage.setItem("totalBalance", total);
 
 document.getElementById("balance").innerText = "$"+total.toFixed(2);
 
