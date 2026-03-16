@@ -2,7 +2,7 @@
 <html>
 <head>
 
-<title>Admin Dashboard</title>
+<title>Admin Panel</title>
 
 <style>
 
@@ -13,73 +13,37 @@ background:#0f172a;
 color:white;
 }
 
-#loginScreen{
+.login{
 display:flex;
-justify-content:center;
-align-items:center;
 height:100vh;
-background:#020617;
-}
-
-.loginBox{
-background:#1e293b;
-padding:30px;
-border-radius:8px;
-text-align:center;
+align-items:center;
+justify-content:center;
+flex-direction:column;
 }
 
 input{
 padding:10px;
+margin:10px;
 width:200px;
-margin-top:10px;
-border:none;
-border-radius:4px;
 }
 
 button{
+padding:10px 15px;
 background:#22c55e;
 border:none;
-padding:10px 15px;
 color:white;
 cursor:pointer;
-border-radius:4px;
-margin-top:10px;
 }
 
-.sidebar{
-width:220px;
-background:#020617;
-height:100vh;
-position:fixed;
+#panel{
+display:none;
 padding:20px;
-}
-
-.sidebar h2{
-margin-bottom:30px;
-}
-
-.sidebar a{
-display:block;
-color:white;
-text-decoration:none;
-margin:10px 0;
-}
-
-.main{
-margin-left:240px;
-padding:20px;
-}
-
-.card{
-background:#1e293b;
-padding:20px;
-border-radius:8px;
-margin-bottom:20px;
 }
 
 table{
 width:100%;
 border-collapse:collapse;
+margin-top:20px;
 }
 
 th,td{
@@ -93,44 +57,21 @@ border-bottom:1px solid #333;
 
 <body>
 
-<div id="loginScreen">
-
-<div class="loginBox">
+<div class="login" id="loginBox">
 
 <h2>Admin Login</h2>
 
-<input type="password" id="adminPass" placeholder="Enter password">
+<input type="password" id="adminPass" placeholder="Enter admin password">
 
-<br>
-
-<button onclick="checkPassword()">Login</button>
+<button onclick="login()">Login</button>
 
 </div>
 
-</div>
+<div id="panel">
 
+<h2>Admin Dashboard</h2>
 
-<div id="dashboard" style="display:none;">
-
-<div class="sidebar">
-
-<h2>Admin</h2>
-
-<a href="#">Dashboard</a>
-<a href="#">Users</a>
-<a href="#">Deposits</a>
-<a href="#">Withdrawals</a>
-<a href="#">Settings</a>
-
-</div>
-
-<div class="main">
-
-<div class="card">
 <h3>Total Users: <span id="totalUsers">0</span></h3>
-</div>
-
-<div class="card">
 
 <h3>Users</h3>
 
@@ -139,7 +80,6 @@ border-bottom:1px solid #333;
 <thead>
 <tr>
 <th>Email</th>
-<th>Name</th>
 <th>Balance</th>
 <th>Add Balance</th>
 </tr>
@@ -149,33 +89,25 @@ border-bottom:1px solid #333;
 
 </table>
 
-</div>
+<h3>Withdrawal Requests</h3>
+
+<table>
+
+<thead>
+<tr>
+<th>User</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody id="withdrawTable"></tbody>
+
+</table>
 
 </div>
 
-</div>
-
-
-<script>
-
-function checkPassword(){
-
-const pass = document.getElementById("adminPass").value;
-
-if(pass === "Chukwunonso2020@"){
-
-document.getElementById("loginScreen").style.display="none";
-document.getElementById("dashboard").style.display="block";
-
-}else{
-
-alert("Wrong password");
-
-}
-
-}
-
-</script>
 
 
 <script type="module">
@@ -187,25 +119,40 @@ getFirestore,
 collection,
 getDocs,
 doc,
-updateDoc,
-getDoc
+updateDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
 const firebaseConfig = {
-apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-authDomain: "stargicinvestment.firebaseapp.com",
-projectId: "stargicinvestment",
-storageBucket: "stargicinvestment.firebasestorage.app",
-messagingSenderId: "1053305294931",
-appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+
+apiKey: "YOUR_KEY",
+authDomain: "YOUR_DOMAIN",
+projectId: "YOUR_PROJECT_ID",
+
 };
 
 const app = initializeApp(firebaseConfig);
 
 const db = getFirestore(app);
 
-const table = document.getElementById("usersTable");
+window.login = function(){
+
+let pass = document.getElementById("adminPass").value;
+
+if(pass === "Chukwunonso2020@"){
+
+document.getElementById("loginBox").style.display="none";
+document.getElementById("panel").style.display="block";
+
+loadUsers();
+loadWithdrawals();
+
+}else{
+
+alert("Wrong password");
+
+}
+
+}
 
 async function loadUsers(){
 
@@ -213,17 +160,20 @@ const snapshot = await getDocs(collection(db,"users"));
 
 document.getElementById("totalUsers").innerText = snapshot.size;
 
-snapshot.forEach((docSnap)=>{
+const table = document.getElementById("usersTable");
 
-const data = docSnap.data();
+snapshot.forEach(docSnap=>{
 
-const row = document.createElement("tr");
+let data = docSnap.data();
+
+let row = document.createElement("tr");
 
 row.innerHTML = `
+
 <td>${data.email}</td>
-<td>${data.name}</td>
-<td>$${data.balance}</td>
+<td>$${data.balance || 0}</td>
 <td><button onclick="addBalance('${docSnap.id}')">Add</button></td>
+
 `;
 
 table.appendChild(row);
@@ -234,23 +184,17 @@ table.appendChild(row);
 
 window.addBalance = async function(id){
 
-const amount = prompt("Enter amount");
+let amount = prompt("Enter amount");
 
 if(!amount) return;
 
 const ref = doc(db,"users",id);
 
-const snap = await getDoc(ref);
-
-const data = snap.data();
-
-const currentBalance = data.balance || 0;
-
 await updateDoc(ref,{
-balance: currentBalance + Number(amount),
-planPercent: 5,
-planDays: 14,
-startDate: Date.now()
+
+balance:Number(amount),
+startDate:Date.now()
+
 });
 
 alert("Balance updated");
@@ -259,7 +203,47 @@ location.reload();
 
 }
 
-loadUsers();
+async function loadWithdrawals(){
+
+const snapshot = await getDocs(collection(db,"withdrawals"));
+
+const table = document.getElementById("withdrawTable");
+
+snapshot.forEach(docSnap=>{
+
+let data = docSnap.data();
+
+let row = document.createElement("tr");
+
+row.innerHTML = `
+
+<td>${data.email}</td>
+<td>$${data.amount}</td>
+<td>${data.status}</td>
+<td>
+<button onclick="approve('${docSnap.id}')">Approve</button>
+<button onclick="reject('${docSnap.id}')">Reject</button>
+</td>
+
+`;
+
+table.appendChild(row);
+
+});
+
+}
+
+window.approve = async function(id){
+
+alert("Withdrawal approved");
+
+}
+
+window.reject = async function(id){
+
+alert("Withdrawal rejected");
+
+}
 
 </script>
 
