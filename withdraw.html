@@ -105,27 +105,65 @@ stargicinvestment987@gmail.com
 
 © 2026 StargicInvestment. All Rights Reserved.
 
-</footer><script>
+<script type="module">
 
-let balance = parseFloat(localStorage.getItem("balance")) || 0;
-let history = JSON.parse(localStorage.getItem("withdrawHistory")) || [];
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-function withdraw(){
+const firebaseConfig = {
+apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+authDomain: "stargicinvestment.firebaseapp.com",
+projectId: "stargicinvestment",
+storageBucket: "stargicinvestment.firebasestorage.app",
+messagingSenderId: "1053305294931",
+appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
 
-let amount = parseFloat(document.getElementById("amount").value);
-let coin = document.getElementById("coin").value;
-let wallet = document.getElementById("wallet").value;
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
 
-let total = parseFloat(localStorage.getItem("totalBalance")) || 0;
+window.withdraw = async function(){
 
-if(amount > total){
+let amount = Number(document.getElementById("amount").value);
+
+if(!amount || amount <= 0){
+alert("Enter withdrawal amount");
+return;
+}
+
+const user = auth.currentUser;
+
+if(!user){
+alert("You must login first");
+return;
+}
+
+const ref = doc(db,"users",user.uid);
+const snap = await getDoc(ref);
+const data = snap.data();
+
+let balance = data.balance || 0;
+
+if(amount > balance){
 alert("Insufficient balance");
 return;
 }
 
-total -= amount;
+let newBalance = balance - amount;
 
-localStorage.setItem("totalBalance", total);
+await updateDoc(ref,{
+balance:newBalance
+});
+
+alert("Withdrawal successful");
+
+location.href="dashboard.html";
+
+}
+
+</script>
 
 history.push({
 amount: amount,
