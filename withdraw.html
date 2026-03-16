@@ -116,25 +116,22 @@ let amount = parseFloat(document.getElementById("amount").value);
 let coin = document.getElementById("coin").value;
 let wallet = document.getElementById("wallet").value;
 
-if(amount > balance){
+let total = parseFloat(localStorage.getItem("totalBalance")) || 0;
 
+if(amount > total){
 alert("Insufficient balance");
-
 return;
-
 }
 
-balance -= amount;
+total -= amount;
 
-localStorage.setItem("balance", balance);
+localStorage.setItem("totalBalance", total);
 
 history.push({
-
-amount:amount,
-coin:coin,
-wallet:wallet,
-date:new Date().toLocaleString()
-
+amount: amount,
+coin: coin,
+wallet: wallet,
+date: new Date().toLocaleString()
 });
 
 localStorage.setItem("withdrawHistory", JSON.stringify(history));
@@ -142,7 +139,6 @@ localStorage.setItem("withdrawHistory", JSON.stringify(history));
 alert("Withdrawal request submitted");
 
 loadHistory();
-
 }
 
 function loadHistory(){
