@@ -92,9 +92,12 @@ margin-top:60px;
 <option>Tether (USDT)</option>
 <option>Ethereum (ETH)</option>
 </select><label>Your Wallet Address</label>
-<input id="wallet" placeholder="Enter wallet address">
 
-<button onclick="withdraw()">Submit Withdrawal</button>
+<input type="text" id="wallet" placeholder="Enter wallet address">
+
+<input type="number" id="amount" placeholder="Enter amount">
+
+<button onclick="withdraw()">Withdraw</button>
 
 </div><div class="history"><h3>Withdrawal History</h3><div id="history"></div></div></div><footer>Support Email
 <br><br>
