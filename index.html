@@ -529,6 +529,59 @@ document.getElementById("chatBox").style.display="block";
   setTimeout(()=>{
 document.getElementById("chatPopup").style.display="block";
 }, 3000);
+  import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const messagesRef = collection(db, "messages");
+
+window.sendMessage = async function(){
+
+const user = auth.currentUser;
+
+let text = document.getElementById("msgInput").value;
+
+if(!text){
+alert("Type a message");
+return;
+}
+
+await addDoc(messagesRef,{
+uid:user.uid,
+email:user.email,
+text:text,
+reply:"",
+date:Date.now()
+});
+
+document.getElementById("msgInput").value="";
+
+  }
+  import { query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+function loadMessages(user){
+
+const q = query(messagesRef, where("uid","==",user.uid));
+
+onSnapshot(q,(snapshot)=>{
+
+const box = document.getElementById("messages");
+box.innerHTML="";
+
+snapshot.forEach(doc=>{
+
+let data = doc.data();
+
+box.innerHTML += `
+<div class="userMsg">${data.text}</div>
+<div class="adminMsg">${data.reply || "Waiting for reply..."}</div>
+`;
+
+});
+
+box.scrollTop = box.scrollHeight;
+
+});
+
+  }
 </script>
 
   <!-- Floating Chat Button -->
