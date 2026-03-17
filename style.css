@@ -149,3 +149,18 @@ font-size:28px;
 color:#22c55e;
 font-weight:bold;
   }
+.userMsg{
+background:#2563eb;
+color:white;
+padding:8px;
+margin:5px;
+border-radius:10px;
+text-align:right;
+}
+
+.adminMsg{
+background:#e5e7eb;
+padding:8px;
+margin:5px;
+border-radius:10px;
+  }
