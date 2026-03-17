@@ -574,7 +574,33 @@ cursor:pointer;
 ">
 Let's chat
 </button>
+<!-- Full Chat Box -->
+<div id="chatBox" style="
+display:none;
+position:fixed;
+bottom:0;
+right:0;
+width:100%;
+max-width:350px;
+height:100%;
+background:white;
+z-index:1000;
+">
 
+<div style="background:#2563eb;color:white;padding:15px;">
+How can we help?
+<br>
+<span style="font-size:12px;">🟢 We reply immediately</span>
+</div>
+
+<div id="messages" style="height:70%;overflow-y:auto;padding:10px;"></div>
+
+<div style="position:absolute;bottom:0;width:100%;display:flex;">
+<input id="msgInput" placeholder="Type your message..." style="flex:1;padding:10px;border:none;">
+<button onclick="sendMessage()" style="background:#2563eb;color:white;border:none;padding:10px;">➤</button>
+</div>
+
+</div>
 </div>
 </body>
   </html>
