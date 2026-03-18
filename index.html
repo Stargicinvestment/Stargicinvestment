@@ -791,16 +791,22 @@ How can we help?
 </div>
 
 </div>
-</body>
-  <div id="chatBox" style="display:none; flex-direction:column;">
+<body>
 
-  <div id="chatMessages"></div>
+  My website
 
-  <div>
-    <input type="text" id="chatInput" placeholder="Type message...">
-    <button onclick="sendMessage()">Send</button>
+  <!-- ✅ CHAT BOX -->
+  <div id="chatBox" style="display:none; flex-direction:column; position:fixed; bottom:20px; right:20px; width:300px; background:#fff; border:1px solid #ccc; padding:10px;">
+
+    <div id="chatMessages" style="height:200px; overflow-y:auto;"></div>
+
+    <div>
+      <input type="text" id="chatInput" placeholder="Type message..." style="width:70%;">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
   </div>
 
-</div>
+</body>
 </html>
 
