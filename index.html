@@ -707,5 +707,25 @@ How can we help?
 </div>
 
 </div>
+  <script>
+window.openPopup = function(){
+  document.getElementById("chatPopup").style.display="block";
+}
+
+window.closePopup = function(){
+  document.getElementById("chatPopup").style.display="none";
+}
+
+window.openChat = function(){
+  document.getElementById("chatPopup").style.display="none";
+  document.getElementById("chatBox").style.display="block";
+}
+
+setTimeout(()=>{
+  document.getElementById("chatPopup").style.display="block";
+}, 3000);
+</script>
+</body>
+</html>
 </body>
   </html>
