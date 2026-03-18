@@ -1,252 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-
-<title>Admin Panel</title>
-
-<style>
-
-body{
-margin:0;
-font-family:Arial;
-background:#0f172a;
-color:white;
-}
-
-.login{
-display:flex;
-height:100vh;
-align-items:center;
-justify-content:center;
-flex-direction:column;
-}
-
-input{
-padding:10px;
-margin:10px;
-width:200px;
-}
-
-button{
-padding:10px 15px;
-background:#22c55e;
-border:none;
-color:white;
-cursor:pointer;
-}
-
-#panel{
-display:none;
-padding:20px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-margin-top:20px;
-}
-
-th,td{
-padding:10px;
-border-bottom:1px solid #333;
-}
-
-</style>
-
+  <title>Admin Panel</title>
 </head>
 
-<body>
+<body style="background:black; color:white; font-family:sans-serif;">
 
-<div class="login" id="loginBox">
+<h2>Admin Support Panel</h2>
 
-<h2>Admin Login</h2>
-
-<input type="password" id="adminPass" placeholder="Enter admin password">
-
-<button onclick="login()">Login</button>
-
-</div>
-
-<div id="panel">
-
-<h2>Admin Dashboard</h2>
-
-<h3>Total Users: <span id="totalUsers">0</span></h3>
-
-<h3>Users</h3>
-
-<table>
-
-<thead>
-<tr>
-<th>Email</th>
-<th>Balance</th>
-<th>Add Balance</th>
-</tr>
-</thead>
-
-<tbody id="usersTable"></tbody>
-
-</table>
-
-<h3>Withdrawal Requests</h3>
-
-<table>
-
-<thead>
-<tr>
-<th>User</th>
-<th>Amount</th>
-<th>Status</th>
-<th>Action</th>
-</tr>
-</thead>
-
-<tbody id="withdrawTable"></tbody>
-
-</table>
-
-</div>
-
-
+<!-- ✅ REQUIRED -->
+<div id="messages"></div>
 
 <script type="module">
 
+// ✅ IMPORTS (TOP ONLY)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import {
-getFirestore,
-collection,
-getDocs,
-doc,
-updateDoc
+import { 
+  getFirestore, 
+  collection, 
+  onSnapshot, 
+  doc, 
+  updateDoc 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+
+// ✅ YOUR REAL CONFIG (COPY FROM YOUR SITE)
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:80107e1ec5b707b156f6a6",
-  measurementId: "G-0N22ZYTXXN"
+  projectId: "stargicinvestment"
 };
 
 
+// ✅ INIT
 const app = initializeApp(firebaseConfig);
-
 const db = getFirestore(app);
 
-window.login = function(){
 
-let pass = document.getElementById("adminPass").value;
-
-if(pass === "Chukwunonso2020@"){
-
-document.getElementById("loginBox").style.display="none";
-document.getElementById("panel").style.display="block";
-
-loadUsers();
-loadWithdrawals();
-
-}else{
-
-alert("Wrong password");
-
-}
-
-}
-
-async function loadUsers(){
-
-const snapshot = await getDocs(collection(db,"users"));
-
-document.getElementById("totalUsers").innerText = snapshot.size;
-
-const table = document.getElementById("usersTable");
-
-snapshot.forEach(docSnap=>{
-
-let data = docSnap.data();
-
-let row = document.createElement("tr");
-
-row.innerHTML = `
-
-<td>${data.email}</td>
-<td>$${data.balance || 0}</td>
-<td><button onclick="addBalance('${docSnap.id}')">Add</button></td>
-
-`;
-
-table.appendChild(row);
-
-});
-
-}
-
-window.addBalance = async function(id){
-
-let amount = prompt("Enter amount");
-
-if(!amount) return;
-
-const ref = doc(db,"users",id);
-
-await updateDoc(ref,{
-
-balance:Number(amount),
-startDate:Date.now()
-
-});
-
-alert("Balance updated");
-
-location.reload();
-
-}
-
-async function loadWithdrawals(){
-
-const snapshot = await getDocs(collection(db,"withdrawals"));
-
-const table = document.getElementById("withdrawTable");
-
-snapshot.forEach(docSnap=>{
-
-let data = docSnap.data();
-
-let row = document.createElement("tr");
-
-row.innerHTML = `
-
-<td>${data.email}</td>
-<td>$${data.amount}</td>
-<td>${data.status}</td>
-<td>
-<button onclick="approve('${docSnap.id}')">Approve</button>
-<button onclick="reject('${docSnap.id}')">Reject</button>
-</td>
-
-`;
-
-table.appendChild(row);
-
-});
-
-}
-
-window.approve = async function(id){
-
-alert("Withdrawal approved");
-
-}
-
-window.reject = async function(id){
-
-alert("Withdrawal rejected");
-
-}
+// ✅ LOAD MESSAGES
 onSnapshot(collection(db, "messages"), (snapshot) => {
 
   const box = document.getElementById("messages");
@@ -259,18 +51,21 @@ onSnapshot(collection(db, "messages"), (snapshot) => {
 
     box.innerHTML += `
       <div style="border:1px solid #444; padding:10px; margin:10px;">
-        <b>User:</b> ${data.email}<br>
-        <b>Message:</b> ${data.text}<br>
-        <b>Reply:</b> ${data.reply || "None"}<br><br>
+        <b>${data.email}</b><br>
+        ${data.text}<br>
+        Reply: ${data.reply || "None"}<br><br>
 
-        <input id="reply-${id}" placeholder="Type reply..." style="width:70%">
+        <input id="reply-${id}" placeholder="Type reply">
         <button onclick="sendReply('${id}')">Reply</button>
       </div>
     `;
   });
 
 });
-  window.sendReply = async function(id){
+
+
+// ✅ SEND REPLY
+window.sendReply = async function(id){
 
   const input = document.getElementById("reply-" + id);
   const reply = input.value;
@@ -283,8 +78,8 @@ onSnapshot(collection(db, "messages"), (snapshot) => {
 
   input.value = "";
 };
+
 </script>
 
 </body>
-  <div id="messages"></div>
 </html>
