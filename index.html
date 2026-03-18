@@ -707,38 +707,6 @@ How can we help?
 </div>
 
 </div>
-  <script>
-window.openPopup = function(){
-  document.getElementById("chatPopup").style.display="block";
-}
-
-window.closePopup = function(){
-  document.getElementById("chatPopup").style.display="none";
-}
-
-window.openChat = function(){
-  document.getElementById("chatPopup").style.display="none";
-  document.getElementById("chatBox").style.display="block";
-}
-
-setTimeout(()=>{
-  document.getElementById("chatPopup").style.display="block";
-}, 3000);
-window.sendMessage = async function(){
-  <input type="text" id="chatInput" placeholder="Type message...">
-  let message = input.value;
-
-  if(message.trim() === "") return;
-
-  let msg = document.createElement("div");
-  msg.style.marginBottom="10px";
-  msg.innerText = "You: " + message;
-
-  document.getElementById("chatMessages").appendChild(msg);
-
-  input.value="";
-}
-</script>
 </body>
 </html>
 
