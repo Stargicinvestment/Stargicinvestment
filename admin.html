@@ -247,7 +247,42 @@ window.reject = async function(id){
 alert("Withdrawal rejected");
 
 }
+onSnapshot(collection(db, "messages"), (snapshot) => {
 
+  const box = document.getElementById("messages");
+  box.innerHTML = "";
+
+  snapshot.forEach(docSnap => {
+
+    const data = docSnap.data();
+    const id = docSnap.id;
+
+    box.innerHTML += `
+      <div style="border:1px solid #444; padding:10px; margin:10px;">
+        <b>User:</b> ${data.email}<br>
+        <b>Message:</b> ${data.text}<br>
+        <b>Reply:</b> ${data.reply || "None"}<br><br>
+
+        <input id="reply-${id}" placeholder="Type reply..." style="width:70%">
+        <button onclick="sendReply('${id}')">Reply</button>
+      </div>
+    `;
+  });
+
+});
+  window.sendReply = async function(id){
+
+  const input = document.getElementById("reply-" + id);
+  const reply = input.value;
+
+  if(reply.trim() === "") return;
+
+  await updateDoc(doc(db, "messages", id), {
+    reply: reply
+  });
+
+  input.value = "";
+};
 </script>
 
 </body>
