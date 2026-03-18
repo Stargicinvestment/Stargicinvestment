@@ -604,7 +604,11 @@ window.sendMessage = async function(){
     alert("Error sending message");
   }
 }
-
+onAuthStateChanged(auth, (user)=>{
+  if(user){
+    loadMessages(user);
+  }
+});
 </script>
 
   
