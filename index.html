@@ -618,25 +618,6 @@ box.scrollTop = box.scrollHeight;
 });
 
   }
-
-function openChat() {
-  let box = document.getElementById("chatBox");
-  box.style.display = box.style.display === "flex" ? "none" : "flex";
-}
-
-function sendMessage() {
-  let input = document.getElementById("chatInput");
-  let message = input.value;
-
-  if (message.trim() === "") return;
-
-  let msgDiv = document.createElement("div");
-  msgDiv.innerText = message;
-
-  document.getElementById("chatMessages").appendChild(msgDiv);
-
-  input.value = "";
-}
 </script>
 
   
@@ -655,6 +636,25 @@ function sendMessage() {
     <button onclick="sendMessage()">Send</button>
   </div>
 </div>
- 
+ <script>
+function openChat() {
+  let box = document.getElementById("chatBox");
+  box.style.display = box.style.display === "flex" ? "none" : "flex";
+}
+
+function sendMessage() {
+  let input = document.getElementById("chatInput");
+  let message = input.value;
+
+  if (message.trim() === "") return;
+
+  let msgDiv = document.createElement("div");
+  msgDiv.innerText = message;
+
+  document.getElementById("chatMessages").appendChild(msgDiv);
+
+  input.value = "";
+}
+ </script>
 </body>
   </html>
