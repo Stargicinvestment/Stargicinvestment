@@ -549,6 +549,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+  function loadMessages(user){
+
+  const q = query(collection(db, "messages"), where("userId","==",user.uid));
+
+  onSnapshot(q,(snapshot)=>{
+
+    const box = document.getElementById("messages");
+    box.innerHTML = "";
+
+    snapshot.forEach(doc=>{
+      let data = doc.data();
+
+      box.innerHTML += `
+        <div>You: ${data.text}</div>
+        <div style="color:green;">Admin: ${data.reply || "Waiting..."}</div><br>
+      `;
+    });
+
+  });
+
+}
 window.openPopup = function(){
 document.getElementById("chatPopup").style.display="block";
 }
