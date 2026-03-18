@@ -724,8 +724,8 @@ window.openChat = function(){
 setTimeout(()=>{
   document.getElementById("chatPopup").style.display="block";
 }, 3000);
-window.sendMessage = function(){
-  let input = document.getElementById("chatInput");
+window.sendMessage = async function(){
+  <input type="text" id="chatInput" placeholder="Type message...">
   let message = input.value;
 
   if(message.trim() === "") return;
