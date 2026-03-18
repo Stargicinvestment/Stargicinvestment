@@ -603,13 +603,13 @@ window.sendMessage = async function(){
   let input = document.getElementById("chatInput");
   let message = input.value;
 
-  if(message.trim() === ""){
-    alert("Type a message");
-    return;
-  }
+  if(message.trim() === "") return;
+
+  // ✅ SHOW MESSAGE IMMEDIATELY
+  const box = document.getElementById("chatMessages");
+  box.innerHTML += `<div>You: ${message}</div>`;
 
   try{
-
     await addDoc(collection(db, "messages"), {
       text: message,
       userId: user.uid,
@@ -624,7 +624,8 @@ window.sendMessage = async function(){
     console.error(e);
     alert("Error sending message");
   }
-}
+}; 
+  
 onAuthStateChanged(auth, (user)=>{
   if(user){
     loadMessages(user);
