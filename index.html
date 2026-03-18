@@ -555,7 +555,7 @@ const db = getFirestore(app);
 
   onSnapshot(q,(snapshot)=>{
 
-    const box = document.getElementById("messages");
+    const box = document.getElementById("chatMessages");
     box.innerHTML = "";
 
     snapshot.forEach(doc=>{
