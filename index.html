@@ -653,8 +653,6 @@ setTimeout(()=>{
 
 window.sendMessage = async function(){
 
-  console.log("SEND CLICKED");
-
   const user = auth.currentUser;
 
   if(!user){
@@ -662,13 +660,7 @@ window.sendMessage = async function(){
     return;
   }
 
-  let input = document.getElementById("chatInput");
-
-  if(!input){
-    alert("Input not found");
-    return;
-  }
-
+  let input = document.getElementById("msgInput");
   let message = input.value;
 
   if(message.trim() === ""){
@@ -678,20 +670,13 @@ window.sendMessage = async function(){
 
   try{
 
-    // ✅ Save to Firebase
     await addDoc(collection(db, "messages"), {
       text: message,
       userId: user.uid,
       email: user.email,
-      time: Date.now()
+      time: Date.now(),
+      reply: ""
     });
-
-    // ✅ Show message instantly
-    let msg = document.createElement("div");
-    msg.style.marginBottom = "10px";
-    msg.innerText = "You: " + message;
-
-    document.getElementById("chatMessages").appendChild(msg);
 
     input.value = "";
 
@@ -699,7 +684,6 @@ window.sendMessage = async function(){
     console.error(e);
     alert("Error sending message");
   }
-
 }
 
 </script>
