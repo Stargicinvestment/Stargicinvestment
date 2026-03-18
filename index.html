@@ -726,6 +726,22 @@ How can we help?
 💬
   </div>
     <button onclick="alert('Working')">Test</button>
+    <div onclick="openPopup()" style="position:fixed; bottom:20px; right:20px; z-index:9999; background:#007bff; color:white; padding:15px; border-radius:50%; cursor:pointer;">
+💬
+    </div>
   </body>
+  <div id="chatPopup" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; background:#111; color:white; padding:10px; border-radius:10px; z-index:9999;">
+
+  <div id="chatBox" style="display:flex; flex-direction:column;">
+
+    <div id="chatMessages" style="height:200px; overflow-y:auto;"></div>
+
+    <input type="text" id="chatInput" placeholder="Type message..." style="margin-top:10px;">
+    
+    <button onclick="sendMessage()">Send</button>
+
+  </div>
+
+  </div>
 </html>
 
