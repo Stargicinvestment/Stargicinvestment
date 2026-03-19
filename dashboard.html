@@ -120,5 +120,38 @@ window.goDeposit = function(){
 window.goWithdraw = function(){
   window.location.href = "withdraw.html";
 };
+import { collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// 🔥 LOAD HISTORY
+onAuthStateChanged(auth,(user)=>{
+  if(!user) return;
+
+  const q = query(
+    collection(db,"transactions"),
+    where("userId","==",user.uid)
+  );
+
+  onSnapshot(q,(snap)=>{
+    let box = document.getElementById("history");
+    box.innerHTML = "";
+
+    snap.forEach(doc=>{
+      let d = doc.data();
+
+      let color = d.type === "deposit" ? "lightgreen" : "#ff6b6b";
+
+      box.innerHTML += `
+        <div style="background:#111827; padding:10px; margin:10px; border-radius:8px;">
+          <b style="color:${color};">${d.type.toUpperCase()}</b><br>
+          Amount: $${d.amount}<br>
+          ${d.wallet ? "Wallet: "+d.wallet+"<br>" : ""}
+          <small>${new Date(d.time).toLocaleString()}</small>
+        </div>
+      `;
+    });
+
+  });
+
+});
 </script></body>
 </html>
