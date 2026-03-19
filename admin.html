@@ -69,12 +69,21 @@ const db = getFirestore(app);
 // ADMIN PROTECTION
 // ======================
 onAuthStateChanged(auth,(user)=>{
-  if(!user || user.email !== ADMIN_EMAIL){
-    alert("Access denied");
-    location.href="login.html";
-  }else{
-    document.getElementById("app").style.display="block";
+
+  if(user === null){
+    // ⏳ WAIT — don't block yet
+    return;
   }
+
+  if(user.email === "eoluka864@gmail.com"){
+    // ✅ ADMIN ALLOWED
+    document.getElementById("app").style.display = "block";
+  }else{
+    // ❌ NOT ADMIN
+    alert("Access denied");
+    window.location.href = "dashboard.html";
+  }
+
 });
 
 // ======================
