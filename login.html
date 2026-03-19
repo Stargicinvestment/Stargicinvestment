@@ -1,18 +1,18 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
-</head>
-<body style="background:black;color:white;text-align:center;padding-top:100px;"><h2>Login</h2><input id="email" placeholder="Email"><br><br>
-<input id="password" type="password" placeholder="Password"><br><br>
+</head><body style="background:#0b0f1a;color:white;text-align:center;padding-top:100px;"><h2>Login</h2><input id="email" type="email" placeholder="Enter Email" style="padding:10px;width:250px;"><br><br>
+<input id="password" type="password" placeholder="Enter Password" style="padding:10px;width:250px;"><br><br>
 
-<button onclick="login()">Login</button>
-
-<script type="module">
+<button onclick="login()" style="padding:10px 20px;background:#00ff9d;border:none;cursor:pointer;">
+Login
+</button><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -26,24 +26,26 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-const ADMIN_EMAIL = "eoluka864@gmail.com";
+window.login = async function(){
 
-window.login = async ()=>{
   let email = document.getElementById("email").value;
-  let pass = document.getElementById("password").value;
+  let password = document.getElementById("password").value;
+
+  if(!email || !password){
+    alert("Enter email and password");
+    return;
+  }
 
   try{
-    let user = await signInWithEmailAndPassword(auth,email,pass);
+    await signInWithEmailAndPassword(auth, email, password);
 
-    if(user.user.email === ADMIN_EMAIL){
-      location.href="admin.html";
-    }else{
-      location.href="index.html";
-    }
+    // ✅ NORMAL REDIRECT (NO ADMIN LOGIC)
+    window.location.href = "index.html";
 
   }catch(e){
     alert(e.message);
   }
+
 };
 
 </script></body>
