@@ -1,149 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html>
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login - StargicInvestment</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-
-body{
-margin:0;
-font-family:Poppins;
-background:#0b0f1a;
-display:flex;
-align-items:center;
-justify-content:center;
-height:100vh;
-color:#00ff9d;
-}
-
-.login-box{
-background:#111827;
-padding:40px;
-border-radius:10px;
-width:320px;
-box-shadow:0 0 20px rgba(0,0,0,0.6);
-text-align:center;
-}
-
-h2{
-margin-bottom:20px;
-}
-
-input{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:5px;
-outline:none;
-}
-
-button{
-margin-top:20px;
-width:100%;
-padding:12px;
-background:#00ff9d;
-border:none;
-border-radius:5px;
-font-weight:600;
-cursor:pointer;
-}
-
-button:hover{
-opacity:0.9;
-}
-
-a{
-color:#9ca3af;
-font-size:13px;
-display:block;
-margin-top:15px;
-text-decoration:none;
-}
-
-</style>
-
+<title>Login</title>
 </head>
+<body style="background:black;color:white;text-align:center;padding-top:100px;"><h2>Login</h2><input id="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
 
-<body>
-
-<div class="login-box">
-
-<h2>Investor Login</h2>
-
-<input type="email" id="email" placeholder="Email">
-
-<input type="password" id="password" placeholder="Password">
-
-<button id="loginBtn">Login</button>
-
-<a href="register.html">Create account</a>
-
-</div>
-
+<button onclick="login()">Login</button>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-
 const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  apiKey: "PASTE_YOUR_REAL_API_KEY",
   authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+  projectId: "stargicinvestment"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+const ADMIN_EMAIL = "eoluka864@gmail.com";
 
-document.getElementById("loginBtn").onclick = function(){
+window.login = async ()=>{
+  let email = document.getElementById("email").value;
+  let pass = document.getElementById("password").value;
 
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+  try{
+    let user = await signInWithEmailAndPassword(auth,email,pass);
 
+    if(user.user.email === ADMIN_EMAIL){
+      location.href="admin.html";
+    }else{
+      location.href="index.html";
+    }
 
-signInWithEmailAndPassword(auth, email, password)
-
-.then((userCredential) => {
-
-window.location.href = "dashboard.html";
-
-})
-
-.catch((error) => {
-
-if(error.code === "auth/user-not-found"){
-alert("This email is not registered yet.");
-}
-
-else if(error.code === "auth/wrong-password"){
-alert("Wrong password.");
-}
-
-else if(error.code === "auth/invalid-email"){
-alert("Invalid email format.");
-}
-
-else{
-alert(error.message);
-}
-
-});
-
+  }catch(e){
+    alert(e.message);
+  }
 };
 
-</script>
-
-</body>
+</script></body>
 </html>
