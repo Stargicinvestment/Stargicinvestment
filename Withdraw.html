@@ -10,76 +10,79 @@
 <div id="withdrawList"></div>
 
 
-<script>
-// Create fake users if not exist
-if (!localStorage.getItem("users")) {
-  const users = [
-    { email: "user1@gmail.com", balance: 1000 },
-    { email: "user2@gmail.com", balance: 500 }
-  ];
-  localStorage.setItem("users", JSON.stringify(users));
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+authDomain: "stargicinvestment.firebaseapp.com",
+projectId: "stargicinvestment",
+storageBucket: "stargicinvestment.firebasestorage.app",
+messagingSenderId: "1053305294931",
+appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth();
+const db = getFirestore();
+
+window.withdraw = async function(){
+
+let amount = Number(document.getElementById("amount").value);
+let wallet = document.getElementById("wallet").value;
+
+if(!wallet){
+alert("Enter your wallet address");
+return;
 }
 
-// Create fake withdrawal requests
-if (!localStorage.getItem("withdrawals")) {
-  const withdrawals = [
-    { email: "user1@gmail.com", amount: 200, status: "pending" },
-    { email: "user2@gmail.com", amount: 100, status: "pending" }
-  ];
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+if(!amount || amount <= 0){
+alert("Enter withdrawal amount");
+return;
 }
 
-// Load withdrawals
-function loadWithdrawals() {
-  const withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-  const users = JSON.parse(localStorage.getItem("users")) || [];
-  const container = document.getElementById("withdrawList");
+const user = auth.currentUser;
 
-  container.innerHTML = "";
-
-  withdrawals.forEach((w, index) => {
-    container.innerHTML += `
-      <div style="margin-bottom:15px;">
-        <b>${w.email}</b> wants to withdraw $${w.amount}
-        <br>Status: ${w.status}
-        <br>
-        <button onclick="approveWithdrawal(${index})">Approve</button>
-      </div>
-    `;
-  });
+if(!user){
+alert("Login first");
+return;
 }
 
-// Approve withdrawal
-function approveWithdrawal(index) {
-  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
-  let users = JSON.parse(localStorage.getItem("users")) || [];
+const ref = doc(db,"users",user.uid);
+const snap = await getDoc(ref);
+const data = snap.data();
 
-  let request = withdrawals[index];
+let balance = data.balance || 0;
 
-  // Find user safely
-  let user = users.find(u => u.email === request.email);
-
-  if (!user) {
-    alert("User not found!");
-    return;
-  }
-
-  if (user.balance >= request.amount) {
-    user.balance -= request.amount;
-    request.status = "approved";
-    alert("Withdrawal Approved!");
-  } else {
-    alert("Insufficient balance!");
-  }
-
-  localStorage.setItem("users", JSON.stringify(users));
-  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
-
-  loadWithdrawals();
+if(amount > balance){
+alert("Insufficient balance");
+return;
 }
 
-// Load on page open
-loadWithdrawals();
+let newBalance = balance - amount;
+
+await updateDoc(ref,{
+balance:newBalance
+});
+
+await addDoc(collection(db,"withdrawals"),{
+uid:user.uid,
+email:data.email,
+amount:amount,
+wallet:wallet,
+status:"Pending",
+date:Date.now()
+});
+
+alert("Withdrawal request submitted");
+
+location.href="dashboard.html";
+
+}
+
 </script>
 </body>
 </html>
