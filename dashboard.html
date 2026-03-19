@@ -1,236 +1,84 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html>
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Investor Dashboard</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-
-body{
-margin:0;
-font-family:Poppins;
-background:#0b0f1a;
-color:white;
-}
-
-header{
-background:#111827;
-padding:15px;
-display:flex;
-justify-content:space-between;
-align-items:center;
-}
-
-.container{
-padding:25px;
-}
-
-.balance-box{
-background:#111827;
-padding:25px;
-border-radius:10px;
-margin-top:20px;
-}
-
-.balance{
-font-size:30px;
-color:#00ff9d;
-margin-top:10px;
-}
-
-.btns{
-margin-top:20px;
-display:flex;
-gap:10px;
-}
-
-button{
-padding:12px 20px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-font-weight:600;
-}
-
-.deposit{
-background:#00ff9d;
-}
-
-.withdraw{
-background:#ff5757;
-color:white;
-}
-
-</style>
-
+<title>User Dashboard</title>
 </head>
-
-<body>
-
-<header>
-
-<h3>Investor Dashboard</h3>
-
-<button id="logout">Logout</button>
-
-</header>
-
-<div class="container">
-
-<h2>Welcome, <span id="username">Investor</span></h2>
-
-<div class="balance-box">
-
-<h4>Your Balance</h4>
-
-<div class="balance">$<span id="balance">0</span></div>
-
-</div>
-
-<div class="btns">
-
-<button class="deposit" onclick="window.location='deposit.html'">Deposit</button>
-
-<button class="withdraw" onclick="window.location='withdraw.html'">Withdraw</button>
-
-</div>
-
-</div>
-
-
-
-<script type="module">
+<body style="background:#0b0f1a;color:white;padding:20px;"><h2>Investor Dashboard</h2><div id="app"></div><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  apiKey: "PASTE_YOUR_REAL_API_KEY",
   authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+  projectId: "stargicinvestment"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+onAuthStateChanged(auth, async(user)=>{
+  if(!user){
+    location.href="login.html";
+    return;
+  }
 
-/* Protect dashboard */
+  let ref = doc(db,"users",user.uid);
+  let snap = await getDoc(ref);
+  let data = snap.data() || {};
 
-onAuthStateChanged(auth, async (user) => {
-
-if(!user){
-
-window.location.href = "login.html";
-
-}
-
-else{
-
-const ref = doc(db,"users",user.uid);
-
-const snap = await getDoc(ref);
-
-if(snap.exists()){
-
-const data = snap.data();
-
-document.getElementById("username").innerText = data.name;
-
-document.getElementById("balance").innerText = data.balance;
-
-}
-
-}
-
+  showDashboard(user,data);
 });
 
+function showDashboard(user,data){
+  document.getElementById("app").innerHTML = `
+    <h3>Welcome, ${user.email}</h3>
+    <h2>$${data.balance || 0}</h2>
 
-/* Logout */
+    <button onclick="showWithdraw()">Withdraw</button>
+  `;
+}
 
-document.getElementById("logout").onclick = function(){
+window.showWithdraw = ()=>{
+  document.getElementById("app").innerHTML = `
+    <h2>Withdraw</h2>
 
-signOut(auth).then(()=>{
+    <input id="wallet" placeholder="Wallet"><br><br>
+    <input id="amount" placeholder="Amount"><br><br>
 
-window.location.href="login.html";
-
-});
-
+    <button onclick="submitWithdraw()">Submit</button>
+    <br><br>
+    <button onclick="location.reload()">Back</button>
+  `;
 };
 
-</script>
-<script type="module">
+window.submitWithdraw = async ()=>{
+  let user = auth.currentUser;
+  let amount = Number(document.getElementById("amount").value);
 
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth,onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore,doc,getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  let ref = doc(db,"users",user.uid);
+  let snap = await getDoc(ref);
+  let data = snap.data();
 
-const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-  authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+  if(amount > data.balance){
+    alert("Insufficient balance");
+    return;
+  }
+
+  await updateDoc(ref,{
+    balance: data.balance - amount
+  });
+
+  await addDoc(collection(db,"withdrawals"),{
+    email: user.email,
+    amount: amount,
+    status: "pending"
+  });
+
+  alert("Withdraw submitted");
+  location.reload();
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
-
-onAuthStateChanged(auth, async (user)=>{
-
-if(user){
-
-const ref = doc(db,"users",user.uid);
-const snap = await getDoc(ref);
-
-const data = snap.data();
-
-document.getElementById("investorName").innerText = data.name;
-
-let balance = data.balance || 0;
-
-if(data.startDate){
-
-let now = Date.now();
-
-let daysPassed = Math.floor((now - data.startDate) / (1000*60*60*24));
-
-if(daysPassed > data.planDays){
-
-daysPassed = data.planDays;
-
-}
-
-let profit = balance * (data.planPercent/100) * daysPassed;
-
-let total = balance + profit;
-  localStorage.setItem("totalBalance", total);
-
-document.getElementById("balance").innerText = "$"+total.toFixed(2);
-
-}else{
-
-document.getElementById("balance").innerText = "$" + total.toFixed(2);
-
-}
-
-}
-
-});
-
-  </script>
-</body>
+</script></body>
 </html>
