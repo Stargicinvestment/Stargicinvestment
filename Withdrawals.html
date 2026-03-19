@@ -1,1 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Withdrawals</title>
+</head>
+<body>
 
+<h1>Withdrawal Requests</h1>
+
+<div id="withdrawList"></div>
+
+<script>
+// Create fake withdrawal requests
+if (!localStorage.getItem("withdrawals")) {
+  const withdrawals = [
+    { email: "user1@gmail.com", amount: 200, status: "pending" },
+    { email: "user2@gmail.com", amount: 100, status: "pending" }
+  ];
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+}
+
+// Load withdrawals
+function loadWithdrawals() {
+  const withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
+  const users = JSON.parse(localStorage.getItem("users")) || [];
+  const container = document.getElementById("withdrawList");
+
+  container.innerHTML = "";
+
+  withdrawals.forEach((w, index) => {
+    container.innerHTML += `
+      <div style="margin-bottom:15px;">
+        <b>${w.email}</b> wants to withdraw $${w.amount}
+        <br>Status: ${w.status}
+        <br>
+        <button onclick="approveWithdrawal(${index})">Approve</button>
+      </div>
+    `;
+  });
+}
+
+// Approve withdrawal
+function approveWithdrawal(index) {
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals"));
+  let users = JSON.parse(localStorage.getItem("users"));
+
+  let request = withdrawals[index];
+
+  // Find user
+  let user = users.find(u => u.email === request.email);
+
+  if (user.balance >= request.amount) {
+    user.balance -= request.amount;
+    request.status = "approved";
+    alert("Withdrawal Approved!");
+  } else {
+    alert("Insufficient balance!");
+  }
+
+  localStorage.setItem("users", JSON.stringify(users));
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  loadWithdrawals();
+}
+
+// Load on page open
+loadWithdrawals();
+</script>
+
+</body>
+</html>
