@@ -1,82 +1,228 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Admin Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Panel</title>
+
+<style>
+body{
+  background:#0b0f1a;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+}
+.card{
+  background:#111827;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:8px;
+}
+button{
+  padding:6px;
+  background:#00ff9d;
+  border:none;
+  cursor:pointer;
+}
+input{
+  padding:5px;
+}
+</style>
 </head>
 
-<body style="background:black; color:white; font-family:sans-serif;">
+<body>
 
-<h2>Admin Support Panel</h2>
+<h2>Admin Dashboard</h2>
 
-<!-- ✅ REQUIRED -->
+<div id="app" style="display:none;">
+
+<h3>Users</h3>
+<div id="users"></div>
+
+<h3>Withdrawals</h3>
+<div id="withdrawals"></div>
+
+<h3>Support</h3>
 <div id="messages"></div>
+
+</div>
 
 <script type="module">
 
-// ✅ IMPORTS (TOP ONLY)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import { 
-  getFirestore, 
-  collection, 
-  onSnapshot, 
-  doc, 
-  updateDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-// ✅ YOUR REAL CONFIG (COPY FROM YOUR SITE)
 const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  apiKey: "AIzaSy...",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment"
 };
 
+const ADMIN_EMAIL = "stargicinvestment987@gmail.com";
 
-// ✅ INIT
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
+// ======================
+// ADMIN PROTECTION
+// ======================
+onAuthStateChanged(auth,(user)=>{
+  if(!user || user.email !== ADMIN_EMAIL){
+    alert("Access denied");
+    location.href="login.html";
+  }else{
+    document.getElementById("app").style.display="block";
+  }
+});
 
-// ✅ LOAD MESSAGES
-onSnapshot(collection(db, "messages"), (snapshot) => {
+// ======================
+// REAL AUTO MINING
+// ======================
+function calculateProfit(data){
 
-  const box = document.getElementById("messages");
-  box.innerHTML = "";
+  let balance = data.balance || 0;
+  let plan = data.plan || 0;
 
-  snapshot.forEach(docSnap => {
+  if(balance <= 0 || plan <= 0) return data.profit || 0;
 
-    const data = docSnap.data();
-    const id = docSnap.id;
+  let last = data.lastUpdate || Date.now();
+  let now = Date.now();
+
+  let diff = now - last;
+
+  let dailyRate = plan / 100;
+
+  let profitPerMs = (balance * dailyRate) / 86400000;
+
+  let newProfit = (data.profit || 0) + (profitPerMs * diff);
+
+  return newProfit;
+}
+
+// ======================
+// USERS
+// ======================
+onSnapshot(collection(db,"users"), snap=>{
+
+  let box = document.getElementById("users");
+  box.innerHTML="";
+
+  snap.forEach(async d=>{
+
+    let data = d.data();
+    let id = d.id;
+
+    let realProfit = calculateProfit(data);
+
+    // 🔥 SAVE UPDATED PROFIT
+    await updateDoc(doc(db,"users",id),{
+      profit: realProfit,
+      lastUpdate: Date.now()
+    });
 
     box.innerHTML += `
-      <div style="border:1px solid #444; padding:10px; margin:10px;">
-        <b>${data.email}</b><br>
-        ${data.text}<br>
-        Reply: ${data.reply || "None"}<br><br>
+    <div class="card">
+      <b>${data.email}</b><br>
+      Balance: $${data.balance || 0}<br>
+      Profit: $${realProfit.toFixed(2)}<br>
+      Plan: ${data.plan || 0}%<br><br>
 
-        <input id="reply-${id}" placeholder="Type reply">
-        <button onclick="sendReply('${id}')">Reply</button>
-      </div>
+      <input id="bal-${id}" placeholder="Add Balance">
+      <button onclick="addBalance('${id}',${data.balance||0})">Add</button><br>
+
+      <input id="plan-${id}" placeholder="Plan %">
+      <button onclick="setPlan('${id}')">Set</button>
+    </div>
     `;
   });
 
 });
 
+window.addBalance = async (id,current)=>{
+  let val = Number(document.getElementById("bal-"+id).value);
+  if(!val) return;
 
-// ✅ SEND REPLY
-window.sendReply = async function(id){
+  await updateDoc(doc(db,"users",id),{
+    balance: current + val,
+    lastUpdate: Date.now()
+  });
+};
 
-  const input = document.getElementById("reply-" + id);
-  const reply = input.value;
+window.setPlan = async (id)=>{
+  let val = Number(document.getElementById("plan-"+id).value);
+  if(!val) return;
 
-  if(reply.trim() === "") return;
+  await updateDoc(doc(db,"users",id),{
+    plan: val,
+    lastUpdate: Date.now()
+  });
+};
 
-  await updateDoc(doc(db, "messages", id), {
-    reply: reply
+// ======================
+// WITHDRAWALS
+// ======================
+onSnapshot(collection(db,"withdrawals"), snap=>{
+
+  let box = document.getElementById("withdrawals");
+  box.innerHTML="";
+
+  snap.forEach(d=>{
+    let data = d.data();
+    let id = d.id;
+
+    box.innerHTML += `
+    <div class="card">
+      ${data.email}<br>
+      $${data.amount}<br>
+      ${data.status}<br>
+      <button onclick="approve('${id}')">Approve</button>
+    </div>
+    `;
   });
 
-  input.value = "";
+});
+
+window.approve = async (id)=>{
+  await updateDoc(doc(db,"withdrawals",id),{
+    status:"approved"
+  });
+};
+
+// ======================
+// SUPPORT CHAT
+// ======================
+onSnapshot(collection(db,"messages"), snap=>{
+
+  let box = document.getElementById("messages");
+  box.innerHTML="";
+
+  snap.forEach(d=>{
+    let data = d.data();
+    let id = d.id;
+
+    box.innerHTML += `
+    <div class="card">
+      <b>${data.email}</b><br>
+      ${data.text}<br>
+      Reply: ${data.reply || "None"}<br><br>
+
+      <input id="r-${id}" placeholder="Reply">
+      <button onclick="reply('${id}')">Send</button>
+    </div>
+    `;
+  });
+
+});
+
+window.reply = async (id)=>{
+  let val = document.getElementById("r-"+id).value;
+  if(!val) return;
+
+  await updateDoc(doc(db,"messages",id),{
+    reply: val
+  });
 };
 
 </script>
