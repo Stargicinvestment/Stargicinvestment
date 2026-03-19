@@ -1,88 +1,202 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Withdrawals</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Withdraw</title>
+
+<style>
+body{
+  background:#0b0f1a;
+  color:white;
+  font-family:Arial;
+  padding:20px;
+}
+.container{
+  max-width:400px;
+  margin:auto;
+}
+.card{
+  background:#111827;
+  padding:20px;
+  border-radius:10px;
+  margin-bottom:20px;
+}
+input{
+  width:100%;
+  padding:10px;
+  margin-top:10px;
+}
+button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  background:#00ff9d;
+  border:none;
+  cursor:pointer;
+}
+.history{
+  background:#111827;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+}
+</style>
 </head>
+
 <body>
 
-<h1>Withdrawal Requests</h1>
+<div class="container">
 
-<div id="withdrawList"></div>
+<div class="card">
+<h2>Your Balance: $<span id="balance">0</span></h2>
 
+<input type="text" id="wallet" placeholder="Wallet address">
+<input type="number" id="amount" placeholder="Amount">
+
+<button onclick="withdraw()">Withdraw</button>
+</div>
+
+<h3>Transaction History</h3>
+<div id="history"></div>
+
+</div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getAuth, 
+  onAuthStateChanged 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import { 
+  getFirestore, 
+  doc, 
+  getDoc,
+  updateDoc,
+  collection,
+  addDoc,
+  query,
+  where,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// 🔥 YOUR CONFIG
 const firebaseConfig = {
-apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-authDomain: "stargicinvestment.firebaseapp.com",
-projectId: "stargicinvestment",
-storageBucket: "stargicinvestment.firebasestorage.app",
-messagingSenderId: "1053305294931",
-appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+  apiKey: "YOUR_REAL_API_KEY",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment"
 };
 
 const app = initializeApp(firebaseConfig);
-const auth = getAuth();
-const db = getFirestore();
+const auth = getAuth(app);
+const db = getFirestore(app);
 
+let currentUser = null;
+let currentBalance = 0;
+
+// ======================
+// LOAD USER DATA
+// ======================
+onAuthStateChanged(auth, async (user)=>{
+  if(!user){
+    location.href = "login.html";
+    return;
+  }
+
+  currentUser = user;
+
+  const ref = doc(db,"users",user.uid);
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    currentBalance = snap.data().balance || 0;
+    document.getElementById("balance").innerText = currentBalance;
+  }else{
+    // create user if not exist
+    await updateDoc(ref,{balance:0});
+  }
+
+  loadHistory();
+});
+
+// ======================
+// WITHDRAW FUNCTION
+// ======================
 window.withdraw = async function(){
 
-let amount = Number(document.getElementById("amount").value);
-let wallet = document.getElementById("wallet").value;
+  let wallet = document.getElementById("wallet").value;
+  let amount = Number(document.getElementById("amount").value);
 
-if(!wallet){
-alert("Enter your wallet address");
-return;
-}
+  if(!wallet || !amount){
+    alert("Fill all fields");
+    return;
+  }
 
-if(!amount || amount <= 0){
-alert("Enter withdrawal amount");
-return;
-}
+  if(amount > currentBalance){
+    alert("Insufficient balance");
+    return;
+  }
 
-const user = auth.currentUser;
+  let newBalance = currentBalance - amount;
 
-if(!user){
-alert("Login first");
-return;
-}
+  try{
 
-const ref = doc(db,"users",user.uid);
-const snap = await getDoc(ref);
-const data = snap.data();
+    // UPDATE USER BALANCE
+    await updateDoc(doc(db,"users",currentUser.uid),{
+      balance: newBalance
+    });
 
-let balance = data.balance || 0;
+    // SAVE TRANSACTION
+    await addDoc(collection(db,"transactions"),{
+      userId: currentUser.uid,
+      email: currentUser.email,
+      type: "withdraw",
+      amount: amount,
+      wallet: wallet,
+      time: Date.now()
+    });
 
-if(amount > balance){
-alert("Insufficient balance");
-return;
-}
+    alert("Withdraw successful");
 
-let newBalance = balance - amount;
+  }catch(e){
+    console.error(e);
+    alert("Error");
+  }
 
-await updateDoc(ref,{
-balance:newBalance
-});
+};
 
-await addDoc(collection(db,"withdrawals"),{
-uid:user.uid,
-email:data.email,
-amount:amount,
-wallet:wallet,
-status:"Pending",
-date:Date.now()
-});
+// ======================
+// LOAD HISTORY
+// ======================
+function loadHistory(){
 
-alert("Withdrawal request submitted");
+  const q = query(
+    collection(db,"transactions"),
+    where("userId","==",currentUser.uid)
+  );
 
-location.href="dashboard.html";
+  onSnapshot(q,(snap)=>{
+    let box = document.getElementById("history");
+    box.innerHTML = "";
+
+    snap.forEach(d=>{
+      let data = d.data();
+
+      box.innerHTML += `
+        <div class="history">
+          ${data.type.toUpperCase()} - $${data.amount}<br>
+          ${new Date(data.time).toLocaleString()}
+        </div>
+      `;
+    });
+
+  });
 
 }
 
 </script>
+
 </body>
 </html>
