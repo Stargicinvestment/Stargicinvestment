@@ -72,14 +72,11 @@ import {
 
 import { 
   getFirestore, 
+  collection, 
+  onSnapshot, 
   doc, 
-  getDoc,
   updateDoc,
-  collection,
-  addDoc,
-  query,
-  where,
-  onSnapshot
+  addDoc   // ✅ ADD THIS
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // 🔥 YOUR CONFIG
