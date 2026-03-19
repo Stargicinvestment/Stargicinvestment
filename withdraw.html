@@ -93,20 +93,31 @@ margin-top:60px;
 <option>Ethereum (ETH)</option>
 </select><label>Your Wallet Address</label>
 
-<input type="text" id="wallet" placeholder="Enter wallet address">
+<h2>Request Withdrawal</h2>
 
-<input type="number" id="amount" placeholder="Enter amount">
+<input type="text" id="email" placeholder="Enter your email"><br><br>
+<input type="number" id="amount" placeholder="Enter amount"><br><br>
 
-<button onclick="withdraw()">Withdraw</button>
+<button onclick="requestWithdraw()">Withdraw</button>
 
-</div><div class="history"><h3>Withdrawal History</h3><div id="history"></div></div></div><footer>Support Email
-<br><br>
+<script>
+function requestWithdraw() {
+  const email = document.getElementById("email").value;
+  const amount = parseInt(document.getElementById("amount").value);
 
-stargicinvestment987@gmail.com
+  let withdrawals = JSON.parse(localStorage.getItem("withdrawals")) || [];
 
-<br><br>
+  withdrawals.push({
+    email: email,
+    amount: amount,
+    status: "pending"
+  });
 
-© 2026 StargicInvestment. All Rights Reserved.
+  localStorage.setItem("withdrawals", JSON.stringify(withdrawals));
+
+  alert("Withdrawal request sent!");
+}
+</script>
 
 
 <script type="module">
