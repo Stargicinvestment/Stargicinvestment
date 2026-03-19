@@ -23,9 +23,11 @@ button{
   background:#00ff9d;
   border:none;
   cursor:pointer;
+  margin-top:5px;
 }
 input{
   padding:5px;
+  margin-top:5px;
 }
 </style>
 </head>
@@ -34,30 +36,29 @@ input{
 
 <h1>Admin Dashboard</h1>
 
-<ul>
-  <li><a href="users.html">Users</a></li>
-  <li><a href="withdrawals.html">Withdrawals</a></li>
-  <li><a href="support.html">Support</a></li>
-</ul>
+<h2>Users</h2>
+<div id="users"></div>
+
+<h2>Withdrawals</h2>
+<div id="withdrawals"></div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, collection, onSnapshot, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+// 🔥 YOUR FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
+  storageBucket: "stargicinvestment.appspot.com",
   messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6",
-  measurementId: "G-MYXX49TZLW"
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
-const ADMIN_EMAIL="eoluka864@gmail.com";
+const ADMIN_EMAIL = "eoluka864@gmail.com";
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -67,19 +68,14 @@ const db = getFirestore(app);
 // ADMIN PROTECTION
 // ======================
 onAuthStateChanged(auth,(user)=>{
-
-  if(user && user.email === "eoluka864@gmail.com"){
-    document.getElementById("app").style.display = "block";
-    console.log("Admin logged in"); // 🔥 ADD THIS
-  }else{
+  if(!user || user.email !== ADMIN_EMAIL){
     alert("Access denied");
     window.location.href = "dashboard.html";
   }
-
 });
 
 // ======================
-// REAL AUTO MINING
+// AUTO MINING FUNCTION
 // ======================
 function calculateProfit(data){
 
@@ -103,21 +99,21 @@ function calculateProfit(data){
 }
 
 // ======================
-// USERS
+// USERS SECTION
 // ======================
-onSnapshot(collection(db,"users"), snap=>{
+onSnapshot(collection(db,"users"), async snap=>{
 
   let box = document.getElementById("users");
   box.innerHTML="";
 
-  snap.forEach(async d=>{
+  for (const d of snap.docs){
 
     let data = d.data();
     let id = d.id;
 
     let realProfit = calculateProfit(data);
 
-    // 🔥 SAVE UPDATED PROFIT
+    // update profit in database
     await updateDoc(doc(db,"users",id),{
       profit: realProfit,
       lastUpdate: Date.now()
@@ -131,16 +127,17 @@ onSnapshot(collection(db,"users"), snap=>{
       Plan: ${data.plan || 0}%<br><br>
 
       <input id="bal-${id}" placeholder="Add Balance">
-      <button onclick="addBalance('${id}',${data.balance||0})">Add</button><br>
+      <button onclick="addBalance('${id}',${data.balance||0})">Add Balance</button><br>
 
-      <input id="plan-${id}" placeholder="Plan %">
-      <button onclick="setPlan('${id}')">Set</button>
+      <input id="plan-${id}" placeholder="Set Plan %">
+      <button onclick="setPlan('${id}')">Set Plan</button>
     </div>
     `;
-  });
+  }
 
 });
 
+// Add balance
 window.addBalance = async (id,current)=>{
   let val = Number(document.getElementById("bal-"+id).value);
   if(!val) return;
@@ -151,82 +148,9 @@ window.addBalance = async (id,current)=>{
   });
 };
 
+// Set plan %
 window.setPlan = async (id)=>{
   let val = Number(document.getElementById("plan-"+id).value);
   if(!val) return;
 
-  await updateDoc(doc(db,"users",id),{
-    plan: val,
-    lastUpdate: Date.now()
-  });
-};
-
-// ======================
-// WITHDRAWALS
-// ======================
-onSnapshot(collection(db,"withdrawals"), snap=>{
-
-  let box = document.getElementById("withdrawals");
-  box.innerHTML="";
-
-  snap.forEach(d=>{
-    let data = d.data();
-    let id = d.id;
-
-    box.innerHTML += `
-    <div class="card">
-      ${data.email}<br>
-      $${data.amount}<br>
-      ${data.status}<br>
-      <button onclick="approve('${id}')">Approve</button>
-    </div>
-    `;
-  });
-
-});
-
-window.approve = async (id)=>{
-  await updateDoc(doc(db,"withdrawals",id),{
-    status:"approved"
-  });
-};
-
-// ======================
-// SUPPORT CHAT
-// ======================
-onSnapshot(collection(db,"messages"), snap=>{
-
-  let box = document.getElementById("messages");
-  box.innerHTML="";
-
-  snap.forEach(d=>{
-    let data = d.data();
-    let id = d.id;
-
-    box.innerHTML += `
-    <div class="card">
-      <b>${data.email}</b><br>
-      ${data.text}<br>
-      Reply: ${data.reply || "None"}<br><br>
-
-      <input id="r-${id}" placeholder="Reply">
-      <button onclick="reply('${id}')">Send</button>
-    </div>
-    `;
-  });
-
-});
-
-window.reply = async (id)=>{
-  let val = document.getElementById("r-"+id).value;
-  if(!val) return;
-
-  await updateDoc(doc(db,"messages",id),{
-    reply: val
-  });
-};
-
-</script>
-
-</body>
-</html>
+  await updateDoc(doc
