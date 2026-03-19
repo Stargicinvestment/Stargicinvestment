@@ -92,7 +92,27 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+window.addBalance = async (id,current,email)=>{
 
+  let val = Number(document.getElementById("bal-"+id).value);
+  if(!val) return;
+
+  let newBalance = current + val;
+
+  await updateDoc(doc(db,"users",id),{
+    balance: newBalance
+  });
+
+  // 🔥 SAVE HISTORY
+  await addDoc(collection(db,"transactions"),{
+    userId: id,
+    email: email,
+    type: "deposit",
+    amount: val,
+    time: Date.now()
+  });
+
+};
 let currentUser = null;
 let currentBalance = 0;
 
