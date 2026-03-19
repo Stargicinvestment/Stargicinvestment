@@ -67,6 +67,7 @@ body{
   </div>  <div class="actions">
     <button class="btn deposit" onclick="goDeposit()">Deposit</button>
     <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
+    
     <h3 style="margin-top:30px;">Transaction History</h3>
 
 <div id="history"></div>
@@ -119,6 +120,7 @@ window.goDeposit = function(){
 // ✅ WITHDRAW NAVIGATION
 window.goWithdraw = function(){
   window.location.href = "withdraw.html";
+  
 };
 import { collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
