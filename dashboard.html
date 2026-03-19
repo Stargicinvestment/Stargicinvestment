@@ -1,14 +1,78 @@
-<!DOCTYPE html><html>
+<!DOCTYPE html><html lang="en">
 <head>
-<title>User Dashboard</title>
-</head>
-<body style="background:#0b0f1a;color:white;padding:20px;"><h2>Investor Dashboard</h2><div id="app"></div><script type="module">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Investor Dashboard</title><style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0b0f1a;
+  color:white;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px;
+  background:#111827;
+}
+
+.container{
+  padding:20px;
+}
+
+.card{
+  background:#111827;
+  padding:20px;
+  border-radius:12px;
+  margin-top:20px;
+}
+
+.balance{
+  color:#00ff9d;
+  font-size:40px;
+}
+
+.btn{
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  width:45%;
+  font-size:16px;
+  cursor:pointer;
+}
+
+.deposit{
+  background:#00ff9d;
+  color:black;
+}
+
+.withdraw{
+  background:#ff4d4d;
+  color:white;
+}
+
+.actions{
+  display:flex;
+  justify-content:space-between;
+  margin-top:20px;
+}
+</style></head><body><div class="header">
+  <h2>Investor Dashboard</h2>
+  <button onclick="logout()">Logout</button>
+</div><div class="container">  <h2 id="welcome">Welcome</h2>  <div class="card">
+    <p>Your Balance</p>
+    <h1 class="balance" id="balance">$0</h1>
+  </div>  <div class="actions">
+    <button class="btn deposit">Deposit</button>
+    <button class="btn withdraw">Withdraw</button>
+  </div></div><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -23,66 +87,28 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// LOAD USER DATA
 onAuthStateChanged(auth, async(user)=>{
   if(!user){
-    location.href="login.html";
+    location.href = "login.html";
     return;
   }
 
-  let ref = doc(db,"users",user.uid);
-  let snap = await getDoc(ref);
-  let data = snap.data() || {};
+  document.getElementById("welcome").innerText = "Welcome, " + user.email.split("@")[0];
 
-  showDashboard(user,data);
+  const ref = doc(db,"users",user.uid);
+  const snap = await getDoc(ref);
+
+  if(snap.exists()){
+    let data = snap.data();
+    document.getElementById("balance").innerText = "$" + (data.balance || 0);
+  }
 });
 
-function showDashboard(user,data){
-  document.getElementById("app").innerHTML = `
-    <h3>Welcome, ${user.email}</h3>
-    <h2>$${data.balance || 0}</h2>
-
-    <button onclick="showWithdraw()">Withdraw</button>
-  `;
-}
-
-window.showWithdraw = ()=>{
-  document.getElementById("app").innerHTML = `
-    <h2>Withdraw</h2>
-
-    <input id="wallet" placeholder="Wallet"><br><br>
-    <input id="amount" placeholder="Amount"><br><br>
-
-    <button onclick="submitWithdraw()">Submit</button>
-    <br><br>
-    <button onclick="location.reload()">Back</button>
-  `;
-};
-
-window.submitWithdraw = async ()=>{
-  let user = auth.currentUser;
-  let amount = Number(document.getElementById("amount").value);
-
-  let ref = doc(db,"users",user.uid);
-  let snap = await getDoc(ref);
-  let data = snap.data();
-
-  if(amount > data.balance){
-    alert("Insufficient balance");
-    return;
-  }
-
-  await updateDoc(ref,{
-    balance: data.balance - amount
-  });
-
-  await addDoc(collection(db,"withdrawals"),{
-    email: user.email,
-    amount: amount,
-    status: "pending"
-  });
-
-  alert("Withdraw submitted");
-  location.reload();
+// LOGOUT
+window.logout = function(){
+  signOut(auth);
+  location.href = "login.html";
 };
 
 </script></body>
