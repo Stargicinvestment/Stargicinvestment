@@ -1,156 +1,85 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Panel</title>
-
-<style>
-body{
-  background:#0b0f1a;
-  color:white;
-  font-family:Arial;
-  padding:20px;
-}
-.card{
-  background:#111827;
-  padding:15px;
-  margin-bottom:10px;
-  border-radius:8px;
-}
-button{
-  padding:6px;
-  background:#00ff9d;
-  border:none;
-  cursor:pointer;
-  margin-top:5px;
-}
-input{
-  padding:5px;
-  margin-top:5px;
-}
-</style>
+  <title>Admin Panel</title>
 </head>
 
-<body>
+<body style="background:black; color:white; font-family:sans-serif;">
 
-<h1>Admin Dashboard</h1>
+<h2>Admin Support Panel</h2>
 
-<h2>Users</h2>
-<div id="users"></div>
-
-<h2>Withdrawals</h2>
-<div id="withdrawals"></div>
+<!-- ✅ REQUIRED -->
+<div id="messages"></div>
 
 <script type="module">
 
+// ✅ IMPORTS (TOP ONLY)
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, onSnapshot, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 🔥 YOUR FIREBASE CONFIG
+import { 
+  getFirestore, 
+  collection, 
+  onSnapshot, 
+  doc, 
+  updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+
+// ✅ YOUR REAL CONFIG (COPY FROM YOUR SITE)
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+  projectId: "stargicinvestment"
 };
 
-const ADMIN_EMAIL = "eoluka864@gmail.com";
 
+// ✅ INIT
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ======================
-// ADMIN PROTECTION
-// ======================
-onAuthStateChanged(auth,(user)=>{
-  if(!user || user.email !== ADMIN_EMAIL){
-    alert("Access denied");
-    window.location.href = "dashboard.html";
-  }
-});
 
-// ======================
-// AUTO MINING FUNCTION
-// ======================
-function calculateProfit(data){
+// ✅ LOAD MESSAGES
+onSnapshot(collection(db, "messages"), (snapshot) => {
 
-  let balance = data.balance || 0;
-  let plan = data.plan || 0;
+  const box = document.getElementById("messages");
+  box.innerHTML = "";
 
-  if(balance <= 0 || plan <= 0) return data.profit || 0;
+  snapshot.forEach(docSnap => {
 
-  let last = data.lastUpdate || Date.now();
-  let now = Date.now();
-
-  let diff = now - last;
-
-  let dailyRate = plan / 100;
-
-  let profitPerMs = (balance * dailyRate) / 86400000;
-
-  let newProfit = (data.profit || 0) + (profitPerMs * diff);
-
-  return newProfit;
-}
-
-// ======================
-// USERS SECTION
-// ======================
-onSnapshot(collection(db,"users"), async snap=>{
-
-  let box = document.getElementById("users");
-  box.innerHTML="";
-
-  for (const d of snap.docs){
-
-    let data = d.data();
-    let id = d.id;
-
-    let realProfit = calculateProfit(data);
-
-    // update profit in database
-    await updateDoc(doc(db,"users",id),{
-      profit: realProfit,
-      lastUpdate: Date.now()
-    });
+    const data = docSnap.data();
+    const id = docSnap.id;
 
     box.innerHTML += `
-    <div class="card">
-      <b>${data.email}</b><br>
-      Balance: $${data.balance || 0}<br>
-      Profit: $${realProfit.toFixed(2)}<br>
-      Plan: ${data.plan || 0}%<br><br>
+      <div style="border:1px solid #444; padding:10px; margin:10px;">
+        <b>${data.email}</b><br>
+        ${data.text}<br>
+        Reply: ${data.reply || "None"}<br><br>
 
-      <input id="bal-${id}" placeholder="Add Balance">
-      <button onclick="addBalance('${id}',${data.balance||0})">Add Balance</button><br>
-
-      <input id="plan-${id}" placeholder="Set Plan %">
-      <button onclick="setPlan('${id}')">Set Plan</button>
-    </div>
+        <input id="reply-${id}" placeholder="Type reply">
+        <button onclick="sendReply('${id}')">Reply</button>
+      </div>
     `;
-  }
+  });
 
 });
 
-// Add balance
-window.addBalance = async (id,current)=>{
-  let val = Number(document.getElementById("bal-"+id).value);
-  if(!val) return;
 
-  await updateDoc(doc(db,"users",id),{
-    balance: current + val,
-    lastUpdate: Date.now()
+// ✅ SEND REPLY
+window.sendReply = async function(id){
+
+  const input = document.getElementById("reply-" + id);
+  const reply = input.value;
+
+  if(reply.trim() === "") return;
+
+  await updateDoc(doc(db, "messages", id), {
+    reply: reply
   });
+
+  input.value = "";
 };
 
-// Set plan %
-window.setPlan = async (id)=>{
-  let val = Number(document.getElementById("plan-"+id).value);
-  if(!val) return;
+</script>
 
-  await updateDoc(doc
+</body>
+</html>
