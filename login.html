@@ -79,12 +79,10 @@ window.login = async function(){
   let password = document.getElementById("password").value;
 
   try{
-    let userCred = await signInWithEmailAndPassword(auth, email, password);
-    console.log("Login success:", userCred.user.email);
-    alert("Login successful");
+    let user = await signInWithEmailAndPassword(auth, email, password);
+    alert("SUCCESS: " + user.user.email);
   }catch(e){
-    console.error(e);
-    alert(e.message); // 🔥 THIS WILL SHOW THE REAL ERROR
+    alert("ERROR: " + e.message);
   }
 };
 
