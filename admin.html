@@ -96,7 +96,28 @@ document.getElementById("loginBtn").addEventListener("click", ()=>{
     });
 
 });
+const ADMIN_EMAIL = "eoluka864@gmail.com";
 
+onAuthStateChanged(auth,(user)=>{
+
+  // ❌ Not logged in
+  if(!user){
+    localStorage.setItem("redirectAfterLogin", "admin.html");
+    window.location.href = "login.html";
+    return;
+  }
+
+  // ❌ Not admin
+  if(user.email !== ADMIN_EMAIL){
+    alert("Access denied");
+    window.location.href = "dashboard.html";
+    return;
+  }
+
+  // ✅ Admin OK
+  console.log("Welcome Admin");
+
+});
 </script>
 
 </body>
