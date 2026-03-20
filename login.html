@@ -40,13 +40,16 @@ window.login = async function(){
 
     await signInWithEmailAndPassword(auth, email, password);
 
-    // ✅ GO TO YOUR REAL DASHBOARD
-    window.location.href = "dashboard.html";
+    // ✅ ADMIN CHECK
+    if(email === "eoluka864@gmail.com"){
+      window.location.href = "admin.html";
+    } else {
+      window.location.href = "dashboard.html";
+    }
 
-  }catch(e){
-    alert(e.message);
+  }catch(err){
+    alert(err.message);
   }
-
 };
 
 </script></body>
