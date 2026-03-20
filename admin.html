@@ -81,11 +81,14 @@ document.getElementById("loginBtn").addEventListener("click", ()=>{
 
       const user = userCredential.user;
 
-      if(user.email === ADMIN_EMAIL){
-        window.location.href = "admin.html";
-      }else{
-        window.location.href = "dashboard.html";
-      }
+      if(redirect){
+  localStorage.removeItem("redirectAfterLogin");
+  window.location.href = redirect;
+}else if(user.email === ADMIN_EMAIL){
+  window.location.href = "admin.html";
+}else{
+  window.location.href = "dashboard.html";
+}
 
     })
     .catch((error) => {
