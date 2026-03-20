@@ -129,6 +129,44 @@ onAuthStateChanged(auth, async(user)=>{
   const snap = await getDoc(ref);
 
   if(snap.exists()){
+    const now = Date.now();
+
+const planStart = data.planStart;
+const lastTime = data.lastProfitTime;
+const percent = data.planPercent;
+const balance = data.balance || 0;
+
+// ⏳ TOTAL TIME SINCE PLAN START
+const totalTime = now - planStart;
+
+// ❌ STOP AFTER 7 DAYS
+if(totalTime >= 7 * 24 * 60 * 60 * 1000){
+
+  console.log("Plan expired");
+
+  // Optional: mark expired
+  await updateDoc(doc(db,"users",user.uid),{
+    planExpired: true
+  });
+
+  return; // ⛔ STOP PROFIT
+}
+
+// ✅ CONTINUE PROFIT (IF NOT EXPIRED)
+const hours = (now - lastTime) / (1000 * 60 * 60);
+
+if(hours > 0){
+
+  const profit = (balance * percent / 100) * (hours / 24);
+
+  const newBalance = balance + profit;
+
+  await updateDoc(doc(db,"users",user.uid),{
+    balance: newBalance,
+    lastProfitTime: now
+  });
+
+}
     let data = snap.data();
     document.getElementById("balance").innerText = "$" + (data.balance || 0);
   }
