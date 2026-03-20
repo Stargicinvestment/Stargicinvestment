@@ -1,13 +1,22 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
-</head><body style="background:#0b0f1a;color:white;text-align:center;padding-top:100px;"><h2>Login</h2><input id="email" type="email" placeholder="Enter Email" style="padding:10px;width:250px;"><br><br>
+</head>
+
+<body style="background:#0b0f1a;color:white;text-align:center;padding-top:100px;">
+
+<h2>Login</h2>
+
+<input id="email" type="email" placeholder="Enter Email" style="padding:10px;width:250px;"><br><br>
+
 <input id="password" type="password" placeholder="Enter Password" style="padding:10px;width:250px;"><br><br>
 
-<button onclick="login()">login</button>
-</button><script type="module">
+<button onclick="login()">Login</button>
+
+<script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
@@ -25,9 +34,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
-
-import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+// ✅ LOGIN FUNCTION
 window.login = async function(){
 
   const email = document.getElementById("email").value;
@@ -56,5 +63,7 @@ window.login = async function(){
 
 };
 
-</script></body>
+</script>
+
+</body>
 </html>
