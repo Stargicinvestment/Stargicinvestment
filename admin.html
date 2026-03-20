@@ -67,6 +67,7 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
 const ADMIN_EMAIL = "eoluka864@gmail.com";
+  let redirect = localStorage.getItem("redirectAfterLogin");
 
 
 // 🔥 Button click
