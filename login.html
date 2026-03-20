@@ -26,6 +26,8 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 window.login = async function(){
 
   let email = document.getElementById("email").value;
@@ -37,19 +39,21 @@ window.login = async function(){
   }
 
   try{
+    const userCredential = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCredential.user;
 
-    await signInWithEmailAndPassword(auth, email, password);
+    const ADMIN_EMAIL = "eoluka864@gmail.com";
 
-    // ✅ ADMIN CHECK
-    if(email === "eoluka864@gmail.com"){
+    if(user.email === ADMIN_EMAIL){
       window.location.href = "admin.html";
-    } else {
+    }else{
       window.location.href = "dashboard.html";
     }
 
-  }catch(err){
-    alert(err.message);
+  }catch(error){
+    alert(error.message);
   }
+
 };
 
 </script></body>
