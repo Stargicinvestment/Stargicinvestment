@@ -646,22 +646,23 @@ window.sendMessage = async function(){
 💬
 </div>
 
-<script>
+<script>onAuthStateChanged(auth,(user)=>{
+
+  if(user){
+    console.log("User logged in:", user.email);
+
+    // Load messages for this user
+    loadMessages(user);
+
+  }else{
+    console.log("No user logged in");
+  }
+
+});
 function openPopup(){
   document.getElementById("chatPopup").style.display = "block";
 }
 
-function sendMessage(){
-  let input = document.getElementById("chatInput");
-  let message = input.value;
-
-  if(message.trim() === "") return;
-
-  let box = document.getElementById("chatMessages");
-  box.innerHTML += "<div>You: " + message + "</div>";
-
-  input.value = "";
-}
 </script>
   </body>
 </html>
