@@ -173,22 +173,74 @@ stargicinvestment987@gmail.com
 
 © 2026 StargicInvestment. All Rights Reserved.
 
-</footer><script>
+</footer>
 
+<!-- OLD SCRIPT (KEEP THIS) -->
+<script>
 function showWallet(){
-document.getElementById("walletSection").style.display="block";
-window.scrollTo(0,document.body.scrollHeight);
+  document.getElementById("walletSection").style.display="block";
+  window.scrollTo(0,document.body.scrollHeight);
 }
 
 function copyWallet(id){
-
-let text=document.getElementById(id).innerText;
-
-navigator.clipboard.writeText(text);
-
-alert("Wallet address copied");
-
+  let text=document.getElementById(id).innerText;
+  navigator.clipboard.writeText(text);
+  alert("Wallet address copied");
 }
+</script>
+
+
+<!-- 🔥 ADD NEW SCRIPT HERE -->
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.appspot.com",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// 🔥 INVEST FUNCTION
+window.invest = async function(percent){
+
+  const user = auth.currentUser;
+
+  if(!user){
+    alert("Login first");
+    return;
+  }
+
+  try{
+    await updateDoc(doc(db,"users",user.uid),{
+      planPercent: percent,
+      lastProfitTime: Date.now(),
+      planStart: Date.now()
+    });
+
+    alert("Plan activated ✅ Profit mining started");
+
+    showWallet();
+
+  }catch(e){
+    alert(e.message);
+  }
+
+};
+
+</script>
+
+</body>
+</html>
 
 </script></body>
   </html>
