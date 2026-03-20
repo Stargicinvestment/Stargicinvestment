@@ -167,10 +167,7 @@ if(hours > 0){
   });
 
 }
-    let data = snap.data();
-    document.getElementById("balance").innerText = "$" + (data.balance || 0);
-  }
-});
+    document.getElementById("balance").innerText = "$" + (balance || 0);
 
 // LOGOUT
 window.logout = function(){
