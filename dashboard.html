@@ -1,8 +1,11 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Investor Dashboard</title><style>
+<title>Investor Dashboard</title>
+
+<style>
 body{
   margin:0;
   font-family:Arial;
@@ -34,134 +37,107 @@ body{
   font-size:40px;
 }
 
+.actions{
+  display:flex;
+  gap:15px;
+  margin-top:20px;
+}
+
 .btn{
+  flex:1;
   padding:12px;
   border:none;
-  border-radius:8px;
-  width:45%;
+  border-radius:10px;
   font-size:16px;
   cursor:pointer;
 }
 
 .deposit{
-  background:#00ff9d;
-  color:black;
+  background:#00e676;
+  color:#000;
 }
 
 .withdraw{
-  background:#ff4d4d;
-  color:white;
+  background:#ff5252;
+  color:#fff;
 }
+</style>
+</head>
 
-.actions{
-  display:flex;
-  justify-content:space-between;
-  margin-top:20px;
-}
-  .actions{
-  display: flex;
-  gap: 15px;
-  margin-top: 20px;
-}
+<body>
 
-.btn{
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.deposit{
-  background: #00e676;
-  color: #000;
-}
-
-.withdraw{
-  background: #ff5252;
-  color: #fff;
-}
-</style></head><body><div class="header">
+<div class="header">
   <h2>Investor Dashboard</h2>
   <button onclick="logout()">Logout</button>
-</div><div class="container">  <h2 id="welcome">Welcome</h2>  <div class="card">
+</div>
+
+<div class="container">
+
+  <h2 id="welcome">Welcome</h2>
+
+  <div class="card">
     <p>Your Balance</p>
     <h1 class="balance" id="balance">$0</h1>
-  <div class="actions">
-  <button class="btn deposit" onclick="goDeposit()">Deposit</button>
-  <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
-</div>
-    
-    <h3 style="margin-top:30px;">Transaction History</h3>
 
-<div id="history"></div>
-  </div></div><script type="module">
+    <div class="actions">
+      <button class="btn deposit" onclick="goDeposit()">Deposit</button>
+      <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
+    </div>
+
+    <h3 style="margin-top:30px;">Transaction History</h3>
+    <div id="history"></div>
+
+  </div>
+
+</div>
+
+<script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, getDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
+  storageBucket: "stargicinvestment.appspot.com",
   messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6",
-  measurementId: "G-MYXX49TZLW"
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// LOAD USER DATA
+// ✅ LOAD USER DATA
 onAuthStateChanged(auth, async(user)=>{
   if(!user){
     location.href = "login.html";
     return;
   }
 
+  // Load balance
   const ref = doc(db,"users",user.uid);
   const snap = await getDoc(ref);
 
   if(snap.exists()){
     const data = snap.data();
-
     document.getElementById("balance").innerText =
-    "$" + (data.balance || 0);
+      "$" + (data.balance || 0);
   }
-});
 
-// LOGOUT
-window.logout = function(){
-  signOut(auth);
-  location.href = "login.html";
-};
-window.goDeposit = function(){
-  window.location.href = "deposit.html";
-};
-// ✅ WITHDRAW NAVIGATION
-window.goWithdraw = function(){
-  window.location.href = "withdraw.html";
-  
-};
-import { collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// 🔥 LOAD HISTORY
-onAuthStateChanged(auth,(user)=>{
-  if(!user) return;
-
+  // 🔥 LOAD TRANSACTION HISTORY (FIXED)
   const q = query(
     collection(db,"transactions"),
     where("userId","==",user.uid)
   );
 
+  onSnapshot(q,(snapshot)=>{
     let box = document.getElementById("history");
     box.innerHTML = "";
 
-    snap.forEach(doc=>{
+    snapshot.forEach(doc=>{
       let d = doc.data();
 
       let color = d.type === "deposit" ? "lightgreen" : "#ff6b6b";
@@ -175,9 +151,25 @@ onAuthStateChanged(auth,(user)=>{
         </div>
       `;
     });
-
   });
 
 });
-</script></body>
+
+// LOGOUT
+window.logout = function(){
+  signOut(auth);
+  location.href = "login.html";
+};
+
+window.goDeposit = function(){
+  location.href = "deposit.html";
+};
+
+window.goWithdraw = function(){
+  location.href = "withdraw.html";
+};
+
+</script>
+
+</body>
 </html>
