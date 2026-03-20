@@ -518,38 +518,45 @@ bnb.innerHTML="BNB $"+p.binancecoin.usd;
 prices();
 setInterval(prices,10000);
 
-</script>
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-if(user){
-console.log("User logged in:", user.email);
-
-// connect your chat
-loadMessages(user);
-
-}else{
-console.log("No user logged in");
-}
-
-});
+// ✅ FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
+  storageBucket: "stargicinvestment.appspot.com",
   messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6",
-  measurementId: "G-MYXX49TZLW"
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
+// ✅ INIT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-  function loadMessages(user){
+
+// ==========================
+// ✅ AUTH CHECK
+// ==========================
+onAuthStateChanged(auth,(user)=>{
+
+  if(user){
+    console.log("User logged in:", user.email);
+    loadMessages(user);
+  }else{
+    console.log("No user logged in");
+  }
+
+});
+
+// ==========================
+// ✅ LOAD USER MESSAGES
+// ==========================
+function loadMessages(user){
 
   const q = query(collection(db, "messages"), where("userId","==",user.uid));
 
@@ -563,34 +570,17 @@ const db = getFirestore(app);
 
       box.innerHTML += `
         <div>You: ${data.text}</div>
-        <div style="color:green;">Admin: ${data.reply || "Waiting..."}</div><br>
+        <div style="color:lime;">Admin: ${data.reply || "Waiting..."}</div><br>
       `;
     });
 
   });
 
 }
-window.openPopup = function(){
-document.getElementById("chatPopup").style.display="block";
-}
-
-window.closePopup = function(){
-document.getElementById("chatPopup").style.display="none";
-}
-
-window.openChat = function(){
-document.getElementById("chatPopup").style.display="none";
-document.getElementById("chatBox").style.display="block";
-  }
-  setTimeout(()=>{
-document.getElementById("chatPopup").style.display="block";
-}, 3000);
-
 
 // ==========================
-// 🔥 SEND MESSAGE (FIREBASE)
+// ✅ SEND MESSAGE
 // ==========================
-
 window.sendMessage = async function(){
 
   const user = auth.currentUser;
@@ -605,10 +595,6 @@ window.sendMessage = async function(){
 
   if(message.trim() === "") return;
 
-  // ✅ SHOW MESSAGE IMMEDIATELY
-  const box = document.getElementById("chatMessages");
-  box.innerHTML += `<div>You: ${message}</div>`;
-
   try{
     await addDoc(collection(db, "messages"), {
       text: message,
@@ -621,51 +607,25 @@ window.sendMessage = async function(){
     input.value = "";
 
   }catch(e){
-    console.error(e);
     alert("Error sending message");
   }
-}; 
-  
+};
 
-</script>
+// ==========================
+// ✅ CHAT BUTTON CLICK (FIXED)
+// ==========================
+document.getElementById("chatButton").addEventListener("click", ()=>{
+  const popup = document.getElementById("chatPopup");
 
-  
-<!-- CHAT BOX -->
-<div id="chatPopup" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; background:#111; color:white; padding:10px; border-radius:10px; z-index:9999;">
-
-  <div id="chatMessages" style="height:200px; overflow-y:auto;"></div>
-
-  <input type="text" id="chatInput" placeholder="Type message..." style="width:100%; margin-top:10px;">
-  
-  <button onclick="sendMessage()" style="width:100%; margin-top:5px;">Send</button>
-
-</div>
-
-<!-- CHAT BUTTON -->
-<div id="chatButton" style="position:fixed; bottom:20px; right:20px; z-index:9999; background:#007bff; color:white; padding:15px; border-radius:50%; cursor:pointer;">
-💬
-</div>
-
-<script>onAuthStateChanged(auth,(user)=>{
-
-  onAuthStateChanged(auth,(user)=>{
-
-  if(user){
-    console.log("User logged in:", user.email);
-
-    // Load messages for this user
-    loadMessages(user);
-
+  if(popup.style.display === "block"){
+    popup.style.display = "none";
   }else{
-    console.log("No user logged in");
+    popup.style.display = "block";
   }
-
 });
-
-});
-
 
 </script>
+
   </body>
 </html>
 
