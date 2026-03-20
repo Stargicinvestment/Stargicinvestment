@@ -126,48 +126,52 @@ onAuthStateChanged(auth, async(user)=>{
   document.getElementById("welcome").innerText = "Welcome, " + user.email.split("@")[0];
 
   const ref = doc(db,"users",user.uid);
-  const snap = await getDoc(ref);
 
-  if(snap.exists()){
-    const data = snap.data();
+// 🔥 REAL-TIME LISTENER (THIS FIXES EVERYTHING)
+onSnapshot(ref, async (snap)=>{
+  if(!snap.exists()) return;
 
-// 🛑 Prevent errors
-if(!data.planStart || !data.lastProfitTime || !data.planPercent){
+  const data = snap.data();
+
+  // ✅ SHOW BALANCE ALWAYS
   document.getElementById("balance").innerText = "$" + (data.balance || 0);
-  return;
-}
 
-const now = Date.now();
+  // 🔥 PROFIT SYSTEM (SAFE)
+  if(data.planStart && data.lastProfitTime && data.planPercent){
 
-const planStart = data.planStart;
-const lastTime = data.lastProfitTime;
-const percent = data.planPercent;
-const balance = data.balance || 0;
+    const now = Date.now();
 
-const totalTime = now - planStart;
+    const planStart = data.planStart;
+    const lastTime = data.lastProfitTime;
+    const percent = data.planPercent;
+    const balance = data.balance || 0;
 
-// ❌ STOP AFTER 7 DAYS
-if(totalTime < 7 * 24 * 60 * 60 * 1000){
+    const totalTime = now - planStart;
 
-  const hours = (now - lastTime) / (1000 * 60 * 60);
+    if(totalTime < 7 * 24 * 60 * 60 * 1000){
 
-  if(hours > 0){
+      const hours = (now - lastTime) / (1000 * 60 * 60);
 
-    const profit = (balance * percent / 100) * (hours / 24);
-    const newBalance = balance + profit;
+      if(hours > 0){
 
-    // 🔥 UPDATE WITHOUT BREAKING UI
-    updateDoc(doc(db,"users",user.uid),{
-      balance: newBalance,
-      lastProfitTime: now
-    }).catch(()=>{});
+        const profit = (balance * percent / 100) * (hours / 24);
+        const newBalance = balance + profit;
+
+        // ⚠️ IMPORTANT: no await → no freeze
+        updateDoc(doc(db,"users",user.uid),{
+          balance: newBalance,
+          lastProfitTime: now
+        });
+
+      }
+
+    }else{
+      console.log("Plan expired");
+    }
 
   }
 
-}
-
-// ✅ ALWAYS SHOW BALANCE
-document.getElementById("balance").innerText = "$" + (balance || 0);
+});
 
 // LOGOUT
 window.logout = function(){
