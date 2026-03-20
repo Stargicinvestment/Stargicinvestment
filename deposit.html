@@ -110,35 +110,45 @@ margin-top:80px;
 <a href="dashboard.html">Dashboard</a>
 <a href="deposit.html">Deposit</a>
 <a href="#">Withdraw</a>
-</div></nav><div class="container"><h2>Select Investment Plan</h2><div class="plan-grid"><div class="plan">
+<div class="plan">
 <h3>Starter Plan</h3>
-<p>Deposit: $300 – $999</p>
-<p>Return: 5%</p>
-<p>Duration: 14 Days</p>
-<button class="btn" onclick="showWallet()">Invest</button>
-</div><div class="plan">
+<p>$300 – $999</p>
+<p>Profit: 2.5% Daily</p>
+<p>Duration: 7 Days</p>
+<button class="btn" onclick="invest(2.5)">Invest</button>
+</div>
+
+<div class="plan">
 <h3>Silver Plan</h3>
-<p>Deposit: $1,000 – $4,999</p>
-<p>Return: 7%</p>
-<p>Duration: 14 Days</p>
-<button class="btn" onclick="showWallet()">Invest</button>
-</div><div class="plan">
+<p>$1,000 – $4,999</p>
+<p>Profit: 3.5% Daily</p>
+<p>Duration: 7 Days</p>
+<button class="btn" onclick="invest(3.5)">Invest</button>
+</div>
+
+<div class="plan">
 <h3>Gold Plan</h3>
-<p>Deposit: $5,000 – $19,999</p>
-<p>Return: 9%</p>
-<p>Duration: 14 Days</p>
-<button class="btn" onclick="showWallet()">Invest</button>
-</div><div class="plan">
+<p>$5,000 – $19,999</p>
+<p>Profit: 4.5% Daily</p>
+<p>Duration: 7 Days</p>
+<button class="btn" onclick="invest(4.5)">Invest</button>
+</div>
+
+<div class="plan">
 <h3>Platinum Plan</h3>
-<p>Deposit: $20,000 – $49,999</p>
-<p>Return: 10%</p>
-<p>Duration: 14 Days</p>
-<button class="btn" onclick="showWallet()">Invest</button>
-</div><div class="plan">
+<p>$20,000 – $49,999</p>
+<p>Profit: 5.5% Daily</p>
+<p>Duration: 7 Days</p>
+<button class="btn" onclick="invest(5.5)">Invest</button>
+</div>
+
+<div class="plan">
 <h3>VIP Plan</h3>
-<p>Deposit: $50,000 – $9,999,999</p>
-<p>Return: 12%</p>
-<p>Duration: 14 Days</p>
+<p>$50,000 – $999,999</p>
+<p>Profit: 6.6% Daily</p>
+<p>Duration: 7 Days</p>
+<button class="btn" onclick="invest(6.6)">Invest</button>
+</div>
 <button class="btn" onclick="showWallet()">Invest</button>
 </div></div><div class="wallet-section" id="walletSection"><h2>Send Deposit To One Of These Wallets</h2><div class="wallet-box"><h3>Bitcoin (BTC)</h3><div class="wallet-address" id="btc">
 bc1q25x3r2faeahcvxf0c423za7qlsw82jdg7l0kx4
