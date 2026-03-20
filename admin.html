@@ -3,57 +3,64 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login</title>
+<title>Admin Panel</title>
 
 <style>
 body{
   background:#0b0f1a;
   color:white;
   font-family:Arial;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-}
-.box{
-  background:#111827;
   padding:20px;
-  border-radius:10px;
-  width:250px;
 }
-input{
-  width:100%;
-  padding:8px;
-  margin-top:10px;
+.card{
+  background:#111827;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:8px;
 }
 button{
-  width:100%;
-  padding:10px;
-  margin-top:10px;
+  padding:6px;
   background:#00ff9d;
   border:none;
   cursor:pointer;
+}
+input{
+  padding:5px;
+  margin-top:5px;
 }
 </style>
 </head>
 
 <body>
 
-<div class="box">
-  <h2>Login</h2>
+<h2>Admin Dashboard</h2>
 
-  <input type="email" id="email" placeholder="Email">
-  <input type="password" id="password" placeholder="Password">
+<div id="app" style="display:none;">
 
-  <button id="loginBtn">Login</button>
+  <h3>Users</h3>
+  <div id="users"></div>
+
+  <h3>Withdrawals</h3>
+  <div id="withdrawals"></div>
+
+  <h3>Support Messages</h3>
+  <div id="messages"></div>
+
 </div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getFirestore, 
+  collection, 
+  onSnapshot, 
+  doc, 
+  updateDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 🔥 YOUR FIREBASE CONFIG
+// 🔥 FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -65,59 +72,133 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-const ADMIN_EMAIL = "eoluka864@gmail.com";
-  let redirect = localStorage.getItem("redirectAfterLogin");
-
-
-// 🔥 Button click
-document.getElementById("loginBtn").addEventListener("click", ()=>{
-
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
-
-  signInWithEmailAndPassword(auth, email, password)
-    .then((userCredential) => {
-
-      const user = userCredential.user;
-
-      if(redirect){
-  localStorage.removeItem("redirectAfterLogin");
-  window.location.href = redirect;
-}else if(user.email === ADMIN_EMAIL){
-  window.location.href = "admin.html";
-}else{
-  window.location.href = "dashboard.html";
-}
-
-    })
-    .catch((error) => {
-      alert(error.message);
-    });
-
-});
+// ✅ ADMIN EMAIL
 const ADMIN_EMAIL = "eoluka864@gmail.com";
 
+// 🔐 PROTECT ADMIN PAGE
 onAuthStateChanged(auth,(user)=>{
 
-  // ❌ Not logged in
   if(!user){
     localStorage.setItem("redirectAfterLogin", "admin.html");
     window.location.href = "login.html";
     return;
   }
 
-  // ❌ Not admin
   if(user.email !== ADMIN_EMAIL){
     alert("Access denied");
     window.location.href = "dashboard.html";
     return;
   }
 
-  // ✅ Admin OK
-  console.log("Welcome Admin");
+  // ✅ SHOW ADMIN PANEL
+  document.getElementById("app").style.display = "block";
 
 });
+
+// ======================
+// USERS
+// ======================
+onSnapshot(collection(db,"users"), snap=>{
+
+  let box = document.getElementById("users");
+  box.innerHTML="";
+
+  snap.forEach(d=>{
+    let data = d.data();
+    let id = d.id;
+
+    box.innerHTML += `
+    <div class="card">
+      <b>${data.email}</b><br>
+      Balance: $${data.balance || 0}<br><br>
+
+      <input id="bal-${id}" placeholder="Add Balance">
+      <button onclick="addBalance('${id}',${data.balance||0})">Add</button>
+    </div>
+    `;
+  });
+
+});
+
+// ADD BALANCE
+window.addBalance = async (id,current)=>{
+
+  let val = Number(document.getElementById("bal-"+id).value);
+  if(!val) return;
+
+  await updateDoc(doc(db,"users",id),{
+    balance: current + val
+  });
+
+};
+
+// ======================
+// WITHDRAWALS
+// ======================
+onSnapshot(collection(db,"withdrawals"), snap=>{
+
+  let box = document.getElementById("withdrawals");
+  box.innerHTML="";
+
+  snap.forEach(d=>{
+    let data = d.data();
+    let id = d.id;
+
+    box.innerHTML += `
+    <div class="card">
+      ${data.email}<br>
+      $${data.amount}<br>
+      ${data.status}<br>
+      <button onclick="approve('${id}')">Approve</button>
+    </div>
+    `;
+  });
+
+});
+
+window.approve = async (id)=>{
+  await updateDoc(doc(db,"withdrawals",id),{
+    status:"approved"
+  });
+};
+
+// ======================
+// SUPPORT MESSAGES
+// ======================
+onSnapshot(collection(db,"messages"), snap=>{
+
+  let box = document.getElementById("messages");
+  box.innerHTML="";
+
+  snap.forEach(d=>{
+    let data = d.data();
+    let id = d.id;
+
+    box.innerHTML += `
+    <div class="card">
+      <b>${data.email}</b><br>
+      ${data.text}<br>
+      Reply: ${data.reply || "None"}<br><br>
+
+      <input id="r-${id}" placeholder="Reply">
+      <button onclick="reply('${id}')">Send</button>
+    </div>
+    `;
+  });
+
+});
+
+window.reply = async (id)=>{
+  let val = document.getElementById("r-"+id).value;
+  if(!val) return;
+
+  await updateDoc(doc(db,"messages",id),{
+    reply: val
+  });
+};
+
 </script>
 
 </body>
