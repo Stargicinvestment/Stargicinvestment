@@ -6,7 +6,7 @@
 </head><body style="background:#0b0f1a;color:white;text-align:center;padding-top:100px;"><h2>Login</h2><input id="email" type="email" placeholder="Enter Email" style="padding:10px;width:250px;"><br><br>
 <input id="password" type="password" placeholder="Enter Password" style="padding:10px;width:250px;"><br><br>
 
-<button onclick="login()"style="padding:10px 20px;background:#00ff9d;border:none;cursor:pointer;">
+<button onclick="login()">login</button>
 </button><script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -25,12 +25,13 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 
+
 import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 window.login = async function(){
 
-  let email = document.getElementById("email").value;
-  let password = document.getElementById("password").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
   if(!email || !password){
     alert("Enter email and password");
