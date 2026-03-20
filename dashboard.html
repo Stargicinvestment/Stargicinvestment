@@ -129,45 +129,45 @@ onAuthStateChanged(auth, async(user)=>{
   const snap = await getDoc(ref);
 
   if(snap.exists()){
-    const now = Date.now();
+    const data = snap.data();
+
+// 🛑 Prevent errors
+if(!data.planStart || !data.lastProfitTime || !data.planPercent){
+  document.getElementById("balance").innerText = "$" + (data.balance || 0);
+  return;
+}
+
+const now = Date.now();
 
 const planStart = data.planStart;
 const lastTime = data.lastProfitTime;
 const percent = data.planPercent;
 const balance = data.balance || 0;
 
-// ⏳ TOTAL TIME SINCE PLAN START
 const totalTime = now - planStart;
 
 // ❌ STOP AFTER 7 DAYS
-if(totalTime >= 7 * 24 * 60 * 60 * 1000){
+if(totalTime < 7 * 24 * 60 * 60 * 1000){
 
-  console.log("Plan expired");
+  const hours = (now - lastTime) / (1000 * 60 * 60);
 
-  // Optional: mark expired
-  await updateDoc(doc(db,"users",user.uid),{
-    planExpired: true
-  });
+  if(hours > 0){
 
-  return; // ⛔ STOP PROFIT
-}
+    const profit = (balance * percent / 100) * (hours / 24);
+    const newBalance = balance + profit;
 
-// ✅ CONTINUE PROFIT (IF NOT EXPIRED)
-const hours = (now - lastTime) / (1000 * 60 * 60);
+    // 🔥 UPDATE WITHOUT BREAKING UI
+    updateDoc(doc(db,"users",user.uid),{
+      balance: newBalance,
+      lastProfitTime: now
+    }).catch(()=>{});
 
-if(hours > 0){
-
-  const profit = (balance * percent / 100) * (hours / 24);
-
-  const newBalance = balance + profit;
-
-  await updateDoc(doc(db,"users",user.uid),{
-    balance: newBalance,
-    lastProfitTime: now
-  });
+  }
 
 }
-    document.getElementById("balance").innerText = "$" + (balance || 0);
+
+// ✅ ALWAYS SHOW BALANCE
+document.getElementById("balance").innerText = "$" + (balance || 0);
 
 // LOGOUT
 window.logout = function(){
