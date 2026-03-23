@@ -261,11 +261,11 @@ margin-top:40px;
 <a href="#plans">Plans</a>
 <a href="#reviews">Reviews</a>
 
-<select>
-<option>English</option>
-<option>Deutsch</option>
-<option>Italiano</option>
-<option>Français</option>
+<select onchange="changeLanguage(this.value)">
+  <option value="en">English</option>
+  <option value="it">Italiano</option>
+  <option value="de">Deutsch</option>
+  <option value="fr">Français</option>
 </select>
 
 <a class="nav-link" href="login.html" data-key="login">Login</a>
