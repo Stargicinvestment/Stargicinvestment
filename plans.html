@@ -41,3 +41,91 @@
 </div>
 
 </div>
+<script>
+
+const translations = {
+  en: {
+    title: "Secure Digital Investment Platform",
+    hero: "Invest in cryptocurrency, global stocks, real estate and energy markets.",
+    login: "Login",
+    register: "Create Account",
+    aboutTitle: "About Our Company",
+    aboutText: "StargicInvestment is a global digital asset management platform.",
+    marketsTitle: "Global Investment Markets",
+    reviewsTitle: "Investor Testimonials",
+    deposit: "Deposit",
+    withdraw: "Withdraw",
+    balance: "Your Balance",
+    plans: "Investment Plans"
+  },
+
+  it: {
+    title: "Piattaforma di Investimento Digitale Sicura",
+    hero: "Investi in criptovalute, azioni globali, immobili ed energia.",
+    login: "Accesso",
+    register: "Crea Account",
+    aboutTitle: "Chi Siamo",
+    aboutText: "StargicInvestment è una piattaforma globale di gestione patrimoniale.",
+    marketsTitle: "Mercati di Investimento Globali",
+    reviewsTitle: "Testimonianze degli Investitori",
+    deposit: "Deposito",
+    withdraw: "Prelievo",
+    balance: "Il tuo saldo",
+    plans: "Piani di investimento"
+  },
+
+  de: {
+    title: "Sichere Digitale Investmentplattform",
+    hero: "Investieren Sie in Kryptowährungen, Aktien, Immobilien und Energie.",
+    login: "Anmelden",
+    register: "Konto erstellen",
+    aboutTitle: "Über uns",
+    aboutText: "StargicInvestment ist eine globale Vermögensplattform.",
+    marketsTitle: "Globale Märkte",
+    reviewsTitle: "Kundenbewertungen",
+    deposit: "Einzahlen",
+    withdraw: "Abheben",
+    balance: "Ihr Guthaben",
+    plans: "Investitionspläne"
+  },
+
+  fr: {
+    title: "Plateforme d'Investissement Numérique Sécurisée",
+    hero: "Investissez dans les crypto-monnaies, actions et immobilier.",
+    login: "Connexion",
+    register: "Créer un compte",
+    aboutTitle: "À propos",
+    aboutText: "StargicInvestment est une plateforme mondiale d'investissement.",
+    marketsTitle: "Marchés mondiaux",
+    reviewsTitle: "Avis des investisseurs",
+    deposit: "Dépôt",
+    withdraw: "Retrait",
+    balance: "Votre solde",
+    plans: "Plans d'investissement"
+  }
+};
+
+// CHANGE LANGUAGE
+function changeLanguage(lang){
+  document.querySelectorAll("[data-key]").forEach(el=>{
+    const key = el.getAttribute("data-key");
+    if(translations[lang] && translations[lang][key]){
+      el.innerText = translations[lang][key];
+    }
+  });
+
+  localStorage.setItem("lang", lang);
+}
+
+// LOAD LANGUAGE ON PAGE LOAD
+window.onload = function(){
+  const savedLang = localStorage.getItem("lang") || "en";
+  changeLanguage(savedLang);
+};
+
+</script>
+<body>
+<html>
+  
+</html>
+</body>
