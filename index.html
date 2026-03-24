@@ -526,5 +526,14 @@ function googleTranslateElementInit() {
 </script>
 
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+  <script>
+setInterval(function(){
+  var frame = document.querySelector('.goog-te-banner-frame');
+  if(frame){
+    frame.style.display = 'none';
+  }
+  document.body.style.top = '0px';
+}, 100);
+</script>
 </body>  
 </html>
