@@ -77,8 +77,15 @@ body{
 
   <div class="card">
     <p>Your Balance</p>
-<button>Deposit</button>
-<button>Withdraw</button>
+
+    <!-- ✅ FIX: Added balance ID -->
+    <div id="balance" class="balance">$0</div>
+
+    <!-- ✅ FIX: Buttons now work -->
+    <div class="actions">
+      <button class="btn deposit" onclick="goDeposit()">Deposit</button>
+      <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
+    </div>
 
     <h3 style="margin-top:30px;">Transaction History</h3>
     <div id="history"></div>
@@ -113,7 +120,10 @@ onAuthStateChanged(auth, async(user)=>{
     return;
   }
 
-  // Load balance
+  // ✅ Show user email
+  document.getElementById("welcome").innerText = "Welcome, " + user.email;
+
+  // ✅ Load balance
   const ref = doc(db,"users",user.uid);
   const snap = await getDoc(ref);
 
@@ -123,7 +133,7 @@ onAuthStateChanged(auth, async(user)=>{
       "$" + (data.balance || 0);
   }
 
-  // 🔥 LOAD TRANSACTION HISTORY (FIXED)
+  // ✅ LOAD TRANSACTIONS
   const q = query(
     collection(db,"transactions"),
     where("userId","==",user.uid)
@@ -139,7 +149,7 @@ onAuthStateChanged(auth, async(user)=>{
       let color = d.type === "deposit" ? "lightgreen" : "#ff6b6b";
 
       box.innerHTML += `
-        <div style="background:#111827; padding:10px; margin:10px; border-radius:8px;">
+        <div style="background:#0b0f1a; padding:10px; margin:10px 0; border-radius:8px;">
           <b style="color:${color};">${d.type.toUpperCase()}</b><br>
           Amount: $${d.amount}<br>
           ${d.wallet ? "Wallet: "+d.wallet+"<br>" : ""}
@@ -151,12 +161,13 @@ onAuthStateChanged(auth, async(user)=>{
 
 });
 
-// LOGOUT
+// ✅ LOGOUT
 window.logout = function(){
   signOut(auth);
   location.href = "login.html";
 };
 
+// ✅ NAVIGATION
 window.goDeposit = function(){
   location.href = "deposit.html";
 };
@@ -166,5 +177,6 @@ window.goWithdraw = function(){
 };
 
 </script>
+
 </body>
 </html>
