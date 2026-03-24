@@ -14,7 +14,9 @@
 
 <input id="password" type="password" placeholder="Enter Password" style="padding:10px;width:250px;"><br><br>
 
-<button onclick="login()">Login</button>
+<button onclick="login()" style="padding:10px 20px;background:#00ff9d;border:none;border-radius:5px;cursor:pointer;">
+Login
+</button>
 
 <script type="module">
 
@@ -25,7 +27,7 @@ const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
+  storageBucket: "stargicinvestment.appspot.com",  // ✅ FIXED
   messagingSenderId: "1053305294931",
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6",
   measurementId: "G-MYXX49TZLW"
@@ -37,8 +39,8 @@ const auth = getAuth(app);
 // ✅ LOGIN FUNCTION
 window.login = async function(){
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
 
   if(!email || !password){
     alert("Enter email and password");
@@ -62,6 +64,8 @@ window.login = async function(){
   }
 
 };
+
+</script>
 
 </body>
 </html>
