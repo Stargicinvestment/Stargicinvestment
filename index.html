@@ -1,493 +1,309 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <style>
-    #chatButton {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background: #00ffcc;
-      padding: 15px;
-      border-radius: 50%;
-      cursor: pointer;
-      z-index: 9999;
-    }
-
-    #chatBox {
-      position: fixed;
-      bottom: 80px;
-      right: 20px;
-      width: 300px;
-      background: #111;
-      display: none;
-      flex-direction: column;
-      border-radius: 10px;
-      z-index: 9999;
-    }
-  </style>
-</head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>StargicInvestment</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-.crypto-slider{
-display:flex;
-align-items:center;
-gap:40px;
-overflow:hidden;
-white-space:nowrap;
-background:#020617;
-padding:10px 20px;
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+  <style>  
+    #chatButton {  
+      position: fixed;  
+      bottom: 20px;  
+      right: 20px;  
+      background: #00ffcc;  
+      padding: 15px;  
+      border-radius: 50%;  
+      cursor: pointer;  
+      z-index: 9999;  
+    }  #chatBox {  
+  position: fixed;  
+  bottom: 80px;  
+  right: 20px;  
+  width: 300px;  
+  background: #111;  
+  display: none;  
+  flex-direction: column;  
+  border-radius: 10px;  
+  z-index: 9999;  
 }
 
-.coin{
-display:flex;
-align-items:center;
-gap:8px;
-color:#00ffa6;
-font-weight:500;
-min-width:150px;
-}
-
-.crypto-track{
-display:flex;
-animation:scroll 20s linear infinite;
-}
-
-@keyframes scroll{
-0%{transform:translateX(100%)}
-100%{transform:translateX(-100%)}
-  }
-body{
-margin:0;
-font-family:Poppins;
-background:#0b0f1a;
-color:#00ff9d;
-line-height:1.6;
-word-wrap:break-word;
-overflow-x:hidden;
-}
-
-/* NAVBAR */
-
-.nav-buttons a{
-background:#00ffa6;
-color:#021018;
-padding:10px 25px;
-border-radius:6px;
-font-weight:600;
-text-decoration:none;
-}
-
-.logo{
-font-size:20px;
-font-weight:600;
-color:#00ff9d;
-}
-
-.menu{
-display:flex;
-gap:18px;
-align-items:center;
-flex-wrap:wrap;
-}
-
-.menu a{
-text-decoration:none;
-color:#00ff9d;
-font-size:14px;
-}
-
-.btn{
-padding:7px 16px;
-border-radius:5px;
-background:#00ff9d;
-color:black;
-font-weight:500;
-cursor:pointer;
-}
-
-/* LANGUAGE */
-
-select{
-background:#111827;
-color:#00ff9d;
-border:1px solid #00ff9d;
-padding:5px;
-}
-
-/* HERO */
-
-.hero{
-height:420px;
-background:url("https://images.unsplash.com/photo-1639322537228-f710d846310a") center/cover;
-display:flex;
-align-items:center;
-justify-content:center;
-text-align:center;
-padding:20px;
-}
-
-.hero h1{
-font-size:32px;
-margin-bottom:10px;
-}
-
-.hero p{
-max-width:600px;
-margin:auto;
-color:#9ca3af;
-}
-
-/* TICKER */
-
-.ticker{
-background:#111827;
-padding:12px 0;
-overflow:hidden;
-}
-
-.ticker-track{
-display:flex;
-gap:40px;
-animation:scroll 30s linear infinite;
-white-space:nowrap;
-}
-
-.coin{
-display:flex;
-align-items:center;
-gap:8px;
-}
-
-.coin img{
-width:24px;
-filter:brightness(1.3);
-}
-
-@keyframes scroll{
-0%{transform:translateX(0)}
-100%{transform:translateX(-50%)}
-}
-
-/* SECTIONS */
-
-section{
-padding:70px 20px;
-max-width:1100px;
-margin:auto;
-}
-
-.card{
-background:#111827;
-padding:30px;
-border-radius:10px;
-box-shadow:0 0 20px rgba(0,0,0,0.5);
-}
-
-/* MARKET GRID */
-
-.market-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-margin-top:30px;
-}
-
-.market-card{
-background:#111827;
-padding:20px;
-border-radius:10px;
-text-align:center;
-}
-
-.market-card img{
-width:100%;
-border-radius:8px;
-margin-bottom:10px;
-}
-
-/* REVIEWS */
-
-.review-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:25px;
-}
-
-.review{
-background:#111827;
-padding:20px;
-border-radius:10px;
-}
-
-
-/* FOOTER */
-
-footer{
-text-align:center;
-padding:40px;
-background:#111827;
-margin-top:40px;
-}
-.nav-link{
-  color:#00ff9d;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:500;
-}
-
-.nav-link:hover{
-  text-decoration:underline;
-}
-  .nav-link{
-  color:#00ff9d;
-  text-decoration:none;
-  font-size:14px;
-  font-weight:500;
-  margin-left:10px;
-}
-
-.nav-link:hover{
-  text-decoration:underline;
-}
-</style>
-
-</head>
-
-<body>
-
-<nav>
-
-<div class="logo">StargicInvestment</div>
-
-<div class="menu">
-
-<a href="#about">About</a>
+  </style>  
+</head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>StargicInvestment</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">  <style>  
+.crypto-slider{  
+display:flex;  
+align-items:center;  
+gap:40px;  
+overflow:hidden;  
+white-space:nowrap;  
+background:#020617;  
+padding:10px 20px;  
+}  
+  
+.coin{  
+display:flex;  
+align-items:center;  
+gap:8px;  
+color:#00ffa6;  
+font-weight:500;  
+min-width:150px;  
+}  
+  
+.crypto-track{  
+display:flex;  
+animation:scroll 20s linear infinite;  
+}  
+  
+@keyframes scroll{  
+0%{transform:translateX(100%)}  
+100%{transform:translateX(-100%)}  
+  }  
+body{  
+margin:0;  
+font-family:Poppins;  
+background:#0b0f1a;  
+color:#00ff9d;  
+line-height:1.6;  
+word-wrap:break-word;  
+overflow-x:hidden;  
+}  
+  
+/* NAVBAR */  
+  
+.nav-buttons a{  
+background:#00ffa6;  
+color:#021018;  
+padding:10px 25px;  
+border-radius:6px;  
+font-weight:600;  
+text-decoration:none;  
+}  
+  
+.logo{  
+font-size:20px;  
+font-weight:600;  
+color:#00ff9d;  
+}  
+  
+.menu{  
+display:flex;  
+gap:18px;  
+align-items:center;  
+flex-wrap:wrap;  
+}  
+  
+.menu a{  
+text-decoration:none;  
+color:#00ff9d;  
+font-size:14px;  
+}  
+  
+.btn{  
+padding:7px 16px;  
+border-radius:5px;  
+background:#00ff9d;  
+color:black;  
+font-weight:500;  
+cursor:pointer;  
+}  
+  
+/* LANGUAGE */  
+  
+select{  
+background:#111827;  
+color:#00ff9d;  
+border:1px solid #00ff9d;  
+padding:5px;  
+}  
+  
+/* HERO */  
+  
+.hero{  
+height:420px;  
+background:url("https://images.unsplash.com/photo-1639322537228-f710d846310a") center/cover;  
+display:flex;  
+align-items:center;  
+justify-content:center;  
+text-align:center;  
+padding:20px;  
+}  
+  
+.hero h1{  
+font-size:32px;  
+margin-bottom:10px;  
+}  
+  
+.hero p{  
+max-width:600px;  
+margin:auto;  
+color:#9ca3af;  
+}  
+  
+/* TICKER */  
+  
+.ticker{  
+background:#111827;  
+padding:12px 0;  
+overflow:hidden;  
+}  
+  
+.ticker-track{  
+display:flex;  
+gap:40px;  
+animation:scroll 30s linear infinite;  
+white-space:nowrap;  
+}  
+  
+.coin{  
+display:flex;  
+align-items:center;  
+gap:8px;  
+}  
+  
+.coin img{  
+width:24px;  
+filter:brightness(1.3);  
+}  
+  
+@keyframes scroll{  
+0%{transform:translateX(0)}  
+100%{transform:translateX(-50%)}  
+}  
+  
+/* SECTIONS */  
+  
+section{  
+padding:70px 20px;  
+max-width:1100px;  
+margin:auto;  
+}  
+  
+.card{  
+background:#111827;  
+padding:30px;  
+border-radius:10px;  
+box-shadow:0 0 20px rgba(0,0,0,0.5);  
+}  
+  
+/* MARKET GRID */  
+  
+.market-grid{  
+display:grid;  
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));  
+gap:25px;  
+margin-top:30px;  
+}  
+  
+.market-card{  
+background:#111827;  
+padding:20px;  
+border-radius:10px;  
+text-align:center;  
+}  
+  
+.market-card img{  
+width:100%;  
+border-radius:8px;  
+margin-bottom:10px;  
+}  
+  
+/* REVIEWS */  
+  
+.review-grid{  
+display:grid;  
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));  
+gap:25px;  
+}  
+  
+.review{  
+background:#111827;  
+padding:20px;  
+border-radius:10px;  
+}  
+  
+  
+/* FOOTER */  
+  
+footer{  
+text-align:center;  
+padding:40px;  
+background:#111827;  
+margin-top:40px;  
+}  
+  
+</style>  </head>  <body>  <nav>  <div class="logo">StargicInvestment</div>  <div class="menu">  <a href="#about">About</a>
 <a href="#markets">Markets</a>
 <a href="#plans">Plans</a>
 <a href="#reviews">Reviews</a>
 
-<select onchange="changeLanguage(this.value)">
-  <option value="en">English</option>
-  <option value="it">Italiano</option>
-  <option value="de">Deutsch</option>
-
-  <a class="btn" href="login.html">Login</a>
+<select>  
+<option>English</option>  
+<option>Deutsch</option>  
+<option>Italiano</option>  
+<option>Français</option>  
+</select>  <a class="btn" href="login.html">Login</a>
 <a class="btn" href="register.html">Register</a>
 
-</div>
-
-</nav>
-
-<!-- HERO -->
-
-<div class="hero">
-
-<div>
-
-<h1>Secure Digital Investment Platform</h1>
-
-<p>"hero">
-Invest in cryptocurrency, global stocks, real estate projects and energy markets...
-</p>
-
-</div>
-
-</div>
-
-<!-- CRYPTO TICKER -->
-
-<div class="crypto-slider">
-
-<div class="crypto-track">
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
-BTC $67,724
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
-ETH $2,182
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
-USDT $1
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
-BNB $590
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/sol.png" width="20">
-SOL $180
-</div>
-
-<!-- duplicated for infinite scroll -->
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
-BTC $67,724
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
-ETH $2,182
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
-USDT $1
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
-BNB $590
-</div>
-
-<div class="coin">
-<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/sol.png" width="20">
-SOL $180
-</div>
-
-</div>
-</div>
-
-<!-- ABOUT -->
-
-<section id="about">
-
-<div class="card">
-
-<h2>="aboutTitle">About Our Company</h2>
-
-<p>"aboutText">
-StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.
-</p>
-
-</div>
-
-</section>
-
-<!-- MARKETS -->
-
-<section id="markets">
-
-<h2>Global Investment Markets</h2>
-
-<div class="market-grid">
-
-<div class="market-card">
-
-<img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476">
-
-<h3>Cryptocurrency Trading</h3>
-
-<p>
-Our platform analyzes major digital assets including Bitcoin and Ethereum to identify profitable market opportunities.
-</p>
-
-</div>
-
-<div class="market-card">
-
-<img src="https://images.unsplash.com/photo-1518770660439-4636190af475">
-
-<h3>Stock Market Analysis</h3>
-
-<p>
-Major companies such as Apple, Tesla and Microsoft continue to dominate global markets and offer strong investment potential.
-</p>
-
-</div>
-
-<div class="market-card">
-
-<img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab">
-
-<h3>Real Estate Development</h3>
-
-<p>
-Real estate remains one of the most reliable long-term investments helping investors build wealth and secure future assets.
-</p>
-
-</div>
-
-<div class="market-card">
-
-<img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231">
-
-<h3>Energy Sector</h3>
-
-<p>
-Oil and gas projects continue to generate strong global demand and support diversified investment portfolios.
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- REVIEWS -->
-
-<section id="reviews">
-
-<h2>Investor Testimonials</h2>
-
-<div class="review-grid">
-
-<div class="review">
-
-⭐⭐⭐⭐⭐
-
-<p>
-StargicInvestment has been one of the most reliable platforms I have used. Withdrawals are fast and the investment structure is clear.
-</p>
-
-<strong>Michael R. – United Kingdom</strong>
-
-</div>
-
-<div class="review">
-
-⭐⭐⭐⭐⭐
-
-<p>
-I started with a small investment and gradually increased my portfolio. The platform is transparent and professionally managed.
-</p>
-
-<strong>Laura Bennett – Canada</strong>
-
-</div>
-
-<div class="review">
-
-⭐⭐⭐⭐⭐
-
-<p>
-The diversification into crypto, stocks and real estate makes this platform unique compared to other investment services.
-</p>
-
-<strong>David Morgan – Australia</strong>
-
-</div>
-
-</div>
-
-</section>
-
-<footer>
-
-Support Email  
+</div>  </nav>  <!-- HERO -->  <div class="hero">  <div>  <h1>Secure Digital Investment Platform</h1>  <p>  
+Invest in cryptocurrency, global stocks, real estate projects and energy markets through our advanced financial investment platform.  
+</p>  </div>  </div>  <!-- CRYPTO TICKER -->  <div class="crypto-slider">  <div class="crypto-track">  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
+BTC $67,724  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">  
+ETH $2,182  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">  
+USDT $1  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">  
+BNB $590  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/sol.png" width="20">  
+SOL $180  
+</div>  <!-- duplicated for infinite scroll -->  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
+BTC $67,724  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">  
+ETH $2,182  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">  
+USDT $1  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">  
+BNB $590  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/sol.png" width="20">  
+SOL $180  
+</div>  </div>  
+</div>  <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>  
+StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.  
+</p>  <p>  
+Our financial analysts study global economic trends including cryptocurrency adoption, stock market expansion and commodity demand in sectors such as oil and gas. These insights allow us to position investment portfolios in high-growth opportunities while maintaining disciplined risk management.  
+</p>  </div>  </section>  <!-- MARKETS -->  <section id="markets">  <h2>Global Investment Markets</h2>  <div class="market-grid">  <div class="market-card">  <img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476">  <h3>Cryptocurrency Trading</h3>  <p>  
+Our platform analyzes major digital assets including Bitcoin and Ethereum to identify profitable market opportunities.  
+</p>  </div>  <div class="market-card">  <img src="https://images.unsplash.com/photo-1518770660439-4636190af475">  <h3>Stock Market Analysis</h3>  <p>  
+Major companies such as Apple, Tesla and Microsoft continue to dominate global markets and offer strong investment potential.  
+</p>  </div>  <div class="market-card">  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab">  <h3>Real Estate Development</h3>  <p>  
+Real estate remains one of the most reliable long-term investments helping investors build wealth and secure future assets.  
+</p>  </div>  <div class="market-card">  <img src="https://images.unsplash.com/photo-1509395176047-4a66953fd231">  <h3>Energy Sector</h3>  <p>  
+Oil and gas projects continue to generate strong global demand and support diversified investment portfolios.  
+</p>  </div>  </div>  </section>  <!-- REVIEWS -->  <section id="reviews">  <h2>Investor Testimonials</h2>  <div class="review-grid">  <div class="review">  ⭐⭐⭐⭐⭐
+
+<p>  
+StargicInvestment has been one of the most reliable platforms I have used. Withdrawals are fast and the investment structure is clear.  
+</p>  <strong>Michael R. – United Kingdom</strong>
+
+</div>  <div class="review">  ⭐⭐⭐⭐⭐
+
+<p>  
+I started with a small investment and gradually increased my portfolio. The platform is transparent and professionally managed.  
+</p>  <strong>Laura Bennett – Canada</strong>
+
+</div>  <div class="review">  ⭐⭐⭐⭐⭐
+
+<p>  
+The diversification into crypto, stocks and real estate makes this platform unique compared to other investment services.  
+</p>  <strong>David Morgan – Australia</strong>
+
+</div>  </div>  </section>  <footer>  Support Email
 <br><br>
 
 stargicinvestment987@gmail.com
@@ -496,149 +312,166 @@ stargicinvestment987@gmail.com
 
 © 2026 StargicInvestment
 
-</footer>
+</footer>  <script>  
+  
+function openLogin(){  
+document.getElementById("loginBox").style.display="flex";  
+}  
+  
+function openRegister(){  
+document.getElementById("registerBox").style.display="flex";  
+}  
+  
+window.onclick=function(e){  
+if(e.target.classList.contains("popup")){  
+e.target.style.display="none";  
+}  
+}  
+  
+async function prices(){  
+  
+let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");  
+  
+let p=await r.json();  
+  
+btc.innerHTML="BTC $"+p.bitcoin.usd;  
+eth.innerHTML="ETH $"+p.ethereum.usd;  
+usdt.innerHTML="USDT $"+p.tether.usd;  
+xrp.innerHTML="XRP $"+p.ripple.usd;  
+bnb.innerHTML="BNB $"+p.binancecoin.usd;  
+  
+}  
+  
+prices();  
+setInterval(prices,10000);  
+  
+</script>  <script type="module">  
+  
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";  
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";  
+import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";  
+  
+if(user){  
+console.log("User logged in:", user.email);  
+  
+// connect your chat  
+loadMessages(user);  
+  
+}else{  
+console.log("No user logged in");  
+}  
+  
+});  
+const firebaseConfig = {  
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",  
+  authDomain: "stargicinvestment.firebaseapp.com",  
+  projectId: "stargicinvestment",  
+  storageBucket: "stargicinvestment.firebasestorage.app",  
+  messagingSenderId: "1053305294931",  
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6",  
+  measurementId: "G-MYXX49TZLW"  
+};  
+  
+const app = initializeApp(firebaseConfig);  
+const auth = getAuth(app);  
+const db = getFirestore(app);  
+  function loadMessages(user){  
+  
+  const q = query(collection(db, "messages"), where("userId","==",user.uid));  
+  
+  onSnapshot(q,(snapshot)=>{  
+  
+    const box = document.getElementById("chatMessages");  
+    box.innerHTML = "";  
+  
+    snapshot.forEach(doc=>{  
+      let data = doc.data();  
+  
+      box.innerHTML += `  
+        <div>You: ${data.text}</div>  
+        <div style="color:green;">Admin: ${data.reply || "Waiting..."}</div><br>  
+      `;  
+    });  
+  
+  });  
+  
+}  
+window.openPopup = function(){  
+document.getElementById("chatPopup").style.display="block";  
+}  
+  
+window.closePopup = function(){  
+document.getElementById("chatPopup").style.display="none";  
+}  
+  
+window.openChat = function(){  
+document.getElementById("chatPopup").style.display="none";  
+document.getElementById("chatBox").style.display="block";  
+  }  
+  setTimeout(()=>{  
+document.getElementById("chatPopup").style.display="block";  
+}, 3000);  
+  
+  
+// ==========================  
+// 🔥 SEND MESSAGE (FIREBASE)  
+// ==========================  
+  
+window.sendMessage = async function(){  
+  
+  const user = auth.currentUser;  
+  
+  if(!user){  
+    alert("Please login first");  
+    return;  
+  }  
+  
+  let input = document.getElementById("chatInput");  
+  let message = input.value;  
+  
+  if(message.trim() === "") return;  
+  
+  // ✅ SHOW MESSAGE IMMEDIATELY  
+  const box = document.getElementById("chatMessages");  
+  box.innerHTML += `<div>You: ${message}</div>`;  
+  
+  try{  
+    await addDoc(collection(db, "messages"), {  
+      text: message,  
+      userId: user.uid,  
+      email: user.email,  
+      time: Date.now(),  
+      reply: ""  
+    });  
+  
+    input.value = "";  
+  
+  }catch(e){  
+    console.error(e);  
+    alert("Error sending message");  
+  }  
+};   
+    
+  
+</script>  <!-- CHAT BOX -->  <div id="chatPopup" style="display:none; position:fixed; bottom:80px; right:20px; width:300px; background:#111; color:white; padding:10px; border-radius:10px; z-index:9999;">    <div id="chatMessages" style="height:200px; overflow-y:auto;"></div>    <input type="text" id="chatInput" placeholder="Type message..." style="width:100%; margin-top:10px;">  <button onclick="sendMessage()" style="width:100%; margin-top:5px;">Send</button>
 
-
-<script>
-
-function openLogin(){
-document.getElementById("loginBox").style.display="flex";
-}
-
-function openRegister(){
-document.getElementById("registerBox").style.display="flex";
-}
-
-window.onclick=function(e){
-if(e.target.classList.contains("popup")){
-e.target.style.display="none";
-}
-}
-
-async function prices(){
-
-let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");
-
-let p=await r.json();
-
-btc.innerHTML="BTC $"+p.bitcoin.usd;
-eth.innerHTML="ETH $"+p.ethereum.usd;
-usdt.innerHTML="USDT $"+p.tether.usd;
-xrp.innerHTML="XRP $"+p.ripple.usd;
-bnb.innerHTML="BNB $"+p.binancecoin.usd;
-
-}
-
-prices();
-setInterval(prices,10000);
-
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// ✅ FIREBASE CONFIG
-const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-  authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
-};
-
-// ✅ INIT
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ==========================
-// ✅ AUTH CHECK
-// ==========================
-onAuthStateChanged(auth,(user)=>{
-
-  if(user){
-    console.log("User logged in:", user.email);
-    loadMessages(user);
-  }else{
-    console.log("No user logged in");
-  }
-
-});
-
-// ==========================
-// ✅ LOAD USER MESSAGES
-// ==========================
-function loadMessages(user){
-
-  const q = query(collection(db, "messages"), where("userId","==",user.uid));
-
-  onSnapshot(q,(snapshot)=>{
-
-    const box = document.getElementById("chatMessages");
-    box.innerHTML = "";
-
-    snapshot.forEach(doc=>{
-      let data = doc.data();
-
-      box.innerHTML += `
-        <div>You: ${data.text}</div>
-        <div style="color:lime;">Admin: ${data.reply || "Waiting..."}</div><br>
-      `;
-    });
-
-  });
-
-}
-
-// ==========================
-// ✅ SEND MESSAGE
-// ==========================
-window.sendMessage = async function(){
-
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("Please login first");
-    return;
-  }
-
-  let input = document.getElementById("chatInput");
-  let message = input.value;
-
-  if(message.trim() === "") return;
-
-  try{
-    await addDoc(collection(db, "messages"), {
-      text: message,
-      userId: user.uid,
-      email: user.email,
-      time: Date.now(),
-      reply: ""
-    });
-
-    input.value = "";
-
-  }catch(e){
-    alert("Error sending message");
-  }
-};
-
-// ==========================
-// ✅ CHAT BUTTON CLICK (FIXED)
-// ==========================
-document.getElementById("chatButton").addEventListener("click", ()=>{
-  const popup = document.getElementById("chatPopup");
-
-  if(popup.style.display === "block"){
-    popup.style.display = "none";
-  }else{
-    popup.style.display = "block";
-  }
-});
-
-</script>
-</body>
+</div>  <!-- CHAT BUTTON -->  <div onclick="openPopup()" style="position:fixed; bottom:20px; right:20px; z-index:9999; background:#007bff; color:white; padding:15px; border-radius:50%; cursor:pointer;">  
+💬  
+</div>  <script>  
+function openPopup(){  
+  document.getElementById("chatPopup").style.display = "block";  
+}  
+  
+function sendMessage(){  
+  let input = document.getElementById("chatInput");  
+  let message = input.value;  
+  
+  if(message.trim() === "") return;  
+  
+  let box = document.getElementById("chatMessages");  
+  box.innerHTML += "<div>You: " + message + "</div>";  
+  
+  input.value = "";  
+}  
+</script>    </body>  
 </html>
-
