@@ -261,3 +261,7 @@ liveDeposits();
 liveWithdrawals();
 investorsCounter();
 }
+window.onload = function(){
+  loadDashboard();
+  startInvestment(); // 👈 THIS LINE IS REQUIRED
+};
