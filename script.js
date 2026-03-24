@@ -83,7 +83,35 @@ document.getElementById("plan").innerText =
 user.plan || "No plan selected";
 
 }
+function startInvestment(){
 
+let user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if(!user) return;
+
+// If no start date, create one
+if(!user.startDate){
+    user.startDate = Date.now();
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+}
+
+// Start mining
+setInterval(()=>{
+
+    let profit = (user.balance * (user.percent || 5)) / 100;
+
+    profit = profit / 120; // slow profit
+
+    user.balance = Number(user.balance) + profit;
+
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+    document.getElementById("balance").innerText =
+    "$" + user.balance.toFixed(2);
+
+},5000);
+
+}
 
 // ==========================
 // ✅ PLAN SELECTION
