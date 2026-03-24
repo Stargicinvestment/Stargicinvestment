@@ -26,10 +26,27 @@ font-size:20px;
 font-weight:600;
 }
 
+.menu{
+display:flex;
+align-items:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
 .menu a{
 color:#00ff9d;
 text-decoration:none;
-margin-left:20px;
+}
+
+#google_translate_element{
+margin-left:10px;
+}
+
+.goog-te-combo{
+background:#111827;
+color:#00ff9d;
+border:1px solid #00ff9d;
+padding:5px;
 }
 
 .container{
@@ -43,7 +60,6 @@ text-align:center;
 margin-bottom:40px;
 }
 
-/* ✅ FIXED GRID */
 .plan-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
@@ -58,10 +74,6 @@ text-align:center;
 display:flex;
 flex-direction:column;
 justify-content:space-between;
-}
-
-.plan h3{
-margin-top:0;
 }
 
 .btn{
@@ -116,11 +128,14 @@ margin-top:80px;
 
 <nav>
 <div class="logo">StargicInvestment</div>
+
 <div class="menu">
 <a href="dashboard.html">Dashboard</a>
 <a href="deposit.html">Deposit</a>
-<a href="#">Withdraw</a>
- <div id="google_translate_element"></div>
+<a href="withdraw.html">Withdraw</a>
+
+<!-- ✅ GOOGLE TRANSLATE -->
+<div id="google_translate_element"></div>
 </div>
 </nav>
 
@@ -256,7 +271,6 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ✅ CONFIRM INVESTMENT
 window.confirmInvestment = async function(){
 
   const user = auth.currentUser;
@@ -285,60 +299,9 @@ window.confirmInvestment = async function(){
   }
 
 };
-
 </script>
-<script>
 
-const translations = {
-  en: {
-    title: "Secure Digital Investment Platform",
-    hero: "Invest in cryptocurrency, global stocks, real estate and energy markets.",
-    login: "Login",
-    register: "Create Account",
-    aboutTitle: "About Our Company",
-    aboutText: "StargicInvestment is a global digital asset management platform.",
-    marketsTitle: "Global Investment Markets",
-    reviewsTitle: "Investor Testimonials",
-    deposit: "Deposit",
-    withdraw: "Withdraw",
-    balance: "Your Balance",
-    plans: "Investment Plans"
-  },
-
-  it: {
-    title: "Piattaforma di Investimento Digitale Sicura",
-    hero: "Investi in criptovalute, azioni globali, immobili ed energia.",
-    login: "Accesso",
-    register: "Crea Account",
-    aboutTitle: "Chi Siamo",
-    aboutText: "StargicInvestment è una piattaforma globale di gestione patrimoniale.",
-    marketsTitle: "Mercati di Investimento Globali",
-    reviewsTitle: "Testimonianze degli Investitori",
-    deposit: "Deposito",
-    withdraw: "Prelievo",
-    balance: "Il tuo saldo",
-    plans: "Piani di investimento"
-  },
-
-  de: {
-    title: "Sichere Digitale Investmentplattform",
-    hero: "Investieren Sie in Kryptowährungen, Aktien, Immobilien und Energie.",
-    login: "Anmelden",
-    register: "Konto erstellen",
-    aboutTitle: "Über uns",
-    aboutText: "StargicInvestment ist eine globale Vermögensplattform.",
-    marketsTitle: "Globale Märkte",
-    reviewsTitle: "Kundenbewertungen",
-    deposit: "Einzahlen",
-    withdraw: "Abheben",
-    balance: "Ihr Guthaben",
-    plans: "Investitionspläne"
-  },
-
-  fr: {
-    title: "Plateforme d'Investissement Numérique Sécurisée",
-    hero: "Investissez dans les crypto-monnaies, actions et immobilier.",
-    login: "Connexion",
+<!-- ✅ GOOGLE TRANSLATE SCRIPT (FIXED POSITION) -->
 <script type="text/javascript">
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
@@ -350,5 +313,6 @@ function googleTranslateElementInit() {
 </script>
 
 <script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
 </body>
 </html>
