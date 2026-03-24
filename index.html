@@ -246,8 +246,7 @@ margin-top:40px;
   border:1px solid #00ff9d;
   padding:5px;
 }
-
-/* 🔥 HIDE GOOGLE TOP BAR */
+/* 🔥 HIDE GOOGLE TOP BAR COMPLETELY */
 .goog-te-banner-frame.skiptranslate {
   display: none !important;
 }
@@ -256,9 +255,21 @@ iframe.goog-te-banner-frame {
   display: none !important;
 }
 
-/* 🔥 FIX PAGE SHIFT */
 body {
   top: 0px !important;
+}
+
+/* 🔥 EXTRA STRONG FIX */
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+.skiptranslate iframe {
+  display: none !important;
 }
 </style>  </head>  <body>  <nav>  <div class="logo">StargicInvestment</div>  <div class="menu">  <a href="#about">About</a>
 <a href="#markets">Markets</a>
