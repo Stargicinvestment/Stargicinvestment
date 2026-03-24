@@ -1,15 +1,31 @@
-// REGISTER USER
+// ==========================
+// ✅ REGISTER USER
+// ==========================
 function registerUser(){
 
 let email = document.getElementById("email").value;
 let password = document.getElementById("password").value;
 
+if(!email || !password){
+  alert("Fill all fields");
+  return;
+}
+
 let users = JSON.parse(localStorage.getItem("users")) || [];
 
+// جلوگیری duplicate user
+let exist = users.find(u => u.email === email);
+if(exist){
+  alert("User already exists");
+  return;
+}
+
 let newUser = {
-email: email,
-password: password,
-balance: 0
+  email: email,
+  password: password,
+  balance: 0,
+  plan: null,
+  percent: 0
 };
 
 users.push(newUser);
@@ -19,11 +35,12 @@ localStorage.setItem("users", JSON.stringify(users));
 alert("Account created successfully");
 
 window.location = "login.html";
-
 }
 
 
-// LOGIN USER
+// ==========================
+// ✅ LOGIN USER
+// ==========================
 function loginUser(){
 
 let email = document.getElementById("email").value;
@@ -40,47 +57,109 @@ localStorage.setItem("loggedInUser", JSON.stringify(found));
 window.location = "dashboard.html";
 
 }else{
-
 alert("Invalid login");
-
 }
 
 }
 
 
-// SHOW BALANCE
-function loadDashboard(){document.getElementById("plan").innerText =
-user.plan || "No plan selected";
+// ==========================
+// ✅ LOAD DASHBOARD
+// ==========================
+function loadDashboard(){
 
 let user = JSON.parse(localStorage.getItem("loggedInUser"));
 
-if(user){
+if(!user){
+  window.location = "login.html";
+  return;
+}
 
-document.getElementById("balance").innerText = "$" + user.balance;
+// balance
+document.getElementById("balance").innerText = "$" + (user.balance || 0);
+
+// plan
+document.getElementById("plan").innerText =
+user.plan || "No plan selected";
 
 }
 
+
+// ==========================
+// ✅ PLAN SELECTION
+// ==========================
+function choosePlan(name,percent){
+
+let user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if(!user) return;
+
+user.plan = name;
+user.percent = percent;
+
+localStorage.setItem("loggedInUser",JSON.stringify(user));
+
+alert("Plan Activated: "+name);
+
 }
-// FAKE NAMES
+
+
+// ==========================
+// ✅ MINING / PROFIT SYSTEM
+// ==========================
+function startMining(){
+
+let user = JSON.parse(localStorage.getItem("loggedInUser"));
+
+if(!user || !user.percent) return;
+
+setInterval(()=>{
+
+let profit = (user.balance * user.percent) / 100;
+
+// slow growth
+profit = profit / 120;
+
+user.balance = Number(user.balance) + profit;
+
+// save
+localStorage.setItem("loggedInUser", JSON.stringify(user));
+
+// update UI
+let balanceEl = document.getElementById("balance");
+if(balanceEl){
+balanceEl.innerText = "$" + user.balance.toFixed(2);
+}
+
+},5000);
+
+}
+
+
+// ==========================
+// ✅ FAKE LIVE DATA
+// ==========================
 let names = [
 "Michael","John","David","Sarah","Daniel",
 "Emma","Chris","Robert","Sophia","James"
 ];
 
-// RANDOM AMOUNTS
 function randomAmount(){
 return Math.floor(Math.random()*900)+100;
 }
 
-// LIVE DEPOSITS
+
+// ==========================
+// ✅ LIVE DEPOSITS
+// ==========================
 function liveDeposits(){
 
 let list = document.getElementById("deposits");
+if(!list) return;
 
 setInterval(()=>{
 
 let name = names[Math.floor(Math.random()*names.length)];
-
 let amount = randomAmount();
 
 let li = document.createElement("li");
@@ -98,15 +177,17 @@ list.removeChild(list.lastChild);
 }
 
 
-// LIVE WITHDRAWALS
+// ==========================
+// ✅ LIVE WITHDRAWALS
+// ==========================
 function liveWithdrawals(){
 
 let list = document.getElementById("withdrawals");
+if(!list) return;
 
 setInterval(()=>{
 
 let name = names[Math.floor(Math.random()*names.length)];
-
 let amount = randomAmount();
 
 let li = document.createElement("li");
@@ -124,17 +205,19 @@ list.removeChild(list.lastChild);
 }
 
 
-// ACTIVE INVESTORS COUNTER
+// ==========================
+// ✅ INVESTOR COUNTER
+// ==========================
 function investorsCounter(){
 
 let count = 120;
-
 let el = document.getElementById("investors");
+
+if(!el) return;
 
 setInterval(()=>{
 
 count += Math.floor(Math.random()*3);
-
 el.innerText = count;
 
 },5000);
@@ -142,67 +225,11 @@ el.innerText = count;
 }
 
 
-// START ALL
+// ==========================
+// ✅ START ALL ANIMATIONS
+// ==========================
 function startLive(){
-
 liveDeposits();
-
 liveWithdrawals();
-
 investorsCounter();
-
 }
-function choosePlan(name,percent){
-
-let user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-user.plan = name;
-user.percent = percent;
-
-localStorage.setItem("loggedInUser",JSON.stringify(user));
-
-alert("Plan Activated: "+name);
-
-}
-function startMining(){
-
-let user = JSON.parse(localStorage.getItem("loggedInUser"));
-
-if(!user || !user.percent) return;
-
-setInterval(()=>{
-
-let profit = (user.balance * user.percent) / 100;
-
-profit = profit / 120; // slow growth
-
-user.balance = Number(user.balance) + profit;
-
-localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-document.getElementById("balance").innerText =
-"$" + user.balance.toFixed(2);
-
-},5000);
-
-}
-let balance = localStorage.getItem("balance") || 0;
-let percent = localStorage.getItem("percent") || 0;
-
-balance = parseFloat(balance);
-percent = parseFloat(percent);
-
-function updateProfit(){
-
-let profit = (balance * percent) / 100;
-
-balance = balance + profit/24;
-
-localStorage.setItem("balance", balance);
-
-document.getElementById("balance").innerHTML =
-"$" + balance.toFixed(2);
-
-}
-
-setInterval(updateProfit, 5000);
