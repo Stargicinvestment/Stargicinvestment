@@ -3,20 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Investor Dashboard</title>
+<title>Dashboard</title>
 
 <style>
-*{
-  box-sizing: border-box;
-}
-
-html, body{
-  margin:0;
-  padding:0;
-  overflow-x:hidden;
-}
+*{box-sizing:border-box;}
 
 body{
+  margin:0;
   font-family:Arial;
   background:#0b0f1a;
   color:white;
@@ -25,14 +18,11 @@ body{
 .header{
   display:flex;
   justify-content:space-between;
-  align-items:center;
   padding:15px;
   background:#111827;
 }
 
-.container{
-  padding:20px;
-}
+.container{padding:20px;}
 
 .card{
   background:#111827;
@@ -41,14 +31,12 @@ body{
   margin-top:20px;
 }
 
-.balance{
-  color:#00ff9d;
-  font-size:40px;
-}
+.balance{color:#00ff9d;font-size:40px;}
+.profit{color:gold;font-size:30px;}
 
 .actions{
   display:flex;
-  gap:15px;
+  gap:10px;
   margin-top:20px;
 }
 
@@ -57,34 +45,18 @@ body{
   padding:12px;
   border:none;
   border-radius:10px;
-  font-size:16px;
   cursor:pointer;
 }
 
-.deposit{
-  background:#00e676;
-  color:#000;
-}
-
-.withdraw{
-  background:#ff5252;
-  color:#fff;
-}
-
-.wallet-address,
-.transaction-card,
-.history-box,
-div{
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
+.deposit{background:#00e676;color:#000;}
+.withdraw{background:#ff5252;color:#fff;}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <h2>Investor Dashboard</h2>
+  <h2>Dashboard</h2>
   <button onclick="logout()">Logout</button>
 </div>
 
@@ -93,16 +65,19 @@ div{
   <h2 id="welcome">Welcome</h2>
 
   <div class="card">
-    <p>Your Balance</p>
 
+    <p>Balance</p>
     <div id="balance" class="balance">$0</div>
+
+    <p>Profit</p>
+    <div id="profit" class="profit">$0</div>
 
     <div class="actions">
       <button class="btn deposit" onclick="goDeposit()">Deposit</button>
       <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
     </div>
 
-    <h3 style="margin-top:30px;">Transaction History</h3>
+    <h3 style="margin-top:30px;">Transactions</h3>
     <div id="history"></div>
 
   </div>
@@ -113,24 +88,24 @@ div{
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { 
-  getAuth, 
-  onAuthStateChanged, 
-  signOut 
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { 
-  getFirestore, 
-  doc, 
-  getDoc, 
-  updateDoc, 
-  collection, 
-  query, 
-  where, 
-  onSnapshot 
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  onSnapshot
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 🔥 CONFIG
+// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -140,108 +115,127 @@ const firebaseConfig = {
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
-// INIT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// 💰 PLAN
+// PLAN %
 const plans = {
   bronze: 0.02,
   silver: 0.05,
   gold: 0.1
 };
 
-// ==========================
-// ⛏️ MINING FUNCTION (OUTSIDE)
-// ==========================
-function startMining(user) {
+let miningRunning = false;
 
-  const userRef = doc(db, "users", user.uid);
+// ✅ SAFE MINING (NO SPAM)
+async function runMining(userRef){
 
-  setInterval(async () => {
-
-    const snap = await getDoc(userRef);
-    if (!snap.exists()) return;
-
-    const data = snap.data();
-
-    const now = Date.now();
-    let last = data.lastUpdate;
-
-    if (!last) {
-      last = now - 60000;
-    }
-
-    const hours = (now - last) / (1000 * 60 * 60);
-    const rate = plans[data.plan] || 0.1;
-
-    let earned = (data.balance || 0) * rate * (hours / 24);
-
-    if (earned < 0.01) earned = 0.01;
-
-    await updateDoc(userRef, {
-      profit: (data.profit || 0) + earned,
-      lastUpdate: now
-    });
-
-    console.log("🔥 mining:", earned);
-
-  }, 5000);
-}
-
-// ==========================
-// 🔐 AUTH (ONLY ONE)
-// ==========================
-onAuthStateChanged(auth, async (user) => {
-
-  if (!user) {
-    location.href = "login.html";
-    return;
-  }
-
-  const userRef = doc(db, "users", user.uid);
   const snap = await getDoc(userRef);
-
-  if (!snap.exists()) return;
+  if(!snap.exists()) return;
 
   const data = snap.data();
 
-  // 👤 NAME
+  let balance = Number(data.balance) || 0;
+  let profit = Number(data.profit) || 0;
+  let last = Number(data.lastUpdate) || Date.now();
+
+  let now = Date.now();
+  let hours = (now - last) / (1000 * 60 * 60);
+
+  if(hours <= 0) return;
+
+  let rate = plans[data.plan] || 0.02;
+
+  let earned = balance * rate * (hours / 24);
+
+  if(!isFinite(earned) || earned <= 0) return;
+
+  await updateDoc(userRef,{
+    profit: profit + earned,
+    lastUpdate: now
+  });
+
+  console.log("MINED:", earned);
+}
+
+// START LOOP
+function startMining(user){
+
+  if(miningRunning) return;
+  miningRunning = true;
+
+  const userRef = doc(db,"users",user.uid);
+
+  // run immediately
+  runMining(userRef);
+
+  // then every 60s
+  setInterval(()=>{
+    runMining(userRef);
+  },60000);
+}
+
+// AUTH
+onAuthStateChanged(auth, async (user)=>{
+
+  if(!user){
+    location.href="login.html";
+    return;
+  }
+
+  const userRef = doc(db,"users",user.uid);
+
+  // NAME
+  const snap = await getDoc(userRef);
+  if(!snap.exists()) return;
+
+  let data = snap.data();
   let name = data.name || user.email.split("@")[0];
-  document.getElementById("welcome").innerText = "Welcome, " + name;
 
-  // 💰 BALANCE
-  document.getElementById("balance").innerText =
-    "$" + (data.balance || 0);
+  document.getElementById("welcome").innerText =
+    "Welcome, " + name;
 
-  // ⛏️ START MINING
+  // ✅ REALTIME UI
+  onSnapshot(userRef,(docSnap)=>{
+
+    let d = docSnap.data();
+
+    let balance = Number(d.balance) || 0;
+    let profit = Number(d.profit) || 0;
+
+    document.getElementById("balance").innerText =
+      "$" + balance.toFixed(2);
+
+    document.getElementById("profit").innerText =
+      "$" + profit.toFixed(2);
+  });
+
+  // START MINING
   startMining(user);
 
-  // ==========================
-  // 📜 TRANSACTIONS FIX
-  // ==========================
+  // TRANSACTIONS
   const q = query(
-    collection(db, "transactions"),
-    where("userId", "==", user.uid)
+    collection(db,"transactions"),
+    where("userId","==",user.uid)
   );
 
-  onSnapshot(q, (snapshot) => {
+  onSnapshot(q,(snapshot)=>{
     let box = document.getElementById("history");
-    box.innerHTML = "";
+    box.innerHTML="";
 
-    snapshot.forEach((docItem) => {
+    snapshot.forEach((docItem)=>{
+
       let d = docItem.data();
 
-      let color =
-        d.type === "deposit"
-          ? "lightgreen"
-          : "#ff6b6b";
+      let color = d.type === "deposit"
+        ? "lightgreen"
+        : "#ff6b6b";
 
       box.innerHTML += `
-        <div style="background:#0b0f1a; padding:10px; margin:10px 0; border-radius:8px;">
+        <div style="background:#0b0f1a;padding:10px;margin:10px 0;border-radius:8px;">
           <b style="color:${color};">${d.type.toUpperCase()}</b><br>
-          Amount: $${d.amount}<br>
+          Amount: $${Number(d.amount).toFixed(2)}<br>
           ${d.wallet ? "Wallet: " + d.wallet + "<br>" : ""}
           <small>${new Date(d.time).toLocaleString()}</small>
         </div>
@@ -251,23 +245,21 @@ onAuthStateChanged(auth, async (user) => {
 
 });
 
-// LOGOUT
+// ACTIONS
 window.logout = function(){
   signOut(auth);
-  location.href = "login.html";
+  location.href="login.html";
 };
 
-// NAVIGATION
 window.goDeposit = function(){
-  location.href = "deposit.html";
+  location.href="deposit.html";
 };
 
 window.goWithdraw = function(){
-  location.href = "withdraw.html";
+  location.href="withdraw.html";
 };
 
 </script>
-  
 
 </body>
-       </html>
+</html>
