@@ -143,6 +143,8 @@ async function runMining(userRef){
 
   const plan = plans[data.plan];
   if(!plan) return;
+  
+  let rate = plan.rate;
 
   let start = Number(data.startTime);
   let last = Number(data.lastUpdate) || Date.now();
@@ -155,7 +157,7 @@ async function runMining(userRef){
   let hours = (now - last) / (1000 * 60 * 60);
   if(hours <= 0) return;
 
-  let earned = invested * plan.rate * (hours / 24);
+  let earned = invested * rate * (hours / 24);
 
   if(!isFinite(earned) || earned <= 0) return;
 
