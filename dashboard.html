@@ -168,21 +168,30 @@ onAuthStateChanged(auth, async (user) => {
   gold: 0.1
 };
 
-const now = Date.now();
-const last = data.lastUpdate || now;
+// 🔁 RUN EVERY 10 SECONDS
+setInterval(async () => {
 
-const hours = (now - last) / (1000 * 60 * 60);
-const rate = plans[data.plan] || 0;
+  const now = Date.now();
+  const last = data.lastUpdate || now;
 
-const earned = data.balance * rate * (hours / 24);
+  const hours = (now - last) / (1000 * 60 * 60);
+  const rate = plans[data.plan] || 0;
 
-if (earned > 0) {
-  await updateDoc(doc(db, "users", user.uid), {
-    profit: (data.profit || 0) + earned,
-    lastUpdate: now
-  });
-}
+  const earned = data.balance * rate * (hours / 24);
 
+  if (earned > 0) {
+    await updateDoc(doc(db, "users", user.uid), {
+      profit: (data.profit || 0) + earned,
+      lastUpdate: now
+    });
+
+    // 🔄 UPDATE LOCAL DATA
+    data.profit = (data.profit || 0) + earned;
+    data.lastUpdate = now;
+  }
+
+}, 10000); // every 10 seconds
+      
       // 🔥 FORCE USERNAME FIRST
       if (data.username && data.username.trim() !== "") {
         displayName = data.username;
