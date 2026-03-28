@@ -129,6 +129,7 @@ const plans = {
 
 let miningRunning = false;
 
+// ✅ MINING FUNCTION
 async function runMining(userRef){
 
   const snap = await getDoc(userRef);
@@ -143,24 +144,20 @@ async function runMining(userRef){
 
   const plan = plans[data.plan];
   if(!plan) return;
-  
-  let rate = plan.rate;
 
   let start = Number(data.startTime);
   let last = Number(data.lastUpdate) || Date.now();
   let now = Date.now();
 
+  // STOP AFTER PLAN ENDS
+  let daysPassed = (now - start) / (1000 * 60 * 60 * 24);
+  if(daysPassed >= plan.duration) return;
 
-// ✅ ADD HERE
-let daysPassed = (now - start) / (1000 * 60 * 60 * 24);
+  // CALCULATE HOURS
+  let hours = (now - last) / (1000 * 60 * 60);
 
-if(daysPassed >= plan.duration) return;
-
-// THEN CONTINUE
-let hours = (now - last) / (1000 * 60 * 60);
-
-  
-  letearned = invested * rate * (hours / 24);
+  // ✅ FIXED LINE
+  let earned = invested * plan.rate * (hours / 24);
 
   if(!isFinite(earned) || earned <= 0) return;
 
@@ -171,7 +168,8 @@ let hours = (now - last) / (1000 * 60 * 60);
 
   console.log("MINED:", earned);
 }
-   STARTTARTTART LOOP
+
+// ✅ START LOOP
 function startMining(user){
 
   if(miningRunning) return;
@@ -179,10 +177,8 @@ function startMining(user){
 
   const userRef = doc(db,"users",user.uid);
 
-  // run immediately
   runMining(userRef);
 
-  // then every 60s
   setInterval(()=>{
     runMining(userRef);
   },60000);
@@ -198,7 +194,6 @@ onAuthStateChanged(auth, async (user)=>{
 
   const userRef = doc(db,"users",user.uid);
 
-  // NAME
   const snap = await getDoc(userRef);
   if(!snap.exists()) return;
 
@@ -208,7 +203,7 @@ onAuthStateChanged(auth, async (user)=>{
   document.getElementById("welcome").innerText =
     "Welcome, " + name;
 
-  // ✅ REALTIME UI
+  // REALTIME UI
   onSnapshot(userRef,(docSnap)=>{
 
     let d = docSnap.data();
@@ -223,7 +218,6 @@ onAuthStateChanged(auth, async (user)=>{
       "$" + profit.toFixed(2);
   });
 
-  // START MINING
   startMining(user);
 
   // TRANSACTIONS
