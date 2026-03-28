@@ -243,6 +243,11 @@ async function startMining(user) {
 
   }, 5000); // every 5 seconds
 }
+  onAuthStateChanged(auth, (user) => {
+  if (user) {
+    startMining(user);
+  }
+});
 
   // ==========================
   // 📜 TRANSACTIONS
