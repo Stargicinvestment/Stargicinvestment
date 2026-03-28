@@ -6,7 +6,7 @@
 <title>Investor Dashboard</title>
 
 <style>
-  *{
+*{
   box-sizing: border-box;
 }
 
@@ -15,8 +15,8 @@ html, body{
   padding:0;
   overflow-x:hidden;
 }
+
 body{
-  margin:0;
   font-family:Arial;
   background:#0b0f1a;
   color:white;
@@ -70,8 +70,9 @@ body{
   background:#ff5252;
   color:#fff;
 }
- .wallet-address,
- .transaction-card,
+
+.wallet-address,
+.transaction-card,
 .history-box,
 div{
   word-break: break-word;
@@ -94,10 +95,8 @@ div{
   <div class="card">
     <p>Your Balance</p>
 
-    <!-- ✅ FIX: Added balance ID -->
     <div id="balance" class="balance">$0</div>
 
-    <!-- ✅ FIX: Buttons now work -->
     <div class="actions">
       <button class="btn deposit" onclick="goDeposit()">Deposit</button>
       <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
@@ -113,8 +112,21 @@ div{
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getAuth, 
+  onAuthStateChanged, 
+  signOut 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { 
+  getFirestore, 
+  doc, 
+  getDoc, 
+  collection, 
+  query, 
+  where, 
+  onSnapshot 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
@@ -125,75 +137,83 @@ const firebaseConfig = {
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
+// ✅ INIT
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ✅ LOAD USER DATA
-onAuthStateChanged(auth, async(user)=>{
-  if(!user){
+// ✅ MAIN AUTH STATE
+onAuthStateChanged(auth, async (user) => {
+
+  if (!user) {
     location.href = "login.html";
     return;
   }
 
-  
-  // ✅ Get user document from Firestore
-const ref = doc(db, "users", user.uid);
-const snap = await getDoc(ref);
+  try {
 
-let displayName = "User";
+    // ✅ GET USER DATA FROM FIRESTORE
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
 
-if (snap.exists()) {
-  const data = snap.data();
+    let displayName = "User";
 
-  // 🔥 FORCE username
-  if (data.username && data.username.trim() !== "") {
-    displayName = data.username;
-  } else if (user.email) {
-    // fallback if username missing
-    displayName = user.email.split("@")[0];
-  }
-}
+    if (snap.exists()) {
+      const data = snap.data();
 
-// ✅ SET NAME
-document.getElementById("welcome").innerText =
-  "Welcome, " + displayName;
+      // 🔥 FORCE USERNAME FIRST
+      if (data.username && data.username.trim() !== "") {
+        displayName = data.username;
+      } 
+      // fallback to email
+      else if (user.email) {
+        displayName = user.email.split("@")[0];
+      }
 
-  // ✅ Load balance
-  const ref = doc(db,"users",user.uid);
-  const snap = await getDoc(ref);
+      // ✅ SET BALANCE
+      document.getElementById("balance").innerText =
+        "$" + (data.balance || 0);
+    } else {
+      // fallback if no firestore record
+      displayName = user.email ? user.email.split("@")[0] : "User";
+    }
 
-  if(snap.exists()){
-    const data = snap.data();
-    document.getElementById("balance").innerText =
-      "$" + (data.balance || 0);
-  }
+    // ✅ SHOW NAME
+    document.getElementById("welcome").innerText =
+      "Welcome, " + displayName;
 
-  // ✅ LOAD TRANSACTIONS
-  const q = query(
-    collection(db,"transactions"),
-    where("userId","==",user.uid)
-  );
+    // ✅ LOAD TRANSACTIONS
+    const q = query(
+      collection(db, "transactions"),
+      where("userId", "==", user.uid)
+    );
 
-  onSnapshot(q,(snapshot)=>{
-    let box = document.getElementById("history");
-    box.innerHTML = "";
+    onSnapshot(q, (snapshot) => {
+      let box = document.getElementById("history");
+      box.innerHTML = "";
 
-    snapshot.forEach(doc=>{
-      let d = doc.data();
+      snapshot.forEach((docItem) => {
+        let d = docItem.data();
 
-      let color = d.type === "deposit" ? "lightgreen" : "#ff6b6b";
+        let color = d.type === "deposit"
+          ? "lightgreen"
+          : "#ff6b6b";
 
-      box.innerHTML += `
-        <div style="background:#0b0f1a; padding:10px; margin:10px 0; border-radius:8px;">
-          <b style="color:${color};">${d.type.toUpperCase()}</b><br>
-          Amount: $${d.amount}<br>
-          ${d.wallet ? "Wallet: "+d.wallet+"<br>" : ""}
-          <small>${new Date(d.time).toLocaleString()}</small>
-        </div>
-      `;
+        box.innerHTML += `
+          <div style="background:#0b0f1a; padding:10px; margin:10px 0; border-radius:8px;">
+            <b style="color:${color};">${d.type.toUpperCase()}</b><br>
+            Amount: $${d.amount}<br>
+            ${d.wallet ? "Wallet: " + d.wallet + "<br>" : ""}
+            <small>${new Date(d.time).toLocaleString()}</small>
+          </div>
+        `;
+      });
+
     });
-  });
+
+  } catch (err) {
+    console.error("Error loading dashboard:", err);
+  }
 
 });
 
@@ -211,21 +231,8 @@ window.goDeposit = function(){
 window.goWithdraw = function(){
   location.href = "withdraw.html";
 };
-let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
-if (currentUser) {
-  let displayName = currentUser.username;
-
-  // 🔥 FORCE fallback if username is missing
-  if (!displayName || displayName.trim() === "") {
-    displayName = currentUser.email
-      ? currentUser.email.split("@")[0]
-      : "User";
-  }
-
-  document.getElementById("welcome").innerText =
-    "Welcome, " + displayName;
-}
 </script>
+
 </body>
-</html>
+       </html>
