@@ -287,10 +287,13 @@ window.confirmInvestment = async function(){
 
   try{
     await updateDoc(doc(db,"users",user.uid),{
-      planPercent: selectedPercent,
-      lastProfitTime: Date.now(),
-      planStart: Date.now()
-    });
+  plan: selectedPlan,
+  invested: amount,
+  startTime: Date.now(),
+  lastUpdate: Date.now(),
+  profit: 0,
+  status: "active" // or "pending" if you want admin approval
+});
 
     alert("Investment confirmed ✅ Profit mining started");
 
