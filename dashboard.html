@@ -136,8 +136,8 @@ onAuthStateChanged(auth, async(user)=>{
     return;
   }
 
-  // ✅ Show user email
-  document.getElementById("welcome").innerText = "Welcome, " + user.email;
+  
+  document.getElementById("welcome").innerText = "Welcome, " + currentUser.username;
 
   // ✅ Load balance
   const ref = doc(db,"users",user.uid);
