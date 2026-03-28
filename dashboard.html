@@ -207,17 +207,38 @@ onAuthStateChanged(auth, async (user)=>{
   // REALTIME UI
   onSnapshot(userRef,(docSnap)=>{
 
-    let d = docSnap.data();
+  let d = docSnap.data();
 
-    let balance = Number(d.balance) || 0;
-    let profit = Number(d.profit) || 0;
+  let balance = Number(d.balance) || 0;
 
-    document.getElementById("balance").innerText =
-      "$" + balance.toFixed(2);
+  document.getElementById("balance").innerText =
+    "$" + balance.toFixed(2);
 
-    document.getElementById("profit").innerText =
-      "$" + profit.toFixed(2);
-  });
+  // ✅ NEW PROFIT LOGIC HERE
+  let totalProfit = Number(d.profit) || 0;
+
+  let now = Date.now();
+
+  let profitStart = Number(d.profitStart) || 0;
+  let depositStart = Number(d.depositStart) || 0;
+
+  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+
+  let availableProfit = 0;
+  let lockedProfit = totalProfit;
+
+  if(profitDays >= 7){
+    availableProfit = totalProfit;
+    lockedProfit = 0;
+  }
+
+  document.getElementById("profit").innerHTML = `
+    $${availableProfit.toFixed(2)}
+    <div style="font-size:13px;color:gray;">
+      Locked: $${lockedProfit.toFixed(2)}
+    </div>
+  `;
+});
 
   startMining(user);
 
