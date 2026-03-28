@@ -266,6 +266,40 @@ window.goWithdraw = function(){
   location.href="withdraw.html";
 };
 
+  window.invest = async function(){
+
+  const user = auth.currentUser;
+  if(!user) return;
+
+  const userRef = doc(db,"users",user.uid);
+
+  const snap = await getDoc(userRef);
+  if(!snap.exists()) return;
+
+  let data = snap.data();
+
+  let balance = Number(data.balance) || 0;
+
+  if(balance <= 0){
+    alert("No balance to invest");
+    return;
+  }
+
+  // 🔥 choose plan (you can make this dynamic later)
+  let selectedPlan = "starter";
+
+  await updateDoc(userRef,{
+    invested: balance,
+    balance: 0,
+    plan: selectedPlan,
+    startTime: Date.now(),
+    lastUpdate: Date.now(),
+    profit: 0
+  });
+
+  alert("Investment started!");
+};
+
 </script>
 
 </body>
