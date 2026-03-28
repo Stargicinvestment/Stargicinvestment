@@ -95,25 +95,7 @@ if(!user.startDate){
     localStorage.setItem("loggedInUser", JSON.stringify(user));
 }
 
-// Start mining
-setInterval(()=>{
-
-    let profit = (user.balance * (user.percent || 5)) / 100;
-
-    profit = profit / 120; // slow profit
-
-    user.balance = Number(user.balance) + profit;
-
-    localStorage.setItem("loggedInUser", JSON.stringify(user));
-
-    document.getElementById("balance").innerText =
-    "$" + user.balance.toFixed(2);
-
-},5000);
-
-}
-
-// ==========================
+=====================
 // ✅ PLAN SELECTION
 // ==========================
 function choosePlan(name,percent){
