@@ -119,11 +119,12 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// PLAN %
 const plans = {
-  bronze: 0.02,
-  silver: 0.05,
-  gold: 0.1
+  starter: { rate: 0.025, duration: 7 },
+  silver: { rate: 0.035, duration: 7 },
+  gold: { rate: 0.045, duration: 7 },
+  platinum: { rate: 0.055, duration: 7 },
+  vip: { rate: 0.066, duration: 7 }
 };
 
 let miningRunning = false;
