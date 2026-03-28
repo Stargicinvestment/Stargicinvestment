@@ -191,8 +191,21 @@ window.goDeposit = function(){
 window.goWithdraw = function(){
   location.href = "withdraw.html";
 };
+let currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
+if (currentUser) {
+  let displayName = currentUser.username;
+
+  // 🔥 FORCE fallback if username is missing
+  if (!displayName || displayName.trim() === "") {
+    displayName = currentUser.email
+      ? currentUser.email.split("@")[0]
+      : "User";
+  }
+
+  document.getElementById("welcome").innerText =
+    "Welcome, " + displayName;
+}
 </script>
-
 </body>
 </html>
