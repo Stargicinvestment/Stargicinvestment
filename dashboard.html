@@ -112,6 +112,7 @@ div{
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
 import { 
   getAuth, 
   onAuthStateChanged, 
@@ -121,14 +122,15 @@ import {
 import { 
   getFirestore, 
   doc, 
-  getDoc,
-  updateDoc,
+  getDoc, 
+  updateDoc, 
   collection, 
   query, 
   where, 
   onSnapshot 
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// 🔥 FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -143,7 +145,14 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// ✅ MAIN AUTH STATE
+// ✅ PLAN RATES
+const plans = {
+  bronze: 0.02,
+  silver: 0.05,
+  gold: 0.1
+};
+
+// ✅ MAIN
 onAuthStateChanged(auth, async (user) => {
 
   if (!user) {
@@ -151,100 +160,97 @@ onAuthStateChanged(auth, async (user) => {
     return;
   }
 
-  try {
+  const userRef = doc(db, "users", user.uid);
 
-    // ✅ GET USER DATA FROM FIRESTORE
-    const ref = doc(db, "users", user.uid);
-    const snap = await getDoc(ref);
+  // 🔥 LOAD USER DATA
+  let snap = await getDoc(userRef);
 
-    let displayName = "User";
+  if (!snap.exists()) return;
 
-    if (snap.exists()) {
-      const data = snap.data();
+  let data = snap.data();
 
-      const plans = {
-  bronze: 0.02,
-  silver: 0.05,
-  gold: 0.1
-};
+  // ✅ SHOW NAME (USERNAME FIRST)
+  let displayName = data.name || user.email.split("@")[0];
+  document.getElementById("welcome").innerText =
+    "Welcome, " + displayName;
 
-// 🔁 RUN EVERY 10 SECONDS
-setInterval(async () => {
+  // ✅ SHOW BALANCE
+  document.getElementById("balance").innerText =
+    "$" + (data.balance || 0);
 
-  const now = Date.now();
-  const last = data.lastUpdate || now;
-
-  const hours = (now - last) / (1000 * 60 * 60);
-  const rate = plans[data.plan] || 0;
-
-  const earned = data.balance * rate * (hours / 24);
-
-  if (earned > 0) {
-    await updateDoc(doc(db, "users", user.uid), {
-      profit: (data.profit || 0) + earned,
-      lastUpdate: now
+  // 🔥 ENSURE lastUpdate EXISTS
+  if (!data.lastUpdate) {
+    await updateDoc(userRef, {
+      lastUpdate: Date.now()
     });
-
-    // 🔄 UPDATE LOCAL DATA
-    data.profit = (data.profit || 0) + earned;
-    data.lastUpdate = now;
   }
 
-}, 10000); // every 10 seconds
-      
-      // 🔥 FORCE USERNAME FIRST
-      if (data.username && data.username.trim() !== "") {
-        displayName = data.username;
-      } 
-      // fallback to email
-      else if (user.email) {
-        displayName = user.email.split("@")[0];
-      }
+  // ==========================
+  // 🚀 MINING SYSTEM (AUTO)
+  // ==========================
+  setInterval(async () => {
 
-      // ✅ SET BALANCE
+    const freshSnap = await getDoc(userRef);
+    const freshData = freshSnap.data();
+
+    const now = Date.now();
+    const last = freshData.lastUpdate || now;
+
+    const hours = (now - last) / (1000 * 60 * 60);
+    const rate = plans[freshData.plan] || 0;
+
+    const earned =
+      (freshData.balance || 0) * rate * (hours / 24);
+
+    if (earned > 0) {
+
+      const newProfit =
+        (freshData.profit || 0) + earned;
+
+      await updateDoc(userRef, {
+        profit: newProfit,
+        lastUpdate: now
+      });
+
+      // 🔄 UPDATE UI LIVE
       document.getElementById("balance").innerText =
-        "$" + (data.balance || 0);
-    } else {
-      // fallback if no firestore record
-      displayName = user.email ? user.email.split("@")[0] : "User";
+        "$" + freshData.balance;
+
     }
 
-    // ✅ SHOW NAME
-    document.getElementById("welcome").innerText =
-      "Welcome, " + displayName;
+  }, 10000); // every 10 seconds
 
-    // ✅ LOAD TRANSACTIONS
-    const q = query(
-      collection(db, "transactions"),
-      where("userId", "==", user.uid)
-    );
+  // ==========================
+  // 📜 TRANSACTIONS
+  // ==========================
+  const q = query(
+    collection(db, "transactions"),
+    where("userId", "==", user.uid)
+  );
 
-    onSnapshot(q, (snapshot) => {
-      let box = document.getElementById("history");
-      box.innerHTML = "";
+  onSnapshot(q, (snapshot) => {
+    let box = document.getElementById("history");
+    box.innerHTML = "";
 
-      snapshot.forEach((docItem) => {
-        let d = docItem.data();
+    snapshot.forEach((docItem) => {
+      let d = docItem.data();
 
-        let color = d.type === "deposit"
+      let color =
+        d.type === "deposit"
           ? "lightgreen"
           : "#ff6b6b";
 
-        box.innerHTML += `
-          <div style="background:#0b0f1a; padding:10px; margin:10px 0; border-radius:8px;">
-            <b style="color:${color};">${d.type.toUpperCase()}</b><br>
-            Amount: $${d.amount}<br>
-            ${d.wallet ? "Wallet: " + d.wallet + "<br>" : ""}
-            <small>${new Date(d.time).toLocaleString()}</small>
-          </div>
-        `;
-      });
-
+      box.innerHTML += `
+        <div style="background:#0b0f1a; padding:10px; margin:10px 0; border-radius:8px;">
+          <b style="color:${color};">${d.type.toUpperCase()}</b><br>
+          Amount: $${d.amount}<br>
+          ${d.wallet ? "Wallet: " + d.wallet + "<br>" : ""}
+          <small>${new Date(d.time).toLocaleString()}</small>
+        </div>
+      `;
     });
 
-  } catch (err) {
-    console.error("Error loading dashboard:", err);
-  }
+  });
 
 });
 
