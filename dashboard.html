@@ -137,7 +137,27 @@ onAuthStateChanged(auth, async(user)=>{
   }
 
   
-  document.getElementById("welcome").innerText = "Welcome, " + user.email;
+  // ✅ Get user document from Firestore
+const ref = doc(db, "users", user.uid);
+const snap = await getDoc(ref);
+
+let displayName = "User";
+
+if (snap.exists()) {
+  const data = snap.data();
+
+  // 🔥 FORCE username
+  if (data.username && data.username.trim() !== "") {
+    displayName = data.username;
+  } else if (user.email) {
+    // fallback if username missing
+    displayName = user.email.split("@")[0];
+  }
+}
+
+// ✅ SET NAME
+document.getElementById("welcome").innerText =
+  "Welcome, " + displayName;
 
   // ✅ Load balance
   const ref = doc(db,"users",user.uid);
