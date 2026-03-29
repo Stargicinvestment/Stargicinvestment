@@ -128,10 +128,10 @@ onAuthStateChanged(auth, async (user) => {
   let newBalance = currentBalance + Number(amount);
 
   await updateDoc(userRef, {
-    balance: newBalance,
-    plan: data.plan || "starter",
-    startTime: data.startTime || Date.now()
-  });
+  balance: newBalance,
+  profitStart: Date.now(),   // 🔥 RESET LOCK TIMER
+  depositStart: Date.now()
+});
 
   alert("Balance updated. Mining continues.");
 }
