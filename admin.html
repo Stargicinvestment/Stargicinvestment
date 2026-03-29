@@ -123,6 +123,7 @@ onAuthStateChanged(auth, async (user) => {
 
   const snap = await getDoc(userRef);
   const data = snap.data();
+    await runMining(userRef); // 🔥 calculate profit up to now first
 
   const currentInvested = Number(data.invested) || 0;
 const currentBalance = Number(data.balance) || 0;
