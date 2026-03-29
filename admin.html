@@ -86,6 +86,11 @@ onAuthStateChanged(auth,(user)=>{
     return;
   }
 
+  const userRef = doc(db,"users",user.uid);
+const snap = await getDoc(userRef);
+
+console.log("ADMIN DATA:", snap.data());
+
   if(user.email !== ADMIN_EMAIL){
     alert("Access denied");
     window.location.href = "dashboard.html";
