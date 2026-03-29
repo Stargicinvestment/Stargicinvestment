@@ -61,39 +61,87 @@ onAuthStateChanged(auth,(user)=>{
 
 window.withdraw = async function(){
 
-  let wallet = document.getElementById("wallet").value;
-  let amount = Number(document.getElementById("amount").value);
+  const user = auth.currentUser;
+  if(!user) return;
 
-  if(!wallet || !amount) return alert("Fill all fields");
+  const userRef = doc(db,"users",user.uid);
+  const snap = await getDoc(userRef);
+  if(!snap.exists()) return;
 
-  const ref = doc(db,"users",currentUser.uid);
-  const snap = await getDoc(ref);
+  let data = snap.data();
 
-  let currentBalance = snap.data().balance || 0;
+  let inputAmount = document.getElementById("amount").value;
+  let amount = Number(inputAmount);
 
-  if(amount > currentBalance){
-    return alert("Insufficient balance");
+  if(!amount || amount <= 0){
+    alert("Enter valid amount");
+    return;
   }
 
-  // deduct balance
-  await updateDoc(ref,{
-    balance: currentBalance - amount
-  });
+  let now = Date.now();
 
-  // save history
-  await addDoc(collection(db,"transactions"),{
-    userId: currentUser.uid,
-    email: currentUser.email,
-    type: "withdraw",
-    amount: amount,
-    wallet: wallet,
-    time: Date.now()
-  });
+  // ✅ safe fallback (prevents bugs)
+  let profitStart = Number(data.profitStart) || now;
+  let depositStart = Number(data.depositStart) || now;
 
-  alert("Withdrawal successful");
+  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
 
-  window.location.href = "dashboard.html";
+  let totalProfit = Number(data.profit) || 0;
+  let balance = Number(data.balance) || 0;
+
+  let availableProfit = 0;
+
+  if(profitDays >= 7){
+    availableProfit = totalProfit;
+  }
+
+  // ❌ BEFORE 21 DAYS → ONLY PROFIT
+  if(depositDays < 21){
+
+    if(amount > availableProfit){
+      alert("Only available profit can be withdrawn before 21 days");
+      return;
+    }
+
+    await updateDoc(userRef,{
+      profit: totalProfit - amount
+    });
+
+  }
+
+  // ✅ AFTER 21 DAYS → FULL ACCESS
+  else {
+
+    let totalAvailable = totalProfit + balance;
+
+    if(amount > totalAvailable){
+      alert("Insufficient funds");
+      return;
+    }
+
+    let newProfit = totalProfit;
+    let newBalance = balance;
+
+    if(amount <= totalProfit){
+      newProfit -= amount;
+    } else {
+      let remaining = amount - totalProfit;
+      newProfit = 0;
+      newBalance -= remaining;
+    }
+
+    await updateDoc(userRef,{
+      profit: newProfit,
+      balance: newBalance
+    });
+
+  }
+
+  alert("Withdrawal successful!");
+
 };
+  
 
 </script>
 
