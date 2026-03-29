@@ -39,11 +39,18 @@ button{
   margin-top:5px;
 }
 
-.edit{background:#22c55e;}
+.add{background:#22c55e;}
 .delete{background:#ef4444;}
-</style>
 
+input{
+  padding:8px;
+  border-radius:5px;
+  border:none;
+  width:120px;
+}
+</style>
 </head>
+
 <body>
 
 <div class="header">
@@ -60,20 +67,11 @@ button{
 
 </div>
 
-<!-- Firebase -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { 
-  getAuth, onAuthStateChanged, signOut 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import { 
-  getFirestore, doc, getDoc, collection, getDocs, updateDoc, deleteDoc 
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
-// 🔥 YOUR FIREBASE CONFIG (PASTE YOURS HERE)
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, collection, getDocs, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // CONFIG
 const firebaseConfig = {
@@ -90,7 +88,7 @@ const auth = getAuth();
 const db = getFirestore();
 
 
-// ✅ CHECK ADMIN
+// ✅ ADMIN CHECK
 onAuthStateChanged(auth, async (user) => {
 
   if(!user){
@@ -118,83 +116,70 @@ onAuthStateChanged(auth, async (user) => {
   loadUsers();
 });
 
-  async function addBalance(userId, amount) {
+
+// ✅ ADD BALANCE (CORRECT MINING LOGIC)
+async function addBalance(userId, amount) {
 
   const userRef = doc(db, "users", userId);
 
   const snap = await getDoc(userRef);
   const data = snap.data();
 
-  // ✅ CURRENT VALUES
   const currentBalance = Number(data.balance) || 0;
   const currentInvested = Number(data.invested) || 0;
   const currentProfit = Number(data.profit) || 0;
 
   const plan = data.plan;
+
+  // If no plan yet
   if (!plan || !currentInvested) {
-    // If no investment yet, just add balance
     await updateDoc(userRef, {
-      balance: currentBalance + Number(amount),
-      invested: currentInvested + Number(amount),
+      balance: currentBalance + amount,
+      invested: currentInvested + amount,
       lastUpdate: Date.now()
     });
     return;
   }
 
-  // ✅ PLAN SETTINGS
   const plans = {
-    starter: { rate: 0.025, duration: 7 },
-    silver: { rate: 0.035, duration: 7 },
-    gold: { rate: 0.045, duration: 7 },
-    platinum: { rate: 0.055, duration: 7 },
-    vip: { rate: 0.066, duration: 7 }
+    starter: { rate: 0.025 },
+    silver: { rate: 0.035 },
+    gold: { rate: 0.045 },
+    platinum: { rate: 0.055 },
+    vip: { rate: 0.066 }
   };
 
   const planData = plans[plan];
 
-  // ✅ TIME CALCULATION
   const now = Date.now();
   const last = data.lastUpdate ? Number(data.lastUpdate) : now;
 
   const hours = (now - last) / (1000 * 60 * 60);
 
-  // ✅ CALCULATE PROFIT BEFORE UPDATE
   let earned = currentInvested * planData.rate * (hours / 24);
 
   if (!isFinite(earned) || earned < 0) earned = 0;
 
-  // ✅ FINAL VALUES
-  const newBalance = currentBalance + Number(amount);
-  const newInvested = currentInvested + Number(amount);
-  const newProfit = currentProfit + earned;
-
-  // ✅ SAVE EVERYTHING
   await updateDoc(userRef, {
-    balance: newBalance,
-    invested: newInvested,
-    profit: newProfit,
+    balance: currentBalance + amount,
+    invested: currentInvested + amount,
+    profit: currentProfit + earned,
     lastUpdate: now
   });
-} 
-
-  alert("Balance updated. Mining continues.");
 }
-
-// 🔥 IMPORTANT
-window.addBalance = addBalance;
 
 
 // ✅ LOAD USERS
 async function loadUsers(){
+
   const list = document.getElementById("usersList");
+  list.innerHTML = "Loading...";
 
-  list.innerHTML = "Loading users...";
-
-  const querySnapshot = await getDocs(collection(db, "users"));
+  const snapshot = await getDocs(collection(db, "users"));
 
   let html = "";
 
-  querySnapshot.forEach((docSnap) => {
+  snapshot.forEach((docSnap) => {
 
     const u = docSnap.data();
     const id = docSnap.id;
@@ -202,13 +187,14 @@ async function loadUsers(){
     html += `
       <div class="card">
         <p><b>Email:</b> ${u.email || "N/A"}</p>
-        <p><b>Balance:</b> ${u.balance || 0}</p>
+        <p><b>Balance:</b> $${Number(u.balance || 0).toFixed(2)}</p>
+        <p><b>Invested:</b> $${Number(u.invested || 0).toFixed(2)}</p>
         <p><b>Plan:</b> ${u.plan || "None"}</p>
 
-        <input type="number" id="bal-${id}" placeholder="New balance" />
+        <input type="number" id="bal-${id}" placeholder="Add amount">
 
         <br>
-        <button class="edit" onclick="updateBalance('${id}')">Update Balance</button>
+        <button class="add" onclick="updateBalance('${id}')">Add Balance</button>
         <button class="delete" onclick="deleteUser('${id}')">Delete</button>
       </div>
     `;
@@ -218,21 +204,20 @@ async function loadUsers(){
 }
 
 
-// ✅ UPDATE BALANCE
+// ✅ BUTTON HANDLER (USES CORRECT FUNCTION)
 window.updateBalance = async function(id){
-  const input = document.getElementById(`bal-${id}`);
-  const value = Number(input.value);
 
-  if(isNaN(value)){
-    alert("Enter valid number");
+  const input = document.getElementById(`bal-${id}`);
+  const amount = Number(input.value);
+
+  if(isNaN(amount) || amount <= 0){
+    alert("Enter valid amount");
     return;
   }
 
-  await updateDoc(doc(db,"users",id),{
-    balance: value
-  });
+  await addBalance(id, amount);
 
-  alert("Balance updated");
+  alert("Balance added successfully");
   loadUsers();
 }
 
@@ -240,7 +225,7 @@ window.updateBalance = async function(id){
 // ✅ DELETE USER
 window.deleteUser = async function(id){
 
-  if(!confirm("Delete this user?")) return;
+  if(!confirm("Delete user?")) return;
 
   await deleteDoc(doc(db,"users",id));
 
