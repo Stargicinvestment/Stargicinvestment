@@ -118,6 +118,27 @@ onAuthStateChanged(auth, async (user) => {
   loadUsers();
 });
 
+  async function addBalance(userId, amount) {
+  const userRef = doc(db, "users", userId);
+
+  const snap = await getDoc(userRef);
+  const data = snap.data();
+
+  let currentBalance = Number(data.balance) || 0;
+  let newBalance = currentBalance + Number(amount);
+
+  await updateDoc(userRef, {
+    balance: newBalance,
+    plan: data.plan || "starter",
+    startTime: data.startTime || Date.now()
+  });
+
+  alert("Balance updated. Mining continues.");
+}
+
+// 🔥 IMPORTANT
+window.addBalance = addBalance;
+
 
 // ✅ LOAD USERS
 async function loadUsers(){
