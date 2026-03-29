@@ -247,3 +247,11 @@ window.onload = function(){
   loadDashboard();
   startInvestment(); // 👈 THIS LINE IS REQUIRED
 };
+  setInterval(() => {
+  let banner = document.querySelector("iframe.goog-te-banner-frame");
+  if (banner) {
+    banner.style.display = "none";
+  }
+
+  document.body.style.top = "0px";
+}, 500);
