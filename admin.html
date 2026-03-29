@@ -119,23 +119,63 @@ onAuthStateChanged(auth, async (user) => {
 });
 
   async function addBalance(userId, amount) {
+
   const userRef = doc(db, "users", userId);
 
   const snap = await getDoc(userRef);
   const data = snap.data();
-    await runMining(userRef); // 🔥 calculate profit up to now first
 
+  // ✅ CURRENT VALUES
+  const currentBalance = Number(data.balance) || 0;
   const currentInvested = Number(data.invested) || 0;
-const currentBalance = Number(data.balance) || 0;
+  const currentProfit = Number(data.profit) || 0;
 
-const newBalance = currentBalance + Number(amount);
-const newInvested = currentInvested + Number(amount);
+  const plan = data.plan;
+  if (!plan || !currentInvested) {
+    // If no investment yet, just add balance
+    await updateDoc(userRef, {
+      balance: currentBalance + Number(amount),
+      invested: currentInvested + Number(amount),
+      lastUpdate: Date.now()
+    });
+    return;
+  }
 
-await updateDoc(userRef, {
-  balance: newBalance,
-  invested: newInvested,   // 🔥 ADD, don't replace
-  lastUpdate: Date.now()   // keep mining smooth
-});
+  // ✅ PLAN SETTINGS
+  const plans = {
+    starter: { rate: 0.025, duration: 7 },
+    silver: { rate: 0.035, duration: 7 },
+    gold: { rate: 0.045, duration: 7 },
+    platinum: { rate: 0.055, duration: 7 },
+    vip: { rate: 0.066, duration: 7 }
+  };
+
+  const planData = plans[plan];
+
+  // ✅ TIME CALCULATION
+  const now = Date.now();
+  const last = data.lastUpdate ? Number(data.lastUpdate) : now;
+
+  const hours = (now - last) / (1000 * 60 * 60);
+
+  // ✅ CALCULATE PROFIT BEFORE UPDATE
+  let earned = currentInvested * planData.rate * (hours / 24);
+
+  if (!isFinite(earned) || earned < 0) earned = 0;
+
+  // ✅ FINAL VALUES
+  const newBalance = currentBalance + Number(amount);
+  const newInvested = currentInvested + Number(amount);
+  const newProfit = currentProfit + earned;
+
+  // ✅ SAVE EVERYTHING
+  await updateDoc(userRef, {
+    balance: newBalance,
+    invested: newInvested,
+    profit: newProfit,
+    lastUpdate: now
+  });
+} 
 
   alert("Balance updated. Mining continues.");
 }
