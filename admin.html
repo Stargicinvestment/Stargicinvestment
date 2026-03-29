@@ -124,13 +124,16 @@ onAuthStateChanged(auth, async (user) => {
   const snap = await getDoc(userRef);
   const data = snap.data();
 
-  let currentBalance = Number(data.balance) || 0;
-  let newBalance = currentBalance + Number(amount);
+  const currentInvested = Number(data.invested) || 0;
+const currentBalance = Number(data.balance) || 0;
 
-  await updateDoc(userRef, {
+const newBalance = currentBalance + Number(amount);
+const newInvested = currentInvested + Number(amount);
+
+await updateDoc(userRef, {
   balance: newBalance,
-  profitStart: Date.now(),   // 🔥 RESET LOCK TIMER
-  depositStart: Date.now()
+  invested: newInvested,   // 🔥 ADD, don't replace
+  lastUpdate: Date.now()   // keep mining smooth
 });
 
   alert("Balance updated. Mining continues.");
