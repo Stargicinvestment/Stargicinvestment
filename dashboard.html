@@ -167,7 +167,7 @@ async function runMining(userRef){
   if(!plan) return;
 
   let start = Number(data.startTime);
-  let last = Number(data.lastUpdate) || Date.now();
+  let last = data.lastUpdate ? Number(data.lastUpdate) : Date.now();
   let now = Date.now();
 
   // STOP AFTER PLAN ENDS
