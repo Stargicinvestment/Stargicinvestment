@@ -59,38 +59,7 @@ onAuthStateChanged(auth,(user)=>{
   }
 });
 
-window.withdraw = async function(){
 
-  const user = auth.currentUser;
-  if(!user) return;
-
-  const userRef = doc(db,"users",user.uid);
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
-
-  let data = snap.data();
-
-  let inputAmount = document.getElementById("amount").value;
-  let amount = Number(inputAmount);
-
-  if(!amount || amount <= 0){
-    alert("Enter valid amount");
-    return;
-  }
-
-  let now = Date.now();
-
-  // ✅ safe fallback (prevents bugs)
-  let profitStart = Number(data.profitStart) || now;
-  let depositStart = Number(data.depositStart) || now;
-
-  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
-
-  let totalProfit = Number(data.profit) || 0;
-  let balance = Number(data.balance) || 0;
-
-  let availableProfit = 0;
 
   if(profitDays >= 7){
     availableProfit = totalProfit;
@@ -110,36 +79,74 @@ window.withdraw = async function(){
 
   }
 
-  // ✅ AFTER 21 DAYS → FULL ACCESS
-  else {
+  window.withdraw = async function(){
 
-    let totalAvailable = totalProfit + balance;
+  const user = auth.currentUser;
+  if(!user){
+    alert("Not logged in");
+    return;
+  }
 
-    if(amount > totalAvailable){
-      alert("Insufficient funds");
+  const userRef = doc(db,"users",user.uid);
+  const snap = await getDoc(userRef);
+
+  if(!snap.exists()){
+    alert("User not found");
+    return;
+  }
+
+  const d = snap.data();
+
+  let now = Date.now();
+
+  // ✅ SAFE TIMERS
+  let profitStart = d.profitStart ? Number(d.profitStart) : now;
+  let depositStart = d.depositStart ? Number(d.depositStart) : now;
+
+  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+
+  let profit = Number(d.profit) || 0;
+  let balance = Number(d.balance) || 0;
+  let invested = Number(d.invested) || 0;
+
+  // 🔴 NOTHING TO WITHDRAW
+  if(profit <= 0 && balance <= 0){
+    alert("Nothing to withdraw");
+    return;
+  }
+
+  // 🟡 CASE 1: ONLY PROFIT AVAILABLE (7 days passed)
+  if(profitDays >= 7 && depositDays < 21){
+
+    if(profit <= 0){
+      alert("No profit available");
       return;
     }
 
-    let newProfit = totalProfit;
-    let newBalance = balance;
-
-    if(amount <= totalProfit){
-      newProfit -= amount;
-    } else {
-      let remaining = amount - totalProfit;
-      newProfit = 0;
-      newBalance -= remaining;
-    }
-
     await updateDoc(userRef,{
-      profit: newProfit,
-      balance: newBalance
+      profit: 0
     });
 
+    alert("Profit withdrawal successful");
+    return;
   }
 
-  alert("Withdrawal successful!");
+  // 🟢 CASE 2: FULL WITHDRAW (21 days passed)
+  if(depositDays >= 21){
 
+    await updateDoc(userRef,{
+      balance: 0,
+      invested: 0,
+      profit: 0
+    });
+
+    alert("Full withdrawal successful");
+    return;
+  }
+
+  // 🔴 LOCKED
+  alert("Funds are still locked");
 };
   
 
