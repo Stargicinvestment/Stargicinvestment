@@ -298,7 +298,16 @@ onAuthStateChanged(auth, async (user)=>{
         : "#ff6b6b";
 
       box.innerHTML += `
-        <div style="background:#0b0f1a;padding:10px;margin:10px 0;border-radius:8px;">
+        box.innerHTML += `
+  <div style="
+    background:#0b0f1a;
+    padding:10px;
+    margin:10px 0;
+    border-radius:8px;
+    width:100%;
+    max-width:100%;
+    overflow:hidden;
+  ">
           <b style="color:${color};">${d.type.toUpperCase()}</b><br>
           Amount: $${Number(d.amount).toFixed(2)}<br>
           ${d.wallet ? "Wallet: " + d.wallet + "<br>" : ""}
