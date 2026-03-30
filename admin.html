@@ -140,6 +140,13 @@ async function addBalance(userId, amount) {
     });
     return;
   }
+  // 🔥 SAVE DEPOSIT TRANSACTION
+await addDoc(collection(db,"transactions"),{
+  userId: userId,
+  type: "deposit",
+  amount: amount,
+  time: Date.now()
+});
 
   const plans = {
     starter: { rate: 0.025 },
