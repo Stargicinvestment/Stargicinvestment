@@ -71,7 +71,11 @@ input{
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, collection, getDocs, updateDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import { 
+  getFirestore, doc, getDoc, collection, getDocs, 
+  updateDoc, deleteDoc, addDoc   // ✅ FIXED (IMPORTANT)
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // CONFIG
 const firebaseConfig = {
@@ -117,11 +121,10 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 
-// ✅ ADD BALANCE (CORRECT MINING LOGIC)
+// ✅ ADD BALANCE (FINAL FIXED)
 async function addBalance(userId, amount) {
 
   const userRef = doc(db, "users", userId);
-
   const snap = await getDoc(userRef);
   const data = snap.data();
 
@@ -130,6 +133,14 @@ async function addBalance(userId, amount) {
   const currentProfit = Number(data.profit) || 0;
 
   const plan = data.plan;
+
+  // ✅ SAVE DEPOSIT TRANSACTION
+  await addDoc(collection(db,"transactions"),{
+    userId: userId,
+    type: "deposit",
+    amount: amount,
+    time: Date.now()
+  });
 
   // If no plan yet
   if (!plan || !currentInvested) {
@@ -140,13 +151,6 @@ async function addBalance(userId, amount) {
     });
     return;
   }
-  // 🔥 SAVE DEPOSIT TRANSACTION
-await addDoc(collection(db,"transactions"),{
-  userId: userId,
-  type: "deposit",
-  amount: amount,
-  time: Date.now()
-});
 
   const plans = {
     starter: { rate: 0.025 },
@@ -211,7 +215,7 @@ async function loadUsers(){
 }
 
 
-// ✅ BUTTON HANDLER (USES CORRECT FUNCTION)
+// ✅ BUTTON HANDLER
 window.updateBalance = async function(id){
 
   const input = document.getElementById(`bal-${id}`);
@@ -225,6 +229,9 @@ window.updateBalance = async function(id){
   await addBalance(id, amount);
 
   alert("Balance added successfully");
+
+  input.value = ""; // ✅ IMPORTANT FIX
+
   loadUsers();
 }
 
