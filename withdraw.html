@@ -119,9 +119,9 @@ window.withdraw = async function(){
     }
 
     await updateDoc(userRef,{
-      profit: profit - amount
-    });
-
+  profit: 0,
+  profitStart: Date.now()
+});
     // SAVE TRANSACTION
     await addDoc(collection(db,"transactions"),{
       userId: user.uid,
