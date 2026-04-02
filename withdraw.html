@@ -57,24 +57,13 @@ onAuthStateChanged(auth,(user)=>{
 
 
 // ✅ FULL WITHDRAW FUNCTION
-window.withdraw = async function(){
+
+  window.withdraw = async function(){
 
   const user = auth.currentUser;
+
   if(!user){
-    alert("Not logged in");
-    return;
-  }
-
-  const wallet = document.getElementById("wallet").value;
-  const amount = Number(document.getElementById("amount").value);
-
-  if(!wallet){
-    alert("Enter wallet address");
-    return;
-  }
-
-  if(isNaN(amount) || amount <= 0){
-    alert("Enter valid amount");
+    alert("Login first");
     return;
   }
 
@@ -82,95 +71,70 @@ window.withdraw = async function(){
   const snap = await getDoc(userRef);
 
   if(!snap.exists()){
-    alert("User not found");
+    alert("User data not found");
     return;
   }
 
-  const d = snap.data();
+  const data = snap.data();
 
-  let now = Date.now();
+  const now = Date.now();
 
-  let profitStart = d.profitStart ? Number(d.profitStart) : now;
-  let depositStart = d.depositStart ? Number(d.depositStart) : now;
+  const profitStart = Number(data.profitStart) || now;
+  const depositStart = Number(data.depositStart) || now;
 
-  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+  const profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+  const depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
 
-  let profit = Number(d.profit) || 0;
-  let balance = Number(d.balance) || 0;
+  const profit = Number(data.profit) || 0;
+  const invested = Number(data.invested) || 0;
 
-  // 🔴 NOTHING AVAILABLE
-  if(profit <= 0 && balance <= 0){
-    alert("Nothing to withdraw");
-    return;
-  }
+  // =========================
+  // ✅ PROFIT WITHDRAW (7 DAYS)
+  // =========================
+  if(profitDays >= 7){
 
-
-    if(profitDays < 7){
-      alert("Profit locked for 7 days");
-      return;
-    }
-
-    if(amount > profit){
-      alert("You can only withdraw available profit");
+    if(profit <= 0){
+      alert("No profit available");
       return;
     }
 
     await updateDoc(userRef,{
-  profit: 0,
-  profitStart: Date.now()
-});
-    // SAVE TRANSACTION
-    await addDoc(collection(db,"transactions"),{
-      userId: user.uid,
-      type: "withdraw",
-      amount: amount,
-      wallet: wallet,
-      time: Date.now()
+      profit: 0,
+      profitStart: Date.now()
     });
 
     alert("Profit withdrawal successful");
     return;
   }
 
-  // 🟢 AFTER 21 DAYS → FULL ACCESS
-  if(amount > (profit + balance)){
-    alert("Insufficient funds");
+  // =========================
+  // ✅ CAPITAL WITHDRAW (21 DAYS)
+  // =========================
+  if(depositDays >= 21){
+
+    if(invested <= 0){
+      alert("No active investment");
+      return;
+    }
+
+    await updateDoc(userRef,{
+      balance: 0,
+      invested: 0,
+      profit: 0,
+      depositStart: Date.now(),
+      profitStart: Date.now()
+    });
+
+    alert("Capital withdrawn successfully");
     return;
   }
 
-  let remaining = amount;
-
-  let newProfit = profit;
-  let newBalance = balance;
-
-  if(remaining <= profit){
-    newProfit -= remaining;
-  }else{
-    remaining -= profit;
-    newProfit = 0;
-    newBalance -= remaining;
-  }
-
-  await updateDoc(userRef,{
-    profit: newProfit,
-    balance: newBalance,
-    invested: newBalance
-  });
-
-  // SAVE TRANSACTION
-  await addDoc(collection(db,"transactions"),{
-    userId: user.uid,
-    type: "withdraw",
-    amount: amount,
-    wallet: wallet,
-    time: Date.now()
-  });
-
-  alert("Withdrawal successful");
+  // =========================
+  // ❌ NOT READY
+  // =========================
+  alert("Withdrawal not available yet");
 };
-
-</script> 
+   <script>
 
 </body>
 </html>
