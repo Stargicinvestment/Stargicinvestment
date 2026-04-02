@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,74 +7,47 @@
 <title>Admin Dashboard</title>
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box}
-
 body{
+  margin:0;
   font-family:Arial;
   background:#0b0f1a;
-  color:#fff;
+  color:white;
 }
 
-/* HEADER */
 .header{
+  padding:15px;
+  background:#111827;
   display:flex;
   justify-content:space-between;
-  padding:15px 20px;
-  background:#111827;
-  align-items:center;
 }
 
-.header h2{
-  color:#00ff9d;
+.container{
+  padding:15px;
 }
 
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
-  padding:20px;
-}
-
-/* CARD */
 .card{
-  background:#111827;
-  padding:20px;
-  border-radius:12px;
-}
-
-/* TABLE */
-.table{
-  width:100%;
-  border-collapse:collapse;
-}
-
-.table th, .table td{
-  padding:10px;
-  border-bottom:1px solid #333;
-  text-align:left;
+  background:#1f2937;
+  padding:15px;
+  margin-bottom:10px;
+  border-radius:10px;
 }
 
 button{
-  padding:6px 10px;
+  padding:8px 12px;
   border:none;
+  border-radius:5px;
   cursor:pointer;
-  border-radius:6px;
+  margin-top:5px;
 }
 
-.approve{
-  background:#00ff9d;
-  color:#000;
-}
+.add{background:#22c55e;}
+.delete{background:#ef4444;}
 
-.reject{
-  background:#ff4d4d;
-  color:#fff;
-}
-
-.section{
-  padding:20px;
-  overflow-x:auto;
+input{
+  padding:8px;
+  border-radius:5px;
+  border:none;
+  width:120px;
 }
 </style>
 </head>
@@ -81,206 +55,207 @@ button{
 <body>
 
 <div class="header">
-  <h2>Admin Panel</h2>
+  <h2>Admin Dashboard</h2>
   <button onclick="logout()">Logout</button>
 </div>
 
-<div class="grid">
-  <div class="card">
-    <h3>Total Users</h3>
-    <p id="totalUsers">0</p>
-  </div>
+<div class="container">
 
-  <div class="card">
-    <h3>Pending Withdrawals</h3>
-    <p id="pending">0</p>
-  </div>
+  <div id="status">Checking admin...</div>
+
+  <h3>All Users</h3>
+  <div id="usersList"></div>
+
 </div>
 
-<div class="section">
-  <h2>Users</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Balance</th>
-        <th>Profit</th>
-        <th>Invested</th>
-      </tr>
-    </thead>
-    <tbody id="usersTable"></tbody>
-  </table>
-</div>
-
-<div class="section">
-  <h2>Withdraw Requests</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Email</th>
-        <th>Amount</th>
-        <th>Type</th>
-        <th>Status</th>
-        <th>Action</th>
-      </tr>
-    </thead>
-    <tbody id="withdrawTable"></tbody>
-  </table>
-</div>
-
-<!-- ✅ FIXED SCRIPT -->
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import {
-  getFirestore, collection, onSnapshot,
-  doc, updateDoc, getDoc
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import { 
+  getFirestore, doc, getDoc, collection, getDocs, 
+  updateDoc, deleteDoc, addDoc   // ✅ FIXED (IMPORTANT)
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getAuth, onAuthStateChanged, signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment"
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.appspot.com",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
+const auth = getAuth();
+const db = getFirestore();
 
-// 🔐 ADMIN CHECK
-onAuthStateChanged(auth, async (user)=>{
+
+// ✅ ADMIN CHECK
+onAuthStateChanged(auth, async (user) => {
 
   if(!user){
-    alert("Not logged in");
-    location.href = "login.html";
+    document.getElementById("status").innerText = "Not logged in";
     return;
   }
 
-  const userRef = doc(db,"users",user.uid);
-  const snap = await getDoc(userRef);
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
 
   if(!snap.exists()){
-    alert("User data not found");
+    document.getElementById("status").innerText = "User data not found";
     return;
   }
 
   const data = snap.data();
 
-  if(!data.isAdmin){
-    alert("Access denied");
-    location.href = "dashboard.html";
+  if(!data.admin){
+    document.getElementById("status").innerText = "Access Denied ❌";
     return;
   }
 
-  console.log("✅ Admin logged in");
+  document.getElementById("status").innerText = "Welcome Admin ✅";
 
   loadUsers();
-  loadWithdraws();
 });
 
-// 🚪 LOGOUT
-window.logout = function(){
-  signOut(auth);
-};
 
-// 👥 LOAD USERS
-function loadUsers(){
-  const usersTable = document.getElementById("usersTable");
+// ✅ ADD BALANCE (FINAL FIXED)
+async function addBalance(userId, amount) {
 
-  onSnapshot(collection(db,"users"),(snapshot)=>{
-    usersTable.innerHTML = "";
-    document.getElementById("totalUsers").innerText = snapshot.size;
-
-    snapshot.forEach(docSnap=>{
-      const d = docSnap.data();
-
-      usersTable.innerHTML += `
-        <tr>
-          <td>${d.email || "N/A"}</td>
-          <td>${d.balance || 0}</td>
-          <td>${d.profit || 0}</td>
-          <td>${d.invested || 0}</td>
-        </tr>
-      `;
-    });
-  });
-}
-
-// 💰 LOAD WITHDRAWS
-function loadWithdraws(){
-  const withdrawTable = document.getElementById("withdrawTable");
-
-  onSnapshot(collection(db,"withdraws"),(snapshot)=>{
-    withdrawTable.innerHTML = "";
-    let pendingCount = 0;
-
-    snapshot.forEach(docSnap=>{
-      const d = docSnap.data();
-
-      if(d.status === "pending") pendingCount++;
-
-      withdrawTable.innerHTML += `
-        <tr>
-          <td>${d.email || ""}</td>
-          <td>${d.amount || 0}</td>
-          <td>${d.type || ""}</td>
-          <td>${d.status || ""}</td>
-          <td>
-            ${d.status === "pending" ? `
-            <button class="approve" onclick="approve('${docSnap.id}','${d.userId}','${d.type}',${d.amount})">Approve</button>
-            <button class="reject" onclick="reject('${docSnap.id}')">Reject</button>
-            ` : "Done"}
-          </td>
-        </tr>
-      `;
-    });
-
-    document.getElementById("pending").innerText = pendingCount;
-  });
-}
-
-// ✅ APPROVE
-window.approve = async function(id,userId,type,amount){
-
-  const userRef = doc(db,"users",userId);
+  const userRef = doc(db, "users", userId);
   const snap = await getDoc(userRef);
   const data = snap.data();
 
-  if(type === "profit"){
-    await updateDoc(userRef,{
-      profit: Math.max(0, (data.profit || 0) - amount)
-    });
-  }
+  const currentBalance = Number(data.balance) || 0;
+  const currentInvested = Number(data.invested) || 0;
+  const currentProfit = Number(data.profit) || 0;
 
-  if(type === "capital"){
-    await updateDoc(userRef,{
-      balance: 0,
-      invested: 0,
-      profit: 0,
-      depositStart: Date.now(),
-      profitStart: Date.now()
-    });
-  }
+  const plan = data.plan;
 
-  await updateDoc(doc(db,"withdraws",id),{
-    status: "approved"
+  // ✅ SAVE DEPOSIT TRANSACTION
+  await addDoc(collection(db,"transactions"),{
+    userId: userId,
+    type: "deposit",
+    amount: amount,
+    time: Date.now()
   });
 
-  alert("Approved");
-};
+  // If no plan yet
+  if (!plan || !currentInvested) {
+    await updateDoc(userRef, {
+      balance: currentBalance + amount,
+      invested: currentInvested + amount,
+      lastUpdate: Date.now()
+    });
+    return;
+  }
 
-// ❌ REJECT
-window.reject = async function(id){
-  await updateDoc(doc(db,"withdraws",id),{
-    status: "rejected"
+  const plans = {
+    starter: { rate: 0.025 },
+    silver: { rate: 0.035 },
+    gold: { rate: 0.045 },
+    platinum: { rate: 0.055 },
+    vip: { rate: 0.066 }
+  };
+
+  const planData = plans[plan];
+
+  const now = Date.now();
+  const last = data.lastUpdate ? Number(data.lastUpdate) : now;
+
+  const hours = (now - last) / (1000 * 60 * 60);
+
+  let earned = currentInvested * planData.rate * (hours / 24);
+
+  if (!isFinite(earned) || earned < 0) earned = 0;
+
+  await updateDoc(userRef, {
+    balance: currentBalance + amount,
+    invested: currentInvested + amount,
+    profit: currentProfit + earned,
+    lastUpdate: now
   });
-};
+}
+
+
+// ✅ LOAD USERS
+async function loadUsers(){
+
+  const list = document.getElementById("usersList");
+  list.innerHTML = "Loading...";
+
+  const snapshot = await getDocs(collection(db, "users"));
+
+  let html = "";
+
+  snapshot.forEach((docSnap) => {
+
+    const u = docSnap.data();
+    const id = docSnap.id;
+
+    html += `
+      <div class="card">
+        <p><b>Email:</b> ${u.email || "N/A"}</p>
+        <p><b>Balance:</b> $${Number(u.balance || 0).toFixed(2)}</p>
+        <p><b>Invested:</b> $${Number(u.invested || 0).toFixed(2)}</p>
+        <p><b>Plan:</b> ${u.plan || "None"}</p>
+
+        <input type="number" id="bal-${id}" placeholder="Add amount">
+
+        <br>
+        <button class="add" onclick="updateBalance('${id}')">Add Balance</button>
+        <button class="delete" onclick="deleteUser('${id}')">Delete</button>
+      </div>
+    `;
+  });
+
+  list.innerHTML = html;
+}
+
+
+// ✅ BUTTON HANDLER
+window.updateBalance = async function(id){
+
+  const input = document.getElementById(`bal-${id}`);
+  const amount = Number(input.value);
+
+  if(isNaN(amount) || amount <= 0){
+    alert("Enter valid amount");
+    return;
+  }
+
+  await addBalance(id, amount);
+
+  alert("Balance added successfully");
+
+  input.value = ""; // ✅ IMPORTANT FIX
+
+  loadUsers();
+}
+
+
+// ✅ DELETE USER
+window.deleteUser = async function(id){
+
+  if(!confirm("Delete user?")) return;
+
+  await deleteDoc(doc(db,"users",id));
+
+  alert("User deleted");
+  loadUsers();
+}
+
+
+// ✅ LOGOUT
+window.logout = function(){
+  signOut(auth);
+  location.href = "login.html";
+}
 
 </script>
 
 </body>
-  </html>
+</html>
