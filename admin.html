@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -93,37 +94,31 @@ const db = getFirestore();
 
 
 // ✅ ADMIN CHECK
-onAuthStateChanged(auth, async (user)=>{
+onAuthStateChanged(auth, async (user) => {
 
   if(!user){
-    alert("Not logged in");
-    location.href = "login.html";
+    document.getElementById("status").innerText = "Not logged in";
     return;
   }
 
-  // 🔥 GET UID
-  console.log("UID:", user.uid);
-  alert("Your UID: " + user.uid);
-
-  const userRef = doc(db,"users",user.uid);
-  const snap = await getDoc(userRef);
+  const ref = doc(db, "users", user.uid);
+  const snap = await getDoc(ref);
 
   if(!snap.exists()){
-    alert("User data not found");
+    document.getElementById("status").innerText = "User data not found";
     return;
   }
 
   const data = snap.data();
 
-  if(!data.isAdmin){
-    alert("Access denied");
-    location.href = "dashboard.html";
+  if(!data.admin){
+    document.getElementById("status").innerText = "Access Denied ❌";
     return;
   }
 
-  // ✅ ADMIN OK
+  document.getElementById("status").innerText = "Welcome Admin ✅";
+
   loadUsers();
-  loadWithdraws(); // 🔥 add this if you have withdraw table
 });
 
 
