@@ -29,11 +29,11 @@ button{
 
 <button onclick="withdraw()">Confirm Withdraw</button>
 
- <script type="module">
+<script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, updateDoc, getDoc, addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getFirestore, doc, updateDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
@@ -48,17 +48,17 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// AUTH CHECK
+// 🔐 AUTH CHECK
 onAuthStateChanged(auth,(user)=>{
   if(!user){
     location.href = "login.html";
   }
 });
 
-
-// ✅ FULL WITHDRAW FUNCTION
-
-  window.withdraw = async function(){
+// =========================
+// 💰 WITHDRAW FUNCTION
+// =========================
+window.withdraw = async function(){
 
   const user = auth.currentUser;
 
@@ -66,12 +66,20 @@ onAuthStateChanged(auth,(user)=>{
     alert("Login first");
     return;
   }
-    const wallet = document.getElementById("wallet").value;
 
-if(!wallet){
-  alert("Enter wallet address");
-  return;
-}
+  const wallet = document.getElementById("wallet").value.trim();
+  const amount = Number(document.getElementById("amount").value);
+
+  // ✅ VALIDATION
+  if(!wallet){
+    alert("Enter wallet address");
+    return;
+  }
+
+  if(!amount || amount <= 0){
+    alert("Enter valid amount");
+    return;
+  }
 
   const userRef = doc(db,"users",user.uid);
   const snap = await getDoc(userRef);
@@ -93,6 +101,31 @@ if(!wallet){
 
   const profit = Number(data.profit) || 0;
   const invested = Number(data.invested) || 0;
+  const balance = Number(data.balance) || 0;
+
+  // =========================
+  // ✅ CAPITAL WITHDRAW (21 DAYS FIRST)
+  // =========================
+  if(depositDays >= 21){
+
+    if(invested <= 0){
+      alert("No active investment");
+      return;
+    }
+
+    if(amount > invested){
+      alert("Amount exceeds invested balance");
+      return;
+    }
+
+    await updateDoc(userRef,{
+      balance: balance - amount,
+      invested: invested - amount
+    });
+
+    alert("Capital withdrawal successful");
+    return;
+  }
 
   // =========================
   // ✅ PROFIT WITHDRAW (7 DAYS)
@@ -101,6 +134,11 @@ if(!wallet){
 
     if(profit <= 0){
       alert("No profit available");
+      return;
+    }
+
+    if(amount > profit){
+      alert("Amount exceeds profit");
       return;
     }
 
@@ -114,33 +152,10 @@ if(!wallet){
   }
 
   // =========================
-  // ✅ CAPITAL WITHDRAW (21 DAYS)
-  // =========================
-  if(depositDays >= 21){
-
-    if(invested <= 0){
-      alert("No active investment");
-      return;
-    }
-
-    await updateDoc(userRef,{
-      balance: 0,
-      invested: 0,
-      profit: 0,
-      depositStart: Date.now(),
-      profitStart: Date.now()
-    });
-
-    alert("Capital withdrawn successfully");
-    return;
-  }
-
-  // =========================
   // ❌ NOT READY
   // =========================
   alert("Withdrawal not available yet");
 };
-    </script>
 
-</body>
+</script></body>
 </html>
