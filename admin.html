@@ -136,6 +136,7 @@ button{
 </div>
 
 <script type="module">
+<script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
@@ -157,9 +158,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+// ==========================
+// 🔐 ADMIN AUTH CHECK (FIXED)
+// ==========================
 onAuthStateChanged(auth, async (user)=>{
 
   if(!user){
@@ -168,9 +169,6 @@ onAuthStateChanged(auth, async (user)=>{
     return;
   }
 
-  console.log("User:", user.email);
-
-  // 🔐 ADMIN CHECK
   const userRef = doc(db,"users",user.uid);
   const snap = await getDoc(userRef);
 
@@ -188,30 +186,10 @@ onAuthStateChanged(auth, async (user)=>{
   }
 
   // ✅ ADMIN ACCESS GRANTED
-  console.log("Admin logged in");
+  console.log("Admin logged in:", user.email);
 
-  loadAdminData(); // your function to load users, withdrawals
-});
-  console.log("User email:", user.email);
-  console.log("User UID:", user.uid);
-
-  const userRef = doc(db,"users",user.uid);
-  const snap = await getDoc(userRef);
-
-  if(!snap.exists()){
-    alert("User doc not found");
-    return;
-  }
-
-  const data = snap.data();
-  console.log("User data:", data);
-
-  if(!data.isAdmin){
-    alert("You are NOT admin");
-    return;
-  }
-
-  alert("Admin access granted");
+  loadUsers();
+  loadWithdraws();
 });
 
 // 🚪 LOGOUT
@@ -222,62 +200,68 @@ window.logout = function(){
 // ==========================
 // 📊 USERS DATA
 // ==========================
-const usersTable = document.getElementById("usersTable");
+function loadUsers(){
 
-onSnapshot(collection(db,"users"),(snapshot)=>{
+  const usersTable = document.getElementById("usersTable");
 
-  usersTable.innerHTML = "";
-  document.getElementById("totalUsers").innerText = snapshot.size;
+  onSnapshot(collection(db,"users"),(snapshot)=>{
 
-  snapshot.forEach(docSnap=>{
-    const d = docSnap.data();
+    usersTable.innerHTML = "";
+    document.getElementById("totalUsers").innerText = snapshot.size;
 
-    usersTable.innerHTML += `
-      <tr>
-        <td>${d.email || "N/A"}</td>
-        <td>${d.balance || 0}</td>
-        <td>${d.profit || 0}</td>
-        <td>${d.invested || 0}</td>
-      </tr>
-    `;
+    snapshot.forEach(docSnap=>{
+      const d = docSnap.data();
+
+      usersTable.innerHTML += `
+        <tr>
+          <td>${d.email || "N/A"}</td>
+          <td>${d.balance || 0}</td>
+          <td>${d.profit || 0}</td>
+          <td>${d.invested || 0}</td>
+        </tr>
+      `;
+    });
+
   });
-
-});
+}
 
 // ==========================
 // 💰 WITHDRAW REQUESTS
 // ==========================
-const withdrawTable = document.getElementById("withdrawTable");
+function loadWithdraws(){
 
-onSnapshot(collection(db,"withdraws"),(snapshot)=>{
+  const withdrawTable = document.getElementById("withdrawTable");
 
-  withdrawTable.innerHTML = "";
-  let pendingCount = 0;
+  onSnapshot(collection(db,"withdraws"),(snapshot)=>{
 
-  snapshot.forEach(docSnap=>{
-    const d = docSnap.data();
+    withdrawTable.innerHTML = "";
+    let pendingCount = 0;
 
-    if(d.status === "pending") pendingCount++;
+    snapshot.forEach(docSnap=>{
+      const d = docSnap.data();
 
-    withdrawTable.innerHTML += `
-      <tr>
-        <td>${d.email}</td>
-        <td>${d.amount}</td>
-        <td>${d.type}</td>
-        <td>${d.status}</td>
-        <td>
-          ${d.status === "pending" ? `
-          <button class="approve" onclick="approve('${docSnap.id}','${d.userId}','${d.type}',${d.amount})">Approve</button>
-          <button class="reject" onclick="reject('${docSnap.id}')">Reject</button>
-          ` : "Done"}
-        </td>
-      </tr>
-    `;
+      if(d.status === "pending") pendingCount++;
+
+      withdrawTable.innerHTML += `
+        <tr>
+          <td>${d.email}</td>
+          <td>${d.amount}</td>
+          <td>${d.type}</td>
+          <td>${d.status}</td>
+          <td>
+            ${d.status === "pending" ? `
+            <button class="approve" onclick="approve('${docSnap.id}','${d.userId}','${d.type}',${d.amount})">Approve</button>
+            <button class="reject" onclick="reject('${docSnap.id}')">Reject</button>
+            ` : "Done"}
+          </td>
+        </tr>
+      `;
+    });
+
+    document.getElementById("pending").innerText = pendingCount;
+
   });
-
-  document.getElementById("pending").innerText = pendingCount;
-
-});
+}
 
 // ==========================
 // ✅ APPROVE
@@ -321,6 +305,8 @@ window.reject = async function(id){
 };
 
 </script>
+
+
 
 </body>
 </html>
