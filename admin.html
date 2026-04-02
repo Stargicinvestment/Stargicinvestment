@@ -40,7 +40,6 @@ body{
   background:#111827;
   padding:20px;
   border-radius:12px;
-  box-shadow:0 0 15px rgba(0,0,0,0.5);
 }
 
 /* TABLE */
@@ -72,7 +71,6 @@ button{
   color:#fff;
 }
 
-/* SCROLL */
 .section{
   padding:20px;
   overflow-x:auto;
@@ -87,9 +85,7 @@ button{
   <button onclick="logout()">Logout</button>
 </div>
 
-<!-- STATS -->
 <div class="grid">
-
   <div class="card">
     <h3>Total Users</h3>
     <p id="totalUsers">0</p>
@@ -99,10 +95,8 @@ button{
     <h3>Pending Withdrawals</h3>
     <p id="pending">0</p>
   </div>
-
 </div>
 
-<!-- USERS -->
 <div class="section">
   <h2>Users</h2>
   <table class="table">
@@ -118,7 +112,6 @@ button{
   </table>
 </div>
 
-<!-- WITHDRAWS -->
 <div class="section">
   <h2>Withdraw Requests</h2>
   <table class="table">
@@ -134,7 +127,10 @@ button{
     <tbody id="withdrawTable"></tbody>
   </table>
 </div>
-<script module>
+
+<!-- ✅ FIXED SCRIPT -->
+<script type="module">
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, collection, onSnapshot,
@@ -146,7 +142,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSy...",
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment"
 };
@@ -155,7 +151,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// 🔐 ADMIN AUTH CHECK
+// 🔐 ADMIN CHECK
 onAuthStateChanged(auth, async (user)=>{
 
   if(!user){
@@ -180,9 +176,8 @@ onAuthStateChanged(auth, async (user)=>{
     return;
   }
 
-  console.log("Admin logged in");
+  console.log("✅ Admin logged in");
 
-  // ✅ ONLY LOAD AFTER ADMIN VERIFIED
   loadUsers();
   loadWithdraws();
 });
@@ -192,14 +187,11 @@ window.logout = function(){
   signOut(auth);
 };
 
-// ==========================
 // 👥 LOAD USERS
-// ==========================
 function loadUsers(){
   const usersTable = document.getElementById("usersTable");
 
   onSnapshot(collection(db,"users"),(snapshot)=>{
-
     usersTable.innerHTML = "";
     document.getElementById("totalUsers").innerText = snapshot.size;
 
@@ -215,18 +207,14 @@ function loadUsers(){
         </tr>
       `;
     });
-
   });
 }
 
-// ==========================
 // 💰 LOAD WITHDRAWS
-// ==========================
 function loadWithdraws(){
   const withdrawTable = document.getElementById("withdrawTable");
 
   onSnapshot(collection(db,"withdraws"),(snapshot)=>{
-
     withdrawTable.innerHTML = "";
     let pendingCount = 0;
 
@@ -252,13 +240,10 @@ function loadWithdraws(){
     });
 
     document.getElementById("pending").innerText = pendingCount;
-
   });
 }
 
-// ==========================
 // ✅ APPROVE
-// ==========================
 window.approve = async function(id,userId,type,amount){
 
   const userRef = doc(db,"users",userId);
@@ -288,18 +273,14 @@ window.approve = async function(id,userId,type,amount){
   alert("Approved");
 };
 
-// ==========================
 // ❌ REJECT
-// ==========================
 window.reject = async function(id){
   await updateDoc(doc(db,"withdraws",id),{
     status: "rejected"
   });
 };
+
 </script>
 
-
-
-
 </body>
-</html>
+  </html>
