@@ -134,10 +134,7 @@ button{
     <tbody id="withdrawTable"></tbody>
   </table>
 </div>
-
-<script type="module">
-<script type="module">
-
+<script module>
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import {
   getFirestore, collection, onSnapshot,
@@ -158,9 +155,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-// ==========================
-// 🔐 ADMIN AUTH CHECK (FIXED)
-// ==========================
+// 🔐 ADMIN AUTH CHECK
 onAuthStateChanged(auth, async (user)=>{
 
   if(!user){
@@ -185,9 +180,9 @@ onAuthStateChanged(auth, async (user)=>{
     return;
   }
 
-  // ✅ ADMIN ACCESS GRANTED
-  console.log("Admin logged in:", user.email);
+  console.log("Admin logged in");
 
+  // ✅ ONLY LOAD AFTER ADMIN VERIFIED
   loadUsers();
   loadWithdraws();
 });
@@ -198,10 +193,9 @@ window.logout = function(){
 };
 
 // ==========================
-// 📊 USERS DATA
+// 👥 LOAD USERS
 // ==========================
 function loadUsers(){
-
   const usersTable = document.getElementById("usersTable");
 
   onSnapshot(collection(db,"users"),(snapshot)=>{
@@ -226,10 +220,9 @@ function loadUsers(){
 }
 
 // ==========================
-// 💰 WITHDRAW REQUESTS
+// 💰 LOAD WITHDRAWS
 // ==========================
 function loadWithdraws(){
-
   const withdrawTable = document.getElementById("withdrawTable");
 
   onSnapshot(collection(db,"withdraws"),(snapshot)=>{
@@ -244,10 +237,10 @@ function loadWithdraws(){
 
       withdrawTable.innerHTML += `
         <tr>
-          <td>${d.email}</td>
-          <td>${d.amount}</td>
-          <td>${d.type}</td>
-          <td>${d.status}</td>
+          <td>${d.email || ""}</td>
+          <td>${d.amount || 0}</td>
+          <td>${d.type || ""}</td>
+          <td>${d.status || ""}</td>
           <td>
             ${d.status === "pending" ? `
             <button class="approve" onclick="approve('${docSnap.id}','${d.userId}','${d.type}',${d.amount})">Approve</button>
@@ -303,8 +296,8 @@ window.reject = async function(id){
     status: "rejected"
   });
 };
-
 </script>
+
 
 
 
