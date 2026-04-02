@@ -133,6 +133,13 @@ async function addBalance(userId, amount) {
   const currentProfit = Number(data.profit) || 0;
 
   const plan = data.plan;
+  await updateDoc(userRef,{
+  balance: currentBalance + amount,
+  invested: currentInvested + amount,
+  depositStart: Date.now(),
+  profitStart: Date.now(),
+  lastUpdate: Date.now()
+});
 
   // ✅ SAVE DEPOSIT TRANSACTION
   await addDoc(collection(db,"transactions"),{
