@@ -66,6 +66,12 @@ onAuthStateChanged(auth,(user)=>{
     alert("Login first");
     return;
   }
+    const wallet = document.getElementById("wallet").value;
+
+if(!wallet){
+  alert("Enter wallet address");
+  return;
+}
 
   const userRef = doc(db,"users",user.uid);
   const snap = await getDoc(userRef);
@@ -134,7 +140,7 @@ onAuthStateChanged(auth,(user)=>{
   // =========================
   alert("Withdrawal not available yet");
 };
-   <script>
+    </script>
 
 </body>
 </html>
