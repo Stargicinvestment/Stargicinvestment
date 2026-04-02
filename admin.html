@@ -158,10 +158,33 @@ const db = getFirestore(app);
 const auth = getAuth(app);
 
 // 🔐 AUTH CHECK (ADMIN ONLY)
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth, async (user)=>{
   if(!user){
-    location.href="login.html";
+    alert("Not logged in");
+    location.href = "login.html";
+    return;
   }
+
+  console.log("User email:", user.email);
+  console.log("User UID:", user.uid);
+
+  const userRef = doc(db,"users",user.uid);
+  const snap = await getDoc(userRef);
+
+  if(!snap.exists()){
+    alert("User doc not found");
+    return;
+  }
+
+  const data = snap.data();
+  console.log("User data:", data);
+
+  if(!data.isAdmin){
+    alert("You are NOT admin");
+    return;
+  }
+
+  alert("Admin access granted");
 });
 
 // 🚪 LOGOUT
