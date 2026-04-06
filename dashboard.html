@@ -257,33 +257,29 @@ onAuthStateChanged(auth, async (user)=>{
   // ✅ NEW PROFIT LOGIC HERE
   let totalProfit = Number(d.profit) || 0;
 
-  let now = Date.now();
+let now = Date.now();
 
-  let profitStart = d.profitStart ? Number(d.profitStart) : now;
-  let depositStart = Number(d.depositStart) || 0;
+let profitStart = Number(d.profitStart) || now;
+let depositStart = Number(d.depositStart) || now;
 
-  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-
-  let availableProfit = 0;
-  let lockedProfit = totalProfit;
-
-  if(profitDays >= 7){
-    availableProfit = totalProfit;
-    lockedProfit = 0;
-  }
+let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
 let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
-let remainingDays = Math.max(0, 21 - depositDays);
+
+let availableProfit = profitDays >= 7 ? totalProfit : 0;
+let lockedProfit = profitDays >= 7 ? 0 : totalProfit;
+
+let invested = Number(d.invested) || 0;
+let availableCapital = depositDays >= 21 ? invested : 0;
 
 document.getElementById("profit").innerHTML = `
-  $${availableProfit.toFixed(2)}
+  Profit: $${availableProfit.toFixed(2)}
   <div style="font-size:13px;color:gray;">
     Locked Profit: $${lockedProfit.toFixed(2)}
   </div>
-  <div style="font-size:12px;color:orange;">
-    Deposit unlock in: ${remainingDays.toFixed(1)} days
+  <div style="font-size:13px;color:orange;">
+    Capital Locked: $${(invested - availableCapital).toFixed(2)}
   </div>
 `;
-});
 
   startMining(user);
 
