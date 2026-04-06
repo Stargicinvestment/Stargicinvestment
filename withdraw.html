@@ -72,9 +72,8 @@ window.withdraw = async function(){
   }
 
   const wallet = document.getElementById("wallet").value.trim();
-  const amount = Number(document.getElementById("amount").value);
+  let amount = Number(document.getElementById("amount").value);
 
-  // ✅ VALIDATION
   if(!wallet){
     alert("Enter wallet address");
     return;
@@ -89,76 +88,59 @@ window.withdraw = async function(){
   const snap = await getDoc(userRef);
 
   if(!snap.exists()){
-    alert("User data not found");
+    alert("User not found");
     return;
   }
 
   const data = snap.data();
 
-  const now = Date.now();
+  let withdrawable = Number(data.withdrawableProfit) || 0;
+  let invested = Number(data.invested) || 0;
+  let balance = Number(data.balance) || 0;
 
-  const profitStart = Number(data.profitStart) || now;
-  const depositStart = Number(data.depositStart) || now;
+  let total = withdrawable + invested;
 
-  const profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-  const depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
-
-  const profit = Number(data.profit) || 0;
-  const invested = Number(data.invested) || 0;
-  const balance = Number(data.balance) || 0;
-
-  // =========================
-  // ✅ CAPITAL WITHDRAW (21 DAYS FIRST)
-  // =========================
-  if(depositDays >= 21){
-
-    if(invested <= 0){
-      alert("No active investment");
-      return;
-    }
-
-    if(amount > invested){
-      alert("Amount exceeds invested balance");
-      return;
-    }
-
-    await updateDoc(userRef,{
-      balance: balance - amount,
-      invested: invested - amount
-    });
-
-    alert("Capital withdrawal successful");
+  if(amount > total){
+    alert("Not enough funds");
     return;
   }
 
-  // =========================
-  // ✅ PROFIT WITHDRAW (7 DAYS)
-  // =========================
-  if(profitDays >= 7){
+  let newWithdrawable = withdrawable;
+  let newInvested = invested;
 
-    if(profit <= 0){
-      alert("No profit available");
-      return;
-    }
-
-    if(amount > profit){
-      alert("Amount exceeds profit");
-      return;
-    }
-
-    await updateDoc(userRef,{
-      profit: profit - amount,
-      profitStart: Date.now()
-    });
-
-    alert("Profit withdrawal successful");
-    return;
+  // ✅ TAKE FROM PROFIT FIRST
+  if(amount <= withdrawable){
+    newWithdrawable -= amount;
+  } else {
+    let remaining = amount - withdrawable;
+    newWithdrawable = 0;
+    newInvested -= remaining;
   }
 
-  // =========================
-  // ❌ NOT READY
-  // =========================
-  alert("Withdrawal not available yet");
+  // ✅ UPDATE FIRESTORE
+  await updateDoc(userRef,{
+    withdrawableProfit: newWithdrawable,
+    invested: newInvested,
+    balance: balance - amount
+  });
+
+  // ✅ STOP MINING IF EMPTY
+  if(newInvested <= 0){
+    await updateDoc(userRef,{
+      plan: null
+    });
+  }
+
+  // ✅ SAVE HISTORY
+  await addDoc(collection(db, "withdrawals"), {
+    userId: user.uid,
+    wallet: wallet,
+    amount: amount,
+    type: "withdraw",
+    date: Date.now()
+  });
+
+  alert("Withdrawal successful");
 };
 
 </script></body>
