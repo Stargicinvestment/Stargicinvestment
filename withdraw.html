@@ -111,37 +111,37 @@ window.withdraw = async function(){
   let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
   let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
 
-  let availableProfit = profitDays >= 7 ? profit : 0;
-  let availableInvested = depositDays >= 21 ? invested : 0;
+  let canWithdrawProfit = profitDays >= 7;
+  let canWithdrawCapital = depositDays >= 21;
 
-  let totalAvailable = availableProfit + availableInvested;
+  let availableProfit = canWithdrawProfit ? profit : 0;
+  let availableCapital = canWithdrawCapital ? invested : 0;
 
-  // ❌ NOTHING AVAILABLE
+  let totalAvailable = availableProfit + availableCapital;
+
   if(totalAvailable <= 0){
     alert("Funds are still locked");
     return;
   }
 
-  // ❌ TOO MUCH REQUEST
   if(amount > totalAvailable){
-    alert("Amount exceeds unlocked funds");
+    alert("Amount exceeds available funds");
     return;
   }
 
   let newProfit = profit;
   let newInvested = invested;
 
-  // ✅ TAKE FROM PROFIT FIRST (ONLY IF UNLOCKED)
+  // ✅ TAKE FROM PROFIT FIRST
   if(availableProfit > 0){
     if(amount <= availableProfit){
       newProfit -= amount;
     } else {
       let remaining = amount - availableProfit;
-      newProfit -= availableProfit;
+      newProfit = 0;
       newInvested -= remaining;
     }
   } else {
-    // profit locked → take from invested (if unlocked)
     newInvested -= amount;
   }
 
@@ -157,7 +157,6 @@ window.withdraw = async function(){
     });
   }
 
-  // ✅ SAVE HISTORY
   await addDoc(collection(db, "withdrawals"), {
     userId: user.uid,
     wallet,
@@ -165,9 +164,9 @@ window.withdraw = async function(){
     type: "withdraw",
     date: Date.now()
   });
-  
+
   alert("Withdraw successful");
-  }
+};
 
 </script></body>
 </html>
