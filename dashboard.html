@@ -223,7 +223,7 @@ if(profitDays >= 7){
   if(!isFinite(earned) || earned <= 0) return;
 
   await updateDoc(userRef,{
-    profit: profit + earned,
+    lockedProfit: lockedProfit + earned
     lastUpdate: now
   });
 
