@@ -101,25 +101,34 @@ body{
 
   <h2 id="welcome">Welcome</h2>
 
-  <div class="card">
+<!-- BALANCE CARD -->
+<div class="card">
+  <p>Balance</p>
+  <div id="balance" class="balance">$0</div>
+</div>
 
-    <p>Balance</p>
-    <div id="balance" class="balance">$0</div>
+<!-- PROFIT CARD -->
+<div class="card">
+  <p>Profit</p>
+  <div id="profit" class="profit">$0</div>
+</div>
 
-    <p>Profit</p>
-    <div id="profit" class="profit">$0</div>
-
-    <div class="actions">
-      <button class="btn deposit" onclick="goDeposit()">Deposit</button>
-      <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
-    </div>
-    <button class="btn" onclick="invest()">Start Investment</button>
-
-    <h3 style="margin-top:30px;">Transactions</h3>
-    <div id="history" class="history-box"></div>
-
+<!-- ACTIONS -->
+<div class="card">
+  <div class="actions">
+    <button class="btn deposit" onclick="goDeposit()">Deposit</button>
+    <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
   </div>
 
+  <button class="btn" style="margin-top:15px;" onclick="invest()">
+    Start Investment
+  </button>
+</div>
+
+<!-- TRANSACTIONS -->
+<div class="card">
+  <h3>Transactions</h3>
+  <div id="history" class="history-box"></div>
 </div>
 
 <script type="module">
