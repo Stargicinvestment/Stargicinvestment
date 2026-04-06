@@ -62,17 +62,18 @@ onAuthStateChanged(auth,(user)=>{
 // =========================
 // 💰 WITHDRAW FUNCTION
 // =========================
+import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 window.withdraw = async function(){
 
   const user = auth.currentUser;
-
   if(!user){
     alert("Login first");
     return;
   }
 
   const wallet = document.getElementById("wallet").value.trim();
-  let amount = Number(document.getElementById("amount").value);
+  const amount = Number(document.getElementById("amount").value);
 
   if(!wallet){
     alert("Enter wallet address");
@@ -94,32 +95,31 @@ window.withdraw = async function(){
 
   const data = snap.data();
 
-  let withdrawable = Number(data.withdrawableProfit) || 0;
+  let profit = Number(data.profit) || 0;
   let invested = Number(data.invested) || 0;
   let balance = Number(data.balance) || 0;
 
-  let total = withdrawable + invested;
+  let total = profit + invested;
 
   if(amount > total){
     alert("Not enough funds");
     return;
   }
 
-  let newWithdrawable = withdrawable;
+  let newProfit = profit;
   let newInvested = invested;
 
   // ✅ TAKE FROM PROFIT FIRST
-  if(amount <= withdrawable){
-    newWithdrawable -= amount;
+  if(amount <= profit){
+    newProfit -= amount;
   } else {
-    let remaining = amount - withdrawable;
-    newWithdrawable = 0;
+    let remaining = amount - profit;
+    newProfit = 0;
     newInvested -= remaining;
   }
 
-  // ✅ UPDATE FIRESTORE
   await updateDoc(userRef,{
-    withdrawableProfit: newWithdrawable,
+    profit: newProfit,
     invested: newInvested,
     balance: balance - amount
   });
@@ -134,13 +134,13 @@ window.withdraw = async function(){
   // ✅ SAVE HISTORY
   await addDoc(collection(db, "withdrawals"), {
     userId: user.uid,
-    wallet: wallet,
-    amount: amount,
+    wallet,
+    amount,
     type: "withdraw",
     date: Date.now()
   });
 
-  alert("Withdrawal successful");
+  alert("Withdraw successful");
 };
 
 </script></body>
