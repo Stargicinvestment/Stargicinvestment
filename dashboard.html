@@ -195,11 +195,22 @@ async function runMining(userRef){
   let profitStart = Number(data.profitStart) || now;
   let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
 
-  if(profitDays >= 7){
-    await updateDoc(userRef,{
-      profitStart: Date.now()
-    });
-  }
+  let profitStart = Number(data.profitStart) || now;
+let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+
+if(profitDays >= 7){
+
+  let locked = Number(data.lockedProfit) || 0;
+  let available = Number(data.availableProfit) || 0;
+
+  await updateDoc(userRef,{
+    availableProfit: available + locked,
+    lockedProfit: 0,
+    profitStart: Date.now()
+  });
+
+  console.log("Profit unlocked");
+}
 
   // STOP AFTER PLAN ENDS
   let daysPassed = (now - start) / (1000 * 60 * 60 * 24);
