@@ -152,6 +152,32 @@ const firebaseConfig = {
   messagingSenderId: "1053305294931",
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
+  async function unlockProfit(userRef){
+
+  const snap = await getDoc(userRef);
+  if(!snap.exists()) return;
+
+  const data = snap.data();
+
+  let locked = Number(data.lockedProfit) || 0;
+  let withdrawable = Number(data.withdrawableProfit) || 0;
+
+  let profitStart = Number(data.profitStart) || Date.now();
+  let now = Date.now();
+
+  let days = (now - profitStart) / (1000 * 60 * 60 * 24);
+
+  if(days >= 7 && locked > 0){
+
+    await updateDoc(userRef,{
+      withdrawableProfit: withdrawable + locked,
+      lockedProfit: 0,
+      profitStart: now
+    });
+
+    console.log("Profit unlocked");
+  }
+}
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
