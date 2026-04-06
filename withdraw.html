@@ -69,11 +69,17 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 // 💰 WITHDRAW FUNCTION
+ let isProcessing = false; // 🔒 prevent double click
+
 window.withdraw = async function(){
+
+  if(isProcessing) return;
+  isProcessing = true;
 
   const user = auth.currentUser;
   if(!user){
     alert("Login first");
+    isProcessing = false;
     return;
   }
 
@@ -82,11 +88,13 @@ window.withdraw = async function(){
 
   if(!wallet){
     alert("Enter wallet address");
+    isProcessing = false;
     return;
   }
 
   if(!amount || amount <= 0){
     alert("Enter valid amount");
+    isProcessing = false;
     return;
   }
 
@@ -95,6 +103,7 @@ window.withdraw = async function(){
 
   if(!snap.exists()){
     alert("User not found");
+    isProcessing = false;
     return;
   }
 
@@ -121,18 +130,20 @@ window.withdraw = async function(){
 
   if(totalAvailable <= 0){
     alert("Funds are still locked");
+    isProcessing = false;
     return;
   }
 
   if(amount > totalAvailable){
     alert("Amount exceeds available funds");
+    isProcessing = false;
     return;
   }
 
   let newProfit = profit;
   let newInvested = invested;
 
-  // ✅ TAKE FROM PROFIT FIRST
+  // ✅ withdraw logic
   if(availableProfit > 0){
     if(amount <= availableProfit){
       newProfit -= amount;
@@ -150,7 +161,7 @@ window.withdraw = async function(){
     invested: newInvested
   });
 
-  // ✅ STOP MINING IF EMPTY
+  // stop mining if empty
   if(newInvested <= 0){
     await updateDoc(userRef,{
       plan: null
@@ -166,7 +177,10 @@ window.withdraw = async function(){
   });
 
   alert("Withdraw successful");
+
+  isProcessing = false;
 };
+
 
 </script></body>
 </html>
