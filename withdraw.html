@@ -30,6 +30,14 @@ button{
 <button onclick="withdraw()">Confirm Withdraw</button>
 
 <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
 import {
   getFirestore,
   doc,
@@ -39,6 +47,7 @@ import {
   addDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -59,11 +68,7 @@ onAuthStateChanged(auth,(user)=>{
   }
 });
 
-// =========================
 // 💰 WITHDRAW FUNCTION
-// =========================
-import { addDoc, collection } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 window.withdraw = async function(){
 
   const user = auth.currentUser;
@@ -142,6 +147,8 @@ window.withdraw = async function(){
 
   alert("Withdraw successful");
 };
+
+  </script>
 
 </script></body>
 </html>
