@@ -286,6 +286,8 @@ document.getElementById("profit").innerHTML = `
 
   startMining(user);
 
+  loadWithdrawals(user);
+
   // TRANSACTIONS
   const q = query(
     collection(db,"transactions"),
