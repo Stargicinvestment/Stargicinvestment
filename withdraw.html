@@ -102,14 +102,72 @@ window.withdraw = async function(){
 
   let profit = Number(data.profit) || 0;
   let invested = Number(data.invested) || 0;
-  let balance = Number(data.balance) || 0;
 
-  let total = profit + invested;
+  let now = Date.now();
 
-  if(amount > total){
-    alert("Not enough funds");
+  let profitStart = Number(data.profitStart) || now;
+  let depositStart = Number(data.depositStart) || now;
+
+  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+
+  let availableProfit = profitDays >= 7 ? profit : 0;
+  let availableInvested = depositDays >= 21 ? invested : 0;
+
+  let totalAvailable = availableProfit + availableInvested;
+
+  // ❌ NOTHING AVAILABLE
+  if(totalAvailable <= 0){
+    alert("Funds are still locked");
     return;
   }
+
+  // ❌ TOO MUCH REQUEST
+  if(amount > totalAvailable){
+    alert("Amount exceeds unlocked funds");
+    return;
+  }
+
+  let newProfit = profit;
+  let newInvested = invested;
+
+  // ✅ TAKE FROM PROFIT FIRST (ONLY IF UNLOCKED)
+  if(availableProfit > 0){
+    if(amount <= availableProfit){
+      newProfit -= amount;
+    } else {
+      let remaining = amount - availableProfit;
+      newProfit -= availableProfit;
+      newInvested -= remaining;
+    }
+  } else {
+    // profit locked → take from invested (if unlocked)
+    newInvested -= amount;
+  }
+
+  await updateDoc(userRef,{
+    profit: newProfit,
+    invested: newInvested
+  });
+
+  // ✅ STOP MINING IF EMPTY
+  if(newInvested <= 0){
+    await updateDoc(userRef,{
+      plan: null
+    });
+  }
+
+  // ✅ SAVE HISTORY
+  await addDoc(collection(db, "withdrawals"), {
+    userId: user.uid,
+    wallet,
+    amount,
+    type: "withdraw",
+    date: Date.now()
+  });
+
+  alert("Withdraw successful");
+};
 
   let newProfit = profit;
   let newInvested = invested;
