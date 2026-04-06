@@ -374,25 +374,8 @@ window.goDeposit = function(){
   location.href="deposit.html";
 };
 
-window.goWithdraw = async function(){
-
-  const user = auth.currentUser;
-  if(!user) return;
-
-  let amount = prompt("Enter amount to withdraw");
-
-  if(!amount) return;
-
-  amount = Number(amount);
-
-  if(amount <= 0){
-    alert("Invalid amount");
-    return;
-  }
-
-  await withdrawProfit(user.uid, amount);
-
-  alert("Withdrawal successful");
+window.goWithdraw = function(){
+  location.href = "withdraw.html";
 };
 
    window.invest = async function(){
