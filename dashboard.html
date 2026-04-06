@@ -235,10 +235,9 @@ function startMining(user){
 
   const userRef = doc(db,"users",user.uid);
 
-  runMining(userRef);
-
   setInterval(()=>{
     runMining(userRef);
+    unlockProfit(userRef);
   },60000);
 }
 
