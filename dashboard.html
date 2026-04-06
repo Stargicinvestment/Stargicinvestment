@@ -245,41 +245,43 @@ onAuthStateChanged(auth, async (user)=>{
     "Welcome, " + name;
 
   // REALTIME UI
-  onSnapshot(userRef,(docSnap)=>{
+ onSnapshot(userRef,(docSnap)=>{
 
   let d = docSnap.data();
 
   let balance = Number(d.balance) || 0;
+  let totalProfit = Number(d.profit) || 0;
+  let invested = Number(d.invested) || 0;
+
+  let now = Date.now();
+
+  let profitStart = Number(d.profitStart) || now;
+  let depositStart = Number(d.depositStart) || now;
+
+  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+
+  let availableProfit = profitDays >= 7 ? totalProfit : 0;
+  let lockedProfit = profitDays >= 7 ? 0 : totalProfit;
+
+  let availableCapital = depositDays >= 21 ? invested : 0;
 
   document.getElementById("balance").innerText =
     "$" + balance.toFixed(2);
 
-  // ✅ NEW PROFIT LOGIC HERE
-  let totalProfit = Number(d.profit) || 0;
+  document.getElementById("profit").innerHTML = `
+    $${availableProfit.toFixed(2)}
+    
+    <div style="font-size:13px;color:gray;">
+      Locked Profit: $${lockedProfit.toFixed(2)}
+    </div>
 
-let now = Date.now();
+    <div style="font-size:13px;color:#00e676;">
+      Capital Available: $${availableCapital.toFixed(2)}
+    </div>
+  `;
+});
 
-let profitStart = Number(d.profitStart) || now;
-let depositStart = Number(d.depositStart) || now;
-
-let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
-
-let availableProfit = profitDays >= 7 ? totalProfit : 0;
-let lockedProfit = profitDays >= 7 ? 0 : totalProfit;
-
-let invested = Number(d.invested) || 0;
-let availableCapital = depositDays >= 21 ? invested : 0;
-
-document.getElementById("profit").innerHTML = `
-  Profit: $${availableProfit.toFixed(2)}
-  <div style="font-size:13px;color:gray;">
-    Locked Profit: $${lockedProfit.toFixed(2)}
-  </div>
-  <div style="font-size:13px;color:orange;">
-    Capital Locked: $${(invested - availableCapital).toFixed(2)}
-  </div>
-`;
 
   startMining(user);
 
