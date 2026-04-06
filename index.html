@@ -347,6 +347,88 @@ body {
 .skiptranslate iframe {
   display: none !important;
 }
+  /* HERO CENTER */
+.hero-content{
+  text-align:center;
+  max-width:600px;
+  margin:auto;
+}
+
+/* BUTTON GROUP */
+.hero-buttons{
+  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
+}
+
+/* 🔥 PRIMARY GLOW BUTTON */
+.btn-primary{
+  position:relative;
+  background:#00ff9d;
+  color:#021018;
+  padding:12px 28px;
+  border-radius:8px;
+  font-weight:600;
+  text-decoration:none;
+  overflow:hidden;
+  transition:0.3s;
+  box-shadow:0 0 10px rgba(0,255,157,0.4);
+}
+
+/* SHINE ANIMATION */
+.btn-primary::before{
+  content:"";
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.5),
+    transparent
+  );
+  transform:rotate(25deg);
+  animation:shine 3s infinite;
+}
+
+/* HOVER EFFECT */
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 0 10px #00ff9d,
+    0 0 20px #00ff9d,
+    0 0 40px #00ff9d;
+}
+
+/* OUTLINE BUTTON */
+.btn-outline{
+  border:2px solid #00ff9d;
+  color:#00ff9d;
+  padding:10px 28px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.btn-outline:hover{
+  background:#00ff9d;
+  color:#021018;
+}
+
+/* ANIMATION KEYFRAME */
+@keyframes shine{
+  0%{
+    transform:translateX(-100%) rotate(25deg);
+  }
+  100%{
+    transform:translateX(100%) rotate(25deg);
+  }
+}
 </style>  </head>  <body>  <nav>
   <div class="logo">StargicInvestment</div>
 
