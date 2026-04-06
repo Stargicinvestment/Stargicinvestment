@@ -165,41 +165,9 @@ window.withdraw = async function(){
     type: "withdraw",
     date: Date.now()
   });
-
-
-  // ✅ TAKE FROM PROFIT FIRST
-  if(amount <= profit){
-    newProfit -= amount;
-  } else {
-    let remaining = amount - profit;
-    newProfit = 0;
-    newInvested -= remaining;
-  }
-
-  await updateDoc(userRef,{
-    profit: newProfit,
-    invested: newInvested,
-    balance: balance - amount
-  });
-
-  // ✅ STOP MINING IF EMPTY
-  if(newInvested <= 0){
-    await updateDoc(userRef,{
-      plan: null
-    });
-  }
-
-  // ✅ SAVE HISTORY
-  await addDoc(collection(db, "withdrawals"), {
-    userId: user.uid,
-    wallet,
-    amount,
-    type: "withdraw",
-    date: Date.now()
-  });
-
+  
   alert("Withdraw successful");
-};
+  }
 
 </script></body>
 </html>
