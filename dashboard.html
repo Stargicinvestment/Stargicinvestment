@@ -176,6 +176,9 @@ async function runMining(userRef){
   const data = snap.data();
 
   let invested = Number(data.invested) || 0;
+  if(invested <= 0){
+  return; // ✅ stops mining completely
+  }
   let profit = Number(data.profit) || 0;
 
   if(!invested || !data.plan) return;
