@@ -121,6 +121,59 @@ color:#00ff9d;
 border:1px solid #00ff9d;  
 padding:5px;  
 }  
+  /* MENU BUTTON */
+.menu-btn{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* MENU DEFAULT */
+.menu{
+  display:flex;
+  gap:20px;
+}
+
+/* MOBILE MENU */
+@media(max-width:768px){
+
+  .menu{
+    position:absolute;
+    top:70px;
+    right:20px;
+    width:220px;
+    background:#111827;
+    flex-direction:column;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.6);
+
+    /* 🔥 ANIMATION */
+    opacity:0;
+    transform:translateY(-20px);
+    pointer-events:none;
+    transition:0.3s ease;
+  }
+
+  .menu a{
+    padding:10px 0;
+    border-bottom:1px solid #1f2937;
+  }
+
+  .menu a:last-child{
+    border:none;
+  }
+
+  .menu.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+}
   
 /* HERO */  
   
