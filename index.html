@@ -1,33 +1,40 @@
 <!DOCTYPE html>  <html lang="en">  
- <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>StargicInvestment</title>
-
-<link rel="preconnect" href="https://images.unsplash.com">
-
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1639322537228-f710d846310a">
-
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-<style>
-html{
-  scroll-behavior:smooth;
+<head>  
+  <style>
+    *{
+  box-sizing: border-box;
 }
 
-*{
-  box-sizing:border-box;
+html, body{
   margin:0;
   padding:0;
+  overflow-x:hidden; /* 🔥 THIS STOPS SHIFTING */
+}
+    #chatButton {  
+      position: fixed;  
+      bottom: 20px;  
+      right: 20px;  
+      background: #00ffcc;  
+      padding: 15px;  
+      border-radius: 50%;  
+      cursor: pointer;  
+      z-index: 9999;  
+    }  #chatBox {  
+  position: fixed;  
+  bottom: 80px;  
+  right: 20px;  
+  width: 300px;  
+  background: #111;  
+  display: none;  
+  flex-direction: column;  
+  border-radius: 10px;  
+  z-index: 9999;  
 }
 
-body{
-  font-family:Poppins;
-  background:#0b0f1a;
-  color:#00ff9d;
-}
-
+  </style>  
+</head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>StargicInvestment</title>  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">  <style>  
 .crypto-slider{  
 display:flex;  
 align-items:center;  
@@ -287,18 +294,9 @@ body {
 .skiptranslate iframe {
   display: none !important;
 }
-  .slide{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background-size:cover;
-  background-position:center;
-  background-color:#0b0f1a; /* 🔥 fallback */
-  opacity:0;
-  transition:opacity 1s ease-in-out;
-}
 </style>  </head>  <body>  <nav>  <div class="logo">StargicInvestment</div>  <div class="menu">  <a href="#about">About</a>
 <a href="#markets">Markets</a>
+<a href="#plans">Plans</a>
 <a href="#reviews">Reviews</a>
   
 <div id="google_translate_element"></div>
@@ -309,13 +307,13 @@ body {
 </div>  </nav>  <!-- HERO -->  <div class="hero">  <div>  <h1>Secure Digital Investment Platform</h1>  <p>  
 Invest in cryptocurrency, global stocks, real estate projects and energy markets through our advanced financial investment platform.  
 </p>  </div>  </div>  <!-- CRYPTO TICKER -->  <div class="crypto-slider">  <div class="crypto-track">  <div class="coin">  
-<img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476" loading="lazy">
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
 BTC $67,724  
 </div>  <div class="coin">  
-<img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476" loading="lazy">
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">  
 ETH $2,182  
 </div>  <div class="coin">  
- <img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476" loading="lazy"> 
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">  
 USDT $1  
 </div>  <div class="coin">  
 <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">  
@@ -412,13 +410,13 @@ Oil and gas projects continue to generate strong global demand and support diver
 StargicInvestment has been one of the most reliable platforms I have used. Withdrawals are fast and the investment structure is clear.  
 </p>  <strong>Michael R. – United Kingdom</strong>
 
-</div>  <div class="review">  ⭐⭐⭐
+</div>  <div class="review">  ⭐⭐⭐⭐⭐
 
 <p>  
 I started with a small investment and gradually increased my portfolio. The platform is transparent and professionally managed.  
 </p>  <strong>Laura Bennett – Canada</strong>
 
-</div>  <div class="review">  ⭐⭐
+</div>  <div class="review">  ⭐⭐⭐⭐⭐
 
 <p>  
 The diversification into crypto, stocks and real estate makes this platform unique compared to other investment services.  
@@ -427,7 +425,7 @@ The diversification into crypto, stocks and real estate makes this platform uniq
 </div>  </div>  </section>  <footer>  Support Email
 <br><br>
 
-stargicinvestment@gmail.com
+stargicinvestment987@gmail.com
 
 <br><br>
 
@@ -614,5 +612,3 @@ window.smartsupp||(function(d) {
 </script>
 </body>  
 </html>
-
-
