@@ -294,74 +294,10 @@ body {
 .skiptranslate iframe {
   display: none !important;
 }
-  /* SLIDER */
-.slider{
-  position:relative;
-  height:100vh;
-  overflow:hidden;
-}
-
-.slide{
-  position:absolute;
-  width:100%;
-  height:100%;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 1s ease-in-out;
-}
-
-.slide.active{
-  opacity:1;
-}
-
-/* OVERLAY TEXT */
-.overlay{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  text-align:center;
-  color:white;
-  background:rgba(0,0,0,0.5);
-  padding:30px;
-  border-radius:10px;
-}
-
-.overlay h1{
-  font-size:32px;
-  margin-bottom:10px;
-}
-
-.overlay p{
-  font-size:14px;
-  margin-bottom:15px;
-}
-  section{
-  padding:80px 20px;
-  max-width:1000px;
-  margin:auto;
-  text-align:center;
-  animation:fadeUp 1s ease;
-}
-
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(40px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-  }
-  html{
-  scroll-behavior:smooth;
-}
 </style>  </head>  <body>  <nav>  <div class="logo">StargicInvestment</div>  <div class="menu">  <a href="#about">About</a>
-<a href="#about">About</a>
-<a href="#services">Services</a>
-<a href="#contact">Contact</a>
+<a href="#markets">Markets</a>
+<a href="#plans">Plans</a>
+<a href="#reviews">Reviews</a>
   
 <div id="google_translate_element"></div>
   
@@ -467,23 +403,6 @@ Oil and gas projects continue to generate strong global demand and support diver
       <h3>Earn Profit</h3>
       <p>Watch your investment grow and withdraw profits anytime.</p>
     </div>
-    <div class="slider">
-
-  <div class="slide active" style="background-image:url('your-image.jpg')">
-    <div class="overlay">
-      <h1>Stargicinvestment</h1>
-      <p>Building wealth through smart digital investments and global opportunities.</p>
-      <button class="btn">Start Investing</button>
-    </div>
-  </div>
-
-  <div class="slide" style="background-image:url('https://images.unsplash.com/photo-1639322537228-f710d846310a')">
-    <div class="overlay">
-      <h1>Secure & Trusted Platform</h1>
-      <p>Your funds are protected with advanced financial strategies.</p>
-      <button class="btn">Learn More</button>
-    </div>
-  </div>
 
   </div>
 </section>
@@ -691,16 +610,7 @@ window.smartsupp||(function(d) {
   s.parentNode.insertBefore(c,s);
 })(document);
 </script>
-  <script>
-let slides = document.querySelectorAll(".slide");
-let index = 0;
-
-setInterval(() => {
-  slides[index].classList.remove("active");
-  index = (index + 1) % slides.length;
-  slides[index].classList.add("active");
-}, 4000);
-</script>
 </body>  
 </html>
+
 
