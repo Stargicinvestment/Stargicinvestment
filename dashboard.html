@@ -338,7 +338,30 @@ document.getElementById("profit").innerHTML = `
   });
 
 });
+function loadWithdrawals(user){
 
+  const q = query(
+    collection(db,"withdrawals"),
+    where("userId","==",user.uid)
+  );
+
+  onSnapshot(q,(snap)=>{
+
+    let box = document.getElementById("withdrawHistory");
+    box.innerHTML = "";
+
+    snap.forEach(doc=>{
+      let d = doc.data();
+
+      box.innerHTML += `
+        <div style="margin:10px 0;">
+          💰 $${d.amount} - ${new Date(d.date).toLocaleString()}
+        </div>
+      `;
+    });
+
+  });
+}
 // ACTIONS
 window.logout = function(){
   signOut(auth);
