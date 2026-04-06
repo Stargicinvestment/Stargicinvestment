@@ -278,13 +278,13 @@ onAuthStateChanged(auth, async (user)=>{
     "Welcome, " + name;
 
   // REALTIME UI
- onSnapshot(userRef,(docSnap)=>{
+onSnapshot(userRef,(docSnap)=>{
 
   let d = docSnap.data();
 
   let balance = Number(d.balance) || 0;
-  let availableProfit = Number(d.availableProfit) || 0;
-let lockedProfit = Number(d.lockedProfit) || 0;
+  let availableProfit = Number(d.availableProfit) || 0; // ✅ ADD
+  let lockedProfit = Number(d.lockedProfit) || 0;       // ✅ ADD
   let invested = Number(d.invested) || 0;
 
   let now = Date.now();
