@@ -176,33 +176,27 @@ async function runMining(userRef){
   const data = snap.data();
 
   let invested = Number(data.invested) || 0;
-  let profit = Number(data.profit) || 0;
+  let lockedProfit = Number(data.lockedProfit) || 0;
 
   if(!invested || !data.plan) return;
 
   const plan = plans[data.plan];
   if(!plan) return;
 
-  let start = Number(data.startTime);
   let last = data.lastUpdate ? Number(data.lastUpdate) : Date.now();
   let now = Date.now();
 
-  // STOP AFTER PLAN ENDS
-  let daysPassed = (now - start) / (1000 * 60 * 60 * 24);
-  if(daysPassed >= plan.duration) return;
-
-  // CALCULATE HOURS
   let hours = (now - last) / (1000 * 60 * 60);
 
-  // ✅ FIXED LINE
   let earned = invested * plan.rate * (hours / 24);
 
   if(!isFinite(earned) || earned <= 0) return;
 
   await updateDoc(userRef,{
-    profit: profit + earned,
+    lockedProfit: lockedProfit + earned,
     lastUpdate: now
   });
+}
 
   console.log("MINED:", earned);
 }
