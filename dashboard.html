@@ -117,8 +117,6 @@ body{
 
     <h3 style="margin-top:30px;">Transactions</h3>
     <div id="history" class="history-box"></div>
-    <h3>Withdrawals</h3>
-<div id="withdrawHistory" class="history-box"></div>
 
   </div>
 
@@ -154,32 +152,6 @@ const firebaseConfig = {
   messagingSenderId: "1053305294931",
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
-  async function unlockProfit(userRef){
-
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
-
-  const data = snap.data();
-
-  let locked = Number(data.lockedProfit) || 0;
-  let withdrawable = Number(data.withdrawableProfit) || 0;
-
-  let profitStart = Number(data.profitStart) || Date.now();
-  let now = Date.now();
-
-  let days = (now - profitStart) / (1000 * 60 * 60 * 24);
-
-  if(days >= 7 && locked > 0){
-
-    await updateDoc(userRef,{
-      withdrawableProfit: withdrawable + locked,
-      lockedProfit: 0,
-      profitStart: now
-    });
-
-    console.log("Profit unlocked");
-  }
-}
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -204,30 +176,36 @@ async function runMining(userRef){
   const data = snap.data();
 
   let invested = Number(data.invested) || 0;
-  let lockedProfit = Number(data.lockedProfit) || 0;
+  let profit = Number(data.profit) || 0;
 
   if(!invested || !data.plan) return;
 
   const plan = plans[data.plan];
   if(!plan) return;
 
+  let start = Number(data.startTime);
   let last = data.lastUpdate ? Number(data.lastUpdate) : Date.now();
   let now = Date.now();
 
+  // STOP AFTER PLAN ENDS
+  let daysPassed = (now - start) / (1000 * 60 * 60 * 24);
+  if(daysPassed >= plan.duration) return;
+
+  // CALCULATE HOURS
   let hours = (now - last) / (1000 * 60 * 60);
 
+  // ✅ FIXED LINE
   let earned = invested * plan.rate * (hours / 24);
 
   if(!isFinite(earned) || earned <= 0) return;
 
   await updateDoc(userRef,{
-    lockedProfit: lockedProfit + earned,
+    profit: profit + earned,
     lastUpdate: now
   });
 
   console.log("MINED:", earned);
-    }
-
+}
 
 // ✅ START LOOP
 function startMining(user){
@@ -237,9 +215,10 @@ function startMining(user){
 
   const userRef = doc(db,"users",user.uid);
 
+  runMining(userRef);
+
   setInterval(()=>{
     runMining(userRef);
-    unlockProfit(userRef);
   },60000);
 }
 
@@ -273,20 +252,37 @@ onAuthStateChanged(auth, async (user)=>{
     "$" + balance.toFixed(2);
 
   // ✅ NEW PROFIT LOGIC HERE
-  let locked = Number(d.lockedProfit) || 0;
-let withdrawable = Number(d.withdrawableProfit) || 0;
+  let totalProfit = Number(d.profit) || 0;
+
+  let now = Date.now();
+
+  let profitStart = d.profitStart ? Number(d.profitStart) : now;
+  let depositStart = Number(d.depositStart) || 0;
+
+  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
+
+  let availableProfit = 0;
+  let lockedProfit = totalProfit;
+
+  if(profitDays >= 7){
+    availableProfit = totalProfit;
+    lockedProfit = 0;
+  }
+let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+let remainingDays = Math.max(0, 21 - depositDays);
 
 document.getElementById("profit").innerHTML = `
-  $${withdrawable.toFixed(2)}
+  $${availableProfit.toFixed(2)}
   <div style="font-size:13px;color:gray;">
-    Locked: $${locked.toFixed(2)}
+    Locked Profit: $${lockedProfit.toFixed(2)}
+  </div>
+  <div style="font-size:12px;color:orange;">
+    Deposit unlock in: ${remainingDays.toFixed(1)} days
   </div>
 `;
 });
 
   startMining(user);
-
-  loadWithdrawals(user);
 
   // TRANSACTIONS
   const q = query(
@@ -340,30 +336,7 @@ document.getElementById("profit").innerHTML = `
   });
 
 });
-function loadWithdrawals(user){
 
-  const q = query(
-    collection(db,"withdrawals"),
-    where("userId","==",user.uid)
-  );
-
-  onSnapshot(q,(snap)=>{
-
-    let box = document.getElementById("withdrawHistory");
-    box.innerHTML = "";
-
-    snap.forEach(doc=>{
-      let d = doc.data();
-
-      box.innerHTML += `
-        <div style="margin:10px 0;">
-          💰 $${d.amount} - ${new Date(d.date).toLocaleString()}
-        </div>
-      `;
-    });
-
-  });
-}
 // ACTIONS
 window.logout = function(){
   signOut(auth);
@@ -375,7 +348,7 @@ window.goDeposit = function(){
 };
 
 window.goWithdraw = function(){
-  location.href = "withdraw.html";
+  location.href="withdraw.html";
 };
 
    window.invest = async function(){
@@ -425,4 +398,3 @@ function googleTranslateElementInit() {
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 </html>
-
