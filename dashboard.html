@@ -180,7 +180,7 @@ async function runMining(userRef){
     return; // ✅ stops mining completely
   }
 
-  let profit = Number(data.profit) || 0;
+  let lockedProfit = Number(data.lockedProfit) || 0;
 
   if(!invested || !data.plan) return;
 
