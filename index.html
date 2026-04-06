@@ -294,6 +294,49 @@ body {
 .skiptranslate iframe {
   display: none !important;
 }
+  /* SLIDER */
+.slider{
+  position:relative;
+  height:100vh;
+  overflow:hidden;
+}
+
+.slide{
+  position:absolute;
+  width:100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 1s ease-in-out;
+}
+
+.slide.active{
+  opacity:1;
+}
+
+/* OVERLAY TEXT */
+.overlay{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  text-align:center;
+  color:white;
+  background:rgba(0,0,0,0.5);
+  padding:30px;
+  border-radius:10px;
+}
+
+.overlay h1{
+  font-size:32px;
+  margin-bottom:10px;
+}
+
+.overlay p{
+  font-size:14px;
+  margin-bottom:15px;
+}
 </style>  </head>  <body>  <nav>  <div class="logo">StargicInvestment</div>  <div class="menu">  <a href="#about">About</a>
 <a href="#markets">Markets</a>
 <a href="#plans">Plans</a>
@@ -407,7 +450,7 @@ Oil and gas projects continue to generate strong global demand and support diver
 
   <div class="slide active" style="background-image:url('your-image.jpg')">
     <div class="overlay">
-      <h1>Welcome to Matlycoinvestment</h1>
+      <h1>Stargicinvestment</h1>
       <p>Building wealth through smart digital investments and global opportunities.</p>
       <button class="btn">Start Investing</button>
     </div>
