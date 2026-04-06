@@ -294,14 +294,20 @@ body {
 .skiptranslate iframe {
   display: none !important;
 }
-</style>  </head>  <body>  <nav>  <div class="logo">StargicInvestment</div>  <div class="menu">  <a href="#about">About</a>
-<a href="#markets">Markets</a>
-<a href="#reviews">Reviews</a>
-  
-<div id="google_translate_element"></div>
-  
-<a class="btn" href="login.html">Login</a>
-<a class="btn" href="register.html">Create Account</a>
+</style>  </head>  <body>  <nav>
+  <div class="logo">StargicInvestment</div>
+
+  <div class="menu" id="menu">
+    <a href="#about" onclick="closeMenu()">About</a>
+    <a href="#markets" onclick="closeMenu()">Markets</a>
+    <a href="#plans" onclick="closeMenu()">Plans</a>
+    <a href="#reviews" onclick="closeMenu()">Reviews</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Create Account</a>
+  </div>
+
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+</nav>
 
 </div>  </nav>  <!-- HERO -->  <div class="hero">  <div>  <h1>Secure Digital Investment Platform</h1>  <p>  
 Invest in cryptocurrency, global stocks, real estate projects and energy markets through our advanced financial investment platform.  
