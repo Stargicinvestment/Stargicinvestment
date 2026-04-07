@@ -129,8 +129,11 @@ if(amount > availableProfit){
   }
 
 
-  let newProfit = profit;
-  let newInvested = invested;
+  let newProfit = availableProfit - amount;
+
+await updateDoc(userRef,{
+  availableProfit: newProfit
+});
 
   // ✅ withdraw logic
   if(availableProfit > 0){
