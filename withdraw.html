@@ -24,7 +24,17 @@ button{
   cursor:pointer;
   color:white;
 }
-</style></head><body><h2>Withdraw</h2><input type="text" id="wallet" placeholder="Enter wallet address"><br>
+</style></head><body><h2>Withdraw</h2>
+
+<select id="coin">
+  <option value="">Select Coin</option>
+  <option value="BTC">Bitcoin (BTC)</option>
+  <option value="USDT">Tether (USDT)</option>
+  <option value="ETH">Ethereum (ETH)</option>
+</select><br>
+
+<input type="text" id="wallet" placeholder="Enter wallet address"><br>
+
 <input type="number" id="amount" placeholder="Enter amount"><br>
 
 <button onclick="withdraw()">Confirm Withdraw</button>
