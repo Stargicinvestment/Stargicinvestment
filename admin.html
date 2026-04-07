@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,20 +121,13 @@ onAuthStateChanged(auth, async (user) => {
 });
 
 
-// ✅ ADD BALANCE (FINAL FIXED)
 async function addBalance(userId, amount) {
 
   const userRef = doc(db, "users", userId);
   const snap = await getDoc(userRef);
   const data = snap.data();
 
-  const currentBalance = Number(data.balance) || 0;
-  const currentInvested = Number(data.invested) || 0;
-  const currentProfit = Number(data.profit) || 0;
-
-  const plan = data.plan;
-
-  // ✅ SAVE DEPOSIT TRANSACTION
+  // ✅ Save transaction
   await addDoc(collection(db,"transactions"),{
     userId: userId,
     type: "deposit",
@@ -143,42 +135,22 @@ async function addBalance(userId, amount) {
     time: Date.now()
   });
 
-  // If no plan yet
-  if (!plan || !currentInvested) {
-    await updateDoc(userRef, {
-      balance: currentBalance + amount,
-      invested: currentInvested + amount,
-      lastUpdate: Date.now()
-    });
-    return;
-  }
+  // ✅ AUTO INVEST (NO BALANCE STORAGE)
+  await updateDoc(userRef,{
+    invested: (Number(data.invested) || 0) + amount,
 
-  const plans = {
-    starter: { rate: 0.025 },
-    silver: { rate: 0.035 },
-    gold: { rate: 0.045 },
-    platinum: { rate: 0.055 },
-    vip: { rate: 0.066 }
-  };
+    plan: "starter", // default plan
 
-  const planData = plans[plan];
+    startTime: data.startTime || Date.now(),
+    lastUpdate: Date.now(),
 
-  const now = Date.now();
-  const last = data.lastUpdate ? Number(data.lastUpdate) : now;
-
-  const hours = (now - last) / (1000 * 60 * 60);
-
-  let earned = currentInvested * planData.rate * (hours / 24);
-
-  if (!isFinite(earned) || earned < 0) earned = 0;
-
-  await updateDoc(userRef, {
-    balance: currentBalance + amount,
-    invested: currentInvested + amount,
-    profit: currentProfit + earned,
-    lastUpdate: now
+    profitStart: Date.now(),   // for 7 days unlock
+    depositStart: Date.now()   // for 21 days capital lock
   });
+
 }
+
+
 
 
 // ✅ LOAD USERS
