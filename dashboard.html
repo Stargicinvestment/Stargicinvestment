@@ -210,7 +210,12 @@ const plans = {
 let miningRunning = false;
 
 // ✅ MINING FUNCTION
-async function runMining(userRef, data){
+async function runMining(userRef){
+
+  const snap = await getDoc(userRef);
+  if(!snap.exists()) return;
+
+  const data = snap.data();
 
   let invested = Number(data.invested) || 0;
   if(invested <= 0) return;
@@ -228,12 +233,16 @@ async function runMining(userRef, data){
   let profitStart = Number(data.profitStart) || now;
   let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
 
-  if(profitDays >= 7 && (data.lockedProfit || 0) > 0){
+  // ✅ UNLOCK AFTER 7 DAYS
+  if(profitDays >= 7 && lockedProfit > 0){
     await updateDoc(userRef,{
-      availableProfit: (Number(data.availableProfit) || 0) + (Number(data.lockedProfit) || 0),
+      availableProfit: (Number(data.availableProfit) || 0) + lockedProfit,
       lockedProfit: 0,
       profitStart: Date.now()
     });
+
+    console.log("Profit unlocked");
+    return;
   }
 
   let hours = (now - last) / (1000 * 60 * 60);
@@ -245,10 +254,9 @@ async function runMining(userRef, data){
     lockedProfit: lockedProfit + earned,
     lastUpdate: now
   });
-  }
 
   console.log("MINED:", earned);
-}
+  }
 
 // ✅ START LOOP
 function startMining(user){
@@ -258,12 +266,13 @@ function startMining(user){
 
   const userRef = doc(db,"users",user.uid);
 
-  onSnapshot(userRef,(docSnap)=>{
-    const data = docSnap.data();
+  // run immediately
+  runMining(userRef);
 
-    runMining(userRef, data);
-  });
-
+  // run every 60 seconds
+  setInterval(()=>{
+    runMining(userRef);
+  }, 60000);
   }
 
 // AUTH
