@@ -300,8 +300,9 @@ window.logout = function(){
 
     if(data.admin){
   alert("Cannot withdraw from admin account");
+  approving[id] = false; // 🔥 ADD THIS
   return;
-}
+    }
 
   let availableProfit = Number(data.availableProfit) || 0;
 
