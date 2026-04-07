@@ -287,9 +287,9 @@ window.logout = function(){
 
   let availableProfit = Number(data.availableProfit) || 0;
 
-  if(amount > availableProfit){
-    alert("Insufficient balance");
-    return;
+  if(amount > availableProfit || availableProfit <= 0){
+  alert("Insufficient or already used balance");
+  return;
   }
 
   // ✅ deduct profit
