@@ -155,13 +155,14 @@ onAuthStateChanged(auth, async (user) => {
     document.getElementById("status").innerText = "Access Denied ❌";
     return;
   }
+  // after admin check
+loadWithdrawals();
 
   document.getElementById("status").innerText = "Welcome Admin ✅";
 
   loadUsers();
 });
-  // after admin check
-loadWithdrawals();
+  
 
 
 async function addBalance(userId, amount) {
