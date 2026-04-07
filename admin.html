@@ -286,7 +286,11 @@ window.logout = function(){
   signOut(auth);
   location.href = "login.html";
 }
+     let approving = {};
   window.approveWithdraw = async function(id, userId, amount){
+
+  if(approving[id]) return; // 🚫 block double click
+  approving[id] = true;
 
   const userRef = doc(db,"users",userId);
   const withdrawRef = doc(db,"withdrawals",id);
@@ -297,21 +301,19 @@ window.logout = function(){
   let availableProfit = Number(data.availableProfit) || 0;
 
   if(amount > availableProfit || availableProfit <= 0){
-  alert("Insufficient or already used balance");
-  return;
+    alert("Insufficient or already used balance");
+    approving[id] = false;
+    return;
   }
 
-  // ✅ deduct profit
   await updateDoc(userRef,{
     availableProfit: availableProfit - amount
   });
 
-  // ✅ mark approved
   await updateDoc(withdrawRef,{
     status: "approved"
   });
 
-  // ✅ add to history
   await addDoc(collection(db,"transactions"),{
     userId,
     type: "withdraw",
@@ -320,6 +322,9 @@ window.logout = function(){
   });
 
   alert("Approved");
+
+  approving[id] = false;
+};
 
   }
   window.rejectWithdraw = async function(id){
