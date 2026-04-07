@@ -187,15 +187,32 @@ async function loadUsers(){
 
 
 // ✅ BUTTON HANDLER
+let processing = {};
+
 window.updateBalance = async function(id){
+
+  if(processing[id]) return; // 🔥 block double click
+  processing[id] = true;
 
   const input = document.getElementById(`bal-${id}`);
   const amount = Number(input.value);
 
   if(isNaN(amount) || amount <= 0){
     alert("Enter valid amount");
+    processing[id] = false;
     return;
   }
+
+  await addBalance(id, amount);
+
+  alert("Balance added successfully");
+
+  input.value = "";
+
+  processing[id] = false;
+
+  loadUsers();
+}
 
   await addBalance(id, amount);
 
