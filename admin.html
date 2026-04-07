@@ -276,6 +276,59 @@ window.logout = function(){
   signOut(auth);
   location.href = "login.html";
 }
+  window.approveWithdraw = async function(id, userId, amount){
+
+  const userRef = doc(db,"users",userId);
+  const withdrawRef = doc(db,"withdrawals",id);
+
+  const snap = await getDoc(userRef);
+  const data = snap.data();
+
+  let availableProfit = Number(data.availableProfit) || 0;
+
+  if(amount > availableProfit){
+    alert("Insufficient balance");
+    return;
+  }
+
+  // ✅ deduct profit
+  await updateDoc(userRef,{
+    availableProfit: availableProfit - amount
+  });
+
+  // ✅ mark approved
+  await updateDoc(withdrawRef,{
+    status: "approved"
+  });
+
+  // ✅ add to history
+  await addDoc(collection(db,"transactions"),{
+    userId,
+    type: "withdraw",
+    amount,
+    time: Date.now()
+  });
+
+  alert("Approved");
+
+  loadWithdrawals();
+  }
+  window.rejectWithdraw = async function(id){
+
+  const withdrawRef = doc(db,"withdrawals",id);
+
+  await updateDoc(withdrawRef,{
+    status: "rejected"
+  });
+
+  alert("Rejected");
+
+  loadWithdrawals();
+}
+  window.copyWallet = function(address){
+  navigator.clipboard.writeText(address);
+  alert("Copied!");
+    }
 
 </script>
 
