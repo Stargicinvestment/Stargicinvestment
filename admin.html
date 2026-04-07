@@ -122,7 +122,16 @@ const db = getFirestore(app);
 
         <button onclick="copyWallet('${d.wallet}')">Copy</button>
 
-        <p>Status: ${d.status}</p>
+        <p>Status: 
+  <span style="
+    color: ${
+      d.status === "approved" ? "lightgreen" :
+      d.status === "rejected" ? "red" : "orange"
+    };
+  ">
+    ${d.status}
+  </span>
+</p>
 
         ${d.status === "pending" ? `
           <button onclick="approveWithdraw('${id}','${d.userId}',${d.amount})">Approve</button>
