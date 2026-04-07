@@ -78,6 +78,8 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 // 💰 WITHDRAW FUNCTION
+let isProcessing = false;
+
 window.withdraw = async function(){
 
   if(isProcessing) return;
@@ -88,7 +90,6 @@ window.withdraw = async function(){
   btn.innerText = "Processing...";
 
   try{
-
     const user = auth.currentUser;
 
     if(!user){
@@ -100,7 +101,6 @@ window.withdraw = async function(){
     const wallet = document.getElementById("wallet").value.trim();
     const amount = Number(document.getElementById("amount").value);
 
-    // ✅ VALIDATIONS
     if(!coin){
       alert("Select coin");
       throw "stop";
@@ -126,7 +126,6 @@ window.withdraw = async function(){
 
     const data = snap.data();
 
-    // 🚫 BLOCK ADMIN
     if(data.admin){
       alert("Admin cannot withdraw");
       throw "stop";
@@ -144,7 +143,6 @@ window.withdraw = async function(){
       throw "stop";
     }
 
-    // ✅ CREATE REQUEST
     await addDoc(collection(db, "withdrawals"), {
       userId: user.uid,
       coin,
@@ -156,7 +154,6 @@ window.withdraw = async function(){
 
     alert("Request sent. Waiting for admin approval.");
 
-    // ✅ CLEAR INPUTS
     document.getElementById("wallet").value = "";
     document.getElementById("amount").value = "";
     document.getElementById("coin").value = "";
@@ -168,11 +165,12 @@ window.withdraw = async function(){
     }
   }
 
-  // ✅ ALWAYS RESET (NO MATTER WHAT)
   btn.disabled = false;
   btn.innerText = "Confirm Withdraw";
   isProcessing = false;
 };
+
+
 
       </script>
 
