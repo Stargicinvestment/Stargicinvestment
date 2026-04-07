@@ -298,6 +298,11 @@ window.logout = function(){
   const snap = await getDoc(userRef);
   const data = snap.data();
 
+    if(data.admin){
+  alert("Cannot withdraw from admin account");
+  return;
+}
+
   let availableProfit = Number(data.availableProfit) || 0;
 
   if(amount > availableProfit || availableProfit <= 0){
