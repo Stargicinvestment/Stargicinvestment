@@ -210,21 +210,14 @@ const plans = {
 let miningRunning = false;
 
 // ✅ MINING FUNCTION
-async function runMining(userRef){
-
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
-
-  const data = snap.data();
+async function runMining(userRef, data){
 
   let invested = Number(data.invested) || 0;
-  if(invested <= 0){
-    return; // ✅ stops mining completely
-  }
+  if(invested <= 0) return;
 
   let lockedProfit = Number(data.lockedProfit) || 0;
 
-  if(!invested || !data.plan) return;
+  if(!data.plan) return;
 
   const plan = plans[data.plan];
   if(!plan) return;
@@ -232,26 +225,18 @@ async function runMining(userRef){
   let last = data.lastUpdate ? Number(data.lastUpdate) : Date.now();
   let now = Date.now();
 
-
-  // ✅ ADD THIS BLOCK HERE
   let profitStart = Number(data.profitStart) || now;
   let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
 
-if(profitDays >= 7 && (data.lockedProfit || 0) > 0){
+  if(profitDays >= 7 && (data.lockedProfit || 0) > 0){
+    await updateDoc(userRef,{
+      availableProfit: (Number(data.availableProfit) || 0) + (Number(data.lockedProfit) || 0),
+      lockedProfit: 0,
+      profitStart: Date.now()
+    });
+  }
 
-  await updateDoc(userRef,{
-    availableProfit: (Number(data.availableProfit) || 0) + (Number(data.lockedProfit) || 0),
-    lockedProfit: 0,
-    profitStart: Date.now()
-  });
-
-  console.log("Profit unlocked");
-}
-
-
-  // CALCULATE HOURS
   let hours = (now - last) / (1000 * 60 * 60);
-
   let earned = invested * plan.rate * (hours / 24);
 
   if(!isFinite(earned) || earned <= 0) return;
@@ -260,6 +245,7 @@ if(profitDays >= 7 && (data.lockedProfit || 0) > 0){
     lockedProfit: lockedProfit + earned,
     lastUpdate: now
   });
+  }
 
   console.log("MINED:", earned);
 }
