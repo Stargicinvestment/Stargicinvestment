@@ -340,14 +340,13 @@ document.getElementById("profit").innerHTML = `
 `;
   
 
-
-  startMining(user);
-
   // TRANSACTIONS
   const q = query(
     collection(db,"transactions"),
     where("userId","==",user.uid)
   );
+
+  startMining(user);
 
   onSnapshot(q,(snapshot)=>{
     let box = document.getElementById("history");
