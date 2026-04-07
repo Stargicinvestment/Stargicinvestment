@@ -142,7 +142,7 @@ await updateDoc(userRef,{
   plan: data.plan || "starter",
 
   startTime: data.startTime || Date.now(),
-  lastUpdate: Date.now(),
+  lastUpdate: data.lastUpdate || Date.now(),
 
   // ✅ ONLY SET IF NOT EXIST
   profitStart: data.profitStart || Date.now(),
