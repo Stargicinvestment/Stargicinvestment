@@ -90,6 +90,47 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth();
 const db = getFirestore();
+  function loadWithdrawals(){
+
+  const list = document.getElementById("withdrawList");
+
+  onSnapshot(collection(db,"withdrawals"), (snapshot)=>{
+
+    let html = "";
+
+    snapshot.forEach((docSnap)=>{
+
+      const d = docSnap.data();
+      const id = docSnap.id;
+
+      html += `
+      <div class="card">
+        <p><b>User:</b> ${d.userId}</p>
+        <p><b>Amount:</b> $${d.amount}</p>
+        <p><b>Coin:</b> ${d.coin}</p>
+
+        <p>
+          <b>Wallet:</b><br>
+          <span style="font-size:12px;color:#aaa;">
+            ${d.wallet}
+          </span>
+        </p>
+
+        <button onclick="copyWallet('${d.wallet}')">Copy</button>
+
+        <p>Status: ${d.status}</p>
+
+        ${d.status === "pending" ? `
+          <button onclick="approveWithdraw('${id}','${d.userId}',${d.amount})">Approve</button>
+          <button onclick="rejectWithdraw('${id}')">Reject</button>
+        ` : ""}
+      </div>
+      `;
+    });
+
+    list.innerHTML = html;
+  });
+  }
 
 
 // ✅ ADMIN CHECK
@@ -119,6 +160,8 @@ onAuthStateChanged(auth, async (user) => {
 
   loadUsers();
 });
+  // after admin check
+loadWithdrawals();
 
 
 async function addBalance(userId, amount) {
