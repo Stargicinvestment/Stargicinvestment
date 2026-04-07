@@ -80,10 +80,14 @@ onAuthStateChanged(auth,(user)=>{
 // 💰 WITHDRAW FUNCTION
 let isProcessing = false;
 
-window.withdraw = async function(){
+  window.withdraw = async function(){
 
   if(isProcessing) return;
   isProcessing = true;
+
+  const btn = document.getElementById("withdrawBtn");
+  btn.disabled = true;
+  btn.innerText = "Processing...";
 
   try{
 
@@ -91,35 +95,26 @@ window.withdraw = async function(){
 
     if(!user){
       alert("Login first");
-      isProcessing = false;
       return;
     }
 
     const coin = document.getElementById("coin").value;
     const wallet = document.getElementById("wallet").value.trim();
     const amount = Number(document.getElementById("amount").value);
-    const btn = document.getElementById("withdrawBtn");
-btn.disabled = true;
-btn.innerText = "Processing...";
-    btn.disabled = false;
-btn.innerText = "Confirm Withdraw";
 
     // ✅ VALIDATIONS
     if(!coin){
       alert("Select coin");
-      isProcessing = false;
       return;
     }
 
     if(!wallet || wallet.length < 10){
       alert("Enter valid wallet address");
-      isProcessing = false;
       return;
     }
 
     if(!amount || amount <= 0){
       alert("Enter valid amount");
-      isProcessing = false;
       return;
     }
 
@@ -129,16 +124,14 @@ btn.innerText = "Confirm Withdraw";
 
     if(!snap.exists()){
       alert("User not found");
-      isProcessing = false;
       return;
     }
 
     const data = snap.data();
 
-    // 🚫 BLOCK ADMIN WITHDRAW
+    // 🚫 BLOCK ADMIN
     if(data.admin){
       alert("Admin cannot withdraw");
-      isProcessing = false;
       return;
     }
 
@@ -146,18 +139,31 @@ btn.innerText = "Confirm Withdraw";
 
     if(amount > availableProfit){
       alert("Insufficient profit");
-      isProcessing = false;
       return;
     }
 
-    // 🔥 OPTIONAL: MIN WITHDRAW LIMIT
+    // 🔥 MIN LIMIT
     if(amount < 10){
       alert("Minimum withdraw is $10");
-      isProcessing = false;
       return;
     }
 
-    // ✅ CREATE REQUEST ONLY
+    // ✅ OPTIONAL: BLOCK MULTIPLE PENDING REQUESTS
+    // (uncomment if you want stronger control)
+    /*
+    const q = query(
+      collection(db,"withdrawals"),
+      where("userId","==",user.uid),
+      where("status","==","pending")
+    );
+    const existing = await getDocs(q);
+    if(!existing.empty){
+      alert("You already have a pending request");
+      return;
+    }
+    */
+
+    // ✅ CREATE REQUEST
     await addDoc(collection(db, "withdrawals"), {
       userId: user.uid,
       coin: coin,
@@ -179,6 +185,9 @@ btn.innerText = "Confirm Withdraw";
     alert("Error occurred. Try again.");
   }
 
+  // ✅ ALWAYS RESET BUTTON (VERY IMPORTANT)
+  btn.disabled = false;
+  btn.innerText = "Confirm Withdraw";
   isProcessing = false;
 };
 
