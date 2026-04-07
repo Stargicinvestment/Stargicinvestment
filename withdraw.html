@@ -37,7 +37,7 @@ button{
 
 <input type="number" id="amount" placeholder="Enter amount"><br>
 
-<button onclick="withdraw()">Confirm Withdraw</button>
+<button id="withdrawBtn" onclick="withdraw()">Confirm Withdraw</button>
 
 <script type="module">
 
@@ -51,7 +51,6 @@ import {
 import {
   getFirestore,
   doc,
-  updateDoc,
   getDoc,
   collection,
   addDoc
@@ -79,71 +78,113 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 // 💰 WITHDRAW FUNCTION
- let isProcessing = false;
+let isProcessing = false;
 
 window.withdraw = async function(){
 
   if(isProcessing) return;
   isProcessing = true;
 
-  const user = auth.currentUser;
-  if(!user){
-    alert("Login first");
-    isProcessing = false;
-    return;
+  try{
+
+    const user = auth.currentUser;
+
+    if(!user){
+      alert("Login first");
+      isProcessing = false;
+      return;
+    }
+
+    const coin = document.getElementById("coin").value;
+    const wallet = document.getElementById("wallet").value.trim();
+    const amount = Number(document.getElementById("amount").value);
+    const btn = document.getElementById("withdrawBtn");
+btn.disabled = true;
+btn.innerText = "Processing...";
+    btn.disabled = false;
+btn.innerText = "Confirm Withdraw";
+
+    // ✅ VALIDATIONS
+    if(!coin){
+      alert("Select coin");
+      isProcessing = false;
+      return;
+    }
+
+    if(!wallet || wallet.length < 10){
+      alert("Enter valid wallet address");
+      isProcessing = false;
+      return;
+    }
+
+    if(!amount || amount <= 0){
+      alert("Enter valid amount");
+      isProcessing = false;
+      return;
+    }
+
+    // 🔥 GET USER DATA
+    const userRef = doc(db,"users",user.uid);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+      alert("User not found");
+      isProcessing = false;
+      return;
+    }
+
+    const data = snap.data();
+
+    // 🚫 BLOCK ADMIN WITHDRAW
+    if(data.admin){
+      alert("Admin cannot withdraw");
+      isProcessing = false;
+      return;
+    }
+
+    let availableProfit = Number(data.availableProfit) || 0;
+
+    if(amount > availableProfit){
+      alert("Insufficient profit");
+      isProcessing = false;
+      return;
+    }
+
+    // 🔥 OPTIONAL: MIN WITHDRAW LIMIT
+    if(amount < 10){
+      alert("Minimum withdraw is $10");
+      isProcessing = false;
+      return;
+    }
+
+    // ✅ CREATE REQUEST ONLY
+    await addDoc(collection(db, "withdrawals"), {
+      userId: user.uid,
+      coin: coin,
+      wallet: wallet,
+      amount: amount,
+      status: "pending",
+      time: Date.now()
+    });
+
+    alert("Request sent. Waiting for admin approval.");
+
+    // ✅ CLEAR INPUTS
+    document.getElementById("wallet").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("coin").value = "";
+
+  }catch(err){
+    console.error(err);
+    alert("Error occurred. Try again.");
   }
-
-  const coin = document.getElementById("coin").value;
-  const wallet = document.getElementById("wallet").value.trim();
-  const amount = Number(document.getElementById("amount").value);
-
-  if(!coin){
-    alert("Select coin");
-    isProcessing = false;
-    return;
-  }
-
-  if(!wallet){
-    alert("Enter wallet address");
-    isProcessing = false;
-    return;
-  }
-
-  if(!amount || amount <= 0){
-    alert("Enter valid amount");
-    isProcessing = false;
-    return;
-  }
-
-  const userRef = doc(db,"users",user.uid);
-  const snap = await getDoc(userRef);
-  const data = snap.data();
-
-  let availableProfit = Number(data.availableProfit) || 0;
-
-  if(amount > availableProfit){
-    alert("Insufficient profit");
-    isProcessing = false;
-    return;
-  }
-
-  // ✅ CREATE REQUEST ONLY (NO MONEY DEDUCTED)
-  await addDoc(collection(db, "withdrawals"), {
-    userId: user.uid,
-    coin,
-    wallet,
-    amount,
-    status: "pending",
-    time: Date.now()
-  });
-
-  alert("Request sent. Waiting for admin approval.");
 
   isProcessing = false;
 };
 
+      </script>
 
 
 
-</script></body>
+</body>
 </html>
