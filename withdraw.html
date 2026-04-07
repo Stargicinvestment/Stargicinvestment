@@ -79,7 +79,7 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 // 💰 WITHDRAW FUNCTION
- let isProcessing = false; // 🔒 prevent double click
+ let isProcessing = false;
 
 window.withdraw = async function(){
 
@@ -93,8 +93,15 @@ window.withdraw = async function(){
     return;
   }
 
+  const coin = document.getElementById("coin").value;
   const wallet = document.getElementById("wallet").value.trim();
   const amount = Number(document.getElementById("amount").value);
+
+  if(!coin){
+    alert("Select coin");
+    isProcessing = false;
+    return;
+  }
 
   if(!wallet){
     alert("Enter wallet address");
@@ -110,72 +117,32 @@ window.withdraw = async function(){
 
   const userRef = doc(db,"users",user.uid);
   const snap = await getDoc(userRef);
+  const data = snap.data();
 
-  if(!snap.exists()){
-    alert("User not found");
+  let availableProfit = Number(data.availableProfit) || 0;
+
+  if(amount > availableProfit){
+    alert("Insufficient profit");
     isProcessing = false;
     return;
   }
 
-  const data = snap.data();
-
-  let profit = Number(data.profit) || 0;
-  let invested = Number(data.invested) || 0;
-
-  let now = Date.now();
-
-let availableProfit = Number(data.availableProfit) || 0;
-
-if(availableProfit <= 0){
-  alert("No profit available to withdraw");
-  isProcessing = false;
-  return;
-}
-
-if(amount > availableProfit){
-  alert("Amount exceeds available profit");
-  isProcessing = false;
-  return;
-  }
-
-
-  let newProfit = availableProfit - amount;
-
-await updateDoc(userRef,{
-  availableProfit: newProfit
-});
-
-  // ✅ withdraw logic
-  if(availableProfit > 0){
-    if(amount <= availableProfit){
-      newProfit -= amount;
-    } else {
-      let remaining = amount - availableProfit;
-      newProfit = 0;
-      newInvested -= remaining;
-    }
-  } else {
-    newInvested -= amount;
-  }
-
-  await updateDoc(userRef,{
-    profit: newProfit,
-    invested: newInvested
-  });
-
-
+  // ✅ CREATE REQUEST ONLY (NO MONEY DEDUCTED)
   await addDoc(collection(db, "withdrawals"), {
     userId: user.uid,
+    coin,
     wallet,
     amount,
-    type: "withdraw",
+    status: "pending",
     time: Date.now()
   });
 
-  alert("Withdraw successful");
+  alert("Request sent. Waiting for admin approval.");
 
   isProcessing = false;
 };
+
+
 
 
 </script></body>
