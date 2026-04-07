@@ -229,7 +229,6 @@ async function runMining(userRef){
   const plan = plans[data.plan];
   if(!plan) return;
 
-  let start = Number(data.startTime);
   let last = data.lastUpdate ? Number(data.lastUpdate) : Date.now();
   let now = Date.now();
 
@@ -388,19 +387,6 @@ window.goWithdraw = function(){
   location.href="withdraw.html";
 };
 
-
-  await updateDoc(userRef,{
-    invested: balance,      // move all money to invested
-    balance: 0,             // ✅ ZERO BALANCE
-    plan: "starter",
-    startTime: Date.now(),
-    lastUpdate: Date.now(),
-    profitStart: Date.now(),   // 7 days lock
-    depositStart: Date.now()   // 21 days lock
-  });
-
-  alert("Investment started!");
-};
 
 </script>
 <div id="google_translate_element" style="display:none;"></div>
