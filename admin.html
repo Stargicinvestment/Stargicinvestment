@@ -136,20 +136,18 @@ async function addBalance(userId, amount) {
   });
 
   // ✅ AUTO INVEST (NO BALANCE STORAGE)
-  await updateDoc(userRef,{
-    invested: (Number(data.invested) || 0) + amount,
+await updateDoc(userRef,{
+  invested: (Number(data.invested) || 0) + amount,
 
-    plan: "starter", // default plan
+  plan: data.plan || "starter",
 
-    startTime: data.startTime || Date.now(),
-    lastUpdate: Date.now(),
+  startTime: data.startTime || Date.now(),
+  lastUpdate: Date.now(),
 
-    profitStart: Date.now(),   // for 7 days unlock
-    depositStart: Date.now()   // for 21 days capital lock
-  });
-
-}
-
+  // ✅ ONLY SET IF NOT EXIST
+  profitStart: data.profitStart || Date.now(),
+  depositStart: data.depositStart || Date.now()
+});
 
 
 
