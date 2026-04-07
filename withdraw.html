@@ -90,28 +90,90 @@ window.withdraw = async function(){
   btn.innerText = "Processing...";
 
   try{
-  // all your logic here
-}
-catch(err){
-  if(err !== "stop"){
-    console.error(err);
-    alert("Error occurred. Try again.");
+
+    const user = auth.currentUser;
+
+    if(!user){
+      alert("Login first");
+      throw "stop";
+    }
+
+    const coin = document.getElementById("coin").value;
+    const wallet = document.getElementById("wallet").value.trim();
+    const amount = Number(document.getElementById("amount").value);
+
+    if(!coin){
+      alert("Select coin");
+      throw "stop";
+    }
+
+    if(!wallet || wallet.length < 10){
+      alert("Enter valid wallet address");
+      throw "stop";
+    }
+
+    if(!amount || amount <= 0){
+      alert("Enter valid amount");
+      throw "stop";
+    }
+
+    const userRef = doc(db,"users",user.uid);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+      alert("User not found");
+      throw "stop";
+    }
+
+    const data = snap.data();
+
+    if(data.admin){
+      alert("Admin cannot withdraw");
+      throw "stop";
+    }
+
+    let availableProfit = Number(data.availableProfit) || 0;
+
+    if(amount > availableProfit){
+      alert("Insufficient profit");
+      throw "stop";
+    }
+
+    if(amount < 10){
+      alert("Minimum withdraw is $10");
+      throw "stop";
+    }
+
+    await addDoc(collection(db, "withdrawals"), {
+      userId: user.uid,
+      coin,
+      wallet,
+      amount,
+      status: "pending",
+      time: Date.now()
+    });
+
+    alert("Request sent. Waiting for admin approval.");
+
+    document.getElementById("wallet").value = "";
+    document.getElementById("amount").value = "";
+    document.getElementById("coin").value = "";
+
   }
-}
-finally{
-  btn.disabled = false;
-  btn.innerText = "Confirm Withdraw";
-  isProcessing = false;
-}
+  catch(err){
+    if(err !== "stop"){
+      console.error(err);
+      alert("Error occurred. Try again.");
+    }
+  }
+  finally{
+    btn.disabled = false;
+    btn.innerText = "Confirm Withdraw";
+    isProcessing = false;
+  }
+};
 
     
-
-
-
-
-      </script>
-
-
-
+ </script>
 </body>
 </html>
