@@ -153,19 +153,13 @@ await updateDoc(userRef,{
     invested: newInvested
   });
 
-  // stop mining if empty
-  if(newInvested <= 0){
-    await updateDoc(userRef,{
-      plan: null
-    });
-  }
 
   await addDoc(collection(db, "withdrawals"), {
     userId: user.uid,
     wallet,
     amount,
     type: "withdraw",
-    date: Date.now()
+    time: Date.now()
   });
 
   alert("Withdraw successful");
