@@ -271,8 +271,13 @@ function startMining(user){
 
   // run every 60 seconds
   setInterval(()=>{
-    runMining(userRef);
-  }, 60000);
+  runMining(userRef);
+}, 60000);
+
+// run once after 2 seconds (avoid double fast run)
+setTimeout(()=>{
+  runMining(userRef);
+}, 2000);
   }
 
 // AUTH
