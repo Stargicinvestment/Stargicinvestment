@@ -169,9 +169,10 @@ async function loadUsers(){
     html += `
       <div class="card">
         <p><b>Email:</b> ${u.email || "N/A"}</p>
-        <p><b>Balance:</b> $${Number(u.balance || 0).toFixed(2)}</p>
         <p><b>Invested:</b> $${Number(u.invested || 0).toFixed(2)}</p>
-        <p><b>Plan:</b> ${u.plan || "None"}</p>
+<p><b>Available Profit:</b> $${Number(u.availableProfit || 0).toFixed(2)}</p>
+<p><b>Locked Profit:</b> $${Number(u.lockedProfit || 0).toFixed(2)}</p>
+<p><b>Plan:</b> ${u.plan || "None"}</p>
 
         <input type="number" id="bal-${id}" placeholder="Add amount">
 
