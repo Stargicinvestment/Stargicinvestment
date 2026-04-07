@@ -312,7 +312,6 @@ window.logout = function(){
 
   alert("Approved");
 
-  loadWithdrawals();
   }
   window.rejectWithdraw = async function(id){
 
@@ -324,7 +323,6 @@ window.logout = function(){
 
   alert("Rejected");
 
-  loadWithdrawals();
 }
   window.copyWallet = function(address){
   navigator.clipboard.writeText(address);
