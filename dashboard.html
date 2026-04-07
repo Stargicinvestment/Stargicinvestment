@@ -272,12 +272,13 @@ function startMining(user){
 
   const userRef = doc(db,"users",user.uid);
 
-  runMining(userRef);
+  onSnapshot(userRef,(docSnap)=>{
+    const data = docSnap.data();
 
-  setInterval(()=>{
-    runMining(userRef);
-  },60000);
-}
+    runMining(userRef, data);
+  });
+
+  }
 
 // AUTH
 onAuthStateChanged(auth, async (user)=>{
