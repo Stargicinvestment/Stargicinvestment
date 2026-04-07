@@ -148,6 +148,7 @@ await updateDoc(userRef,{
   profitStart: data.profitStart || Date.now(),
   depositStart: data.depositStart || Date.now()
 });
+}
 
 
 
@@ -211,15 +212,6 @@ window.updateBalance = async function(id){
   input.value = "";
 
   processing[id] = false;
-
-  loadUsers();
-}
-
-  await addBalance(id, amount);
-
-  alert("Balance added successfully");
-
-  input.value = ""; // ✅ IMPORTANT FIX
 
   loadUsers();
 }
