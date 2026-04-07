@@ -143,6 +143,21 @@ window.withdraw = async function(){
       alert("Minimum withdraw is $10");
       throw "stop";
     }
+    import { query, where, getDocs } from "firebase/firestore";
+
+const q = query(
+  collection(db,"withdrawals"),
+  where("userId","==",user.uid),
+  where("status","==","pending")
+);
+
+const existing = await getDocs(q);
+
+if(!existing.empty){
+  alert("You already have a pending request");
+  throw "stop";
+  }
+    
 
     await addDoc(collection(db, "withdrawals"), {
       userId: user.uid,
