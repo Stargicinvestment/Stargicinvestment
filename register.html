@@ -109,20 +109,20 @@ window.register = async function(){
     const user = userCred.user;
 
     // ✅ SAVE USER DATA
-    await setDoc(doc(db,"users",user.uid),{
-      email: user.email,
-      name: user.displayName || "",
-      balance: 0,
-      invested: 0,
-      availableProfit: 0,
-      lockedProfit: 0,
-      plan: "starter",
-      startTime: Date.now(),
-      lastUpdate: Date.now(),
-      profitStart: Date.now(),
-      depositStart: Date.now(),
-      admin: false
-    });
+await setDoc(doc(db,"users",user.uid),{
+  email: user.email,
+  name: document.getElementById("name").value,
+  balance: 0,
+  invested: 0,
+  availableProfit: 0,
+  lockedProfit: 0,
+  plan: "starter",
+  startTime: Date.now(),
+  lastUpdate: Date.now(),
+  profitStart: Date.now(),
+  depositStart: Date.now(),
+  admin: false
+});
 
     alert("Account created!");
     location.href = "dashboard.html";
@@ -131,7 +131,7 @@ window.register = async function(){
     alert(err.message);
   }
 };
-
+document.getElementById("registerBtn").onclick = register;
 
 </script>
 
