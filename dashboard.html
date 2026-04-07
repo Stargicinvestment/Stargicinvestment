@@ -220,15 +220,15 @@ async function runMining(userRef){
   let invested = Number(data.invested) || 0;
   if(invested <= 0) return;
 
-  let lockedProfit = Number(data.lockedProfit) || 0;
-
   if(!data.plan) return;
 
   const plan = plans[data.plan];
   if(!plan) return;
 
-  let last = data.lastUpdate ? Number(data.lastUpdate) : Date.now();
+  let last = Number(data.lastUpdate) || Date.now();
   let now = Date.now();
+
+  let lockedProfit = Number(data.lockedProfit) || 0;
 
   let profitStart = Number(data.profitStart) || now;
   let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
@@ -251,7 +251,7 @@ async function runMining(userRef){
   if(!isFinite(earned) || earned <= 0) return;
 
   await updateDoc(userRef,{
-    lockedProfit: lockedProfit + earned,
+    lockedProfit: (Number(data.lockedProfit) || 0) + earned,
     lastUpdate: now
   });
 
