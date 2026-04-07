@@ -78,9 +78,7 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 // 💰 WITHDRAW FUNCTION
-let isProcessing = false;
-
-  window.withdraw = async function(){
+window.withdraw = async function(){
 
   if(isProcessing) return;
   isProcessing = true;
@@ -95,7 +93,7 @@ let isProcessing = false;
 
     if(!user){
       alert("Login first");
-      return;
+      throw "stop";
     }
 
     const coin = document.getElementById("coin").value;
@@ -105,26 +103,25 @@ let isProcessing = false;
     // ✅ VALIDATIONS
     if(!coin){
       alert("Select coin");
-      return;
+      throw "stop";
     }
 
     if(!wallet || wallet.length < 10){
       alert("Enter valid wallet address");
-      return;
+      throw "stop";
     }
 
     if(!amount || amount <= 0){
       alert("Enter valid amount");
-      return;
+      throw "stop";
     }
 
-    // 🔥 GET USER DATA
     const userRef = doc(db,"users",user.uid);
     const snap = await getDoc(userRef);
 
     if(!snap.exists()){
       alert("User not found");
-      return;
+      throw "stop";
     }
 
     const data = snap.data();
@@ -132,43 +129,27 @@ let isProcessing = false;
     // 🚫 BLOCK ADMIN
     if(data.admin){
       alert("Admin cannot withdraw");
-      return;
+      throw "stop";
     }
 
     let availableProfit = Number(data.availableProfit) || 0;
 
     if(amount > availableProfit){
       alert("Insufficient profit");
-      return;
+      throw "stop";
     }
 
-    // 🔥 MIN LIMIT
     if(amount < 10){
       alert("Minimum withdraw is $10");
-      return;
+      throw "stop";
     }
-
-    // ✅ OPTIONAL: BLOCK MULTIPLE PENDING REQUESTS
-    // (uncomment if you want stronger control)
-    /*
-    const q = query(
-      collection(db,"withdrawals"),
-      where("userId","==",user.uid),
-      where("status","==","pending")
-    );
-    const existing = await getDocs(q);
-    if(!existing.empty){
-      alert("You already have a pending request");
-      return;
-    }
-    */
 
     // ✅ CREATE REQUEST
     await addDoc(collection(db, "withdrawals"), {
       userId: user.uid,
-      coin: coin,
-      wallet: wallet,
-      amount: amount,
+      coin,
+      wallet,
+      amount,
       status: "pending",
       time: Date.now()
     });
@@ -181,11 +162,13 @@ let isProcessing = false;
     document.getElementById("coin").value = "";
 
   }catch(err){
-    console.error(err);
-    alert("Error occurred. Try again.");
+    if(err !== "stop"){
+      console.error(err);
+      alert("Error occurred. Try again.");
+    }
   }
 
-  // ✅ ALWAYS RESET BUTTON (VERY IMPORTANT)
+  // ✅ ALWAYS RESET (NO MATTER WHAT)
   btn.disabled = false;
   btn.innerText = "Confirm Withdraw";
   isProcessing = false;
