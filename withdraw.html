@@ -114,31 +114,20 @@ window.withdraw = async function(){
 
   let now = Date.now();
 
-  let profitStart = Number(data.profitStart) || now;
-  let depositStart = Number(data.depositStart) || now;
+let availableProfit = Number(data.availableProfit) || 0;
 
-  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+if(availableProfit <= 0){
+  alert("No profit available to withdraw");
+  isProcessing = false;
+  return;
+}
 
-  let canWithdrawProfit = profitDays >= 7;
-  let canWithdrawCapital = depositDays >= 21;
-
-  let availableProfit = canWithdrawProfit ? profit : 0;
-  let availableCapital = canWithdrawCapital ? invested : 0;
-
-  let totalAvailable = availableProfit + availableCapital;
-
-  if(totalAvailable <= 0){
-    alert("Funds are still locked");
-    isProcessing = false;
-    return;
+if(amount > availableProfit){
+  alert("Amount exceeds available profit");
+  isProcessing = false;
+  return;
   }
 
-  if(amount > totalAvailable){
-    alert("Amount exceeds available funds");
-    isProcessing = false;
-    return;
-  }
 
   let newProfit = profit;
   let newInvested = invested;
