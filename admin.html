@@ -205,39 +205,39 @@ async function addBalance(userId, amount) {
 
 
 // ✅ LOAD USERS
-async function loadUsers(){
+function loadUsers(){
 
   const list = document.getElementById("usersList");
-  list.innerHTML = "Loading...";
 
-  const snapshot = await getDocs(collection(db, "users"));
+  onSnapshot(collection(db,"users"), (snapshot)=>{
 
-  let html = "";
+    let html = "";
 
-  snapshot.forEach((docSnap) => {
+    snapshot.forEach((docSnap)=>{
 
-    const u = docSnap.data();
-    const id = docSnap.id;
+      const u = docSnap.data();
+      const id = docSnap.id;
 
-    html += `
-      <div class="card">
-        <p><b>Email:</b> ${u.email || "N/A"}</p>
-        <p><b>Invested:</b> $${Number(u.invested || 0).toFixed(2)}</p>
-<p><b>Available Profit:</b> $${Number(u.availableProfit || 0).toFixed(2)}</p>
-<p><b>Locked Profit:</b> $${Number(u.lockedProfit || 0).toFixed(2)}</p>
-<p><b>Plan:</b> ${u.plan || "None"}</p>
+      html += `
+        <div class="card">
+          <p><b>Email:</b> ${u.email || "N/A"}</p>
+          <p><b>Invested:</b> $${Number(u.invested || 0).toFixed(2)}</p>
+          <p><b>Available Profit:</b> $${Number(u.availableProfit || 0).toFixed(2)}</p>
+          <p><b>Locked Profit:</b> $${Number(u.lockedProfit || 0).toFixed(2)}</p>
+          <p><b>Plan:</b> ${u.plan || "None"}</p>
 
-        <input type="number" id="bal-${id}" placeholder="Add amount">
+          <input type="number" id="bal-${id}" placeholder="Add amount">
 
-        <br>
-        <button class="add" onclick="updateBalance('${id}')">Add Balance</button>
-        <button class="delete" onclick="deleteUser('${id}')">Delete</button>
-      </div>
-    `;
+          <br>
+          <button class="add" onclick="updateBalance('${id}')">Add Balance</button>
+          <button class="delete" onclick="deleteUser('${id}')">Delete</button>
+        </div>
+      `;
+    });
+
+    list.innerHTML = html;
   });
-
-  list.innerHTML = html;
-}
+      }
 
 
 // ✅ BUTTON HANDLER
