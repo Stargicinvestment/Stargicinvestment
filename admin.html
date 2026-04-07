@@ -168,14 +168,13 @@ loadWithdrawals();
 });
   
 
-
+// ✅ ADD HERE
 async function addBalance(userId, amount) {
 
   const userRef = doc(db, "users", userId);
   const snap = await getDoc(userRef);
   const data = snap.data();
 
-  // ✅ Save transaction
   await addDoc(collection(db,"transactions"),{
     userId: userId,
     type: "deposit",
@@ -183,18 +182,16 @@ async function addBalance(userId, amount) {
     time: Date.now()
   });
 
-  // ✅ AUTO INVEST (NO BALANCE STORAGE)
-await updateDoc(userRef,{
-  balance: (Number(data.balance) || 0) + amount,
-  invested: (Number(data.invested) || 0) + amount,
+  await updateDoc(userRef,{
+    balance: (Number(data.balance) || 0) + amount,
+    invested: (Number(data.invested) || 0) + amount,
+    plan: data.plan || "starter",
+    startTime: data.startTime || Date.now(),
+    lastUpdate: Date.now(),
+    profitStart: data.profitStart || Date.now()
+  });
 
-  plan: data.plan || "starter",
-
-  startTime: data.startTime || Date.now(),
-  lastUpdate: Date.now(),
-
-  profitStart: data.profitStart || Date.now()
-});
+}
 
 
 
