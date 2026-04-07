@@ -327,33 +327,35 @@ onSnapshot(userRef,(docSnap)=>{
 
   let d = docSnap.data();
 
-  let balance = Number(d.balance) || 0;
-  let availableProfit = Number(d.availableProfit) || 0; // ✅ correct
-  let lockedProfit = Number(d.lockedProfit) || 0;       // ✅ correct
-  let invested = Number(d.invested) || 0;
+let balance = Number(d.balance) || 0;
+let invested = Number(d.invested) || 0;
+let availableProfit = Number(d.availableProfit) || 0;
+let lockedProfit = Number(d.lockedProfit) || 0;
 
-  let now = Date.now();
+// Balance
+document.getElementById("balance").innerText =
+  "$" + balance.toFixed(2);
 
-  let depositStart = Number(d.depositStart) || now;
-  let depositDays = (now - depositStart) / (1000 * 60 * 60 * 24);
+// Capital (only show if balance > 0)
+const capitalBox = document.getElementById("capitalBox");
 
-  let availableCapital = depositDays >= 21 ? invested : 0;
+if(balance > 0){
+  capitalBox.style.display = "block";
 
-  document.getElementById("balance").innerText =
-    "$" + balance.toFixed(2);
+  document.getElementById("invested").innerText =
+    "$" + invested.toFixed(2);
+}else{
+  capitalBox.style.display = "none";
+}
 
-  document.getElementById("profit").innerHTML = `
-    $${availableProfit.toFixed(2)}
-    
-    <div style="font-size:13px;color:gray;">
-      Locked Profit: $${lockedProfit.toFixed(2)}
-    </div>
-
-    <div style="font-size:13px;color:#00e676;">
-      Capital Available: $${availableCapital.toFixed(2)}
-    </div>
-  `;
-});
+// Profit
+document.getElementById("profit").innerHTML = `
+  $${availableProfit.toFixed(2)}
+  
+  <div style="font-size:13px;color:gray;">
+    Locked Profit: $${lockedProfit.toFixed(2)}
+  </div>
+`;
 
 
   startMining(user);
