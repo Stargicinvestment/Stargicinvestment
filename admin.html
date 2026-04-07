@@ -137,18 +137,16 @@ async function addBalance(userId, amount) {
 
   // ✅ AUTO INVEST (NO BALANCE STORAGE)
 await updateDoc(userRef,{
+  balance: (Number(data.balance) || 0) + amount,
   invested: (Number(data.invested) || 0) + amount,
 
   plan: data.plan || "starter",
 
   startTime: data.startTime || Date.now(),
-  lastUpdate: data.lastUpdate || Date.now(),
+  lastUpdate: Date.now(),
 
-  // ✅ ONLY SET IF NOT EXIST
-  profitStart: data.profitStart || Date.now(),
-  depositStart: data.depositStart || Date.now()
+  profitStart: data.profitStart || Date.now()
 });
-}
 
 
 
