@@ -67,11 +67,20 @@ cursor:pointer;
 
 <script type="module">
 
+// 🔥 Firebase setup
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { 
+  getAuth, 
+  createUserWithEmailAndPassword 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getFirestore, 
+  doc, 
+  setDoc 
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
 
 
 const firebaseConfig = {
@@ -89,42 +98,40 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 
-document.getElementById("registerBtn").onclick = async function(){
+// 🚀 REGISTER FUNCTION
+window.register = async function(){
 
-const name = document.getElementById("name").value;
-const email = document.getElementById("email").value;
-const password = document.getElementById("password").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
+  try{
+    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+    const user = userCred.user;
 
-try{
+    // ✅ SAVE USER DATA
+    await setDoc(doc(db,"users",user.uid),{
+      email: user.email,
+      name: user.displayName || "",
+      balance: 0,
+      invested: 0,
+      availableProfit: 0,
+      lockedProfit: 0,
+      plan: "starter",
+      startTime: Date.now(),
+      lastUpdate: Date.now(),
+      profitStart: Date.now(),
+      depositStart: Date.now(),
+      admin: false
+    });
 
-const userCredential = await createUserWithEmailAndPassword(auth,email,password);
+    alert("Account created!");
+    location.href = "dashboard.html";
 
-const user = userCredential.user;
-
-
-await setDoc(doc(db,"users",user.uid),{
-
-name: name,
-email: email,
-balance: 0
-
-});
-
-
-alert("Account created successfully");
-
-window.location.href="login.html";
-
-}
-
-catch(error){
-
-alert(error.message);
-
-}
-
+  }catch(err){
+    alert(err.message);
+  }
 };
+
 
 </script>
 
