@@ -1,140 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Create Account</title>
+<title>Register</title>
 
 <style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
 
 body{
-font-family:Poppins;
-background:#0b0f1a;
-display:flex;
-justify-content:center;
-align-items:center;
-height:100vh;
-color:white;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 }
 
-.box{
-background:#111827;
-padding:40px;
-border-radius:10px;
-width:320px;
+/* GLASS CARD */
+.card{
+  width:90%;
+  max-width:400px;
+  padding:30px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.1);
+  color:#fff;
+  text-align:center;
 }
 
-input{
-width:100%;
-padding:12px;
-margin-top:10px;
-border:none;
-border-radius:5px;
+/* TITLE */
+.title{
+  font-size:26px;
+  margin-bottom:20px;
+  font-weight:bold;
 }
 
+/* INPUT GROUP */
+.input-group{
+  position:relative;
+  margin-bottom:18px;
+}
+
+.input-group input{
+  width:100%;
+  padding:14px 14px 14px 40px;
+  border:none;
+  outline:none;
+  border-radius:10px;
+  background:rgba(255,255,255,0.1);
+  color:#fff;
+  font-size:14px;
+  transition:0.3s;
+}
+
+/* FLOAT LABEL */
+.input-group label{
+  position:absolute;
+  left:40px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:13px;
+  color:#ccc;
+  pointer-events:none;
+  transition:0.3s;
+}
+
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label{
+  top:-8px;
+  left:35px;
+  font-size:11px;
+  background:#0f2027;
+  padding:2px 6px;
+  border-radius:5px;
+}
+
+/* ICON */
+.input-group span{
+  position:absolute;
+  left:12px;
+  top:50%;
+  transform:translateY(-50%);
+}
+
+/* CHECKBOX */
+.check{
+  font-size:13px;
+  text-align:left;
+  margin-bottom:15px;
+}
+
+/* BUTTON */
 button{
-width:100%;
-padding:12px;
-margin-top:15px;
-background:#00ff9d;
-border:none;
-cursor:pointer;
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(45deg,#00c853,#69f0ae);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-</style>
+button:hover{
+  transform:scale(1.03);
+}
 
+/* LOGIN */
+.login{
+  margin-top:15px;
+  font-size:13px;
+}
+
+.login a{
+  color:#69f0ae;
+  text-decoration:none;
+}
+
+/* LOADING */
+.loading{
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse{
+  0%{opacity:1}
+  50%{opacity:0.5}
+  100%{opacity:1}
+}
+</style>
 </head>
 
 <body>
 
-<div class="box">
+<div class="card">
 
-<h2>Create Account</h2>
+  <div class="title">Create Account</div>
 
-<input id="name" placeholder="Full Name">
+  <!-- NAME -->
+  <div class="input-group">
+    <span>👤</span>
+    <input type="text" id="name" placeholder=" ">
+    <label>Full Name</label>
+  </div>
 
-<input id="email" placeholder="Email">
+  <!-- EMAIL -->
+  <div class="input-group">
+    <span>📧</span>
+    <input type="email" id="email" placeholder=" ">
+    <label>Email Address</label>
+  </div>
 
-<input id="password" type="password" placeholder="Password">
+  <!-- PASSWORD -->
+  <div class="input-group">
+    <span>🔑</span>
+    <input type="password" id="password" placeholder=" ">
+    <label>Password</label>
+  </div>
 
-<button id="registerBtn">Register</button>
+  <!-- REFERRAL -->
+  <div class="input-group">
+    <span>👥</span>
+    <input type="text" id="referral" placeholder=" ">
+    <label>Referral (optional)</label>
+  </div>
+
+  <!-- TERMS -->
+  <div class="check">
+    <input type="checkbox" id="terms"> I accept Terms & Privacy Policy
+  </div>
+
+  <button onclick="register()" id="registerBtn">Register</button>
+
+  <div class="login">
+    Already have account? <a href="login.html">Login</a>
+  </div>
 
 </div>
 
-
 <script type="module">
 
-// 🔥 Firebase setup
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword 
+import {
+  getAuth,
+  createUserWithEmailAndPassword
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { 
-  getFirestore, 
-  doc, 
-  setDoc 
+import {
+  getFirestore,
+  doc,
+  setDoc
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-
 
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.firebasestorage.app",
+  storageBucket: "stargicinvestment.appspot.com",
   messagingSenderId: "1053305294931",
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
-
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-
-// 🚀 REGISTER FUNCTION
 window.register = async function(){
 
-  const email = document.getElementById("email").value;
-  const password = document.getElementById("password").value;
+  const btn = document.getElementById("registerBtn");
+  btn.disabled = true;
+  btn.classList.add("loading");
+  btn.innerText = "Creating...";
 
   try{
-    const userCred = await createUserWithEmailAndPassword(auth, email, password);
+
+    const name = document.getElementById("name").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
+    const referral = document.getElementById("referral").value.trim();
+    const terms = document.getElementById("terms").checked;
+
+    if(!name || !email || !password){
+      alert("Fill all fields");
+      throw "stop";
+    }
+
+    if(password.length < 6){
+      alert("Password must be at least 6 characters");
+      throw "stop";
+    }
+
+    if(!terms){
+      alert("Accept terms first");
+      throw "stop";
+    }
+
+    const userCred = await createUserWithEmailAndPassword(auth,email,password);
     const user = userCred.user;
 
-    // ✅ SAVE USER DATA
-await setDoc(doc(db,"users",user.uid),{
-  email: user.email,
-  name: document.getElementById("name").value,
-  balance: 0,
-  invested: 0,
-  availableProfit: 0,
-  lockedProfit: 0,
-  plan: "starter",
-  startTime: Date.now(),
-  lastUpdate: Date.now(),
-  profitStart: Date.now(),
-  depositStart: Date.now(),
-  admin: false
-});
+    await setDoc(doc(db,"users",user.uid),{
+      name,
+      email,
+      referral,
+      balance:0,
+      availableProfit:0,
+      plan:"starter",
+      admin:false,
+      createdAt: Date.now()
+    });
 
-    alert("Account created!");
+    alert("Account created successfully!");
     location.href = "dashboard.html";
 
   }catch(err){
-    alert(err.message);
+    if(err !== "stop"){
+      console.error(err);
+      alert(err.message);
+    }
   }
+
+  btn.disabled = false;
+  btn.classList.remove("loading");
+  btn.innerText = "Register";
 };
-document.getElementById("registerBtn").onclick = register;
 
 </script>
 
-
 </body>
-</html>
+  </html>
