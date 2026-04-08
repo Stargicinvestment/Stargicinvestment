@@ -166,18 +166,23 @@ if(!user.emailVerified){
     }
 
     // 🔥 OPTIONAL: CHECK USER EXISTS IN FIRESTORE
-    const userRef = doc(db,"users",user.uid);
-    const snap = await getDoc(userRef);
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+const user = userCred.user;
 
-    if(!snap.exists()){
-      alert("User data not found");
-      await signOut(auth);
-      throw "stop";
-    }
+// 🔥 REFRESH USER
+await user.reload();
 
-    // ✅ SUCCESS
-    alert("Login successful!");
-    location.href = "dashboard.html";
+// 🔴 BLOCK + RESEND EMAIL
+if(!user.emailVerified){
+  await sendEmailVerification(user);
+  alert("Verification email sent. Check your inbox.");
+  await auth.signOut();
+  throw "stop";
+}
+
+// ✅ SUCCESS LOGIN
+alert("Login successful!");
+location.href = "dashboard.html";
 
   }catch(err){
 
