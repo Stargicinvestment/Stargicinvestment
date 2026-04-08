@@ -4,63 +4,195 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Login</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+}
+
+/* CARD */
+.card{
+  width:90%;
+  max-width:400px;
+  padding:30px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(15px);
+  box-shadow:0 8px 32px rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.1);
+  color:#fff;
+  text-align:center;
+}
+
+/* TITLE */
+.title{
+  font-size:26px;
+  margin-bottom:20px;
+  font-weight:bold;
+}
+
+/* INPUT */
+.input-group{
+  margin-bottom:15px;
+}
+
+.input-group input{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:rgba(255,255,255,0.1);
+  color:#fff;
+}
+
+/* BUTTON */
+button{
+  width:100%;
+  padding:14px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(45deg,#00c853,#69f0ae);
+  color:#000;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+/* LINK */
+.register{
+  margin-top:15px;
+  font-size:13px;
+}
+
+.register a{
+  color:#69f0ae;
+  text-decoration:none;
+}
+</style>
 </head>
 
-<body style="background:#0b0f1a;color:white;text-align:center;padding-top:100px;">
+<body>
 
-<h2>Login</h2>
+<div class="card">
 
-<input id="email" type="email" placeholder="Enter Email" style="padding:10px;width:250px;"><br><br>
+  <div class="title">Login</div>
 
-<input id="password" type="password" placeholder="Enter Password" style="padding:10px;width:250px;"><br><br>
+  <div class="input-group">
+    <input type="email" id="email" placeholder="Email Address">
+  </div>
 
-<button onclick="login()" style="padding:10px 20px;background:#00ff9d;border:none;border-radius:5px;cursor:pointer;">
-Login
-</button>
+  <div class="input-group">
+    <input type="password" id="password" placeholder="Password">
+  </div>
+
+  <button onclick="login()" id="loginBtn">Login</button>
+
+  <div class="register">
+    Don't have account? <a href="register.html">Register</a>
+  </div>
+
+</div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+// ✅ SAME CONFIG AS REGISTER
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
   projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",  // ✅ FIXED
+  storageBucket: "stargicinvestment.appspot.com",
   messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6",
-  measurementId: "G-MYXX49TZLW"
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 
-// ✅ LOGIN FUNCTION
 window.login = async function(){
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value.trim();
-
-  if(!email || !password){
-    alert("Enter email and password");
-    return;
-  }
+  const btn = document.getElementById("loginBtn");
+  btn.disabled = true;
+  btn.innerText = "Logging in...";
 
   try{
-    const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
 
-    const ADMIN_EMAIL = "eoluka864@gmail.com";
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value;
 
-    if(user.email === ADMIN_EMAIL){
-      window.location.href = "admin.html";
-    }else{
-      window.location.href = "dashboard.html";
+    if(!email || !password){
+      alert("Fill all fields");
+      throw "stop";
     }
 
-  }catch(error){
-    alert(error.message);
+    const userCred = await signInWithEmailAndPassword(auth,email,password);
+    const user = userCred.user;
+
+    // 🚫 BLOCK IF EMAIL NOT VERIFIED
+    if(!user.emailVerified){
+      alert("Please verify your email first!");
+
+      await signOut(auth);
+      throw "stop";
+    }
+
+    // 🔥 OPTIONAL: CHECK USER EXISTS IN FIRESTORE
+    const userRef = doc(db,"users",user.uid);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+      alert("User data not found");
+      await signOut(auth);
+      throw "stop";
+    }
+
+    // ✅ SUCCESS
+    alert("Login successful!");
+    location.href = "dashboard.html";
+
+  }catch(err){
+
+    if(err !== "stop"){
+      console.error(err);
+
+      if(err.code === "auth/user-not-found"){
+        alert("User not found");
+      }else if(err.code === "auth/wrong-password"){
+        alert("Incorrect password");
+      }else if(err.code === "auth/invalid-email"){
+        alert("Invalid email");
+      }else{
+        alert("Login failed");
+      }
+    }
+
+  }finally{
+    btn.disabled = false;
+    btn.innerText = "Login";
   }
 
 };
