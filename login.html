@@ -146,10 +146,12 @@ window.login = async function(){
     const password = document.getElementById("password").value;
 
     if(!email || !password){
-      alert("Enter email and password");
-      return;
+  alert("Enter email and password");
+  btn.disabled = false;
+  btn.innerText = "Login";
+  return;
     }
-
+    
     const userCred = await signInWithEmailAndPassword(auth, email, password);
     const user = userCred.user;
 
