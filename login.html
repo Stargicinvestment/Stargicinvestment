@@ -151,10 +151,27 @@ window.login = async function(){
       return;
     }
 
-    await signInWithEmailAndPassword(auth, email, password);
+    const userCred = await signInWithEmailAndPassword(auth, email, password);
+    const user = userCred.user;
 
-    alert("Login successful!");
-    location.href = "dashboard.html";
+    // 🔥 CHECK ADMIN ROLE
+    const userRef = doc(db,"users",user.uid);
+    const snap = await getDoc(userRef);
+
+    if(!snap.exists()){
+      alert("User data not found");
+      return;
+    }
+
+    const data = snap.data();
+
+    if(data.admin === true){
+      // ✅ ADMIN REDIRECT
+      location.href = "admin.html";
+    }else{
+      // ✅ NORMAL USER
+      location.href = "dashboard.html";
+    }
 
   }catch(err){
     console.error(err);
