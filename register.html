@@ -191,7 +191,8 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 
 import {
   getAuth,
-  createUserWithEmailAndPassword
+  createUserWithEmailAndPassword,
+  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
@@ -246,10 +247,14 @@ window.register = async function(){
     const userCred = await createUserWithEmailAndPassword(auth,email,password);
     const user = userCred.user;
 
+    // ✅ SEND VERIFICATION EMAIL
+    await sendEmailVerification(user);
+
+    // ✅ SAVE USER
     await setDoc(doc(db,"users",user.uid),{
       name,
       email,
-      referral,
+      referral: referral || null,
       balance:0,
       availableProfit:0,
       plan:"starter",
@@ -257,19 +262,29 @@ window.register = async function(){
       createdAt: Date.now()
     });
 
-    alert("Account created successfully!");
-    location.href = "dashboard.html";
+    alert("Account created! Check your email to verify before login.");
+
+    // 🔁 LOGOUT USER (important)
+    auth.signOut();
+
+    location.href = "login.html";
 
   }catch(err){
     if(err !== "stop"){
       console.error(err);
-      alert(err.message);
+
+      if(err.code === "auth/email-already-in-use"){
+        alert("Email already registered");
+      }else{
+        alert("Registration failed");
+      }
     }
   }
-
-  btn.disabled = false;
-  btn.classList.remove("loading");
-  btn.innerText = "Register";
+  finally{
+    btn.disabled = false;
+    btn.classList.remove("loading");
+    btn.innerText = "Register";
+  }
 };
 
 </script>
