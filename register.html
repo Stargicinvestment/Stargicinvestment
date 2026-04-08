@@ -192,7 +192,6 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import {
   getAuth,
   createUserWithEmailAndPassword,
-  sendEmailVerification
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
@@ -247,8 +246,6 @@ window.register = async function(){
     const userCred = await createUserWithEmailAndPassword(auth,email,password);
     const user = userCred.user;
 
-    // ✅ SEND VERIFICATION EMAIL
-    await sendEmailVerification(user);
 
     // ✅ SAVE USER
     await setDoc(doc(db,"users",user.uid),{
@@ -262,10 +259,8 @@ window.register = async function(){
       createdAt: Date.now()
     });
 
-    alert("Account created! Check your email to verify before login.");
+    alert("Account created successfully!");
 
-    // 🔁 LOGOUT USER (important)
-    auth.signOut();
 
     location.href = "login.html";
 
