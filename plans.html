@@ -180,20 +180,19 @@ body{
 <script>
 
 // LOAD PLAN
-const plan = JSON.parse(localStorage.getItem("selectedPlan"));
+  const plan = JSON.parse(localStorage.getItem("selectedPlan"));
 
-if(plan){
+if(!plan){
+  alert("No plan selected!");
+  window.location.href = "plans.html";
+}else{
   document.getElementById("planInfo").innerHTML = `
     <p><strong>Plan:</strong> ${plan.name.toUpperCase()}</p>
     <p><strong>Min:</strong> $${plan.min}</p>
     <p><strong>Max:</strong> $${plan.max}</p>
     <p><strong>Profit:</strong> ${plan.percent}% daily</p>
   `;
-}else{
-  document.getElementById("planInfo").innerHTML = `
-    <p style="color:red;">No plan selected</p>
-  `;
-}
+  }
 
 // COPY FUNCTION
 function copyWallet(id,btn){
@@ -205,7 +204,7 @@ function copyWallet(id,btn){
   btn.classList.add("copied");
 
   setTimeout(()=>{
-    btn.innerText = "Copy Address";
+    btn.innerText = "Copy " + id.toUpperCase() + " Address";
     btn.classList.remove("copied");
   },2000);
 }
