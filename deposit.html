@@ -6,313 +6,207 @@
 <title>Deposit | StargicInvestment</title>
 
 <style>
+
+/* GLOBAL */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
 body{
-margin:0;
-font-family:Arial;
-background:#0b0f1a;
-color:#00ff9d;
+  background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
+  color:#fff;
+  padding:20px 10px;
+  scroll-behavior:smooth;
 }
 
-nav{
-background:#111827;
-padding:15px 25px;
-display:flex;
-justify-content:space-between;
-align-items:center;
+/* TITLE */
+.section-title{
+  text-align:center;
+  color:#00ffa6;
+  font-size:28px;
+  margin-top:20px;
+  font-weight:700;
 }
 
-.logo{
-font-size:20px;
-font-weight:600;
+.section-sub{
+  text-align:center;
+  color:#9be7c4;
+  margin:10px 0 25px;
+  font-size:14px;
 }
 
-.menu{
-display:flex;
-align-items:center;
-gap:15px;
-flex-wrap:wrap;
+/* GRID */
+.plans{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+  max-width:1100px;
+  margin:auto;
 }
 
-.menu a{
-color:#00ff9d;
-text-decoration:none;
-}
-
-#google_translate_element{
-margin-left:10px;
-}
-
-.goog-te-combo{
-background:#111827;
-color:#00ff9d;
-border:1px solid #00ff9d;
-padding:5px;
-}
-
-.container{
-max-width:1100px;
-margin:auto;
-padding:60px 20px;
-}
-
-h2{
-text-align:center;
-margin-bottom:40px;
-}
-
-.plan-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit, minmax(250px,1fr));
-gap:20px;
-}
-
+/* CARD */
 .plan{
-background:#111827;
-padding:25px;
-border-radius:10px;
-text-align:center;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
+  background:rgba(0,255,166,0.05);
+  border-radius:18px;
+  padding:25px;
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(0,255,166,0.15);
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  transition:0.3s;
+  position:relative;
 }
 
-.btn{
-background:#00ff9d;
-color:black;
-padding:10px;
-border:none;
-border-radius:6px;
-cursor:pointer;
-margin-top:15px;
+/* HOVER */
+.plan:hover{
+  transform:translateY(-6px);
+  box-shadow:0 15px 40px rgba(0,255,166,0.25);
 }
 
-.wallet-section{
-display:none;
-margin-top:60px;
+/* TITLE */
+.plan h3{
+  font-size:20px;
+  margin-bottom:10px;
 }
 
-.wallet-box{
-background:#111827;
-padding:20px;
-border-radius:10px;
-margin-bottom:20px;
+/* PERCENT */
+.percent{
+  font-size:38px;
+  font-weight:bold;
+  background:linear-gradient(45deg,#00ffa6,#00c853);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:15px;
 }
 
-.wallet-address{
-background:#0b0f1a;
-padding:10px;
-border-radius:6px;
-margin-top:10px;
-word-break:break-all;
+/* DETAILS */
+.plan p{
+  margin:6px 0;
+  font-size:14px;
+  color:#cceee0;
 }
 
-.copy-btn{
-margin-top:10px;
-padding:8px 16px;
-background:#00ff9d;
-border:none;
-border-radius:5px;
-cursor:pointer;
+.plan p strong{
+  color:#00ffa6;
 }
 
-footer{
-text-align:center;
-padding:40px;
-background:#111827;
-margin-top:80px;
+/* BUTTON */
+.plan button{
+  margin-top:18px;
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(45deg,#00ffa6,#00c853);
+  color:#002b1f;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
 }
+
+.plan button:hover{
+  transform:scale(1.05);
+}
+
+/* FEATURED PLAN */
+.plan:nth-child(3){
+  border:1px solid #00ffa6;
+  box-shadow:0 0 25px rgba(0,255,166,0.4);
+}
+
+.plan:nth-child(3)::before{
+  content:"POPULAR";
+  position:absolute;
+  top:12px;
+  right:-40px;
+  background:#00ffa6;
+  color:#003d2b;
+  padding:5px 40px;
+  font-size:11px;
+  transform:rotate(45deg);
+  font-weight:bold;
+}
+
+/* MOBILE FIX */
+@media(max-width:500px){
+  .section-title{
+    font-size:22px;
+  }
+}
+
 </style>
 </head>
 
 <body>
 
-<nav>
-<div class="logo">StargicInvestment</div>
+<h2 class="section-title">Investment Plans</h2>
+<p class="section-sub">Choose a plan that matches your financial goals</p>
 
-<div class="menu">
-<a href="dashboard.html">Dashboard</a>
-<a href="deposit.html">Deposit</a>
-<a href="withdraw.html">Withdraw</a>
+<div class="plans">
 
-<!-- ✅ GOOGLE TRANSLATE -->
-<div id="google_translate_element"></div>
-</div>
-</nav>
+  <div class="plan">
+    <h3>Starter Plan</h3>
+    <div class="percent">2.5%</div>
+    <p><strong>Minimum:</strong> $300</p>
+    <p><strong>Maximum:</strong> $999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('starter',300,999,2.5)">Invest Now</button>
+  </div>
 
-<div class="container">
+  <div class="plan">
+    <h3>Silver Plan</h3>
+    <div class="percent">3.5%</div>
+    <p><strong>Minimum:</strong> $1,000</p>
+    <p><strong>Maximum:</strong> $4,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('silver',1000,4999,3.5)">Invest Now</button>
+  </div>
 
-<h2>Select Investment Plan</h2>
+  <div class="plan">
+    <h3>Elite Plan</h3>
+    <div class="percent">4.5%</div>
+    <p><strong>Minimum:</strong> $5,000</p>
+    <p><strong>Maximum:</strong> $9,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('elite',5000,9999,4.5)">Invest Now</button>
+  </div>
 
-<div class="plan-grid">
+  <div class="plan">
+    <h3>Premium Plan</h3>
+    <div class="percent">5.5%</div>
+    <p><strong>Minimum:</strong> $10,000</p>
+    <p><strong>Maximum:</strong> $49,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('premium',10000,49999,5.5)">Invest Now</button>
+  </div>
 
-<div class="plan">
-<h3>Starter Plan</h3>
-<p>$300 – $999</p>
-<p>Profit: 2.5% Daily</p>
-<p>Duration: 7 Days</p>
-<button class="btn" onclick="selectPlan('starter',300,999)">Invest</button>
-</div>
-
-<div class="plan">
-<h3>Silver Plan</h3>
-<p>$1,000 – $4,999</p>
-<p>Profit: 3.5% Daily</p>
-<p>Duration: 7 Days</p>
-<button class="btn" onclick="selectPlan('silver',1000,4999)">Invest</button>
-</div>
-
-<div class="plan">
-<h3>Gold Plan</h3>
-<p>$5,000 – $19,999</p>
-<p>Profit: 4.5% Daily</p>
-<p>Duration: 7 Days</p>
-<button class="btn" onclick="selectPlan('gold',5000,19999)">Invest</button>
-</div>
-
-<div class="plan">
-<h3>Platinum Plan</h3>
-<p>$20,000 – $49,999</p>
-<p>Profit: 5.5% Daily</p>
-<p>Duration: 7 Days</p>
-<button class="btn" onclick="selectPlan('platinum',20000,49999)">Invest</button>
-</div>
-
-<div class="plan">
-<h3>VIP Plan</h3>
-<p>$50,000 – $999,999</p>
-<p>Profit: 6.6% Daily</p>
-<p>Duration: 7 Days</p>
-<button class="btn" onclick="selectPlan('vip',50000,999999)">Invest</button>
-</div>
+  <div class="plan">
+    <h3>VIP Plan</h3>
+    <div class="percent">6.5%</div>
+    <p><strong>Minimum:</strong> $50,000</p>
+    <p><strong>Maximum:</strong> $1,000,000</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('vip',50000,1000000,6.5)">Invest Now</button>
+  </div>
 
 </div>
 
-<!-- WALLET SECTION -->
-<div class="wallet-section" id="walletSection">
-
-<h2>Send Deposit To One Of These Wallets</h2>
-
-<div class="wallet-box">
-<h3>Bitcoin (BTC)</h3>
-<div class="wallet-address" id="btc">
-bc1q8g7945qssttzquls977ray4flrn4qzn68h5xnv
-</div>
-<button class="copy-btn" onclick="copyWallet('btc')">Copy Address</button>
-</div>
-
-<div class="wallet-box">
-<h3>Tether (USDT BEP20)</h3>
-<div class="wallet-address" id="usdt">
-0xf6bc9eb4370868abc37526e74ca471be4644fbb7
-</div>
-<button class="copy-btn" onclick="copyWallet('usdt')">Copy Address</button>
-</div>
-
-<div class="wallet-box">
-<h3>Ethereum (ETH)</h3>
-<div class="wallet-address" id="eth">
-0xf6bc9eb4370868abc37526e74ca471be4644fbb7
-</div>
-<button class="copy-btn" onclick="copyWallet('eth')">Copy Address</button>
-</div>
-
-<p style="text-align:center; margin-top:20px;">
-After sending payment, click confirm below
-</p>
-
-<button class="btn" style="width:100%;" onclick="confirmInvestment()">
-Confirm Payment
-</button>
-
-</div>
-
-</div>
-
-
-<!-- NORMAL JS -->
 <script>
-let selectedPlan = "";
-let minAmount = 0;
-let maxAmount = 0;
+function selectPlan(name,min,max,percent){
 
-function selectPlan(percent){
-  selectedPercent = percent;
-  document.getElementById("walletSection").style.display = "block";
-  window.scrollTo(0,document.body.scrollHeight);
-}
+  // Save plan
+  localStorage.setItem("selectedPlan", JSON.stringify({
+    name, min, max, percent
+  }));
 
-function copyWallet(id){
-  let text=document.getElementById(id).innerText;
-  navigator.clipboard.writeText(text);
-  alert("Wallet address copied");
+  // Smooth redirect
+  setTimeout(()=>{
+    window.location.href = "deposit.html";
+  },300);
 }
 </script>
-
-<!-- FIREBASE -->
-<script type="module">
-
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-  authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
-};
-
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-window.confirmInvestment = async function(){
-
-  const user = auth.currentUser;
-
-  if(!user){
-    alert("Login first");
-    return;
-  }
-
-  if(!selectedPercent){
-    alert("Select a plan first");
-    return;
-  }
-
-  try{
-    await updateDoc(doc(db,"users",user.uid),{
-  plan: selectedPlan,
-  invested: amount,
-  startTime: Date.now(),
-  lastUpdate: Date.now(),
-  profit: 0,
-  status: "active" // or "pending" if you want admin approval
-});
-
-    alert("Investment confirmed ✅ Profit mining started");
-
-  }catch(e){
-    alert(e.message);
-  }
-
-};
-</script>
-
-<!-- ✅ GOOGLE TRANSLATE SCRIPT (FIXED POSITION) -->
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'en,de,it,fr,es',
-    layout: google.translate.TranslateElement.InlineLayout.SIMPLE
-  }, 'google_translate_element');
-}
-</script>
-
-<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
-</html>
+  </html>
