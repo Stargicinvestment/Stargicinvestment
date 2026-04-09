@@ -6,6 +6,8 @@
 <title>Plans | StargicInvestment</title>
 
 <style>
+
+/* GLOBAL RESET */
 *{
   margin:0;
   padding:0;
@@ -13,6 +15,14 @@
   font-family:'Segoe UI',sans-serif;
 }
 
+/* FIX WHITE FLASH + SMOOTH SCROLL */
+html, body{
+  height:100%;
+  background:#07121f; /* fallback color */
+  overflow-x:hidden;
+}
+
+/* MAIN BACKGROUND */
 body{
   background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
   color:#fff;
@@ -22,14 +32,14 @@ body{
 .container{
   max-width:1100px;
   margin:auto;
-  padding:20px 10px 40px;
+  padding:20px 12px 40px;
 }
 
 /* TITLE */
 .section-title{
   text-align:center;
   color:#00ffa6;
-  font-size:28px;
+  font-size:26px;
   margin-top:20px;
   font-weight:700;
 }
@@ -41,50 +51,55 @@ body{
   font-size:14px;
 }
 
-/* GRID */
+/* GRID FIXED */
 .plans{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;
+  gap:18px;
 }
 
 /* CARD */
 .plan{
-  background:rgba(0,255,166,0.05);
-  border-radius:18px;
-  padding:25px;
-  backdrop-filter:blur(12px);
-  border:1px solid rgba(0,255,166,0.15);
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-  transition:all 0.3s ease;
+  background:rgba(0,255,166,0.04);
+  border-radius:16px;
+  padding:22px;
+  border:1px solid rgba(0,255,166,0.12);
+  box-shadow:0 8px 20px rgba(0,0,0,0.4);
+  transition:transform 0.25s ease, box-shadow 0.25s ease;
+  position:relative;
+}
+
+/* REMOVE HEAVY BLUR (THIS WAS CAUSING LAG) */
+.plan{
+  backdrop-filter:none;
 }
 
 /* HOVER */
 .plan:hover{
-  transform:translateY(-6px);
-  box-shadow:0 15px 35px rgba(0,255,166,0.25);
+  transform:translateY(-4px);
+  box-shadow:0 12px 30px rgba(0,255,166,0.2);
 }
 
 /* TITLE */
 .plan h3{
-  font-size:20px;
-  margin-bottom:10px;
+  font-size:18px;
+  margin-bottom:8px;
 }
 
 /* PERCENT */
 .percent{
-  font-size:38px;
+  font-size:34px;
   font-weight:bold;
   background:linear-gradient(45deg,#00ffa6,#00c853);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  margin-bottom:15px;
+  margin-bottom:12px;
 }
 
 /* DETAILS */
 .plan p{
-  margin:6px 0;
-  font-size:14px;
+  margin:5px 0;
+  font-size:13px;
   color:#cceee0;
 }
 
@@ -94,44 +109,40 @@ body{
 
 /* BUTTON */
 .plan button{
-  margin-top:18px;
+  margin-top:15px;
   width:100%;
-  padding:13px;
+  padding:12px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   background:linear-gradient(45deg,#00ffa6,#00c853);
   color:#002b1f;
   font-weight:bold;
   cursor:pointer;
-  transition:0.25s;
 }
 
+/* BUTTON CLICK FEEDBACK */
 .plan button:active{
   transform:scale(0.97);
 }
 
-/* FEATURED PLAN */
+/* FEATURE PLAN */
 .plan:nth-child(3){
   border:1px solid #00ffa6;
-  box-shadow:0 0 20px rgba(0,255,166,0.4);
+  box-shadow:0 0 18px rgba(0,255,166,0.3);
 }
 
+/* FIX RIBBON SHIFT */
 .plan:nth-child(3)::before{
   content:"POPULAR";
   position:absolute;
-  top:12px;
-  right:-40px;
+  top:10px;
+  right:-35px;
   background:#00ffa6;
   color:#003d2b;
-  padding:5px 40px;
-  font-size:11px;
+  padding:4px 35px;
+  font-size:10px;
   transform:rotate(45deg);
   font-weight:bold;
-}
-
-/* FIX SCROLL SMOOTH */
-html{
-  scroll-behavior:smooth;
 }
 
 /* MOBILE */
@@ -140,6 +151,7 @@ html{
     font-size:22px;
   }
 }
+
 </style>
 </head>
 
@@ -158,7 +170,7 @@ html{
     <p><strong>Minimum:</strong> $300</p>
     <p><strong>Maximum:</strong> $999</p>
     <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('starter',300,999,2.5)">Invest Now</button>
+    <button onclick="selectPlan('starter',300,999,2.5,this)">Invest Now</button>
   </div>
 
   <div class="plan">
@@ -167,7 +179,7 @@ html{
     <p><strong>Minimum:</strong> $1,000</p>
     <p><strong>Maximum:</strong> $4,999</p>
     <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('silver',1000,4999,3.5)">Invest Now</button>
+    <button onclick="selectPlan('silver',1000,4999,3.5,this)">Invest Now</button>
   </div>
 
   <div class="plan">
@@ -176,7 +188,7 @@ html{
     <p><strong>Minimum:</strong> $5,000</p>
     <p><strong>Maximum:</strong> $9,999</p>
     <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('elite',5000,9999,4.5)">Invest Now</button>
+    <button onclick="selectPlan('elite',5000,9999,4.5,this)">Invest Now</button>
   </div>
 
   <div class="plan">
@@ -185,7 +197,7 @@ html{
     <p><strong>Minimum:</strong> $10,000</p>
     <p><strong>Maximum:</strong> $49,999</p>
     <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('premium',10000,49999,5.5)">Invest Now</button>
+    <button onclick="selectPlan('premium',10000,49999,5.5,this)">Invest Now</button>
   </div>
 
   <div class="plan">
@@ -194,7 +206,7 @@ html{
     <p><strong>Minimum:</strong> $50,000</p>
     <p><strong>Maximum:</strong> $1,000,000</p>
     <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('vip',50000,1000000,6.5)">Invest Now</button>
+    <button onclick="selectPlan('vip',50000,1000000,6.5,this)">Invest Now</button>
   </div>
 
 </div>
@@ -202,9 +214,8 @@ html{
 </div>
 
 <script>
-function selectPlan(name,min,max,percent){
+function selectPlan(name,min,max,percent,btn){
 
-  const btn = event.target;
   btn.innerText = "Loading...";
   btn.disabled = true;
 
@@ -219,4 +230,4 @@ function selectPlan(name,min,max,percent){
 </script>
 
 </body>
-  </html>>
+  </html>
