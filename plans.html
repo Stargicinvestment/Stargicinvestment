@@ -1,46 +1,180 @@
+<style>
+body{
+  background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
+  font-family:'Segoe UI',sans-serif;
+}
+
+/* TITLE */
+.section-title{
+  text-align:center;
+  color:#00ffa6;
+  font-size:28px;
+  margin:30px 0 10px;
+  font-weight:700;
+  letter-spacing:1px;
+}
+
+.section-sub{
+  text-align:center;
+  color:#9be7c4;
+  margin-bottom:25px;
+  font-size:14px;
+}
+
+/* GRID */
+.plans{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+  padding:20px;
+}
+
+/* CARD */
+.plan{
+  background:rgba(0,255,166,0.05);
+  border-radius:18px;
+  padding:25px;
+  color:#fff;
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(0,255,166,0.15);
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  transition:0.3s;
+  position:relative;
+  overflow:hidden;
+}
+
+/* HOVER */
+.plan:hover{
+  transform:translateY(-8px) scale(1.02);
+  box-shadow:0 20px 50px rgba(0,255,166,0.25);
+}
+
+/* TITLE */
+.plan h3{
+  font-size:20px;
+  margin-bottom:10px;
+  font-weight:600;
+}
+
+/* PERCENT */
+.percent{
+  font-size:40px;
+  font-weight:bold;
+  background:linear-gradient(45deg,#00ffa6,#00c853);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:15px;
+}
+
+/* DETAILS */
+.plan p{
+  margin:6px 0;
+  font-size:14px;
+  color:#cceee0;
+}
+
+/* STRONG LABEL */
+.plan p strong{
+  color:#00ffa6;
+}
+
+/* BUTTON */
+.plan button{
+  margin-top:18px;
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(45deg,#00ffa6,#00c853);
+  color:#002b1f;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.plan button:hover{
+  transform:scale(1.05);
+}
+
+/* FEATURED PLAN (ELITE) */
+.plan:nth-child(3){
+  border:1px solid #00ffa6;
+  box-shadow:0 0 25px rgba(0,255,166,0.4);
+}
+
+.plan:nth-child(3)::before{
+  content:"POPULAR";
+  position:absolute;
+  top:12px;
+  right:-40px;
+  background:#00ffa6;
+  color:#003d2b;
+  padding:5px 40px;
+  font-size:11px;
+  transform:rotate(45deg);
+  font-weight:bold;
+}
+</style>
+
+
+<h2 class="section-title">Investment Plans</h2>
+<p class="section-sub">Choose a plan that matches your financial goals</p>
+
 <div class="plans">
 
-<div class="plan">
-<h3>Starter Plan</h3>
-<p class="percent">3%</p>
-<p>Minimum: $300</p>
-<p>Maximum: $999</p>
-<p>Duration: 7 Days</p>
+  <div class="plan">
+    <h3>Starter Plan</h3>
+    <div class="percent">2.5%</div>
+    <p><strong>Minimum:</strong> $300</p>
+    <p><strong>Maximum:</strong> $999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('starter',300,999,2.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>Silver Plan</h3>
+    <div class="percent">3.5%</div>
+    <p><strong>Minimum:</strong> $1,000</p>
+    <p><strong>Maximum:</strong> $4,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('silver',1000,4999,3.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>Elite Plan</h3>
+    <div class="percent">4.5%</div>
+    <p><strong>Minimum:</strong> $5,000</p>
+    <p><strong>Maximum:</strong> $9,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('elite',5000,9999,4.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>Premium Plan</h3>
+    <div class="percent">5.5%</div>
+    <p><strong>Minimum:</strong> $10,000</p>
+    <p><strong>Maximum:</strong> $49,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('premium',10000,49999,5.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>VIP Plan</h3>
+    <div class="percent">6.5%</div>
+    <p><strong>Minimum:</strong> $50,000</p>
+    <p><strong>Maximum:</strong> $1,000,000</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('vip',50000,1000000,6.5)">Invest Now</button>
+  </div>
+
 </div>
 
-<div class="plan">
-<h3>Silver Plan</h3>
-<p class="percent">4%</p>
-<p>Minimum: $1,000</p>
-<p>Maximum: $4,999</p>
-<p>Duration: 7 Days</p>
-</div>
 
-<div class="plan">
-<h3>Elite Plan</h3>
-<p class="percent">5%</p>
-<p>Minimum: $5,000</p>
-<p>Maximum: $9,999</p>
-<p>Duration: 7 Days</p>
-</div>
-
-<div class="plan">
-<h3>Premium Plan</h3>
-<p class="percent">6%</p>
-<p>Minimum: $10,000</p>
-<p>Maximum: $49,999</p>
-<p>Duration: 7 Days</p>
-</div>
-
-<div class="plan">
-<h3>VIP Plan</h3>
-<p class="percent">7%</p>
-<p>Minimum: $50,000</p>
-<p>Maximum: $1,000,000</p>
-<p>Duration: 7 Days</p>
-</div>
-
-</div>
-  
-</html>
-</body>
+<script>
+function selectPlan(name,min,max,percent){
+  localStorage.setItem("selectedPlan", JSON.stringify({
+    name, min, max, percent
+  }));
+  window.location.href = "deposit.html";
+}
+  </script>
