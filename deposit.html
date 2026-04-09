@@ -1,1 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans | StargicInvestment</title>
 
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
+body{
+  background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
+  color:#fff;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px 10px 40px;
+}
+
+/* TITLE */
+.section-title{
+  text-align:center;
+  color:#00ffa6;
+  font-size:28px;
+  margin-top:20px;
+  font-weight:700;
+}
+
+.section-sub{
+  text-align:center;
+  color:#9be7c4;
+  margin:10px 0 25px;
+  font-size:14px;
+}
+
+/* GRID */
+.plans{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:20px;
+}
+
+/* CARD */
+.plan{
+  background:rgba(0,255,166,0.05);
+  border-radius:18px;
+  padding:25px;
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(0,255,166,0.15);
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  transition:all 0.3s ease;
+}
+
+/* HOVER */
+.plan:hover{
+  transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,255,166,0.25);
+}
+
+/* TITLE */
+.plan h3{
+  font-size:20px;
+  margin-bottom:10px;
+}
+
+/* PERCENT */
+.percent{
+  font-size:38px;
+  font-weight:bold;
+  background:linear-gradient(45deg,#00ffa6,#00c853);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  margin-bottom:15px;
+}
+
+/* DETAILS */
+.plan p{
+  margin:6px 0;
+  font-size:14px;
+  color:#cceee0;
+}
+
+.plan p strong{
+  color:#00ffa6;
+}
+
+/* BUTTON */
+.plan button{
+  margin-top:18px;
+  width:100%;
+  padding:13px;
+  border:none;
+  border-radius:12px;
+  background:linear-gradient(45deg,#00ffa6,#00c853);
+  color:#002b1f;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.25s;
+}
+
+.plan button:active{
+  transform:scale(0.97);
+}
+
+/* FEATURED PLAN */
+.plan:nth-child(3){
+  border:1px solid #00ffa6;
+  box-shadow:0 0 20px rgba(0,255,166,0.4);
+}
+
+.plan:nth-child(3)::before{
+  content:"POPULAR";
+  position:absolute;
+  top:12px;
+  right:-40px;
+  background:#00ffa6;
+  color:#003d2b;
+  padding:5px 40px;
+  font-size:11px;
+  transform:rotate(45deg);
+  font-weight:bold;
+}
+
+/* FIX SCROLL SMOOTH */
+html{
+  scroll-behavior:smooth;
+}
+
+/* MOBILE */
+@media(max-width:500px){
+  .section-title{
+    font-size:22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h2 class="section-title">Investment Plans</h2>
+<p class="section-sub">Choose a plan that matches your financial goals</p>
+
+<div class="plans">
+
+  <div class="plan">
+    <h3>Starter Plan</h3>
+    <div class="percent">2.5%</div>
+    <p><strong>Minimum:</strong> $300</p>
+    <p><strong>Maximum:</strong> $999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('starter',300,999,2.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>Silver Plan</h3>
+    <div class="percent">3.5%</div>
+    <p><strong>Minimum:</strong> $1,000</p>
+    <p><strong>Maximum:</strong> $4,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('silver',1000,4999,3.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>Elite Plan</h3>
+    <div class="percent">4.5%</div>
+    <p><strong>Minimum:</strong> $5,000</p>
+    <p><strong>Maximum:</strong> $9,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('elite',5000,9999,4.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>Premium Plan</h3>
+    <div class="percent">5.5%</div>
+    <p><strong>Minimum:</strong> $10,000</p>
+    <p><strong>Maximum:</strong> $49,999</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('premium',10000,49999,5.5)">Invest Now</button>
+  </div>
+
+  <div class="plan">
+    <h3>VIP Plan</h3>
+    <div class="percent">6.5%</div>
+    <p><strong>Minimum:</strong> $50,000</p>
+    <p><strong>Maximum:</strong> $1,000,000</p>
+    <p><strong>Duration:</strong> 7 Days</p>
+    <button onclick="selectPlan('vip',50000,1000000,6.5)">Invest Now</button>
+  </div>
+
+</div>
+
+</div>
+
+<script>
+function selectPlan(name,min,max,percent){
+
+  const btn = event.target;
+  btn.innerText = "Loading...";
+  btn.disabled = true;
+
+  localStorage.setItem("selectedPlan", JSON.stringify({
+    name, min, max, percent
+  }));
+
+  setTimeout(()=>{
+    window.location.href = "deposit.html";
+  },300);
+}
+</script>
+
+</body>
+  </html>>
