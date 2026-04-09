@@ -1,7 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plans | StargicInvestment</title>
+
 <style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Segoe UI',sans-serif;
+}
+
 body{
   background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
-  font-family:'Segoe UI',sans-serif;
+  color:#fff;
+}
+
+/* CONTAINER */
+.container{
+  max-width:1100px;
+  margin:auto;
+  padding:20px 10px 40px;
 }
 
 /* TITLE */
@@ -9,15 +30,14 @@ body{
   text-align:center;
   color:#00ffa6;
   font-size:28px;
-  margin:30px 0 10px;
+  margin-top:20px;
   font-weight:700;
-  letter-spacing:1px;
 }
 
 .section-sub{
   text-align:center;
   color:#9be7c4;
-  margin-bottom:25px;
+  margin:10px 0 25px;
   font-size:14px;
 }
 
@@ -26,7 +46,6 @@ body{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
   gap:20px;
-  padding:20px;
 }
 
 /* CARD */
@@ -34,31 +53,27 @@ body{
   background:rgba(0,255,166,0.05);
   border-radius:18px;
   padding:25px;
-  color:#fff;
   backdrop-filter:blur(12px);
   border:1px solid rgba(0,255,166,0.15);
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
-  transition:0.3s;
-  position:relative;
-  overflow:hidden;
+  box-shadow:0 10px 25px rgba(0,0,0,0.4);
+  transition:all 0.3s ease;
 }
 
 /* HOVER */
 .plan:hover{
-  transform:translateY(-8px) scale(1.02);
-  box-shadow:0 20px 50px rgba(0,255,166,0.25);
+  transform:translateY(-6px);
+  box-shadow:0 15px 35px rgba(0,255,166,0.25);
 }
 
 /* TITLE */
 .plan h3{
   font-size:20px;
   margin-bottom:10px;
-  font-weight:600;
 }
 
 /* PERCENT */
 .percent{
-  font-size:40px;
+  font-size:38px;
   font-weight:bold;
   background:linear-gradient(45deg,#00ffa6,#00c853);
   -webkit-background-clip:text;
@@ -73,7 +88,6 @@ body{
   color:#cceee0;
 }
 
-/* STRONG LABEL */
 .plan p strong{
   color:#00ffa6;
 }
@@ -89,17 +103,17 @@ body{
   color:#002b1f;
   font-weight:bold;
   cursor:pointer;
-  transition:0.3s;
+  transition:0.25s;
 }
 
-.plan button:hover{
-  transform:scale(1.05);
+.plan button:active{
+  transform:scale(0.97);
 }
 
-/* FEATURED PLAN (ELITE) */
+/* FEATURED PLAN */
 .plan:nth-child(3){
   border:1px solid #00ffa6;
-  box-shadow:0 0 25px rgba(0,255,166,0.4);
+  box-shadow:0 0 20px rgba(0,255,166,0.4);
 }
 
 .plan:nth-child(3)::before{
@@ -114,8 +128,24 @@ body{
   transform:rotate(45deg);
   font-weight:bold;
 }
-</style>
 
+/* FIX SCROLL SMOOTH */
+html{
+  scroll-behavior:smooth;
+}
+
+/* MOBILE */
+@media(max-width:500px){
+  .section-title{
+    font-size:22px;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
 
 <h2 class="section-title">Investment Plans</h2>
 <p class="section-sub">Choose a plan that matches your financial goals</p>
@@ -169,12 +199,24 @@ body{
 
 </div>
 
+</div>
 
 <script>
 function selectPlan(name,min,max,percent){
+
+  const btn = event.target;
+  btn.innerText = "Loading...";
+  btn.disabled = true;
+
   localStorage.setItem("selectedPlan", JSON.stringify({
     name, min, max, percent
   }));
-  window.location.href = "deposit.html";
+
+  setTimeout(()=>{
+    window.location.href = "deposit.html";
+  },300);
 }
-  </script>
+</script>
+
+</body>
+  </html>>
