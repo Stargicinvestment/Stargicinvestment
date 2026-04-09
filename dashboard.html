@@ -152,7 +152,7 @@ body{
 <!-- ACTIONS -->
 <div class="card">
   <div class="actions">
-    <button class="btn deposit" onclick="goDeposit()">Deposit</button>
+    <button onclick="goToDeposit()">Deposit</button>
     <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
   </div>
 
@@ -430,8 +430,9 @@ window.logout = function(){
   location.href="login.html";
 };
 
-window.goDeposit = function(){
-  location.href="deposit.html";
+
+function goToDeposit(){
+  window.location.href = "plans.html"; // your plan page
 };
 
 window.goWithdraw = function(){
@@ -453,3 +454,4 @@ function googleTranslateElementInit() {
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </html>
+  
