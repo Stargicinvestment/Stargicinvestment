@@ -3,9 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plans | StargicInvestment</title>
+<title>Deposit | StargicInvestment</title>
 
 <style>
+
+/* GLOBAL */
 *{
   margin:0;
   padding:0;
@@ -14,209 +16,206 @@
 }
 
 body{
-  background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
+  background:linear-gradient(135deg,#06141f,#0b1f2e,#0f2e3f);
   color:#fff;
-}
-
-/* CONTAINER */
-.container{
-  max-width:1100px;
-  margin:auto;
-  padding:20px 10px 40px;
-}
-
-/* TITLE */
-.section-title{
-  text-align:center;
-  color:#00ffa6;
-  font-size:28px;
-  margin-top:20px;
-  font-weight:700;
-}
-
-.section-sub{
-  text-align:center;
-  color:#9be7c4;
-  margin:10px 0 25px;
-  font-size:14px;
-}
-
-/* GRID */
-.plans{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+  padding:15px;
 }
 
 /* CARD */
-.plan{
-  background:rgba(0,255,166,0.05);
-  border-radius:18px;
+.card{
+  width:100%;
+  max-width:430px;
   padding:25px;
-  backdrop-filter:blur(12px);
+  border-radius:18px;
+  background:rgba(255,255,255,0.04);
   border:1px solid rgba(0,255,166,0.15);
-  box-shadow:0 10px 25px rgba(0,0,0,0.4);
-  transition:all 0.3s ease;
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+  animation:fadeIn 0.6s ease;
 }
 
-/* HOVER */
-.plan:hover{
-  transform:translateY(-6px);
-  box-shadow:0 15px 35px rgba(0,255,166,0.25);
+@keyframes fadeIn{
+  from{opacity:0; transform:translateY(20px);}
+  to{opacity:1; transform:translateY(0);}
 }
 
 /* TITLE */
-.plan h3{
-  font-size:20px;
-  margin-bottom:10px;
+.title{
+  font-size:24px;
+  font-weight:700;
+  color:#00ffa6;
+  text-align:center;
 }
 
-/* PERCENT */
-.percent{
-  font-size:38px;
-  font-weight:bold;
-  background:linear-gradient(45deg,#00ffa6,#00c853);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  margin-bottom:15px;
+.sub{
+  text-align:center;
+  font-size:13px;
+  color:#9be7c4;
+  margin:10px 0 20px;
 }
 
-/* DETAILS */
-.plan p{
+/* PLAN BOX */
+.plan-box{
+  background:rgba(0,0,0,0.35);
+  border-radius:12px;
+  padding:15px;
+  margin-bottom:20px;
+  border:1px solid rgba(0,255,166,0.1);
+}
+
+.plan-box p{
+  font-size:13px;
   margin:6px 0;
-  font-size:14px;
-  color:#cceee0;
 }
 
-.plan p strong{
+.plan-box strong{
   color:#00ffa6;
 }
 
-/* BUTTON */
-.plan button{
-  margin-top:18px;
-  width:100%;
-  padding:13px;
-  border:none;
+/* WALLET CARD */
+.wallet-card{
+  background:rgba(0,0,0,0.5);
+  border:1px solid rgba(0,255,166,0.15);
   border-radius:12px;
+  padding:12px;
+  margin-bottom:12px;
+}
+
+/* COIN NAME */
+.coin{
+  font-size:14px;
+  font-weight:600;
+  color:#00ffa6;
+  margin-bottom:6px;
+}
+
+/* ADDRESS */
+.address{
+  font-size:12px;
+  word-break:break-all;
+  color:#d4fff0;
+  margin-bottom:8px;
+}
+
+/* COPY BUTTON */
+.copy-btn{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:8px;
   background:linear-gradient(45deg,#00ffa6,#00c853);
   color:#002b1f;
-  font-weight:bold;
+  font-weight:600;
   cursor:pointer;
-  transition:0.25s;
 }
 
-.plan button:active{
-  transform:scale(0.97);
+/* SUCCESS STATE */
+.copied{
+  background:#00c853 !important;
+  color:#fff !important;
 }
 
-/* FEATURED PLAN */
-.plan:nth-child(3){
-  border:1px solid #00ffa6;
-  box-shadow:0 0 20px rgba(0,255,166,0.4);
+/* CONFIRM BUTTON */
+.confirm-btn{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:10px;
+  background:rgba(255,255,255,0.08);
+  color:#00ffa6;
+  font-weight:600;
+  cursor:pointer;
+  border:1px solid rgba(0,255,166,0.2);
 }
 
-.plan:nth-child(3)::before{
-  content:"POPULAR";
-  position:absolute;
-  top:12px;
-  right:-40px;
-  background:#00ffa6;
-  color:#003d2b;
-  padding:5px 40px;
-  font-size:11px;
-  transform:rotate(45deg);
-  font-weight:bold;
+.confirm-btn:hover{
+  background:rgba(0,255,166,0.1);
 }
 
-/* FIX SCROLL SMOOTH */
-html{
-  scroll-behavior:smooth;
-}
-
-/* MOBILE */
-@media(max-width:500px){
-  .section-title{
-    font-size:22px;
-  }
-}
 </style>
 </head>
 
 <body>
 
-<div class="container">
+<div class="card">
 
-<h2 class="section-title">Investment Plans</h2>
-<p class="section-sub">Choose a plan that matches your financial goals</p>
+  <div class="title">Secure Deposit</div>
+  <div class="sub">Send crypto using any wallet below</div>
 
-<div class="plans">
+  <!-- PLAN INFO -->
+  <div class="plan-box" id="planInfo"></div>
 
-  <div class="plan">
-    <h3>Starter Plan</h3>
-    <div class="percent">2.5%</div>
-    <p><strong>Minimum:</strong> $300</p>
-    <p><strong>Maximum:</strong> $999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('starter',300,999,2.5)">Invest Now</button>
+  <!-- BTC -->
+  <div class="wallet-card">
+    <div class="coin">BTC (Bitcoin)</div>
+    <div class="address" id="btc">bc1q8g7945qssttzquls977ray4flrn4qzn68h5xnv</div>
+    <button class="copy-btn" onclick="copyWallet('btc',this)">Copy BTC Address</button>
   </div>
 
-  <div class="plan">
-    <h3>Silver Plan</h3>
-    <div class="percent">3.5%</div>
-    <p><strong>Minimum:</strong> $1,000</p>
-    <p><strong>Maximum:</strong> $4,999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('silver',1000,4999,3.5)">Invest Now</button>
+  <!-- ETH -->
+  <div class="wallet-card">
+    <div class="coin">ETH (BEP20)</div>
+    <div class="address" id="eth">0xf6bc9eb4370868abc37526e74ca471be4644fbb7</div>
+    <button class="copy-btn" onclick="copyWallet('eth',this)">Copy ETH Address</button>
   </div>
 
-  <div class="plan">
-    <h3>Elite Plan</h3>
-    <div class="percent">4.5%</div>
-    <p><strong>Minimum:</strong> $5,000</p>
-    <p><strong>Maximum:</strong> $9,999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('elite',5000,9999,4.5)">Invest Now</button>
+  <!-- USDT -->
+  <div class="wallet-card">
+    <div class="coin">USDT (BEP20)</div>
+    <div class="address" id="usdt">0xf6bc9eb4370868abc37526e74ca471be4644fbb7</div>
+    <button class="copy-btn" onclick="copyWallet('usdt',this)">Copy USDT Address</button>
   </div>
 
-  <div class="plan">
-    <h3>Premium Plan</h3>
-    <div class="percent">5.5%</div>
-    <p><strong>Minimum:</strong> $10,000</p>
-    <p><strong>Maximum:</strong> $49,999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('premium',10000,49999,5.5)">Invest Now</button>
-  </div>
-
-  <div class="plan">
-    <h3>VIP Plan</h3>
-    <div class="percent">6.5%</div>
-    <p><strong>Minimum:</strong> $50,000</p>
-    <p><strong>Maximum:</strong> $1,000,000</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('vip',50000,1000000,6.5)">Invest Now</button>
-  </div>
-
-</div>
+  <button class="confirm-btn" onclick="confirmPayment()">
+    I Have Sent Payment
+  </button>
 
 </div>
 
 <script>
-function selectPlan(name,min,max,percent){
 
-  const btn = event.target;
-  btn.innerText = "Loading...";
-  btn.disabled = true;
+// LOAD PLAN
+const plan = JSON.parse(localStorage.getItem("selectedPlan"));
 
-  localStorage.setItem("selectedPlan", JSON.stringify({
-    name, min, max, percent
-  }));
+if(plan){
+  document.getElementById("planInfo").innerHTML = `
+    <p><strong>Plan:</strong> ${plan.name.toUpperCase()}</p>
+    <p><strong>Min:</strong> $${plan.min}</p>
+    <p><strong>Max:</strong> $${plan.max}</p>
+    <p><strong>Profit:</strong> ${plan.percent}% daily</p>
+  `;
+}else{
+  document.getElementById("planInfo").innerHTML = `
+    <p style="color:red;">No plan selected</p>
+  `;
+}
+
+// COPY FUNCTION
+function copyWallet(id,btn){
+  const text = document.getElementById(id).innerText;
+
+  navigator.clipboard.writeText(text);
+
+  btn.innerText = "Copied ✓";
+  btn.classList.add("copied");
 
   setTimeout(()=>{
-    window.location.href = "deposit.html";
-  },300);
+    btn.innerText = "Copy Address";
+    btn.classList.remove("copied");
+  },2000);
 }
+
+// CONFIRM
+function confirmPayment(){
+  alert("Payment submitted! Admin will verify shortly.");
+}
+
 </script>
 
 </body>
-  </html>>
+  </html>
