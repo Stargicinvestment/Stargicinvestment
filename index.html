@@ -756,7 +756,87 @@ Real estate remains one of the most reliable long-term investments helping inves
 </div>  </div>  </section>  <footer>  
 <br><br>
 
-© 2026 StargicInvestment
+function Footer() {
+  return (
+    <footer className="bg-[#0B0F1A] border-t border-[#1F2937] px-6 py-12 text-gray-400 text-sm">
+
+      <div className="max-w-6xl mx-auto">
+
+        {/* Top Section */}
+        <div className="flex flex-col md:flex-row justify-between gap-10 mb-10">
+
+          {/* Brand */}
+          <div className="max-w-sm">
+            <h2 className="text-white text-lg font-semibold mb-2">
+              YourCompany
+            </h2>
+            <p className="text-xs text-gray-500">
+              Secure, fast and reliable platform for modern investors.
+            </p>
+          </div>
+
+          {/* Newsletter */}
+          <div>
+            <p className="text-white text-sm mb-2">Stay updated</p>
+            <div className="flex gap-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="bg-[#111827] border border-[#1F2937] px-3 py-2 rounded text-xs outline-none"
+              />
+              <button className="bg-yellow-400 text-black px-4 py-2 rounded text-xs">
+                Subscribe
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        {/* Links */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-8">
+
+          <div>
+            <h3 className="text-white font-semibold mb-2">Company</h3>
+            <p className="text-xs">About Us</p>
+            <p className="text-xs">Careers</p>
+            <p className="text-xs">Blog</p>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-2">Support</h3>
+            <p className="text-xs">Help Center</p>
+            <p className="text-xs">Contact Us</p>
+            <p className="text-xs">FAQs</p>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-2">Legal</h3>
+            <p className="text-xs">Privacy Policy</p>
+            <p className="text-xs">Terms of Service</p>
+            <p className="text-xs">Security</p>
+          </div>
+
+          <div>
+            <h3 className="text-white font-semibold mb-2">Follow Us</h3>
+            <p className="text-xs">Twitter</p>
+            <p className="text-xs">Facebook</p>
+            <p className="text-xs">Instagram</p>
+          </div>
+
+        </div>
+
+        {/* Bottom */}
+        <div className="border-t border-[#1F2937] pt-4 flex flex-col md:flex-row justify-between text-xs">
+          <p>© 2026 Your Company. All rights reserved.</p>
+
+          <div className="flex gap-4 mt-2 md:mt-0">
+            <span>Privacy</span>
+            <span>Terms</span>
+            <span>Cookies</span>
+          </div>
+        </div>
+
+      </div>
 
 </footer>  <script>  
   
