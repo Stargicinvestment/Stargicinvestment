@@ -610,6 +610,80 @@ body {
   box-shadow: 0 0 20px rgba(0,255,157,0.4);
   transform: translateY(-2px);
   }
+/* FAQ SECTION */
+.faq-section{
+  max-width:900px;
+  margin:80px auto;
+  padding:20px;
+}
+
+.faq-title{
+  font-size:32px;
+  font-weight:700;
+  margin-bottom:25px;
+  color:#ffffff;
+}
+
+/* CONTAINER */
+.faq-box{
+  display:flex;
+  flex-direction:column;
+  gap:15px;
+}
+
+/* ITEM */
+.faq-item{
+  background:linear-gradient(145deg,#111827,#0b0f1a);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  transition:0.3s;
+}
+
+/* QUESTION */
+.faq-question{
+  padding:20px;
+  font-size:16px;
+  font-weight:500;
+  color:#e5e7eb;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  cursor:pointer;
+}
+
+/* HOVER */
+.faq-item:hover{
+  transform:scale(1.02);
+}
+
+/* ICON */
+.faq-question span{
+  font-size:22px;
+  color:#00ff9d;
+  transition:0.3s;
+}
+
+/* ANSWER */
+.faq-answer{
+  max-height:0;
+  overflow:hidden;
+  padding:0 20px;
+  color:#9ca3af;
+  font-size:14px;
+  line-height:1.7;
+  transition:0.4s ease;
+}
+
+/* ACTIVE */
+.faq-item.active .faq-answer{
+  max-height:200px;
+  padding:15px 20px;
+}
+
+.faq-item.active span{
+  transform:rotate(45deg);
+  }
   
 </style>  </head>  <body>  <nav>
   <div class="logo">
