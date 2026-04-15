@@ -934,15 +934,14 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/fireba
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";  
 import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";  
   
-if(user){  
-console.log("User logged in:", user.email);  
-  
-// connect your chat  
-loadMessages(user);  
-  
-}else{  
-console.log("No user logged in");  
-}  
+onAuthStateChanged(auth, (user) => {
+  if(user){
+    console.log("User logged in:", user.email);
+    loadMessages(user);
+  } else {
+    console.log("No user logged in");
+  }
+});  
   
 });  
 const firebaseConfig = {  
