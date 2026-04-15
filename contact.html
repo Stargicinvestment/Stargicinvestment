@@ -1,7 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Contact</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us - StargicInvestment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 <style>
 body{
@@ -9,52 +13,151 @@ body{
   font-family:Poppins;
   background:#0b0f1a;
   color:#fff;
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.6s;
 }
+body.loaded{opacity:1;transform:translateY(0);}
+body.fade-out{opacity:0;transform:translateY(-20px);}
 
 .hero{
-  height:250px;
-  background:url("https://images.unsplash.com/photo-1551434678-e076c223a692") center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+  padding:100px 20px;
+  text-align:center;
+  background:#020617;
 }
 
-.container{
-  max-width:600px;
+.section{
+  max-width:1100px;
   margin:auto;
-  padding:50px 20px;
+  padding:60px 20px;
 }
 
-input, textarea{
-  width:100%;
-  padding:12px;
-  margin:10px 0;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
+}
+
+.card{
   background:#111827;
-  border:none;
-  color:#fff;
+  border-radius:15px;
+  overflow:hidden;
+  transition:0.4s;
 }
 
-button{
+.card:hover{transform:translateY(-10px);}
+
+.card img{
   width:100%;
-  padding:12px;
-  background:#00ff9d;
-  border:none;
-  font-weight:bold;
+  height:230px;
+  object-fit:cover;
 }
+
+.card-content{padding:25px;}
+
+.card h3{color:#00ff9d;}
+.card p{color:#9ca3af;line-height:1.7;}
+
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  padding:12px 30px;
+  background:#00ff9d;
+  color:#021018;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+}
+
 </style>
 </head>
 
 <body>
 
 <div class="hero">
-  <h1>Contact Us</h1>
+<h1>Contact Us</h1>
+<p>We provide elite-level support to ensure your investment journey remains seamless and secure.</p>
 </div>
 
-<div class="container">
+<div class="section">
+<div class="grid">
 
-Stargicinvestment.com
+<div class="card">
+<img src="https://images.unsplash.com/photo-1573164574511-73c773193279">
+<div class="card-content">
+<h3>Elite Support Team</h3>
+<p>Our dedicated support professionals are trained to handle every investor inquiry with precision, speed, and professionalism. We ensure every interaction reflects our commitment to excellence.</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1556157382-97eda2d62296">
+<div class="card-content">
+<h3>Financial Experts</h3>
+<p>Our financial specialists are always available to guide you through market opportunities and help you maximize your portfolio performance.</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43">
+<div class="card-content">
+<h3>Secure Communication</h3>
+<p>All communication is encrypted and secured using advanced technologies to protect your identity and financial data.</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1581090700227-1e8d2b5b9c0f">
+<div class="card-content">
+<h3>24/7 Live Support</h3>
+<p>Contact us through our live support for instant response anytime. Our team is always ready to assist you.</p>
+
+<a href="#" class="btn" onclick="openLiveChat()">Start Live Support</a>
 
 </div>
+</div>
+
+</div>
+</div>
+
+<!-- PAGE TRANSITION -->
+<script>
+window.addEventListener("load", ()=>document.body.classList.add("loaded"));
+
+document.querySelectorAll("a").forEach(link=>{
+  link.addEventListener("click", function(e){
+    if(this.href.includes(".html")){
+      e.preventDefault();
+      document.body.classList.remove("loaded");
+      document.body.classList.add("fade-out");
+      setTimeout(()=>window.location=this.href,400);
+    }
+  });
+});
+</script>
+
+<!-- SMARTSUPP -->
+<script>
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
+
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];
+  c=d.createElement('script');
+  c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';
+  s.parentNode.insertBefore(c,s);
+})();
+</script>
+
+<script>
+function openLiveChat(){
+  if(window.smartsupp){
+    smartsupp('chat:open');
+  }
+}
+</script>
 
 </body>
-  </html>
+</html>
