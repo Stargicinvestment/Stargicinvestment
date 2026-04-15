@@ -923,12 +923,26 @@ async function prices(){
   let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");
   let p = await r.json();
 
-  document.getElementById("btc").innerHTML = "BTC $" + p.bitcoin.usd;
-  document.getElementById("eth").innerHTML = "ETH $" + p.ethereum.usd;
-  document.getElementById("usdt").innerHTML = "USDT $" + p.tether.usd;
-  document.getElementById("xrp").innerHTML = "XRP $" + p.ripple.usd;
-  document.getElementById("bnb").innerHTML = "BNB $" + p.binancecoin.usd;
-}
+  if(document.getElementById("btc")){
+    document.getElementById("btc").innerHTML = "BTC $" + p.bitcoin.usd;
+  }
+
+  if(document.getElementById("eth")){
+    document.getElementById("eth").innerHTML = "ETH $" + p.ethereum.usd;
+  }
+
+  if(document.getElementById("usdt")){
+    document.getElementById("usdt").innerHTML = "USDT $" + p.tether.usd;
+  }
+
+  if(document.getElementById("xrp")){
+    document.getElementById("xrp").innerHTML = "XRP $" + p.ripple.usd;
+  }
+
+  if(document.getElementById("bnb")){
+    document.getElementById("bnb").innerHTML = "BNB $" + p.binancecoin.usd;
+  }
+    }
 
 prices();
 setInterval(prices, 10000);
