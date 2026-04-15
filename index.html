@@ -272,11 +272,21 @@ gap:8px;
 width:24px;  
 filter:brightness(1.3);  
 }  
-  
-@keyframes scroll{  
-0%{transform:translateX(0)}  
-100%{transform:translateX(-50%)}  
-}  
+
+  .crypto-track{
+  display:flex;
+  width:max-content;
+  animation:scroll 20s linear infinite;
+}
+
+@keyframes scroll{
+  0%{
+    transform: translateX(0);
+  }
+  100%{
+    transform: translateX(-50%);
+  }
+}
   
 /* SECTIONS */  
   
@@ -744,6 +754,30 @@ body {
   <div class="crypto-track">
 
     <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
+      <span id="btc">BTC loading...</span>
+    </div>
+
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
+      <span id="eth">ETH loading...</span>
+    </div>
+
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
+      <span id="usdt">USDT loading...</span>
+    </div>
+
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png" width="20">
+      <span id="xrp">XRP loading...</span>
+    </div>
+
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
+      <span id="bnb">BNB loading...</span>
+    </div>
+        <div class="coin">
       <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
       <span id="btc">BTC loading...</span>
     </div>
