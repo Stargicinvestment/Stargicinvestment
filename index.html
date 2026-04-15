@@ -784,8 +784,8 @@ Real estate remains one of the most reliable long-term investments helping inves
 </p>  </div>  </div>  </section>  <!-- REVIEWS -->  
     <section id="reviews">
   <section id="why">
-    <section>
-      <section>
+  </section>
+    </section>
   <h2>Why Choose StargicInvestment</h2>
 
   <div class="market-grid">
@@ -1109,35 +1109,8 @@ document.addEventListener("click", function(e){
     </div>
 
   </div>
+      </script>
 </footer>
-  </script>
-
-    
-<script>
-document.addEventListener("DOMContentLoaded", function(){
-
-  const questions = document.querySelectorAll(".faq-question");
-
-  questions.forEach(btn => {
-    btn.addEventListener("click", function(){
-
-      const item = this.parentElement;
-
-      // close others
-      document.querySelectorAll(".faq-item").forEach(el=>{
-        if(el !== item){
-          el.classList.remove("active");
-        }
-      });
-
-      // toggle current
-      item.classList.toggle("active");
-
-    });
-  });
-
-});
-</script>
 
   </body>  
   </html>
