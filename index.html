@@ -949,7 +949,15 @@ const firebaseConfig = {
   messagingSenderId: "1053305294931",  
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6",  
   measurementId: "G-MYXX49TZLW"  
-};  
+};
+    onAuthStateChanged(auth, (user) => {
+  if(user){
+    console.log("User logged in:", user.email);
+    loadMessages(user);
+  } else {
+    console.log("No user logged in");
+  }
+});
   
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
@@ -1142,6 +1150,8 @@ document.addEventListener("DOMContentLoaded", function(){
       item.classList.toggle("active");
 
     });
+  });
+  
   });
 </script>
     
