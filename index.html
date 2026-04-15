@@ -610,55 +610,47 @@ body {
   box-shadow: 0 0 20px rgba(0,255,157,0.4);
   transform: translateY(-2px);
   }
-/* FAQ SECTION */
-.faq-section{
+
+  .faq-section{
   max-width:900px;
-  margin:80px auto;
+  margin:100px auto;
   padding:20px;
 }
 
 .faq-title{
-  font-size:32px;
+  font-size:34px;
   font-weight:700;
-  margin-bottom:25px;
-  color:#ffffff;
+  margin-bottom:30px;
+  color:#fff;
 }
 
-/* CONTAINER */
-.faq-box{
-  display:flex;
-  flex-direction:column;
-  gap:15px;
-}
-
-/* ITEM */
+/* CARD */
 .faq-item{
   background:linear-gradient(145deg,#111827,#0b0f1a);
-  border-radius:16px;
+  border-radius:18px;
+  margin-bottom:15px;
   overflow:hidden;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
   transition:0.3s;
 }
 
-/* QUESTION */
+/* BUTTON */
 .faq-question{
+  width:100%;
   padding:20px;
-  font-size:16px;
-  font-weight:500;
+  border:none;
+  background:none;
   color:#e5e7eb;
+  font-size:16px;
+  text-align:left;
   display:flex;
   justify-content:space-between;
   align-items:center;
   cursor:pointer;
 }
 
-/* HOVER */
-.faq-item:hover{
-  transform:scale(1.02);
-}
-
 /* ICON */
-.faq-question span{
+.icon{
   font-size:22px;
   color:#00ff9d;
   transition:0.3s;
@@ -670,9 +662,7 @@ body {
   overflow:hidden;
   padding:0 20px;
   color:#9ca3af;
-  font-size:14px;
-  line-height:1.7;
-  transition:0.4s ease;
+  transition:all 0.4s ease;
 }
 
 /* ACTIVE */
@@ -681,7 +671,7 @@ body {
   padding:15px 20px;
 }
 
-.faq-item.active span{
+.faq-item.active .icon{
   transform:rotate(45deg);
   }
   
@@ -815,43 +805,37 @@ Real estate remains one of the most reliable long-term investments helping inves
 
   <h2 class="faq-title">Frequently Asked Questions</h2>
 
-  <div class="faq-box">
+  <div class="faq-item">
+    <button class="faq-question">
+      How do I create an account?
+      <span class="icon">+</span>
+    </button>
+    <div class="faq-answer">
+      Creating an account is simple and secure. Click on “Create Account”, fill in your details, and verify your email to start investing immediately.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      How long do withdrawals take?
+      <span class="icon">+</span>
+    </button>
+    <div class="faq-answer">
+      Withdrawals are processed quickly, usually within a few hours. In rare cases, it may take up to 24 hours depending on network confirmations.
+    </div>
+  </div>
+
+  <div class="faq-item">
+    <button class="faq-question">
+      Is my investment secure?
+      <span class="icon">+</span>
+    </button>
+    <div class="faq-answer">
+      Yes. We use advanced encryption, secure servers, and multi-layer protection to keep your funds and personal data safe.
+    </div>
+  </div>
+
     
-    <div class="faq-item">
-      <div class="faq-question">
-        How do I create an account?
-        <span>+</span>
-      </div>
-      <div class="faq-answer">
-        Creating an account is simple and secure. Click on “Create Account”, fill in your details, and verify your email. Once completed, you can access your dashboard and begin investing immediately with full platform features available.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        How long do withdrawals take?
-        <span>+</span>
-      </div>
-      <div class="faq-answer">
-        Withdrawals are processed quickly, typically within a few hours. In some cases, depending on network confirmations and security checks, it may take up to 24 hours to complete.
-      </div>
-    </div>
-
-    <div class="faq-item">
-      <div class="faq-question">
-        Is my investment secure?
-        <span>+</span>
-      </div>
-      <div class="faq-answer">
-        Yes. We use advanced encryption technology, secure servers, and strict risk management systems to ensure that your funds and personal data remain fully protected at all times.
-      </div>
-    </div>
-
-  </div>
-
-    </section>
-
-  </div>
 </section>
   <section id="how">
   <h2>How It Works</h2>
@@ -1106,25 +1090,32 @@ document.addEventListener("click", function(e){
 </footer>
   </script>
 
-    <script>
-document.querySelectorAll(".faq-question").forEach(q => {
-  q.addEventListener("click", () => {
 
-    const item = q.parentElement;
+<script>
+document.addEventListener("DOMContentLoaded", function(){
 
-    // close others (premium behavior)
-    document.querySelectorAll(".faq-item").forEach(i=>{
-      if(i !== item){
-        i.classList.remove("active");
-      }
+  const questions = document.querySelectorAll(".faq-question");
+
+  questions.forEach(btn => {
+    btn.addEventListener("click", function(){
+
+      const item = this.parentElement;
+
+      // close others
+      document.querySelectorAll(".faq-item").forEach(el=>{
+        if(el !== item){
+          el.classList.remove("active");
+        }
+      });
+
+      // toggle current
+      item.classList.toggle("active");
+
     });
-
-    item.classList.toggle("active");
-
   });
+
 });
-    </script>
+</script>
 
-</body>  
+  </body>  
   </html>
-
