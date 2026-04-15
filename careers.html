@@ -1,68 +1,88 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Careers</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-body{
-  margin:0;
-  font-family:Poppins;
-  background:#0b0f1a;
-  color:#fff;
-}
-
-.hero{
-  height:250px;
-  background:url("https://images.unsplash.com/photo-1521737604893-d14cc237f11d") center/cover;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.section{
-  max-width:1000px;
-  margin:auto;
-  padding:50px 20px;
-}
-
-.job{
-  background:#111827;
-  padding:25px;
-  border-radius:10px;
-  margin-bottom:20px;
-  transition:0.3s;
-}
-
-.job:hover{
-  transform:scale(1.02);
-}
+body{margin:0;font-family:Poppins;background:#0b0f1a;color:#fff;opacity:0;transition:0.6s;}
+body.loaded{opacity:1;}
+.hero{padding:100px;text-align:center;background:#020617;}
+.section{max-width:1100px;margin:auto;padding:60px 20px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
+.card{background:#111827;border-radius:15px;overflow:hidden;}
+.card img{width:100%;height:230px;object-fit:cover;}
+.card-content{padding:25px;}
+.card h3{color:#00ff9d;}
+.card p{color:#9ca3af;}
 </style>
 </head>
 
 <body>
 
 <div class="hero">
-  <h1>Join Our Team</h1>
+<h1>Careers</h1>
+<p>Join a team of world-class financial professionals.</p>
 </div>
 
 <div class="section">
+<div class="grid">
 
-<div class="job">
-<h3>Financial Analyst</h3>
-<p>Analyze crypto and stock markets to guide investment strategies.</p>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1529336953121-ad5a0d43d0d2">
+<div class="card-content">
+<h3>Growth</h3>
+<p>We invest in our employees through continuous training and global exposure.</p>
+</div>
 </div>
 
-<div class="job">
-<h3>Customer Support</h3>
-<p>Provide 24/7 assistance to our global users.</p>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1556761175-b413da4baf72">
+<div class="card-content">
+<h3>Innovation</h3>
+<p>Work in an environment that values creativity and forward-thinking strategies.</p>
+</div>
 </div>
 
-<div class="job">
-<h3>Frontend Developer</h3>
-<p>Build modern UI for our platform.</p>
+<div class="card">
+<img src="https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e">
+<div class="card-content">
+<h3>Global Impact</h3>
+<p>Collaborate with professionals across multiple countries and industries.</p>
+</div>
+</div>
+
+<div class="card">
+<img src="https://images.unsplash.com/photo-1507537297725-24a1c029d3ca">
+<div class="card-content">
+<h3>Balance</h3>
+<p>We promote a healthy work-life balance for long-term success.</p>
+</div>
 </div>
 
 </div>
+</div>
+
+<script>
+window.addEventListener("load",()=>document.body.classList.add("loaded"));
+</script>
+
+<!-- Smartsupp -->
+<script>
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
+window.smartsupp||(function(d) {
+var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+s=d.getElementsByTagName('script')[0];
+c=d.createElement('script');
+c.async=true;
+c.src='https://www.smartsuppchat.com/loader.js?';
+s.parentNode.insertBefore(c,s);
+})(document);
+</script>
 
 </body>
-  </html>
+</html>
