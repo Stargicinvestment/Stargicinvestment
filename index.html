@@ -899,24 +899,27 @@ Real estate remains one of the most reliable long-term investments helping inves
       <p>Watch your investment grow and withdraw profits anytime.</p>
     </div>
 
-          <script>  
-  
-function openLogin(){  
-document.getElementById("loginBox").style.display="flex";  
-}  
-  
-function openRegister(){  
-document.getElementById("registerBox").style.display="flex";  
-}  
-  
-window.onclick=function(e){  
-if(e.target.classList.contains("popup")){  
-e.target.style.display="none";  
-}  
-}  
-  <script>
-async function prices(){
+          <script>
 
+// LOGIN / REGISTER POPUP
+function openLogin(){  
+  document.getElementById("loginBox").style.display="flex";  
+}  
+
+function openRegister(){  
+  document.getElementById("registerBox").style.display="flex";  
+}  
+
+window.onclick = function(e){  
+  if(e.target.classList.contains("popup")){  
+    e.target.style.display="none";  
+  }  
+}
+
+// ==========================
+// 🔥 CRYPTO PRICES (FIXED)
+// ==========================
+async function prices(){
   let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");
   let p = await r.json();
 
@@ -929,7 +932,9 @@ async function prices(){
 
 prices();
 setInterval(prices, 10000);
-</script>
+
+          </script>
+
 </script>  <script type="module">  
   
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";  
@@ -1120,8 +1125,7 @@ document.addEventListener("click", function(e){
     </div>
 
   </div>
-      </script>
-</footer>
+    
 
     <script>
 document.addEventListener("DOMContentLoaded", function(){
