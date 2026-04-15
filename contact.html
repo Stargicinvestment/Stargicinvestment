@@ -3,70 +3,85 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Contact Us - StargicInvestment</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+
 body{
   margin:0;
   font-family:Poppins;
   background:#0b0f1a;
   color:#fff;
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.6s;
 }
-body.loaded{opacity:1;transform:translateY(0);}
-body.fade-out{opacity:0;transform:translateY(-20px);}
 
+/* HERO */
 .hero{
-  padding:100px 20px;
+  height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
   text-align:center;
-  background:#020617;
+  background:linear-gradient(to right,#020617,#0b0f1a);
 }
 
+.hero h1{
+  font-size:30px;
+}
+
+/* SECTION */
 .section{
   max-width:1100px;
   margin:auto;
   padding:60px 20px;
 }
 
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-}
-
 .card{
   background:#111827;
-  border-radius:15px;
+  border-radius:12px;
   overflow:hidden;
-  transition:0.4s;
+  margin-bottom:40px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  transition:0.3s;
 }
 
-.card:hover{transform:translateY(-10px);}
+.card:hover{
+  transform:translateY(-6px);
+}
 
 .card img{
   width:100%;
-  height:230px;
+  height:240px;
   object-fit:cover;
 }
 
-.card-content{padding:25px;}
+/* TEXT */
+.content{
+  padding:25px;
+}
 
-.card h3{color:#00ff9d;}
-.card p{color:#9ca3af;line-height:1.7;}
+.content h2{
+  color:#00ff9d;
+  margin-bottom:10px;
+}
 
+/* BUTTON */
 .btn{
   display:inline-block;
-  margin-top:20px;
-  padding:12px 30px;
+  margin-top:15px;
   background:#00ff9d;
   color:#021018;
+  padding:12px 25px;
   border-radius:8px;
-  text-decoration:none;
   font-weight:600;
+  cursor:pointer;
+  text-decoration:none;
+}
+
+.btn:hover{
+  box-shadow:0 0 20px #00ff9d;
 }
 
 </style>
@@ -74,69 +89,70 @@ body.fade-out{opacity:0;transform:translateY(-20px);}
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
-<h1>Contact Us</h1>
-<p>We provide elite-level support to ensure your investment journey remains seamless and secure.</p>
+  <h1>Contact Our Team</h1>
 </div>
 
 <div class="section">
-<div class="grid">
 
+<!-- IMAGE 1 -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1573164574511-73c773193279">
-<div class="card-content">
-<h3>Elite Support Team</h3>
-<p>Our dedicated support professionals are trained to handle every investor inquiry with precision, speed, and professionalism. We ensure every interaction reflects our commitment to excellence.</p>
-</div>
+  <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80">
+  <div class="content">
+    <h2>Professional Financial Guidance</h2>
+    <p>
+    Our expert advisors are dedicated to providing strategic financial guidance tailored to your investment goals. 
+    Whether you're exploring cryptocurrency, global markets, or long-term asset growth, our team ensures you receive 
+    precise, data-driven insights to maximize your returns and minimize risk exposure.
+    </p>
+  </div>
 </div>
 
+<!-- IMAGE 2 -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1556157382-97eda2d62296">
-<div class="card-content">
-<h3>Financial Experts</h3>
-<p>Our financial specialists are always available to guide you through market opportunities and help you maximize your portfolio performance.</p>
-</div>
+  <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80">
+  <div class="content">
+    <h2>Secure Communication Channels</h2>
+    <p>
+    We prioritize your privacy and security with encrypted communication systems that protect your personal and 
+    financial data. Every interaction with our platform is safeguarded by advanced security infrastructure to ensure 
+    complete confidentiality and trust.
+    </p>
+  </div>
 </div>
 
+<!-- IMAGE 3 -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1560472354-b33ff0c44a43">
-<div class="card-content">
-<h3>Secure Communication</h3>
-<p>All communication is encrypted and secured using advanced technologies to protect your identity and financial data.</p>
-</div>
+  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80">
+  <div class="content">
+    <h2>Global Support Network</h2>
+    <p>
+    Our international support team operates across multiple regions, ensuring that assistance is always available 
+    regardless of your location. We are committed to delivering timely responses and professional support tailored 
+    to your needs.
+    </p>
+  </div>
 </div>
 
+<!-- IMAGE 4 -->
 <div class="card">
-<img src="https://images.unsplash.com/photo-1581090700227-1e8d2b5b9c0f">
-<div class="card-content">
-<h3>24/7 Live Support</h3>
-<p>Contact us through our live support for instant response anytime. Our team is always ready to assist you.</p>
+  <img src="https://images.unsplash.com/photo-1581091870627-3a6f1fefac4b?auto=format&fit=crop&w=1200&q=80">
+  <div class="content">
+    <h2>24/7 Live Support</h2>
+    <p>
+    Contact us through our live support for instant response anytime. Our team is always ready to assist you with 
+    account inquiries, investment guidance, and technical support.
+    </p>
 
-<a href="#" class="btn" onclick="openLiveChat()">Start Live Support</a>
+    <!-- 🔥 WORKING BUTTON -->
+    <button class="btn" onclick="openLiveChat()">Start Live Support</button>
+  </div>
+</div>
 
 </div>
-</div>
 
-</div>
-</div>
-
-<!-- PAGE TRANSITION -->
-<script>
-window.addEventListener("load", ()=>document.body.classList.add("loaded"));
-
-document.querySelectorAll("a").forEach(link=>{
-  link.addEventListener("click", function(e){
-    if(this.href.includes(".html")){
-      e.preventDefault();
-      document.body.classList.remove("loaded");
-      document.body.classList.add("fade-out");
-      setTimeout(()=>window.location=this.href,400);
-    }
-  });
-});
-</script>
-
-<!-- SMARTSUPP -->
+<!-- ✅ SMARTSUPP (PUT BEFORE </body>) -->
 <script>
 var _smartsupp = _smartsupp || {};
 _smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
@@ -145,19 +161,22 @@ window.smartsupp||(function(d) {
   var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
   s=d.getElementsByTagName('script')[0];
   c=d.createElement('script');
+  c.type='text/javascript';
+  c.charset='utf-8';
   c.async=true;
   c.src='https://www.smartsuppchat.com/loader.js?';
   s.parentNode.insertBefore(c,s);
-})();
+})(document);
 </script>
 
+<!-- ✅ OPEN CHAT FUNCTION -->
 <script>
-function openLiveChat(){
-  if(window.smartsupp){
+function openLiveChat() {
+  if (window.smartsupp) {
     smartsupp('chat:open');
   }
 }
 </script>
 
 </body>
-</html>
+  </html>
