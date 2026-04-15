@@ -5,18 +5,103 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>About Us - StargicInvestment</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
+
+/* ===== PAGE FADE ===== */
 body{
   margin:0;
   font-family:Poppins;
   background:#0b0f1a;
   color:#fff;
+  opacity:0;
+  transition:opacity 0.5s ease;
+}
+
+body.loaded{
+  opacity:1;
+}
+
+/* ===== NAVBAR ===== */
+.navbar{
+  position:fixed;
+  top:0;
+  width:100%;
+  z-index:999;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:15px 20px;
+  background:rgba(11,15,26,0.9);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid #1f2937;
+}
+
+.logo{
+  font-weight:700;
+  color:#00ff9d;
+  font-size:18px;
+}
+
+.nav-links{
+  display:flex;
+  gap:20px;
+}
+
+.nav-links a{
+  text-decoration:none;
+  color:#9ca3af;
+  font-size:14px;
+  transition:0.3s;
+}
+
+.nav-links a:hover,
+.nav-links a.active{
+  color:#00ff9d;
+}
+
+/* MOBILE MENU */
+.menu-btn{
+  display:none;
+  font-size:24px;
+  cursor:pointer;
+}
+
+@media(max-width:768px){
+  .nav-links{
+    position:absolute;
+    top:60px;
+    right:20px;
+    background:#111827;
+    flex-direction:column;
+    padding:20px;
+    border-radius:10px;
+    display:none;
+  }
+
+  .nav-links.active{
+    display:flex;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+}
+
+/* PUSH CONTENT BELOW NAVBAR */
+.spacer{
+  height:70px;
 }
 
 /* HERO */
 .hero{
-  height:300px;
-  background:url("https://images.unsplash.com/photo-1559526324-4b87b5e36e44") center/cover;
+  height:320px;
+  background:
+    linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.7)),
+    url("https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80");
+  background-size:cover;
+  background-position:center;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -24,7 +109,8 @@ body{
 }
 
 .hero h1{
-  font-size:40px;
+  font-size:38px;
+  font-weight:700;
 }
 
 /* SECTION */
@@ -34,70 +120,186 @@ body{
   padding:60px 20px;
 }
 
+/* GRID */
 .grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:25px;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px;
 }
 
+/* CARD */
 .card{
-  background:#111827;
-  border-radius:12px;
+  background:rgba(17,24,39,0.8);
+  backdrop-filter:blur(10px);
+  border-radius:15px;
   overflow:hidden;
-  transition:0.3s;
+  transition:0.4s;
+  box-shadow:0 10px 30px rgba(0,0,0,0.5);
 }
 
 .card:hover{
-  transform:translateY(-8px);
+  transform:translateY(-10px) scale(1.02);
+  box-shadow:0 20px 50px rgba(0,255,157,0.15);
 }
 
 .card img{
   width:100%;
-  height:200px;
+  height:220px;
   object-fit:cover;
 }
 
+/* CONTENT */
 .card-content{
-  padding:20px;
+  padding:25px;
 }
+
+.card h3{
+  color:#00ff9d;
+}
+
+.card p{
+  color:#9ca3af;
+  font-size:14px;
+  line-height:1.7;
+}
+
+/* CTA */
+.cta{
+  text-align:center;
+  margin-top:60px;
+}
+
+.btn{
+  background:#00ff9d;
+  color:#021018;
+  padding:12px 30px;
+  border-radius:8px;
+  text-decoration:none;
+  font-weight:600;
+  transition:0.3s;
+}
+
+.btn:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 25px rgba(0,255,157,0.3);
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- NAVBAR -->
+<nav class="navbar">
+  <div class="logo">StargicInvestment</div>
+
+  <div class="nav-links" id="navLinks">
+    <a href="index.html">Home</a>
+    <a href="about.html" class="active">About</a>
+    <a href="careers.html">Careers</a>
+    <a href="help.html">Help</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html">Login</a>
+  </div>
+
+  <div class="menu-btn" onclick="toggleMenu()">☰</div>
+</nav>
+
+<div class="spacer"></div>
+
+<!-- HERO -->
 <div class="hero">
-  <h1>About Our Company</h1>
+  <h1>About StargicInvestment</h1>
 </div>
 
+<!-- CONTENT -->
 <div class="section">
+
   <div class="grid">
 
     <div class="card">
-      <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296">
+      <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=80" loading="lazy">
       <div class="card-content">
         <h3>Who We Are</h3>
-        <p>We are a global digital investment company helping users grow wealth through smart strategies.</p>
+        <p>We are a global investment platform delivering advanced strategies across crypto, stocks, real estate and energy sectors.</p>
       </div>
     </div>
 
     <div class="card">
-      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f">
+      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" loading="lazy">
       <div class="card-content">
         <h3>Our Mission</h3>
-        <p>To provide secure, transparent, and profitable investment opportunities worldwide.</p>
+        <p>To provide secure and transparent investment opportunities with consistent growth and financial stability.</p>
       </div>
     </div>
 
     <div class="card">
-      <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf">
+      <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" loading="lazy">
       <div class="card-content">
         <h3>Our Vision</h3>
-        <p>To become a leading platform in global finance and digital asset management.</p>
+        <p>To become a global leader in digital finance and redefine the future of investment platforms.</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80" loading="lazy">
+      <div class="card-content">
+        <h3>Our Strategy</h3>
+        <p>We balance risk and profit using data-driven insights and global market analysis.</p>
       </div>
     </div>
 
   </div>
+
+  <div class="cta">
+    <h2>Ready to Start Investing?</h2>
+    <br>
+    <a href="register.html" class="btn">Create Account</a>
+  </div>
+
 </div>
+
+<!-- JS -->
+<script>
+/* MENU */
+function toggleMenu(){
+  document.getElementById("navLinks").classList.toggle("active");
+}
+
+/* PAGE FADE IN */
+window.addEventListener("load", ()=>{
+  document.body.classList.add("loaded");
+});
+
+/* PAGE FADE OUT */
+document.querySelectorAll("a").forEach(link=>{
+  link.addEventListener("click", function(e){
+    const href = this.getAttribute("href");
+    if(href.startsWith("#") || this.target === "_blank") return;
+
+    e.preventDefault();
+    document.body.classList.remove("loaded");
+
+    setTimeout(()=>{
+      window.location.href = href;
+    }, 300);
+  });
+});
+</script>
+
+<!-- SMARTSUPP -->
+<script>
+var _smartsupp = _smartsupp || {};
+_smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
+window.smartsupp||(function(d) {
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];
+  c=d.createElement('script');
+  c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';
+  s.parentNode.insertBefore(c,s);
+})(document);
+</script>
 
 </body>
 </html>
