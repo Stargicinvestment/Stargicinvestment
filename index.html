@@ -794,7 +794,7 @@ Real estate remains one of the most reliable long-term investments helping inves
     Oil and gas projects continue to generate strong global demand and support diversified investment portfolios.  
   </p>  
 </div>
-</p>  </div>  </div>  </section>  <!-- REVIEWS -->  
+ </div>  </div>  </section>  <!-- REVIEWS -->  
     <section id="reviews">
   <section id="why">
   </section>
@@ -932,10 +932,9 @@ async function prices(){
 
 prices();
 setInterval(prices, 10000);
+</script>
 
-          </script>
-
-</script>  <script type="module">  
+  <script type="module">  
   
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";  
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";  
@@ -961,28 +960,19 @@ const firebaseConfig = {
   measurementId: "G-MYXX49TZLW"  
 };  
   
-const app = initializeApp(firebaseConfig);  
-const auth = getAuth(app);  
-const db = getFirestore(app);  
-  function loadMessages(user){  
-  
-  const q = query(collection(db, "messages"), where("userId","==",user.uid));  
-  
-  onSnapshot(q,(snapshot)=>{  
-  
-    const box = document.getElementById("chatMessages");  
-    box.innerHTML = "";  
-  
-    snapshot.forEach(doc=>{  
-      let data = doc.data();  
-  
-      box.innerHTML += `  
-        <div>You: ${data.text}</div>  
-        <div style="color:green;">Admin: ${data.reply || "Waiting..."}</div><br>  
-      `;  
-    });  
-  
-  });  
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ✅ NOW safe to use
+onAuthStateChanged(auth, (user) => {
+  if(user){
+    console.log("User logged in:", user.email);
+    loadMessages(user);
+  } else {
+    console.log("No user logged in");
+  }
+});
   
 }  
 window.openPopup = function(){  
@@ -1040,6 +1030,7 @@ window.sendMessage = async function(){
     alert("Error sending message");  
   }  
 };
+</script>
 
 <script>
 setInterval(function(){
@@ -1086,7 +1077,6 @@ document.addEventListener("click", function(e){
 });
 </script>
 
-  </script>
       <footer class="footer">
   <div class="footer-container">
 
@@ -1149,8 +1139,6 @@ document.addEventListener("DOMContentLoaded", function(){
 
     });
   });
-
-});
 </script>
     
   </body>  
