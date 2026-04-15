@@ -739,26 +739,39 @@ body {
 
   </div>
 </div> 
-</p>  </div>  </div>  <!-- CRYPTO TICKER --> <div class="coin">
-  <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
-  <span id="eth">ETH loading...</span>
-</div>
+</p>  </div>  </div>
+  <div class="crypto-slider">
+  <div class="crypto-track">
 
-<div class="coin">
-  <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
-  <span id="usdt">USDT loading...</span>
-</div>
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
+      <span id="btc">BTC loading...</span>
+    </div>
 
-<div class="coin">
-  <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png" width="20">
-  <span id="xrp">XRP loading...</span>
-</div>
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
+      <span id="eth">ETH loading...</span>
+    </div>
 
-<div class="coin">
-  <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
-  <span id="bnb">BNB loading...</span>
-</div>  
-</div>  <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>  
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
+      <span id="usdt">USDT loading...</span>
+    </div>
+
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png" width="20">
+      <span id="xrp">XRP loading...</span>
+    </div>
+
+    <div class="coin">
+      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
+      <span id="bnb">BNB loading...</span>
+    </div>
+
+  </div>
+</div>
+  
+  <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>  
 StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.  
 </p>  <p>  
 Our financial analysts study global economic trends including cryptocurrency adoption, stock market expansion and commodity demand in sectors such as oil and gas. These insights allow us to position investment portfolios in high-growth opportunities while maintaining disciplined risk management.  
@@ -901,24 +914,22 @@ if(e.target.classList.contains("popup")){
 e.target.style.display="none";  
 }  
 }  
-  
-async function prices(){  
-  
-let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");  
-  
-let p=await r.json();  
-  
-btc.innerHTML="BTC $"+p.bitcoin.usd;  
-eth.innerHTML="ETH $"+p.ethereum.usd;  
-usdt.innerHTML="USDT $"+p.tether.usd;  
-xrp.innerHTML="XRP $"+p.ripple.usd;  
-bnb.innerHTML="BNB $"+p.binancecoin.usd;  
-  
-}  
-  
-prices();  
-setInterval(prices,10000);  
-  
+  <script>
+async function prices(){
+
+  let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");
+  let p = await r.json();
+
+  document.getElementById("btc").innerHTML = "BTC $" + p.bitcoin.usd;
+  document.getElementById("eth").innerHTML = "ETH $" + p.ethereum.usd;
+  document.getElementById("usdt").innerHTML = "USDT $" + p.tether.usd;
+  document.getElementById("xrp").innerHTML = "XRP $" + p.ripple.usd;
+  document.getElementById("bnb").innerHTML = "BNB $" + p.binancecoin.usd;
+}
+
+prices();
+setInterval(prices, 10000);
+</script>
 </script>  <script type="module">  
   
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";  
