@@ -1106,6 +1106,25 @@ document.addEventListener("click", function(e){
 </footer>
   </script>
 
+    <script>
+document.querySelectorAll(".faq-question").forEach(q => {
+  q.addEventListener("click", () => {
+
+    const item = q.parentElement;
+
+    // close others (premium behavior)
+    document.querySelectorAll(".faq-item").forEach(i=>{
+      if(i !== item){
+        i.classList.remove("active");
+      }
+    });
+
+    item.classList.toggle("active");
+
+  });
+});
+    </script>
+
 </body>  
   </html>
 
