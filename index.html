@@ -1112,5 +1112,31 @@ document.addEventListener("click", function(e){
       </script>
 </footer>
 
+    <script>
+document.addEventListener("DOMContentLoaded", function(){
+
+  const questions = document.querySelectorAll(".faq-question");
+
+  questions.forEach(btn => {
+    btn.addEventListener("click", function(){
+
+      const item = this.parentElement;
+
+      // close others
+      document.querySelectorAll(".faq-item").forEach(el=>{
+        if(el !== item){
+          el.classList.remove("active");
+        }
+      });
+
+      // toggle current
+      item.classList.toggle("active");
+
+    });
+  });
+
+});
+</script>
+    
   </body>  
   </html>
