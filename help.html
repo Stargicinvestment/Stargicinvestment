@@ -3,67 +3,257 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Help Center</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+<title>Help Center - StargicInvestment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-body{margin:0;font-family:Poppins;background:#0b0f1a;color:#fff;}
-.hero{padding:100px;text-align:center;background:#020617;}
-.section{max-width:1100px;margin:auto;padding:60px;}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:30px;}
-.card{background:#111827;border-radius:15px;}
-.card img{width:100%;height:220px;object-fit:cover;}
-.card-content{padding:20px;}
+
+body{
+  margin:0;
+  font-family:Poppins;
+  background:#0b0f1a;
+  color:#fff;
+}
+
+/* HERO */
+.hero{
+  height:260px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  background:linear-gradient(to right,#020617,#0b0f1a);
+}
+
+.hero h1{
+  font-size:30px;
+}
+
+/* SECTION */
+.section{
+  max-width:1100px;
+  margin:auto;
+  padding:60px 20px;
+}
+
+/* CARD */
+.card{
+  background:#111827;
+  border-radius:14px;
+  overflow:hidden;
+  margin-bottom:40px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.6);
+  transition:0.4s;
+}
+
+.card:hover{
+  transform:translateY(-8px);
+}
+
+.card img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+}
+
+/* CONTENT */
+.content{
+  padding:25px;
+}
+
+.content h2{
+  color:#00ff9d;
+  margin-bottom:10px;
+}
+
+/* FAQ */
+.faq{
+  background:#111827;
+  border-radius:12px;
+  padding:20px;
+  margin-bottom:15px;
+  cursor:pointer;
+  transition:0.3s;
+}
+
+.faq:hover{
+  background:#1f2937;
+}
+
+.faq h3{
+  margin:0;
+}
+
+.faq p{
+  display:none;
+  color:#9ca3af;
+  margin-top:10px;
+}
+
+/* BUTTON */
+.btn{
+  display:inline-block;
+  margin-top:20px;
+  background:#00ff9d;
+  color:#021018;
+  padding:12px 25px;
+  border-radius:8px;
+  font-weight:600;
+  cursor:pointer;
+  border:none;
+}
+
+.btn:hover{
+  box-shadow:0 0 20px #00ff9d;
+}
+
+/* ANIMATION */
+.fade{
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.6s ease;
+}
+
+.fade.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
 <div class="hero">
-<h1>Help Center</h1>
-<p>We are here to assist you 24/7.</p>
+  <h1>Help Center</h1>
 </div>
 
 <div class="section">
-<div class="grid">
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1584433144859-1fc3ab64a957">
-<div class="card-content"><h3>Account Help</h3></div>
+<!-- SUPPORT OVERVIEW -->
+<div class="card fade">
+  <img src="https://images.unsplash.com/photo-1600880292089-90a7e086ee0c?auto=format&fit=crop&w=1400&q=80">
+  <div class="content">
+    <h2>Professional Customer Support</h2>
+    <p>
+    At StargicInvestment, we are committed to delivering exceptional customer service through a highly trained 
+    and dedicated support team. Our experts are available around the clock to assist with account management, 
+    investment guidance, technical troubleshooting, and general inquiries. We understand that financial decisions 
+    require clarity and confidence, which is why we provide accurate, timely, and professional responses to all users.
+    </p>
+  </div>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1563013544-824ae1b704d3">
-<div class="card-content"><h3>Transactions</h3></div>
+<!-- SECURITY -->
+<div class="card fade">
+  <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1400&q=80">
+  <div class="content">
+    <h2>Account Security & Protection</h2>
+    <p>
+    Your security is our highest priority. Our platform utilizes advanced encryption technologies and secure 
+    authentication systems to protect your personal data and financial assets. We continuously monitor all 
+    transactions and account activities to prevent unauthorized access and ensure a safe investment environment. 
+    If you ever notice unusual activity, our support team is ready to respond immediately.
+    </p>
+  </div>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1559526324-4b87b5e36e44">
-<div class="card-content"><h3>Investments</h3></div>
+<!-- INVESTMENT HELP -->
+<div class="card fade">
+  <img src="https://images.unsplash.com/photo-1642790551116-18e150f2482c?auto=format&fit=crop&w=1400&q=80">
+  <div class="content">
+    <h2>Investment Guidance</h2>
+    <p>
+    Navigating financial markets can be complex, which is why we provide professional insights and support to help 
+    you make informed decisions. Our team analyzes global market trends, including cryptocurrency, stock exchanges, 
+    real estate, and energy sectors, ensuring that you receive strategic advice aligned with your investment goals.
+    </p>
+  </div>
 </div>
 
-<div class="card">
-<img src="https://images.unsplash.com/photo-1521791136064-7986c2920216">
-<div class="card-content"><h3>Live Support</h3></div>
+<!-- FAQ -->
+<h2 style="margin-top:50px;">Frequently Asked Questions</h2>
+
+<div class="faq" onclick="toggleFAQ(this)">
+  <h3>How do I create an account?</h3>
+  <p>Click on the “Create Account” button on the homepage, fill in your details, and verify your email to get started.</p>
+</div>
+
+<div class="faq" onclick="toggleFAQ(this)">
+  <h3>How long do withdrawals take?</h3>
+  <p>Withdrawals are processed quickly, typically within a few hours depending on the payment method.</p>
+</div>
+
+<div class="faq" onclick="toggleFAQ(this)">
+  <h3>Is my investment secure?</h3>
+  <p>Yes, we use advanced security protocols and encryption to ensure all funds and data are fully protected.</p>
+</div>
+
+<!-- LIVE SUPPORT -->
+<div class="card fade">
+  <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=1400&q=80">
+  <div class="content">
+    <h2>24/7 Live Support</h2>
+    <p>
+    Contact us through our live support for instant response anytime. Our professional support agents are always 
+    available to assist you with any issue, ensuring a smooth and stress-free experience on our platform.
+    </p>
+
+    <button class="btn" onclick="openLiveChat()">Start Live Support</button>
+  </div>
 </div>
 
 </div>
-</div>
 
-<!-- Smartsupp -->
+<!-- SMOOTH ANIMATION SCRIPT -->
+<script>
+const faders = document.querySelectorAll('.fade');
+
+window.addEventListener('scroll', () => {
+  faders.forEach(el => {
+    const top = el.getBoundingClientRect().top;
+    if(top < window.innerHeight - 50){
+      el.classList.add('show');
+    }
+  });
+});
+</script>
+
+<!-- FAQ SCRIPT -->
+<script>
+function toggleFAQ(el){
+  let p = el.querySelector("p");
+  p.style.display = (p.style.display === "block") ? "none" : "block";
+}
+</script>
+
+<!-- SMARTSUPP -->
 <script>
 var _smartsupp = _smartsupp || {};
 _smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
+
 window.smartsupp||(function(d) {
-var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-s=d.getElementsByTagName('script')[0];
-c=d.createElement('script');
-c.async=true;
-c.src='https://www.smartsuppchat.com/loader.js?';
-s.parentNode.insertBefore(c,s);
+  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
+  s=d.getElementsByTagName('script')[0];
+  c=d.createElement('script');
+  c.type='text/javascript';
+  c.charset='utf-8';
+  c.async=true;
+  c.src='https://www.smartsuppchat.com/loader.js?';
+  s.parentNode.insertBefore(c,s);
 })(document);
 </script>
 
+<script>
+function openLiveChat() {
+  if (window.smartsupp) {
+    smartsupp('chat:open');
+  }
+}
+</script>
+
 </body>
-</html>
+  </html>
