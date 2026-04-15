@@ -54,8 +54,22 @@ body{
   box-shadow:0 15px 40px rgba(0,0,0,0.5);
 }
 
-.card:hover{
-  transform:translateY(-10px);
+  /* PAGE FADE OVERLAY */
+.page-transition{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:#05070d;
+  z-index:9999;
+  opacity:1;
+  pointer-events:none;
+  transition:opacity 0.5s ease;
+}
+
+.page-transition.hide{
+  opacity:0;
 }
 
 .card img{
