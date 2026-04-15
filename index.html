@@ -990,7 +990,12 @@ const firebaseConfig = {
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6",  
   measurementId: "G-MYXX49TZLW"  
 };
-    onAuthStateChanged(auth, (user) => {
+  const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+// ✅ NOW use auth
+onAuthStateChanged(auth, (user) => {
   if(user){
     console.log("User logged in:", user.email);
     loadMessages(user);
@@ -998,11 +1003,8 @@ const firebaseConfig = {
     console.log("No user logged in");
   }
 });
-  
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-    function loadMessages(user){  
+
+     function loadMessages(user){  
 
   const q = query(collection(db, "messages"), where("userId","==",user.uid));  
 
