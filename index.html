@@ -686,21 +686,137 @@ transform:scale(1.02);
 box-shadow:0 15px 40px rgba(0,255,157,0.15);
 }
 
+/* SECTION WRAPPER */
 .trust-section{
-padding:80px 20px;
+padding:100px 20px;
 display:flex;
 justify-content:center;
+background:#070b14;
 }
 
+/* CARD */
 .trust-card{
 width:100%;
-max-width:650px;
-background:#f9fafb;
-padding:50px 35px;
-border-radius:20px;
-box-shadow:0 25px 70px rgba(0,0,0,0.6);
+max-width:680px;
+padding:60px 45px;
+
+background:linear-gradient(145deg,#0b0f1a,#111827);
+border-radius:26px;
+
 position:relative;
 overflow:hidden;
+
+/* 🔥 DEPTH */
+box-shadow:
+0 30px 80px rgba(0,0,0,0.9),
+inset 0 0 0 1px rgba(255,255,255,0.04);
+
+transition:0.4s ease;
+}
+
+/* 🔥 HOVER LIFT */
+.trust-card:hover{
+transform:translateY(-8px);
+box-shadow:
+0 40px 100px rgba(0,0,0,1),
+0 0 40px rgba(0,194,122,0.08);
+}
+
+/* 🔥 TOP GLOW LINE */
+.trust-card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:2px;
+
+background:linear-gradient(90deg,transparent,#00c27a,transparent);
+opacity:0.7;
+}
+
+/* TITLE /
+.trust-card h2{
+color:#00c27a; / 🔥 DEEP EMERALD */
+font-size:36px;
+font-weight:800;
+line-height:1.2;
+letter-spacing:-0.6px;
+margin-bottom:20px;
+}
+
+/* TEXT */
+.trust-card p{
+color:#9ca3af;
+font-size:15.5px;
+line-height:1.8;
+margin-bottom:30px;
+}
+
+/* BUTTON */
+.trust-btn{
+display:inline-block;
+color:#00c27a;
+text-decoration:none;
+font-weight:600;
+font-size:14px;
+
+border-bottom:1px solid rgba(0,194,122,0.5);
+padding-bottom:4px;
+
+transition:0.3s ease;
+}
+
+/* BUTTON HOVER */
+.trust-btn:hover{
+color:#00ff9d;
+border-color:#00ff9d;
+}
+
+/* 🔥 SOFT BACKGROUND GLOW */
+.trust-card::after{
+content:"";
+position:absolute;
+width:300px;
+height:300px;
+background:#00c27a;
+filter:blur(120px);
+opacity:0.05;
+top:-80px;
+right:-80px;
+}
+
+/* 📱 MOBILE */
+@media(max-width:600px){
+.trust-card{
+padding:45px 25px;
+}
+
+.trust-card h2{
+font-size:28px;
+}
+
+.trust-card p{
+font-size:14px;
+}
+}
+
+.section{
+padding:60px 20px !important;
+}
+
+.block{
+margin-bottom:60px !important;
+}
+
+.hero{
+height:auto !important;
+min-height:420px;
+padding:80px 20px;
+}
+
+.block img{
+height:280px;
 }
 
 </style>  </head>  <body>  <nav>
@@ -738,31 +854,34 @@ overflow:hidden;
 </div>   
 </p>  </div>  </div>  
   <div class="crypto-slider">  
-  <div class="crypto-track">  <div class="coin">  
+  <div class="crypto-track">  <!-- 🔹 FIRST SET -->  
+<div class="coin">  
   <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
   <span class="btc">BTC loading...</span>  
 </div>  
 
 <div class="coin">  
   <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">  
-  <span class">ETH loading...</span>  
+  <span class="eth">ETH loading...</span>  
 </div>  
 
 <div class="coin">  
   <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">  
-  <span class"usdt">USDT loading...</span>  
+  <span class="usdt">USDT loading...</span>  
 </div>  
 
 <div class="coin">  
   <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png" width="20">  
-  <span class"xrp">XRP loading...</span>  
+  <span class="xrp">XRP loading...</span>  
 </div>  
 
 <div class="coin">  
   <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">  
-  <span class">BNB loading...</span>  
+  <span class="bnb">BNB loading...</span>  
 </div>  
-    <div class="coin">  
+
+<!-- 🔹 SECOND SET (DUPLICATE) -->  
+<div class="coin">  
   <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
   <span class="btc">BTC loading...</span>  
 </div>  
@@ -788,7 +907,7 @@ overflow:hidden;
 </div>
 
   </div>  
-</div>    <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>    StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.
+  </div>   <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>    StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.
 
 </p>  <p>    
 Our financial analysts study global economic trends including cryptocurrency adoption, stock market expansion and commodity demand in sectors such as oil and gas. These insights allow us to position investment portfolios in high-growth opportunities while maintaining disciplined risk management.    
@@ -859,20 +978,23 @@ Real estate remains one of the most reliable long-term investments helping inves
     <div class="faq-answer">  
       Yes. We use advanced encryption, secure servers, and multi-layer protection to keep your funds and personal data safe.  
     </div>  
-  </div>  <section class="trust-section">
-
-  <div class="trust-card">  <h2>TRUST,<br>EXPERIENCE AND<br>EXPERTISE</h2>  
+  </div>  <section class="trust-section">  
+  <div class="trust-card">  <h2>  
+  TRUST,<br>  
+  EXPERIENCE AND<br>  
+  EXPERTISE  
+</h2>  
 
 <p>  
-  We are an international financial company engaged in high-level investment activities across Forex,  
-  Oil and Gas, Cryptocurrency, Real Estate and Gold markets.  
+  We are an international financial company engaged in high-level investment activities across  
+  Forex, Oil and Gas, Cryptocurrency, Real Estate and Gold markets.  
   Our global experience and strategic expertise allow us to deliver stable and long-term results.  
 </p>  
 
-<a href="insights.html" class="trust-btn">MORE INSIGHTS</a>
+<a href="insights.html" class="trust-btn">More Insights →</a>
 
   </div>  
-    </section>  </section>  
+</section>  </section>  
   <section id="how">  
   <h2>How It Works</h2>    <div class="market-grid">  <div class="market-card">  
   <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=800&q=80" loading="lazy">  
@@ -949,7 +1071,12 @@ const firebaseConfig = {
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6",    
   measurementId: "G-MYXX49TZLW"    
 };  
-    onAuthStateChanged(auth, (user) => {  
+  const app = initializeApp(firebaseConfig);  
+const auth = getAuth(app);  
+const db = getFirestore(app);  
+  
+// ✅ NOW use auth  
+onAuthStateChanged(auth, (user) => {  
   if(user){  
     console.log("User logged in:", user.email);  
     loadMessages(user);  
@@ -957,11 +1084,8 @@ const firebaseConfig = {
     console.log("No user logged in");  
   }  
 });  
-    
-const app = initializeApp(firebaseConfig);  
-const auth = getAuth(app);  
-const db = getFirestore(app);  
-    function loadMessages(user){    
+  
+     function loadMessages(user){    
   
   const q = query(collection(db, "messages"), where("userId","==",user.uid));    
   
