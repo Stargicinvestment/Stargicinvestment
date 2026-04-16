@@ -23,11 +23,14 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-html, body{
+ body{
   margin:0;
-  padding:0;
-  overflow-x:hidden; /* 🔥 THIS STOPS SHIFTING */
-}
+  font-family:'Poppins',sans-serif;
+  background:#0b0f1a;
+  color:#e5e7eb;
+  line-height:1.7;
+  overflow-x:hidden;
+ }
     #chatButton {  
       position: fixed;  
       bottom: 20px;  
@@ -53,43 +56,19 @@ html, body{
 </head>  
 <meta charset="UTF-8">  
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>StargicInvestment</title> <link rel="preload" as="image" href="https://images.unsplash.com/photo-1639322537228-f710d846310a">  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">  <style>  
-.crypto-slider{  
-display:flex;  
-align-items:center;  
-gap:40px;  
-overflow:hidden;  
-white-space:nowrap;  
-background:#020617;  
-padding:10px 20px;  
-}  
-  
-.coin{  
-display:flex;  
-align-items:center;  
-gap:8px;  
-color:#00ffa6;  
-font-weight:500;  
-min-width:150px;  
-}  
-  
-.crypto-track{  
-display:flex;  
-animation:scroll 20s linear infinite;  
-}  
-  
-@keyframes scroll{  
-0%{transform:translateX(100%)}  
-100%{transform:translateX(-100%)}  
-  }  
-body{  
-margin:0;  
-font-family:Poppins;  
-background:#0b0f1a;  
-color:#00ff9d;  
-line-height:1.6;  
-word-wrap:break-word;  
-overflow-x:hidden;  
-}  
+
+    .menu{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.menu a{
+  text-decoration:none;
+  color:#00ff9d;
+  font-size:14px;
+}
+ 
   
 /* NAVBAR */  
   
@@ -134,21 +113,7 @@ height:3px;
 width:100%;
 background:#00c27a;
 margin-top:4px;
-}
-    
-.menu{  
-display:flex;  
-gap:18px;  
-align-items:center;  
-flex-wrap:wrap;  
-}  
-  
-.menu a{  
-text-decoration:none;  
-color:#00ff9d;  
-font-size:14px;  
-}  
-  
+} 
  .btn{
 background:none;
 color:#00ff9d;
@@ -167,60 +132,7 @@ color:#00ff9d;
 border:1px solid #00ff9d;  
 padding:5px;  
 }  
-  /* MENU BUTTON */
-.menu-btn{
-  display:none;
-  font-size:28px;
-  cursor:pointer;
-}
-
-/* MENU DEFAULT */
-.menu{
-  display:flex;
-  gap:20px;
-}
-
-/* MOBILE MENU */
-@media(max-width:768px){
-
-  .menu{
-    position:absolute;
-    top:70px;
-    right:20px;
-    width:220px;
-    background:#111827;
-    flex-direction:column;
-    padding:20px;
-    border-radius:12px;
-    box-shadow:0 15px 40px rgba(0,0,0,0.6);
-
-    /* 🔥 ANIMATION */
-    opacity:0;
-    transform:translateY(-20px);
-    pointer-events:none;
-    transition:0.3s ease;
-  }
-
-  .menu a{
-    padding:10px 0;
-    border-bottom:1px solid #1f2937;
-  }
-
-  .menu a:last-child{
-    border:none;
-  }
-
-  .menu.active{
-    opacity:1;
-    transform:translateY(0);
-    pointer-events:auto;
-  }
-
-  .menu-btn{
-    display:block;
-  }
-}
-  
+ 
 /* HERO */  
   
 .hero{
@@ -497,15 +409,6 @@ body {
   color:#021018;
 }
 
-/* ANIMATION KEYFRAME */
-@keyframes shine{
-  0%{
-    transform:translateX(-100%) rotate(25deg);
-  }
-  100%{
-    transform:translateX(100%) rotate(25deg);
-  }
-}
 /* 🔥 PREMIUM FOOTER */
 .footer {
   background:#0B0F1A;
