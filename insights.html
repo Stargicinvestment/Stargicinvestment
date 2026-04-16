@@ -1,169 +1,238 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Insights - StargicInvestment</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Insights - StargicInvestment</title><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"><style>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-body{
+/* RESET */
+*{
   margin:0;
-  font-family:Poppins;
-  background:#0b0f1a;
-  color:#fff;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  background:#0c0c0c;
+  color:#eaeaea;
+  font-family:Inter;
 }
 
 /* HERO */
 .hero{
-  height:300px;
-  background:
-  linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.7)),
-  url("https://images.unsplash.com/photo-1526304640581-d334cdbbf45e?auto=format&fit=crop&w=1400&q=80");
+  height:450px;
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
+  padding:20px;
+
+  background:
+  linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.95)),
+  url("https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=80");
+
+  background-size:cover;
+  background-position:center;
 }
 
 .hero h1{
-  font-size:40px;
+  font-family:"Playfair Display";
+  font-size:50px;
+  color:#f5f5f5;
+  letter-spacing:0.5px;
 }
 
 /* SECTION */
 .section{
   max-width:1100px;
   margin:auto;
-  padding:70px 20px;
+  padding:110px 20px;
 }
 
-/* GRID */
-.grid{
+/* BLOCK */
+.block{
   display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:30px;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+  align-items:center;
+  margin-bottom:120px;
 }
 
-/* CARD */
-.card{
-  background:#111827;
-  border-radius:15px;
-  overflow:hidden;
-  transition:0.4s;
-  box-shadow:0 15px 40px rgba(0,0,0,0.5);
+/* REVERSE */
+.block.reverse{
+  direction:rtl;
+}
+.block.reverse *{
+  direction:ltr;
 }
 
-  /* PAGE FADE OVERLAY */
-.page-transition{
-  position:fixed;
-  top:0;
-  left:0;
+/* IMAGE */
+.block img{
   width:100%;
-  height:100%;
-  background:#05070d;
-  z-index:9999;
-  opacity:1;
-  pointer-events:none;
-  transition:opacity 0.5s ease;
-}
-
-.page-transition.hide{
-  opacity:0;
-}
-
-.card img{
-  width:100%;
-  height:240px;
+  height:400px;
   object-fit:cover;
+  border-radius:6px;
+
+  filter:contrast(1.05) brightness(0.9);
 }
 
-.card-content{
-  padding:25px;
+/* TEXT */
+.block h2{
+  font-family:"Playfair Display";
+  font-size:32px;
+  color:#d6b25e;
+  margin-bottom:10px;
 }
 
-.card h3{
-  color:#00ff9d;
+.line{
+  width:70px;
+  height:2px;
+  background:#d6b25e;
+  margin:15px 0 25px;
 }
 
-.card p{
-  color:#9ca3af;
+.block p{
+  color:#b5b5b5;
+  line-height:1.9;
+  font-size:15px;
+}
+
+/* LIGHT SECTION */
+.light{
+  background:#f6f6f6;
+  color:#111;
+  padding:110px 20px;
+}
+
+.light h2{
+  font-family:"Playfair Display";
+  font-size:34px;
+  margin-bottom:15px;
+}
+
+.light p{
+  max-width:700px;
+  margin:auto;
+  color:#555;
   line-height:1.8;
 }
 
-/* TRUST BOX */
-.trust-box{
-  margin-top:50px;
-  padding:50px;
-  background:linear-gradient(135deg,#00ff9d10,#111827);
-  border-radius:15px;
+/* STATS */
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:70px;
+  margin-top:70px;
+  flex-wrap:wrap;
+}
+
+.stat{
   text-align:center;
 }
 
-.trust-box h2{
-  color:#00ff9d;
+.stat h3{
   font-size:30px;
+  color:#b8963f;
 }
 
-.trust-box p{
-  color:#9ca3af;
-  max-width:700px;
-  margin:auto;
+.stat span{
+  display:block;
+  font-size:13px;
+  color:#666;
+  margin-top:5px;
+}
+
+/* FINAL PREMIUM CARD */
+.final{
+  max-width:900px;
+  margin:120px auto;
+  padding:70px 40px;
+  background:#111;
+  border-radius:10px;
+  text-align:center;
+
+  box-shadow:0 40px 100px rgba(0,0,0,0.8);
+}
+
+.final h2{
+  font-family:"Playfair Display";
+  color:#d6b25e;
+  font-size:30px;
+  margin-bottom:15px;
+}
+
+.final p{
+  color:#aaa;
   line-height:1.8;
 }
-</style>
-</head>
 
-<body>
+/* MOBILE */
+@media(max-width:768px){
+  .block{
+    grid-template-columns:1fr;
+    gap:40px;
+  }
 
-<!-- HERO -->
-<div class="hero">
-  <h1>Trusted Experience & Global Excellence</h1>
+  .hero h1{
+    font-size:32px;
+  }
+
+  .block img{
+    height:260px;
+  }
+}
+
+</style></head><body><!-- HERO --><div class="hero">
+  <h1>Refined Investment Intelligence</h1>
+</div><div class="section"><!-- BLOCK 1 --><div class="block">
+  <img src="https://images.unsplash.com/photo-1518182170546-07661fd94144?auto=format&fit=crop&w=1000&q=80">
+  <div>
+    <h2>Structured Wealth Strategy</h2>
+    <div class="line"></div>
+    <p>
+      Our approach is built on disciplined portfolio structuring, combining capital preservation with
+      long-term growth. Every decision is guided by macroeconomic insight and strategic asset allocation.
+    </p>
+  </div>
+</div><!-- BLOCK 2 --><div class="block reverse">
+  <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1000&q=80">
+  <div>
+    <h2>Global Financial Reach</h2>
+    <div class="line"></div>
+    <p>
+      We operate across international markets, giving investors access to diversified opportunities
+      within a secure and structured financial environment.
+    </p>
+  </div>
+</div><!-- BLOCK 3 --><div class="block">
+  <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1000&q=80">
+  <div>
+    <h2>Institutional-Grade Analysis</h2>
+    <div class="line"></div>
+    <p>
+      Our analytical framework integrates real-time data, economic indicators, and advanced forecasting
+      to identify opportunities aligned with long-term market movements.
+    </p>
+  </div>
+</div></div><!-- LIGHT TRUST SECTION --><div class="light">  <h2 style="text-align:center;">Trusted by a Global Client Network</h2>  <p style="text-align:center;">
+    Our reputation is built on stability, discretion, and consistent performance across global markets.
+  </p>  <div class="stats">
+    <div class="stat">
+      <h3>3000+</h3>
+      <span>Investors</span>
+    </div><div class="stat">
+  <h3>12+</h3>
+  <span>Markets</span>
 </div>
 
-<div class="section">
-
-<div class="grid">
-
-<!-- IMAGE 1 -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=800&q=80">
-<div class="card-content">
-<h3>Proven Track Record & History</h3>
-<p>
-StargicInvestment has built a solid reputation through years of consistent performance in global financial markets. 
-Our history reflects a disciplined approach to investment, combining market intelligence, economic research, 
-and advanced analytics to deliver reliable and sustainable growth for our clients worldwide.
-</p>
-</div>
+<div class="stat">
+  <h3>24/7</h3>
+  <span>Support</span>
 </div>
 
-<!-- IMAGE 2 -->
-<div class="card">
-<img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=800&q=80">
-<div class="card-content">
-<h3>United Kingdom Based Operations</h3>
-<p>
-Our operations are strategically aligned with international financial standards, with a strong presence in the 
-United Kingdom. This positioning allows us to operate within a structured financial environment while accessing 
-global markets, ensuring transparency, security, and investor confidence at every level.
-</p>
-</div>
-</div>
-
-</div>
-
-<!-- TRUST SECTION -->
-<div class="trust-box">
-<h2>Trusted by Over 3000+ Investors</h2>
-<p>
-We are proud to serve a growing community of more than 3000 investors globally who rely on our expertise, 
-transparency, and performance. Our commitment to excellence, risk management, and long-term growth continues 
-to make us a trusted partner in the world of modern investing.
-</p>
-</div>
-
-</div>
-
-</body>
-  </html>
+  </div></div><!-- FINAL --><div class="final">
+  <h2>Precision. Discipline. Performance.</h2>
+  <p>
+    We operate with a long-term vision, focusing on stability, controlled growth, and refined execution
+    across all investment strategies.
+  </p>
+</div></body>
+</html>
