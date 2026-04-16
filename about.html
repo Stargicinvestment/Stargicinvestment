@@ -1,305 +1,206 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>About Us - StargicInvestment</title>
+<!DOCTYPE html>  <html lang="en">  
+<head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  
+<title>About - StargicInvestment</title>  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">  <style>  
+  
+/* RESET */  
+*{  
+  margin:0;  
+  padding:0;  
+  box-sizing:border-box;  
+}  
+  
+body{  
+  font-family:Inter;  
+  background:#0a0a0a;  
+  color:#eaeaea;  
+}  
+  
+/* HERO */  
+.hero{  
+  height:420px;  
+  display:flex;  
+  align-items:center;  
+  justify-content:center;  
+  text-align:center;  
+  padding:20px;  
+  
+  background:  
+  linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.95)),  
+  url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80");  
+  
+  background-size:cover;  
+  background-position:center;  
+}  
+  
+.hero h1{  
+  font-family:"Playfair Display";  
+  font-size:48px;  
+  font-weight:600;  
+  color:#f5f5f5;  
+}  
+  
+/* SECTION */  
+.section{  
+  max-width:1000px;  
+  margin:auto;  
+  padding:100px 20px;  
+}  
+  
+/* BLOCK */  
+.block{  
+  display:grid;  
+  grid-template-columns:1fr 1fr;  
+  gap:60px;  
+  align-items:center;  
+  margin-bottom:100px;  
+}  
+  
+.block.reverse{  
+  direction:rtl;  
+}  
+.block.reverse *{  
+  direction:ltr;  
+}  
+  
+/* IMAGE */  
+.block img{  
+  width:100%;  
+  height:360px;  
+  object-fit:cover;  
+  border-radius:8px;  
+}  
+  
+/* TEXT */  
+.block h2{  
+  font-family:"Playfair Display";  
+  font-size:30px;  
+  margin-bottom:15px;  
+  color:#d4af37;  
+}  
+  
+.divider{  
+  width:60px;  
+  height:2px;  
+  background:#d4af37;  
+  margin:15px 0 20px;  
+}  
+  
+.block p{  
+  color:#b0b0b0;  
+  line-height:1.9;  
+  font-size:15px;  
+}  
+  
+/* TRUST */  
+.trust{  
+  background:#f8f8f8;  
+  color:#111;  
+  text-align:center;  
+  padding:100px 20px;  
+}  
+  
+.trust h2{  
+  font-family:"Playfair Display";  
+  font-size:36px;  
+  margin-bottom:15px;  
+}  
+  
+.trust p{  
+  max-width:650px;  
+  margin:auto;  
+  color:#555;  
+  line-height:1.8;  
+}  
+  
+/* STATS */  
+.stats{  
+  margin-top:60px;  
+  display:flex;  
+  justify-content:center;  
+  gap:60px;  
+  flex-wrap:wrap;  
+}  
+  
+.stat h3{  
+  font-size:28px;  
+  color:#d4af37;  
+}  
+  
+.stat p{  
+  font-size:13px;  
+  color:#666;  
+}  
+  
+/* MOBILE */  
+@media(max-width:768px){  
+  .block{  
+    grid-template-columns:1fr;  
+    gap:30px;  
+  }  
+  
+  .hero h1{  
+    font-size:32px;  
+  }  
+}  
+  
+</style>  </head>  <body>  <!-- HERO -->  <div class="hero">  
+  <h1>About Our Firm</h1>  
+</div>  <div class="section">  <!-- BLOCK 1 -->  <div class="block">  
+  <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80">  
+  <div>  
+    <h2>Institutional Foundation</h2>  
+    <div class="divider"></div>  
+    <p>  
+      StargicInvestment was established with a clear objective — to provide structured and disciplined investment  
+      strategies comparable to institutional standards. Our foundation is built on long-term capital preservation,  
+      strategic allocation, and a commitment to financial integrity. We prioritize stability over speculation,  
+      ensuring that every investment decision aligns with sustainable growth principles.  
+    </p>  
+  </div>  
+</div>  <!-- BLOCK 2 -->  <div class="block reverse">  
+  <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80">  
+  <div>  
+    <h2>Global Presence</h2>  
+    <div class="divider"></div>  
+    <p>  
+      Operating across multiple international markets, we provide our clients with access to diverse opportunities  
+      in equities, digital assets, commodities, and real estate. Our global infrastructure allows us to navigate  
+      economic cycles efficiently while maintaining a strong focus on risk management and capital protection.  
+    </p>  
+  </div>  
+</div>  <!-- BLOCK 3 -->  <div class="block">  
+  <img src="https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&w=900&q=80">  
+  <div>  
+    <h2>Analytical Discipline</h2>  
+    <div class="divider"></div>  
+    <p>  
+      Every strategy is supported by detailed analysis, including macroeconomic trends, market data, and  
+      performance modeling. Our disciplined approach ensures that we identify high-quality opportunities  
+      while maintaining a structured framework for managing volatility and uncertainty in global markets.  
+    </p>  
+  </div>  
+</div>  </div>  <!-- TRUST -->  <div class="trust">  
+  <h2>Built on Trust and Long-Term Vision</h2>  
+  <p>  
+    Our firm serves a growing network of investors who value discretion, reliability, and performance.  
+    Through transparency and consistent execution, we continue to build long-term relationships based  
+    on trust and measurable financial outcomes.  
+  </p>    <div class="stats">  
+    <div class="stat">  
+      <h3>3000+</h3>  
+      <p>Investors</p>  
+    </div>  <div class="stat">  
+  <h3>12+</h3>  
+  <p>Markets Covered</p>  
+</div>  
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-
-<style>
-
-/* ===== PAGE FADE ===== */
-body{
-  margin:0;
-  font-family:Poppins;
-  background:#0b0f1a;
-  color:#fff;
-  opacity:0;
-  transition:opacity 0.5s ease;
-}
-
-body.loaded{
-  opacity:1;
-}
-
-/* ===== NAVBAR ===== */
-.navbar{
-  position:fixed;
-  top:0;
-  width:100%;
-  z-index:999;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:15px 20px;
-  background:rgba(11,15,26,0.9);
-  backdrop-filter:blur(10px);
-  border-bottom:1px solid #1f2937;
-}
-
-.logo{
-  font-weight:700;
-  color:#00ff9d;
-  font-size:18px;
-}
-
-.nav-links{
-  display:flex;
-  gap:20px;
-}
-
-.nav-links a{
-  text-decoration:none;
-  color:#9ca3af;
-  font-size:14px;
-  transition:0.3s;
-}
-
-.nav-links a:hover,
-.nav-links a.active{
-  color:#00ff9d;
-}
-
-/* MOBILE MENU */
-.menu-btn{
-  display:none;
-  font-size:24px;
-  cursor:pointer;
-}
-
-@media(max-width:768px){
-  .nav-links{
-    position:absolute;
-    top:60px;
-    right:20px;
-    background:#111827;
-    flex-direction:column;
-    padding:20px;
-    border-radius:10px;
-    display:none;
-  }
-
-  .nav-links.active{
-    display:flex;
-  }
-
-  .menu-btn{
-    display:block;
-  }
-}
-
-/* PUSH CONTENT BELOW NAVBAR */
-.spacer{
-  height:70px;
-}
-
-/* HERO */
-.hero{
-  height:320px;
-  background:
-    linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.7)),
-    url("https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80");
-  background-size:cover;
-  background-position:center;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-}
-
-.hero h1{
-  font-size:38px;
-  font-weight:700;
-}
-
-/* SECTION */
-.section{
-  max-width:1100px;
-  margin:auto;
-  padding:60px 20px;
-}
-
-/* GRID */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:30px;
-}
-
-/* CARD */
-.card{
-  background:rgba(17,24,39,0.8);
-  backdrop-filter:blur(10px);
-  border-radius:15px;
-  overflow:hidden;
-  transition:0.4s;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
-}
-
-.card:hover{
-  transform:translateY(-10px) scale(1.02);
-  box-shadow:0 20px 50px rgba(0,255,157,0.15);
-}
-
-.card img{
-  width:100%;
-  height:220px;
-  object-fit:cover;
-}
-
-/* CONTENT */
-.card-content{
-  padding:25px;
-}
-
-.card h3{
-  color:#00ff9d;
-}
-
-.card p{
-  color:#9ca3af;
-  font-size:14px;
-  line-height:1.7;
-}
-
-/* CTA */
-.cta{
-  text-align:center;
-  margin-top:60px;
-}
-
-.btn{
-  background:#00ff9d;
-  color:#021018;
-  padding:12px 30px;
-  border-radius:8px;
-  text-decoration:none;
-  font-weight:600;
-  transition:0.3s;
-}
-
-.btn:hover{
-  transform:translateY(-2px);
-  box-shadow:0 10px 25px rgba(0,255,157,0.3);
-}
-
-</style>
-</head>
-
-<body>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-  <div class="logo">StargicInvestment</div>
-
-  <div class="nav-links" id="navLinks">
-    <a href="index.html">Home</a>
-    <a href="about.html" class="active">About</a>
-    <a href="careers.html">Careers</a>
-    <a href="help.html">Help</a>
-    <a href="contact.html">Contact</a>
-    <a href="login.html">Login</a>
-  </div>
-
-  <div class="menu-btn" onclick="toggleMenu()">☰</div>
-</nav>
-
-<div class="spacer"></div>
-
-<!-- HERO -->
-<div class="hero">
-  <h1>About StargicInvestment</h1>
+<div class="stat">  
+  <h3>24/7</h3>  
+  <p>Client Support</p>  
 </div>
 
-<!-- CONTENT -->
-<div class="section">
-
-  <div class="grid">
-
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?auto=format&fit=crop&w=800&q=80" loading="lazy">
-      <div class="card-content">
-        <h3>Who We Are</h3>
-        <p>We are a global investment platform delivering advanced strategies across crypto, stocks, real estate and energy sectors.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80" loading="lazy">
-      <div class="card-content">
-        <h3>Our Mission</h3>
-        <p>To provide secure and transparent investment opportunities with consistent growth and financial stability.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=800&q=80" loading="lazy">
-      <div class="card-content">
-        <h3>Our Vision</h3>
-        <p>To become a global leader in digital finance and redefine the future of investment platforms.</p>
-      </div>
-    </div>
-
-    <div class="card">
-      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80" loading="lazy">
-      <div class="card-content">
-        <h3>Our Strategy</h3>
-        <p>We balance risk and profit using data-driven insights and global market analysis.</p>
-      </div>
-    </div>
-
-  </div>
-
-  <div class="cta">
-    <h2>Ready to Start Investing?</h2>
-    <br>
-    <a href="register.html" class="btn">Create Account</a>
-  </div>
-
-</div>
-
-<!-- JS -->
-<script>
-/* MENU */
-function toggleMenu(){
-  document.getElementById("navLinks").classList.toggle("active");
-}
-
-/* PAGE FADE IN */
-window.addEventListener("load", ()=>{
-  document.body.classList.add("loaded");
-});
-
-/* PAGE FADE OUT */
-document.querySelectorAll("a").forEach(link=>{
-  link.addEventListener("click", function(e){
-    const href = this.getAttribute("href");
-    if(href.startsWith("#") || this.target === "_blank") return;
-
-    e.preventDefault();
-    document.body.classList.remove("loaded");
-
-    setTimeout(()=>{
-      window.location.href = href;
-    }, 300);
-  });
-});
-</script>
-
-<!-- SMARTSUPP -->
-<script>
-var _smartsupp = _smartsupp || {};
-_smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
-window.smartsupp||(function(d) {
-  var s,c,o=smartsupp=function(){ o._.push(arguments)};o._=[];
-  s=d.getElementsByTagName('script')[0];
-  c=d.createElement('script');
-  c.async=true;
-  c.src='https://www.smartsuppchat.com/loader.js?';
-  s.parentNode.insertBefore(c,s);
-})(document);
-</script>
-
-</body>
-</html>
+  </div>  
+</div>  </body>  
+</html>  
