@@ -169,44 +169,32 @@ color:#9ca3af;
   
 /* TICKER */  
   
-.ticker{  
-background:#111827;  
-padding:12px 0;  
-overflow:hidden;  
-}  
-  
-.ticker-track{  
-display:flex;  
-gap:40px;  
-animation:scroll 30s linear infinite;  
-white-space:nowrap;  
-}  
-  
-.coin{  
-display:flex;  
-align-items:center;  
-gap:8px;  
-}  
-  
-.coin img{  
-width:24px;  
-filter:brightness(1.3);  
-}  
+.crypto-slider{
+  overflow:hidden;
+  background:#020617;
+  padding:10px 0;
+}
 
-  .crypto-track{
+.crypto-track{
   display:flex;
+  gap:40px;
   width:max-content;
   animation:scroll 25s linear infinite;
 }
 
+.coin{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:#00ff9d;
+  font-size:14px;
+  min-width:140px;
+}
+
 @keyframes scroll{
-  0%{
-    transform: translateX(0);
-  }
-  100%{
-    transform: translateX(-50%);
-  }
-  }
+  0%{transform:translateX(0);}
+  100%{transform:translateX(-50%);}
+}
   
 /* SECTIONS */  
   
