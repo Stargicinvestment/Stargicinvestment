@@ -1,182 +1,584 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>StargicInvestment</title>
-
+<!DOCTYPE html>  <html lang="en">  
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+<head>  
   <style>
-*{
+    *{
+  box-sizing: border-box;
+}
+    html {
+  scroll-behavior: smooth;
+}
+
+/* SMOOTH RENDER */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html, body{
   margin:0;
   padding:0;
-  box-sizing:border-box;
-  -webkit-font-smoothing: antialiased;
+  overflow-x:hidden; /* 🔥 THIS STOPS SHIFTING */
+}
+    #chatButton {  
+      position: fixed;  
+      bottom: 20px;  
+      right: 20px;  
+      background: #00ffcc;  
+      padding: 15px;  
+      border-radius: 50%;  
+      cursor: pointer;  
+      z-index: 9999;  
+    }  #chatBox {  
+  position: fixed;  
+  bottom: 80px;  
+  right: 20px;  
+  width: 300px;  
+  background: #111;  
+  display: none;  
+  flex-direction: column;  
+  border-radius: 10px;  
+  z-index: 9999;  
 }
 
-body{
-  font-family:'Poppins',sans-serif;
-  background:#0b0f1a;
-  color:#e5e7eb;
-  line-height:1.7;
-  overflow-x:hidden;
+  </style>  
+</head>  
+<meta charset="UTF-8">  
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>StargicInvestment</title> <link rel="preload" as="image" href="https://images.unsplash.com/photo-1639322537228-f710d846310a">  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">  <style>  
+.crypto-slider{  
+display:flex;  
+align-items:center;  
+gap:40px;  
+overflow:hidden;  
+white-space:nowrap;  
+background:#020617;  
+padding:10px 20px;  
+}  
+  
+.coin{  
+display:flex;  
+align-items:center;  
+gap:8px;  
+color:#00ffa6;  
+font-weight:500;  
+min-width:150px;  
+}  
+  
+.crypto-track{  
+display:flex;  
+animation:scroll 20s linear infinite;  
+}  
+  
+@keyframes scroll{  
+0%{transform:translateX(100%)}  
+100%{transform:translateX(-100%)}  
+  }  
+body{  
+margin:0;  
+font-family:Poppins;  
+background:#0b0f1a;  
+color:#00ff9d;  
+line-height:1.6;  
+word-wrap:break-word;  
+overflow-x:hidden;  
+}  
+  
+/* NAVBAR */  
+  
+.nav-buttons a{  
+background:#00ffa6;  
+color:#021018;  
+padding:10px 25px;  
+border-radius:6px;  
+font-weight:600;  
+text-decoration:none;  
+}  
+  
+/* =========================
+   PREMIUM STAR LOGO
+========================= */
+
+.logo-wrap{
+display:flex;
+align-items:center;
+gap:12px;
 }
 
-/* NAV */
+/* ⭐ STAR ICON */
+.logo-star{
+width:30px;
+height:30px;
+background:#00c27a;
+clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+}
+
+/* TEXT */
+.logo-text{
+font-size:22px;
+font-weight:800;
+letter-spacing:0.5px;
+color:#00c27a;
+}
+
+/* UNDERLINE */
+.logo-line{
+height:3px;
+width:100%;
+background:#00c27a;
+margin-top:4px;
+}
+    
+.menu{  
+display:flex;  
+gap:18px;  
+align-items:center;  
+flex-wrap:wrap;  
+}  
+  
+.menu a{  
+text-decoration:none;  
+color:#00ff9d;  
+font-size:14px;  
+}  
+  
+ .btn{
+background:none;
+color:#00ff9d;
+padding:0;
+border:none;
+font-weight:500;
+cursor:pointer;
+text-decoration:none;
+}
+  
+/* LANGUAGE */  
+  
+select{  
+background:#111827;  
+color:#00ff9d;  
+border:1px solid #00ff9d;  
+padding:5px;  
+}  
+  /* MENU BUTTON */
+.menu-btn{
+  display:none;
+  font-size:28px;
+  cursor:pointer;
+}
+
+/* MENU DEFAULT */
 .menu{
   display:flex;
   gap:20px;
-  align-items:center;
 }
 
-.menu a{
-  text-decoration:none;
-  color:#00ff9d;
-  font-size:14px;
-}
+/* MOBILE MENU */
+@media(max-width:768px){
 
-/* LOGO */
-.logo-wrap{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
+  .menu{
+    position:absolute;
+    top:70px;
+    right:20px;
+    width:220px;
+    background:#111827;
+    flex-direction:column;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 15px 40px rgba(0,0,0,0.6);
 
-.logo-star{
-  width:30px;
-  height:30px;
-  background:#00c27a;
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
-}
+    /* 🔥 ANIMATION */
+    opacity:0;
+    transform:translateY(-20px);
+    pointer-events:none;
+    transition:0.3s ease;
+  }
 
-.logo-text{
-  font-size:22px;
-  font-weight:800;
-  color:#00c27a;
-}
+  .menu a{
+    padding:10px 0;
+    border-bottom:1px solid #1f2937;
+  }
 
-.logo-line{
-  height:3px;
-  width:100%;
-  background:#00c27a;
-  margin-top:4px;
-}
+  .menu a:last-child{
+    border:none;
+  }
 
-/* HERO */
+  .menu.active{
+    opacity:1;
+    transform:translateY(0);
+    pointer-events:auto;
+  }
+
+  .menu-btn{
+    display:block;
+  }
+}
+  
+/* HERO */  
+  
 .hero{
   height:420px;
-  background:url("https://images.unsplash.com/photo-1639322537228-f710d846310a") center/cover no-repeat;
+
+  /* 🔥 PREVENT BLANK FLASH */
+  background-color:#0b0f1a;
+
+  /* IMAGE */
+  background-image:url("https://images.unsplash.com/photo-1639322537228-f710d846310a");
+
+  /* PERFECT FIT */
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+
   display:flex;
   align-items:center;
   justify-content:center;
   text-align:center;
+  padding:20px;
+  }  
+  
+.hero h1{  
+font-size:32px;  
+margin-bottom:10px;  
+}  
+  
+.hero p{  
+max-width:600px;  
+margin:auto;  
+color:#9ca3af;  
+}  
+  
+/* TICKER */  
+  
+.ticker{  
+background:#111827;  
+padding:12px 0;  
+overflow:hidden;  
+}  
+  
+.ticker-track{  
+display:flex;  
+gap:40px;  
+animation:scroll 30s linear infinite;  
+white-space:nowrap;  
+}  
+  
+.coin{  
+display:flex;  
+align-items:center;  
+gap:8px;  
+}  
+  
+.coin img{  
+width:24px;  
+filter:brightness(1.3);  
+}  
+  
+@keyframes scroll{  
+0%{transform:translateX(0)}  
+100%{transform:translateX(-50%)}  
+}  
+  
+/* SECTIONS */  
+  
+section{  
+padding:70px 20px;  
+max-width:1100px;  
+margin:auto;  
+}  
+  
+.card{  
+background:#111827;  
+padding:30px;  
+border-radius:10px;  
+box-shadow:0 0 20px rgba(0,0,0,0.5);  
+}  
+  
+/* MARKET GRID */  
+  
+.market-grid{  
+display:grid;  
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));  
+gap:25px;  
+margin-top:30px;  
+}  
+  
+.market-card{  
+background:#111827;  
+padding:20px;  
+border-radius:10px;  
+text-align:center;  
+}
+  img {
+  max-width:100%;
+  height:auto;
+  display:block;
 }
 
-.hero h1{
-  font-size:32px;
+/* PREVENT LAYOUT SHIFT */
+.market-card {
+  min-height: 320px;
+  }
+  
+.market-card img {
+  width: 100%;
+  height: auto;          /* 🔥 shows full image */
+  max-height: 220px;     /* optional limit */
+  object-fit: contain;   /* 🔥 no cutting */
+  border-radius: 15px;
+  margin-bottom: 15px;
+  background: #0b0f1a;   /* prevents white flash */
+}
+  .market-card {
+  transition: 0.3s;
 }
 
-.hero p{
-  color:#9ca3af;
+.market-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(0,255,157,0.15);
 }
 
-/* BUTTONS */
+.investor-heading {
+  color: #00ff88;
+  font-size: 32px;
+  font-weight: 700;
+  text-align: center;
+  letter-spacing: -0.5px;
+  line-height: 1.2;
+  margin: 40px 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+  
+
+/* FOOTER */  
+  
+footer{  
+text-align:center;  
+padding:40px;  
+background:#111827;  
+margin-top:40px;  
+}  
+ #google_translate_element{
+  margin-left:10px;
+}
+
+.goog-te-combo{
+  background:#111827;
+  color:#00ff9d;
+  border:1px solid #00ff9d;
+  padding:5px;
+}
+  img {
+  max-width: 100%;
+  height: auto;
+}
+
+.market-card {
+  will-change: transform;
+  transition: 0.3s ease;
+}
+/* 🔥 HIDE GOOGLE TOP BAR COMPLETELY */
+.goog-te-banner-frame.skiptranslate {
+  display: none !important;
+}
+
+iframe.goog-te-banner-frame {
+  display: none !important;
+}
+
+body {
+  top: 0px !important;
+}
+
+/* 🔥 EXTRA STRONG FIX */
+.goog-te-gadget-icon {
+  display: none !important;
+}
+
+.goog-te-banner-frame {
+  display: none !important;
+}
+
+.skiptranslate iframe {
+  display: none !important;
+}
+  /* HERO CENTER */
+.hero-content{
+  text-align:center;
+  max-width:600px;
+  margin:auto;
+}
+
+/* BUTTON GROUP */
 .hero-buttons{
-  margin-top:20px;
+  margin-top:25px;
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  flex-wrap:wrap;
 }
 
+/* 🔥 PRIMARY GLOW BUTTON */
 .btn-primary{
+  position:relative;
   background:#00ff9d;
   color:#021018;
-  padding:14px 30px;
+  padding:12px 28px;
   border-radius:8px;
+  font-weight:600;
   text-decoration:none;
+  overflow:hidden;
+  transition:0.3s;
+  box-shadow:0 0 10px rgba(0,255,157,0.4);
 }
 
+/* SHINE ANIMATION */
+.btn-primary::before{
+  content:"";
+  position:absolute;
+  top:-50%;
+  left:-50%;
+  width:200%;
+  height:200%;
+  background:linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.5),
+    transparent
+  );
+  transform:rotate(25deg);
+  animation:shine 3s infinite;
+}
+
+/* HOVER EFFECT */
+.btn-primary:hover{
+  transform:translateY(-2px);
+  box-shadow:
+    0 0 10px #00ff9d,
+    0 0 20px #00ff9d,
+    0 0 40px #00ff9d;
+}
+
+/* OUTLINE BUTTON */
 .btn-outline{
   border:2px solid #00ff9d;
   color:#00ff9d;
-  padding:14px 30px;
+  padding:10px 28px;
   border-radius:8px;
   text-decoration:none;
-}
-
-/* CRYPTO SLIDER */
-.crypto-slider{
-  overflow:hidden;
-  background:#020617;
-}
-
-.crypto-track{
-  display:flex;
-  gap:40px;
-  animation:scroll 25s linear infinite;
-}
-
-@keyframes scroll{
-  0%{transform:translateX(0);}
-  100%{transform:translateX(-50%);}
-}
-
-/* GRID */
-.market-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
-  gap:30px;
-}
-
-.market-card{
-  background:#111827;
-  padding:30px;
-  border-radius:16px;
-  text-align:center;
+  font-weight:600;
   transition:0.3s;
 }
 
-.market-card:hover{
-  transform:translateY(-5px);
+.btn-outline:hover{
+  background:#00ff9d;
+  color:#021018;
 }
 
-/* FAQ */
-.faq-item{
-  background:#111827;
-  border-radius:12px;
-  margin-bottom:10px;
+/* ANIMATION KEYFRAME */
+@keyframes shine{
+  0%{
+    transform:translateX(-100%) rotate(25deg);
+  }
+  100%{
+    transform:translateX(100%) rotate(25deg);
+  }
+}
+/* 🔥 PREMIUM FOOTER */
+.footer {
+  background:#0B0F1A;
+  border-top:1px solid #1F2937;
+  padding:60px 20px;
+  color:#9CA3AF;
 }
 
-.faq-question{
-  padding:20px;
-  width:100%;
-  background:none;
-  border:none;
+.footer-container {
+  max-width:1100px;
+  margin:auto;
+}
+
+.footer-top {
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  gap:40px;
+  margin-bottom:40px;
+}
+
+.footer h2, .footer h4 {
   color:#fff;
+}
+
+.footer p {
+  font-size:13px;
+  color:#6B7280;
+  transition:0.3s;
+}
+
+.footer p:hover {
+  color:#00ff9d;
   cursor:pointer;
 }
 
-.faq-answer{
-  max-height:0;
-  overflow:hidden;
+.footer-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:30px;
+  margin-bottom:30px;
+}
+
+.footer-bottom {
+  border-top:1px solid #1F2937;
+  padding-top:15px;
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  font-size:12px;
+}
+
+.footer-social {
+  display:flex;
+  gap:12px;
+}
+
+.footer-social span {
+  background:#111827;
+  padding:8px 10px;
+  border-radius:6px;
   transition:0.3s;
 }
 
-.faq-item.active .faq-answer{
-  max-height:200px;
+.footer-social span:hover {
+  background:#00ff9d;
+  color:#000;
+}
+  .footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 40px;
+  margin-top: 40px;
 }
 
-/* FOOTER */
-.footer{
-  background:#0B0F1A;
-  padding:40px;
+.footer-column h4 {
+  color: #ffffff;
+  margin-bottom: 15px;
+  font-size: 16px;
 }
 
-.footer-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:20px;
-    }
+.footer-column a {
+  display: block;
+  text-decoration: none;
+  color: #9ca3af;
+  margin-bottom: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+
+/* 🔥 HOVER EFFECT */
+.footer-column a:hover {
+  color: #00ff9d;
+  transform: translateX(5px);
+  }
+  
 </style>  </head>  <body>  <nav>
   <div class="logo">
   <div class="logo-wrap">
@@ -219,76 +621,42 @@ body{
 
   </div>
 </div> 
-</p>  </div>  </div>
-  <div class="crypto-slider">
-  <div class="crypto-track">
-
-    <!-- 🔹 FIRST SET -->
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
-      <span class="btc">BTC loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
-      <span class="eth">ETH loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
-      <span class="usdt">USDT loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png" width="20">
-      <span class="xrp">XRP loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
-      <span class="bnb">BNB loading...</span>
-    </div>
-
-    <!-- 🔹 SECOND SET (DUPLICATE) -->
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">
-      <span class="btc">BTC loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">
-      <span class="eth">ETH loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">
-      <span class="usdt">USDT loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png" width="20">
-      <span class="xrp">XRP loading...</span>
-    </div>
-
-    <div class="coin">
-      <img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">
-      <span class="bnb">BNB loading...</span>
-    </div>
-
-  </div>
-  </div>
-
- <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>  
+</p>  </div>  </div>  <!-- CRYPTO TICKER -->  <div class="crypto-slider">  <div class="crypto-track">  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
+BTC $71,104  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">  
+ETH $2,182  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">  
+USDT $1  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">  
+BNB $590  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/sol.png" width="20">  
+SOL $180  
+</div>  <!-- duplicated for infinite scroll -->  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png" width="20">  
+BTC $71,104  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png" width="20">  
+ETH $2,182  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png" width="20">  
+USDT $1  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/bnb.png" width="20">  
+BNB $590  
+</div>  <div class="coin">  
+<img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/sol.png" width="20">  
+SOL $180  
+</div>  </div>  
+</div>  <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>  
 StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.  
 </p>  <p>  
 Our financial analysts study global economic trends including cryptocurrency adoption, stock market expansion and commodity demand in sectors such as oil and gas. These insights allow us to position investment portfolios in high-growth opportunities while maintaining disciplined risk management.  
-</p> 
-  <div class="about-cta">
-  <p class="read-more-text">Want to learn more about our company and vision?</p>
-  <a href="about.html" class="read-more-btn">Read More →</a>
-  </div>
-
-</div>  </section>  <!-- MARKETS -->  <section id="markets">  <h2>Global Investment Markets</h2>  <div class="market-grid">  <div class="market-card">  <img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476">  <h3>Cryptocurrency Trading</h3>  <p>  
+</p>  </div>  </section>  <!-- MARKETS -->  <section id="markets">  <h2>Global Investment Markets</h2>  <div class="market-grid">  <div class="market-card">  <img src="https://images.unsplash.com/photo-1640161704729-cbe966a08476">  <h3>Cryptocurrency Trading</h3>  <p>  
 Our platform analyzes major digital assets including Bitcoin and Ethereum to identify profitable market opportunities.  
 </p>  </div>  <div class="market-card">  <img src="https://images.unsplash.com/photo-1518770660439-4636190af475">  <h3>Stock Market Analysis</h3>  <p>  
 Major companies such as Apple, Tesla and Microsoft continue to dominate global markets and offer strong investment potential.  
@@ -301,89 +669,37 @@ Real estate remains one of the most reliable long-term investments helping inves
     Oil and gas projects continue to generate strong global demand and support diversified investment portfolios.  
   </p>  
 </div>
- <!-- WHY CHOOSE -->
-<section id="reviews">
-
-  <h2 class="investor-heading">Why Choose StargicInvestment</h2>
+</p>  </div>  </div>  </section>  <!-- REVIEWS -->  <section id="reviews">  
+<section id="why">
+  <h2>Why Choose StargicInvestment</h2>
 
   <div class="market-grid">
 
     <div class="market-card">
-      <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80">
-      <h3>Secure Platform</h3>
-      <p>Advanced security systems protect your funds and personal data at all times.</p>
+      <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80" <img src="..." loading="lazy" decoding="async">
+      <h3>Energy Sector</h3>
+      <p>
+        Our platform uses advanced security systems to protect your funds and personal data at all times.
+      </p>
     </div>
 
     <div class="market-card">
-      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80">
+      <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" <img src="..." loading="lazy" decoding="async">
       <h3>Fast Withdrawals</h3>
-      <p>Withdraw your earnings quickly and securely anytime.</p>
+      <p>
+        Withdraw your earnings quickly and easily with our reliable payment system.
+      </p>
     </div>
 
     <div class="market-card">
-      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80">
+      <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216">
       <h3>24/7 Support</h3>
-      <p>Our team is always available to assist you through live chat.</p>
+      <p>
+        Our support team is always available to help you anytime through live chat.
+      </p>
     </div>
-</div>
-</section>
-
-    <section class="faq-section">
-
-  <h2 class="faq-title">Frequently Asked Questions</h2>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      How do I create an account?
-      <span class="icon">+</span>
-    </button>
-    <div class="faq-answer">
-      Creating an account is simple and secure. Click on “Create Account”, fill in your details, and verify your email to start investing immediately.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      How long do withdrawals take?
-      <span class="icon">+</span>
-    </button>
-    <div class="faq-answer">
-      Withdrawals are processed quickly, usually within a few hours. In rare cases, it may take up to 24 hours depending on network confirmations.
-    </div>
-  </div>
-
-  <div class="faq-item">
-    <button class="faq-question">
-      Is my investment secure?
-      <span class="icon">+</span>
-    </button>
-    <div class="faq-answer">
-      Yes. We use advanced encryption, secure servers, and multi-layer protection to keep your funds and personal data safe.
-    </div>
-  </div>
-    </section>
-
-<section class="trust-section">
-  <div class="trust-card">
-
-    <h2>
-      TRUST,<br>
-      EXPERIENCE AND<br>
-      EXPERTISE
-    </h2>
-
-    <p>
-      We are an international financial company engaged in high-level investment activities across
-      Forex, Oil and Gas, Cryptocurrency, Real Estate and Gold markets.
-      Our global experience and strategic expertise allow us to deliver stable and long-term results.
-    </p>
-
-    <a href="insights.html" class="trust-btn">More Insights →</a>
 
   </div>
-</section>
-
-    
 </section>
   <section id="how">
   <h2>How It Works</h2>
@@ -391,72 +707,73 @@ Real estate remains one of the most reliable long-term investments helping inves
   <div class="market-grid">
 
     <div class="market-card">
-      <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=800&q=80" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=800&q=80" <img src="..." loading="lazy" decoding="async">
       <h3>Create Account</h3>
       <p>Sign up and verify your account in just a few minutes.</p>
     </div>
 
     <div class="market-card">
-      <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&w=800&q=80" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&w=800&q=80" <img src="..." loading="lazy" decoding="async">
       <h3>Make Deposit</h3>
       <p>Choose a plan and invest securely using crypto or other options.</p>
     </div>
 
     <div class="market-card">
-      <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" loading="lazy">
+      <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" <img src="..." loading="lazy" decoding="async">
       <h3>Earn Profit</h3>
       <p>Watch your investment grow and withdraw profits anytime.</p>
     </div>
-  </section>
 
-          <script>
-
-// LOGIN / REGISTER POPUP
+          <script>  
+  
 function openLogin(){  
-  document.getElementById("loginBox").style.display="flex";  
+document.getElementById("loginBox").style.display="flex";  
 }  
-
+  
 function openRegister(){  
-  document.getElementById("registerBox").style.display="flex";  
+document.getElementById("registerBox").style.display="flex";  
 }  
-
-window.onclick = function(e){  
-  if(e.target.classList.contains("popup")){  
-    e.target.style.display="none";  
-  }  
-}
-
-// ==========================
-// 🔥 CRYPTO PRICES (FIXED)
-// ==========================
-function updatePrice(className, text){
-  document.querySelectorAll("." + className).forEach(el=>{
-    el.innerHTML = text;
-  });
-}
-
-async function prices(){
-  let r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");
-  let p = await r.json();
-
-  updatePrice("btc", "BTC $" + p.bitcoin.usd);
-  updatePrice("eth", "ETH $" + p.ethereum.usd);
-  updatePrice("usdt", "USDT $" + p.tether.usd);
-  updatePrice("xrp", "XRP $" + p.ripple.usd);
-  updatePrice("bnb", "BNB $" + p.binancecoin.usd);
-}
-
-prices();
-setInterval(prices, 10000);
-</script>
-
-  <script type="module">  
+  
+window.onclick=function(e){  
+if(e.target.classList.contains("popup")){  
+e.target.style.display="none";  
+}  
+}  
+  
+async function prices(){  
+  
+let r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple,binancecoin&vs_currencies=usd");  
+  
+let p=await r.json();  
+  
+btc.innerHTML="BTC $"+p.bitcoin.usd;  
+eth.innerHTML="ETH $"+p.ethereum.usd;  
+usdt.innerHTML="USDT $"+p.tether.usd;  
+xrp.innerHTML="XRP $"+p.ripple.usd;  
+bnb.innerHTML="BNB $"+p.binancecoin.usd;  
+  
+}  
+  
+prices();  
+setInterval(prices,10000);  
+  
+</script>  <script type="module">  
   
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";  
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";  
-import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";    
+import { getFirestore, collection, addDoc, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";  
   
-
+if(user){  
+console.log("User logged in:", user.email);  
+  
+// connect your chat  
+loadMessages(user);  
+  
+}else{  
+console.log("No user logged in");  
+}  
+  
+});  
 const firebaseConfig = {  
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",  
   authDomain: "stargicinvestment.firebaseapp.com",  
@@ -465,45 +782,31 @@ const firebaseConfig = {
   messagingSenderId: "1053305294931",  
   appId: "1:1053305294931:web:87cba3260a83030e56f6a6",  
   measurementId: "G-MYXX49TZLW"  
-};
-  const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-
-// ✅ NOW use auth
-onAuthStateChanged(auth, (user) => {
-  if(user){
-    console.log("User logged in:", user.email);
-    loadMessages(user);
-  } else {
-    console.log("No user logged in");
-  }
-});
-
-     function loadMessages(user){  
-
+};  
+  
+const app = initializeApp(firebaseConfig);  
+const auth = getAuth(app);  
+const db = getFirestore(app);  
+  function loadMessages(user){  
+  
   const q = query(collection(db, "messages"), where("userId","==",user.uid));  
-
+  
   onSnapshot(q,(snapshot)=>{  
-
+  
     const box = document.getElementById("chatMessages");  
-    if(!box) return;
-
     box.innerHTML = "";  
-
+  
     snapshot.forEach(doc=>{  
       let data = doc.data();  
-
+  
       box.innerHTML += `  
         <div>You: ${data.text}</div>  
         <div style="color:green;">Admin: ${data.reply || "Waiting..."}</div><br>  
       `;  
     });  
-
+  
   });  
-    }
-
-
+  
 }  
 window.openPopup = function(){  
 document.getElementById("chatPopup").style.display="block";  
@@ -560,8 +863,10 @@ window.sendMessage = async function(){
     alert("Error sending message");  
   }  
 };
-</script>
 
+
+
+<!-- ✅ FIX GOOGLE BAR -->
 <script>
 setInterval(function(){
   var frame = document.querySelector('.goog-te-banner-frame');
@@ -607,6 +912,7 @@ document.addEventListener("click", function(e){
 });
 </script>
 
+  </script>
       <footer class="footer">
   <div class="footer-container">
 
@@ -628,7 +934,7 @@ document.addEventListener("click", function(e){
 
       <div class="footer-column">
         <h4>Company</h4>
-        <a href="about.html">About Us</a>
+        <a href="got.html">About Us</a>
         <a href="careers.html">Careers</a>
       </div>
 
@@ -645,33 +951,8 @@ document.addEventListener("click", function(e){
     </div>
 
   </div>
-    
+</footer>
+  </script>
 
-    <script>
-document.addEventListener("DOMContentLoaded", function(){
-
-  const questions = document.querySelectorAll(".faq-question");
-
-  questions.forEach(btn => {
-    btn.addEventListener("click", function(){
-
-      const item = this.parentElement;
-
-      // close others
-      document.querySelectorAll(".faq-item").forEach(el=>{
-        if(el !== item){
-          el.classList.remove("active");
-        }
-      });
-
-      // toggle current
-      item.classList.toggle("active");
-
-    });
-  });
-  
-  });
-</script>
-    
-  </body>  
+</body>  
   </html>
