@@ -1,60 +1,135 @@
 <!DOCTYPE html>  <html lang="en">      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
 <head>    
-  
-<style>  
-/* ===== RESET ===== */
-*{
+  <style>  
+    *{  
+  box-sizing: border-box;  
+}  
+    html {  
+  scroll-behavior: smooth;  
+}  /* SMOOTH RENDER */
+
+{
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+
+html, body{
 margin:0;
 padding:0;
-box-sizing:border-box;
+overflow-x:hidden; /* 🔥 THIS STOPS SHIFTING */
+}
+#chatButton {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: #00ffcc;
+padding: 15px;
+border-radius: 50%;
+cursor: pointer;
+z-index: 9999;
+}  #chatBox {
+position: fixed;
+bottom: 80px;
+right: 20px;
+width: 300px;
+background: #111;
+display: none;
+flex-direction: column;
+border-radius: 10px;
+z-index: 9999;
 }
 
-html{
-scroll-behavior:smooth;
+  </style>    
+</head>    
+<meta charset="UTF-8">    
+<meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>StargicInvestment</title> <link rel="preload" as="image" href="https://images.unsplash.com/photo-1639322537228-f710d846310a">  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">  <style>    
+.crypto-slider{    
+display:flex;    
+align-items:center;    
+gap:40px;    
+overflow:hidden;    
+white-space:nowrap;    
+background:#020617;    
+padding:10px 20px;    
+}    .coin{
+display:flex;
+align-items:center;
+gap:8px;
+color:#00ffa6;
+font-weight:500;
+min-width:150px;
 }
 
+.crypto-track{
+display:flex;
+animation:scroll 20s linear infinite;
+}
+
+@keyframes scroll{
+0%{transform:translateX(100%)}
+100%{transform:translateX(-100%)}
+}
 body{
-font-family:'Poppins',sans-serif;
+margin:0;
+font-family:Poppins;
 background:#0b0f1a;
-color:#e5e7eb;
+color:#00ff9d;
 line-height:1.6;
+word-wrap:break-word;
 overflow-x:hidden;
 }
 
-/* ===== SECTION SPACING (FIXED) ===== */
-section{
-padding:40px 15px;
-max-width:1100px;
-margin:auto;
+/* NAVBAR */
+
+.nav-buttons a{
+background:#00ffa6;
+color:#021018;
+padding:10px 25px;
+border-radius:6px;
+font-weight:600;
+text-decoration:none;
 }
 
-/* ===== HERO ===== */
-.hero{
-background:#0b0f1a url("https://images.unsplash.com/photo-1639322537228-f710d846310a") center/cover no-repeat;
-min-height:360px;
+/* =========================
+PREMIUM STAR LOGO
+========================= */
+
+.logo-wrap{
 display:flex;
 align-items:center;
-justify-content:center;
-text-align:center;
-padding:60px 20px;
+gap:12px;
 }
 
-.hero h1{
-font-size:32px;
-margin-bottom:10px;
+/* ⭐ STAR ICON */
+.logo-star{
+width:30px;
+height:30px;
+background:#00c27a;
+clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
 }
 
-.hero p{
-color:#9ca3af;
-max-width:600px;
-margin:auto;
+/* TEXT */
+.logo-text{
+font-size:22px;
+font-weight:800;
+letter-spacing:0.5px;
+color:#00c27a;
 }
 
-/* ===== MENU ===== */
+/* UNDERLINE */
+.logo-line{
+height:3px;
+width:100%;
+background:#00c27a;
+margin-top:4px;
+}
+
 .menu{
 display:flex;
 gap:18px;
 align-items:center;
+flex-wrap:wrap;
 }
 
 .menu a{
@@ -63,171 +138,688 @@ color:#00ff9d;
 font-size:14px;
 }
 
-/* ===== GRID ===== */
+.btn{
+background:none;
+color:#00ff9d;
+padding:0;
+border:none;
+font-weight:500;
+cursor:pointer;
+text-decoration:none;
+}
+
+/* LANGUAGE */
+
+select{
+background:#111827;
+color:#00ff9d;
+border:1px solid #00ff9d;
+padding:5px;
+}
+/* MENU BUTTON */
+.menu-btn{
+display:none;
+font-size:28px;
+cursor:pointer;
+}
+
+/* MENU DEFAULT */
+.menu{
+display:flex;
+gap:20px;
+}
+
+/* MOBILE MENU */
+@media(max-width:768px){
+
+.menu{
+position:absolute;
+top:70px;
+right:20px;
+width:220px;
+background:#111827;
+flex-direction:column;
+padding:20px;
+border-radius:12px;
+box-shadow:0 15px 40px rgba(0,0,0,0.6);
+
+/* 🔥 ANIMATION */  
+opacity:0;  
+transform:translateY(-20px);  
+pointer-events:none;  
+transition:0.3s ease;
+
+}
+
+.menu a{
+padding:10px 0;
+border-bottom:1px solid #1f2937;
+}
+
+.menu a:last-child{
+border:none;
+}
+
+.menu.active{
+opacity:1;
+transform:translateY(0);
+pointer-events:auto;
+}
+
+.menu-btn{
+display:block;
+}
+}
+
+/* HERO */
+
+.hero{
+height:420px;
+
+/* 🔥 PREVENT BLANK FLASH */
+background-color:#0b0f1a;
+
+/* IMAGE */
+background-image:url("https://images.unsplash.com/photo-1639322537228-f710d846310a");
+
+/* PERFECT FIT */
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
+
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+padding:20px;
+}
+
+.hero h1{
+font-size:32px;
+margin-bottom:10px;
+}
+
+.hero p{
+max-width:600px;
+margin:auto;
+color:#9ca3af;
+}
+
+/* TICKER */
+
+.ticker{
+background:#111827;
+padding:12px 0;
+overflow:hidden;
+}
+
+.ticker-track{
+display:flex;
+gap:40px;
+animation:scroll 30s linear infinite;
+white-space:nowrap;
+}
+
+.coin{
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.coin img{
+width:24px;
+filter:brightness(1.3);
+}
+
+.crypto-track{
+display:flex;
+width:max-content;
+animation:scroll 25s linear infinite;
+}
+
+@keyframes scroll{
+0%{
+transform: translateX(0);
+}
+100%{
+transform: translateX(-50%);
+}
+}
+
+/* SECTIONS */
+
+section{
+padding:70px 20px;
+max-width:1100px;
+margin:auto;
+}
+
+.card{
+background:#111827;
+padding:30px;
+border-radius:10px;
+box-shadow:0 0 20px rgba(0,0,0,0.5);
+}
+
+/* MARKET GRID */
+
 .market-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-margin-top:25px;
+gap:25px;
+margin-top:30px;
 }
 
-/* ===== CARD ===== */
 .market-card{
 background:#111827;
-border-radius:12px;
-overflow:hidden;
-padding:15px;
+padding:20px;
+border-radius:10px;
 text-align:center;
-transition:0.3s;
 }
-
-.market-card:hover{
-transform:translateY(-6px);
-box-shadow:0 10px 25px rgba(0,255,157,0.15);
-}
-
-/* ===== IMAGE FIX (VERY IMPORTANT) ===== */
-.market-card img{
-width:100%;
-height:220px;
-object-fit:cover;
-border-radius:12px;
+img {
+max-width:100%;
+height:auto;
 display:block;
-margin-bottom:12px;
 }
 
-/* ===== TEXT ===== */
-.market-card h3{
+/* PREVENT LAYOUT SHIFT */
+.market-card {
+min-height: 320px;
+}
+
+.market-card img {
+width: 100%;
+height: auto;          /* 🔥 shows full image /
+max-height: 220px;     / optional limit /
+object-fit: contain;   / 🔥 no cutting /
+border-radius: 15px;
+margin-bottom: 15px;
+background: #0b0f1a;   / prevents white flash */
+}
+.market-card {
+transition: 0.3s;
+}
+
+.market-card:hover {
+transform: translateY(-8px) scale(1.02);
+box-shadow: 0 15px 35px rgba(0,255,157,0.15);
+}
+
+.investor-heading {
+color: #00ff88;
+font-size: 32px;
+font-weight: 700;
+text-align: center;
+letter-spacing: -0.5px;
+line-height: 1.2;
+margin: 40px 0;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+}
+
+/* FOOTER */
+
+footer{
+text-align:center;
+padding:40px;
+background:#111827;
+margin-top:40px;
+}
+#google_translate_element{
+margin-left:10px;
+}
+
+.goog-te-combo{
+background:#111827;
 color:#00ff9d;
-margin-bottom:8px;
+border:1px solid #00ff9d;
+padding:5px;
+}
+img {
+max-width: 100%;
+height: auto;
 }
 
-.market-card p{
-color:#9ca3af;
-font-size:14px;
+.market-card {
+will-change: transform;
+transition: 0.3s ease;
+}
+/* 🔥 HIDE GOOGLE TOP BAR COMPLETELY */
+.goog-te-banner-frame.skiptranslate {
+display: none !important;
 }
 
-/* ===== BUTTON ===== */
+iframe.goog-te-banner-frame {
+display: none !important;
+}
+
+body {
+top: 0px !important;
+}
+
+/* 🔥 EXTRA STRONG FIX */
+.goog-te-gadget-icon {
+display: none !important;
+}
+
+.goog-te-banner-frame {
+display: none !important;
+}
+
+.skiptranslate iframe {
+display: none !important;
+}
+/* HERO CENTER */
+.hero-content{
+text-align:center;
+max-width:600px;
+margin:auto;
+}
+
+/* BUTTON GROUP */
+.hero-buttons{
+margin-top:25px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+/* 🔥 PRIMARY GLOW BUTTON */
 .btn-primary{
-display:inline-block;
-margin-top:15px;
+position:relative;
 background:#00ff9d;
 color:#021018;
-padding:12px 25px;
-border-radius:6px;
+padding:12px 28px;
+border-radius:8px;
+font-weight:600;
+text-decoration:none;
+overflow:hidden;
+transition:0.3s;
+box-shadow:0 0 10px rgba(0,255,157,0.4);
+}
+
+/* SHINE ANIMATION */
+.btn-primary::before{
+content:"";
+position:absolute;
+top:-50%;
+left:-50%;
+width:200%;
+height:200%;
+background:linear-gradient(
+120deg,
+transparent,
+rgba(255,255,255,0.5),
+transparent
+);
+transform:rotate(25deg);
+animation:shine 3s infinite;
+}
+
+/* HOVER EFFECT */
+.btn-primary:hover{
+transform:translateY(-2px);
+box-shadow:
+0 0 10px #00ff9d,
+0 0 20px #00ff9d,
+0 0 40px #00ff9d;
+}
+
+/* OUTLINE BUTTON */
+.btn-outline{
+border:2px solid #00ff9d;
+color:#00ff9d;
+padding:10px 28px;
+border-radius:8px;
 text-decoration:none;
 font-weight:600;
 transition:0.3s;
 }
 
-.btn-primary:hover{
-box-shadow:0 0 15px rgba(0,255,157,0.5);
+.btn-outline:hover{
+background:#00ff9d;
+color:#021018;
 }
 
-/* ===== FAQ ===== */
-.faq-section{
-max-width:900px;
-margin:60px auto;
-padding:10px;
+/* ANIMATION KEYFRAME /
+@keyframes shine{
+0%{
+transform:translateX(-100%) rotate(25deg);
+}
+100%{
+transform:translateX(100%) rotate(25deg);
+}
+}
+/ 🔥 PREMIUM FOOTER */
+.footer {
+background:#0B0F1A;
+border-top:1px solid #1F2937;
+padding:60px 20px;
+color:#9CA3AF;
 }
 
-.faq-item{
-background:#111827;
-border-radius:12px;
-margin-bottom:12px;
-overflow:hidden;
+.footer-container {
+max-width:1100px;
+margin:auto;
 }
 
-.faq-question{
-width:100%;
-padding:16px;
-border:none;
-background:none;
-color:#e5e7eb;
-text-align:left;
-cursor:pointer;
+.footer-top {
+display:flex;
+flex-wrap:wrap;
+justify-content:space-between;
+gap:40px;
+margin-bottom:40px;
 }
 
-.faq-answer{
-max-height:0;
-overflow:hidden;
-padding:0 16px;
-color:#9ca3af;
+.footer h2, .footer h4 {
+color:#fff;
+}
+
+.footer p {
+font-size:13px;
+color:#6B7280;
 transition:0.3s;
 }
 
-.faq-item.active .faq-answer{
-max-height:200px;
-padding:10px 16px;
-}
-
-/* ===== TRUST ===== */
-.trust-section{
-padding:50px 15px;
-display:flex;
-justify-content:center;
-}
-
-.trust-card{
-width:100%;
-max-width:650px;
-padding:40px 25px;
-background:#111827;
-border-radius:20px;
-text-align:center;
-}
-
-/* ===== FOOTER ===== */
-footer{
-text-align:center;
-padding:25px;
-background:#111827;
-margin-top:30px;
-font-size:13px;
-color:#9ca3af;
-}
-
-/* ===== CHAT ===== */
-#chatButton{
-position:fixed;
-bottom:20px;
-right:20px;
-background:#00ffcc;
-padding:15px;
-border-radius:50%;
+.footer p:hover {
+color:#00ff9d;
 cursor:pointer;
 }
 
-#chatBox{
-position:fixed;
-bottom:80px;
-right:20px;
-width:300px;
-background:#111;
-display:none;
-border-radius:10px;
+.footer-grid {
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+gap:30px;
+margin-bottom:30px;
 }
 
-/* ===== MOBILE ===== */
-@media(max-width:768px){
-
-.menu{
-flex-direction:column;
-position:absolute;
-top:70px;
-right:20px;
-background:#111827;
-padding:15px;
-border-radius:10px;
-display:none;
-}
-
-.menu.active{
+.footer-bottom {
+border-top:1px solid #1F2937;
+padding-top:15px;
 display:flex;
+flex-wrap:wrap;
+justify-content:space-between;
+font-size:12px;
 }
 
+.footer-social {
+display:flex;
+gap:12px;
 }
-</style>  
+
+.footer-social span {
+background:#111827;
+padding:8px 10px;
+border-radius:6px;
+transition:0.3s;
+}
+
+.footer-social span:hover {
+background:#00ff9d;
+color:#000;
+}
+.footer-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+gap: 40px;
+margin-top: 40px;
+}
+
+.footer-column h4 {
+color: #ffffff;
+margin-bottom: 15px;
+font-size: 16px;
+}
+
+.footer-column a {
+display: block;
+text-decoration: none;
+color: #9ca3af;
+margin-bottom: 10px;
+font-size: 14px;
+transition: all 0.3s ease;
+}
+
+/* 🔥 HOVER EFFECT */
+.footer-column a:hover {
+color: #00ff9d;
+transform: translateX(5px);
+}
+
+.about-cta {
+margin-top: 25px;
+text-align: center;
+}
+
+.read-more-text {
+color: #9ca3af;
+font-size: 14px;
+margin-bottom: 10px;
+}
+
+/* 🔥 PREMIUM BUTTON */
+.read-more-btn {
+display: inline-block;
+background: transparent;
+border: 2px solid #00ff9d;
+color: #00ff9d;
+padding: 10px 22px;
+border-radius: 8px;
+text-decoration: none;
+font-weight: 600;
+transition: 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.read-more-btn:hover {
+background: #00ff9d;
+color: #021018;
+box-shadow: 0 0 20px rgba(0,255,157,0.4);
+transform: translateY(-2px);
+}
+
+.faq-section{
+max-width:900px;
+margin:100px auto;
+padding:20px;
+}
+
+.faq-title{
+font-size:34px;
+font-weight:700;
+margin-bottom:30px;
+color:#fff;
+}
+
+/* CARD */
+.faq-item{
+background:linear-gradient(145deg,#111827,#0b0f1a);
+border-radius:18px;
+margin-bottom:15px;
+overflow:hidden;
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+transition:0.3s;
+}
+
+/* BUTTON */
+.faq-question{
+width:100%;
+padding:20px;
+border:none;
+background:none;
+color:#e5e7eb;
+font-size:16px;
+text-align:left;
+display:flex;
+justify-content:space-between;
+align-items:center;
+cursor:pointer;
+}
+
+/* ICON */
+.icon{
+font-size:22px;
+color:#00ff9d;
+transition:0.3s;
+}
+
+/* ANSWER */
+.faq-answer{
+max-height:0;
+overflow:hidden;
+padding:0 20px;
+color:#9ca3af;
+transition:all 0.4s ease;
+}
+
+/* ACTIVE */
+.faq-item.active .faq-answer{
+max-height:200px;
+padding:15px 20px;
+}
+
+.faq-item.active .icon{
+transform:rotate(45deg);
+}
+.faq-item:hover{
+transform:scale(1.02);
+box-shadow:0 15px 40px rgba(0,255,157,0.15);
+}
+
+/* SECTION WRAPPER */
+.trust-section{
+padding:100px 20px;
+display:flex;
+justify-content:center;
+background:#070b14;
+}
+
+/* CARD */
+.trust-card{
+width:100%;
+max-width:680px;
+padding:60px 45px;
+
+background:linear-gradient(145deg,#0b0f1a,#111827);
+border-radius:26px;
+
+position:relative;
+overflow:hidden;
+
+/* 🔥 DEPTH */
+box-shadow:
+0 30px 80px rgba(0,0,0,0.9),
+inset 0 0 0 1px rgba(255,255,255,0.04);
+
+transition:0.4s ease;
+}
+
+/* 🔥 HOVER LIFT */
+.trust-card:hover{
+transform:translateY(-8px);
+box-shadow:
+0 40px 100px rgba(0,0,0,1),
+0 0 40px rgba(0,194,122,0.08);
+}
+
+/* 🔥 TOP GLOW LINE */
+.trust-card::before{
+content:"";
+position:absolute;
+top:0;
+left:0;
+width:100%;
+height:2px;
+
+background:linear-gradient(90deg,transparent,#00c27a,transparent);
+opacity:0.7;
+}
+
+/* TITLE /
+.trust-card h2{
+color:#00c27a; / 🔥 DEEP EMERALD */
+font-size:36px;
+font-weight:800;
+line-height:1.2;
+letter-spacing:-0.6px;
+margin-bottom:20px;
+}
+
+/* TEXT */
+.trust-card p{
+color:#9ca3af;
+font-size:15.5px;
+line-height:1.8;
+margin-bottom:30px;
+}
+
+/* BUTTON */
+.trust-btn{
+display:inline-block;
+color:#00c27a;
+text-decoration:none;
+font-weight:600;
+font-size:14px;
+
+border-bottom:1px solid rgba(0,194,122,0.5);
+padding-bottom:4px;
+
+transition:0.3s ease;
+}
+
+/* BUTTON HOVER */
+.trust-btn:hover{
+color:#00ff9d;
+border-color:#00ff9d;
+}
+
+/* 🔥 SOFT BACKGROUND GLOW */
+.trust-card::after{
+content:"";
+position:absolute;
+width:300px;
+height:300px;
+background:#00c27a;
+filter:blur(120px);
+opacity:0.05;
+top:-80px;
+right:-80px;
+}
+
+/* 📱 MOBILE */
+@media(max-width:600px){
+.trust-card{
+padding:45px 25px;
+}
+
+.trust-card h2{
+font-size:28px;
+}
+
+.trust-card p{
+font-size:14px;
+}
+}
+
+.section{
+padding:60px 20px !important;
+}
+
+.block{
+margin-bottom:60px !important;
+}
+
+.hero{
+height:auto !important;
+min-height:420px;
+padding:80px 20px;
+}
+
+.block img{
+height:280px;
+}
+
+</style>  </head>  <body>  <nav>
 
   <div class="logo">  
   <div class="logo-wrap">  <div class="logo-star">★</div>  
@@ -315,9 +907,7 @@ display:flex;
 </div>
 
   </div>  
-  </div>  
-  
-  <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>    StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.
+  </div>   <!-- ABOUT -->  <section id="about">  <div class="card">  <h2>About Our Company</h2>  <p>    StargicInvestment is a global digital asset management platform focused on long-term financial growth. Our company provides investors with secure opportunities in cryptocurrency markets, international stock exchanges, property development projects and strategic energy investments.
 
 </p>  <p>    
 Our financial analysts study global economic trends including cryptocurrency adoption, stock market expansion and commodity demand in sectors such as oil and gas. These insights allow us to position investment portfolios in high-growth opportunities while maintaining disciplined risk management.    
@@ -338,13 +928,10 @@ Real estate remains one of the most reliable long-term investments helping inves
     Oil and gas projects continue to generate strong global demand and support diversified investment portfolios.    
   </p>    
 </div>  
-  </section> 
-  
-  <!-- REVIEWS -->    
+ </div>  </div>  </section>  <!-- REVIEWS -->    
     <section id="reviews">  
   <section id="why">  
-
-    
+  </section>  
     </section>  
   <h2>Why Choose StargicInvestment</h2>    <div class="market-grid">  <div class="market-card">  
   <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80" loading="lazy">  
@@ -365,10 +952,9 @@ Real estate remains one of the most reliable long-term investments helping inves
 </div>
 
   </div>  
-</section>  
-  
-  <section class="faq-section">
-<h2 class="faq-title">Frequently Asked Questions</h2>    <div class="faq-item">  
+</section>  <section class="faq-section">
+
+  <h2 class="faq-title">Frequently Asked Questions</h2>    <div class="faq-item">  
     <button class="faq-question">  
       How do I create an account?  
       <span class="icon">+</span>  
@@ -408,9 +994,7 @@ Real estate remains one of the most reliable long-term investments helping inves
 <a href="insights.html" class="trust-btn">More Insights →</a>
 
   </div>  
-</section>  
-
-</section>  
+</section>  </section>  
   <section id="how">  
   <h2>How It Works</h2>    <div class="market-grid">  <div class="market-card">  
   <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?auto=format&fit=crop&w=800&q=80" loading="lazy">  
@@ -428,10 +1012,10 @@ Real estate remains one of the most reliable long-term investments helping inves
   <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" loading="lazy">  
   <h3>Earn Profit</h3>  
   <p>Watch your investment grow and withdraw profits anytime.</p>  
-</div>
-  </section>
+</div>  
 
       <script>
+
 // LOGIN / REGISTER POPUP
 function openLogin(){
 document.getElementById("loginBox").style.display="flex";
@@ -581,9 +1165,7 @@ window.sendMessage = async function(){
     alert("Error sending message");    
   }    
 };  
-</script> 
-    
-    <script>  
+</script>  <script>  
 setInterval(function(){  
   var frame = document.querySelector('.goog-te-banner-frame');  
   if(frame){  
@@ -591,9 +1173,7 @@ setInterval(function(){
   }  
   document.body.style.top = '0px';  
 }, 100);  
-</script>
-    
-    <script>  
+</script>  <script>  
 var _smartsupp = _smartsupp || {};  
 _smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";  
   
@@ -607,9 +1187,7 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';  
   s.parentNode.insertBefore(c,s);  
 })(document);  
-</script>  
-    
-    <script>
+</script>  <script>
 
 function toggleMenu(){
 document.getElementById("menu").classList.toggle("active");
@@ -637,6 +1215,13 @@ menu.classList.remove("active");
     <p>Secure, fast and reliable platform for modern investors.</p>  
   </div>  
 
+  <div class="footer-social">  
+    <span><i class="fab fa-x-twitter"></i></span>  
+    <span><i class="fab fa-facebook-f"></i></span>  
+    <span><i class="fab fa-instagram"></i></span>  
+  </div>  
+</div>  
+
 <!-- 🔥 LINKS -->  
 <div class="footer-grid">  
 
@@ -658,9 +1243,8 @@ menu.classList.remove("active");
   <p>© 2026 StargicInvestment. All rights reserved</p>  
 </div>
 
-  </div>
-    
-    <script>
+  </div>  <script>
+
 document.addEventListener("DOMContentLoaded", function(){
 
 const questions = document.querySelectorAll(".faq-question");
@@ -688,4 +1272,4 @@ const item = this.parentElement;
 </script>
 
   </body>    
-  </html>  
+  </html>  Check the problem
