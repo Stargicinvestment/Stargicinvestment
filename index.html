@@ -1,48 +1,47 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-  <meta charset="UTF-8">  
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">    <title>StargicInvestment</title>    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">    <style>  
+<!DOCTYPE html>  <html lang="en">      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">  
+<head>    
+  <style>  
     *{  
   box-sizing: border-box;  
 }  
     html {  
   scroll-behavior: smooth;  
-}  
-  
-/* SMOOTH RENDER */  
-* {  
-  -webkit-font-smoothing: antialiased;  
-  -moz-osx-font-smoothing: grayscale;  
-}  
-  
-html, body{  
-  margin:0;  
-  padding:0;  
-  overflow-x:hidden; /* 🔥 THIS STOPS SHIFTING */  
-}  
-    #chatButton {    
-      position: fixed;    
-      bottom: 20px;    
-      right: 20px;    
-      background: #00ffcc;    
-      padding: 15px;    
-      border-radius: 50%;    
-      cursor: pointer;    
-      z-index: 9999;    
-    }  #chatBox {    
-  position: fixed;    
-  bottom: 80px;    
-  right: 20px;    
-  width: 300px;    
-  background: #111;    
-  display: none;    
-  flex-direction: column;    
-  border-radius: 10px;    
-  z-index: 9999;    
-}  
-  
-  </style>    </head>    
+}  /* SMOOTH RENDER */
+
+{
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+}
+
+
+html, body{
+margin:0;
+padding:0;
+overflow-x:hidden; /* 🔥 THIS STOPS SHIFTING */
+}
+#chatButton {
+position: fixed;
+bottom: 20px;
+right: 20px;
+background: #00ffcc;
+padding: 15px;
+border-radius: 50%;
+cursor: pointer;
+z-index: 9999;
+}  #chatBox {
+position: fixed;
+bottom: 80px;
+right: 20px;
+width: 300px;
+background: #111;
+display: none;
+flex-direction: column;
+border-radius: 10px;
+z-index: 9999;
+}
+
+  </style>    
+</head>    
 <meta charset="UTF-8">    
 <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>StargicInvestment</title> <link rel="preload" as="image" href="https://images.unsplash.com/photo-1639322537228-f710d846310a">  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">  <style>    
 .crypto-slider{    
@@ -802,8 +801,22 @@ font-size:14px;
 }
 }
 
-body, html {
-width: 100%;
+.section{
+padding:60px 20px !important;
+}
+
+.block{
+margin-bottom:60px !important;
+}
+
+.hero{
+height:auto !important;
+min-height:420px;
+padding:80px 20px;
+}
+
+.block img{
+height:280px;
 }
 
 </style>  </head>  <body>  <nav>
@@ -915,26 +928,30 @@ Real estate remains one of the most reliable long-term investments helping inves
     Oil and gas projects continue to generate strong global demand and support diversified investment portfolios.    
   </p>    
 </div>  
- <!-- WHY CHOOSE -->  
-<section id="reviews">    <h2 class="investor-heading">Why Choose StargicInvestment</h2>    <div class="market-grid">  <div class="market-card">  
-  <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80">  
+ </div>  </div>  </section>  <!-- REVIEWS -->    
+    <section id="reviews">  
+  <section id="why">  
+  </section>  
+    </section>  
+  <h2>Why Choose StargicInvestment</h2>    <div class="market-grid">  <div class="market-card">  
+  <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=800&q=80" loading="lazy">  
   <h3>Secure Platform</h3>  
   <p>Advanced security systems protect your funds and personal data at all times.</p>  
 </div>  
 
 <div class="market-card">  
-  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80">  
+  <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=800&q=80" loading="lazy">  
   <h3>Fast Withdrawals</h3>  
   <p>Withdraw your earnings quickly and securely anytime.</p>  
 </div>  
 
 <div class="market-card">  
-  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80">  
+  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=800&q=80" loading="lazy">  
   <h3>24/7 Support</h3>  
   <p>Our team is always available to assist you through live chat.</p>  
 </div>
 
-</div>  
+  </div>  
 </section>  <section class="faq-section">
 
   <h2 class="faq-title">Frequently Asked Questions</h2>    <div class="faq-item">  
@@ -961,8 +978,7 @@ Real estate remains one of the most reliable long-term investments helping inves
     <div class="faq-answer">  
       Yes. We use advanced encryption, secure servers, and multi-layer protection to keep your funds and personal data safe.  
     </div>  
-  </div>  
-    </section>  <section class="trust-section">  
+  </div>  <section class="trust-section">  
   <div class="trust-card">  <h2>  
   TRUST,<br>  
   EXPERIENCE AND<br>  
@@ -996,9 +1012,9 @@ Real estate remains one of the most reliable long-term investments helping inves
   <img src="https://images.unsplash.com/photo-1621416894569-0f39ed31d247?auto=format&fit=crop&w=800&q=80" loading="lazy">  
   <h3>Earn Profit</h3>  
   <p>Watch your investment grow and withdraw profits anytime.</p>  
-</div>
+</div>  
 
-  </section>  <script>
+      <script>
 
 // LOGIN / REGISTER POPUP
 function openLogin(){
@@ -1199,13 +1215,6 @@ menu.classList.remove("active");
     <p>Secure, fast and reliable platform for modern investors.</p>  
   </div>  
 
-  <div class="footer-social">  
-    <span><i class="fab fa-x-twitter"></i></span>  
-    <span><i class="fab fa-facebook-f"></i></span>  
-    <span><i class="fab fa-instagram"></i></span>  
-  </div>  
-</div>  
-
 <!-- 🔥 LINKS -->  
 <div class="footer-grid">  
 
@@ -1256,4 +1265,4 @@ const item = this.parentElement;
 </script>
 
   </body>    
-  </html>  
+  </html>    
