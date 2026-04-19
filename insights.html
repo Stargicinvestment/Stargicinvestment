@@ -180,6 +180,58 @@ body{
   }
 }
 
+  /* ===== TRANSLATE CONTAINER ===== */
+.translate-box{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  background:#111827;
+  padding:6px 10px;
+  border-radius:8px;
+  border:1px solid #1f2937;
+}
+
+/* ICON */
+.translate-box i{
+  color:#00ff9d;
+  font-size:14px;
+}
+
+/* DROPDOWN */
+.goog-te-combo{
+  background:transparent !important;
+  color:#00ff9d !important;
+  border:none !important;
+  font-size:13px;
+  outline:none;
+  cursor:pointer;
+}
+
+/* REMOVE GOOGLE BRANDING */
+.goog-logo-link,
+.goog-te-gadget span{
+  display:none !important;
+}
+
+.goog-te-gadget{
+  color:transparent !important;
+}
+
+/* HIDE TOP BAR */
+.goog-te-banner-frame.skiptranslate{
+  display:none !important;
+}
+
+body{
+  top:0px !important;
+}
+
+/* SMOOTH HOVER */
+.translate-box:hover{
+  border-color:#00ff9d;
+  box-shadow:0 0 10px rgba(0,255,157,0.2);
+    }
+
 </style></head><body><!-- HERO --><div class="hero">
   <h1>Refined Investment Intelligence</h1>
 </div><div class="section"><!-- BLOCK 1 --><div class="block">
@@ -228,11 +280,30 @@ body{
   <span>Support</span>
 </div>
 
+    <div class="translate-box">
+  <i class="fas fa-globe"></i>
+  <div id="google_translate_element"></div>
+    </div>
+
   </div></div><!-- FINAL --><div class="final">
   <h2>Precision. Discipline. Performance.</h2>
   <p>
     We operate with a long-term vision, focusing on stability, controlled growth, and refined execution
     across all investment strategies.
   </p>
-</div></body>
+</div>
+
+
+  <script>
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    autoDisplay: false
+  }, 'google_translate_element');
+}
+</script>
+
+<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+</body>
 </html>
