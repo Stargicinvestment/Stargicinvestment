@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -113,33 +115,12 @@ body{
 }
 .deposit{background:#00e676;color:#000;}
 .withdraw{background:#ff5252;color:#fff;}
-
-  /* 🚫 REMOVE GOOGLE TRANSLATE POPUPS */
-.goog-te-banner-frame,
-.goog-te-balloon-frame,
-.goog-te-menu-frame,
-iframe.goog-te-banner-frame,
-iframe.goog-te-balloon-frame {
-  display: none !important;
-}
-
-/* Hide ugly Google UI */
-.goog-te-banner-frame,
-.goog-te-balloon-frame,
-iframe.goog-te-banner-frame {
-  display: none !important;
-}
-
-body {
-  top: 0 !important;
-}
 </style>
 </head>
 
 <body>
 
 <div class="header">
-  <div id="google_translate_element"></div>
   <h2>Dashboard</h2>
   <button onclick="logout()">Logout</button>
 </div>
@@ -223,11 +204,11 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const plans = {
-  starter: { rate: 0.02, duration: 7 },
-  silver: { rate: 0.03, duration: 7 },
-  gold: { rate: 0.04, duration: 7 },
-  platinum: { rate: 0.05, duration: 7 },
-  vip: { rate: 0.06, duration: 7 }
+  starter: { rate: 0.025, duration: 7 },
+  silver: { rate: 0.035, duration: 7 },
+  gold: { rate: 0.045, duration: 7 },
+  platinum: { rate: 0.055, duration: 7 },
+  vip: { rate: 0.066, duration: 7 }
 };
 
 let miningRunning = false;
@@ -442,11 +423,10 @@ onSnapshot(wq,(snapshot)=>{
   });
 
 });
-</script>
 
   
-                   <script>
-ACTIONSONS
+
+// ACTIONS
 window.logout = function(){
   signOut(auth);
   location.href="login.html";
@@ -461,7 +441,11 @@ window.goWithdraw = function(){
 };
 
 
-  functionion googleTranslateElementInit() {
+</script>
+<div id="google_translate_element" style="display:none;"></div>
+
+<script>
+function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en',
     autoDisplay: false
@@ -470,7 +454,8 @@ window.goWithdraw = function(){
 </script>
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
- </html>
+</html>
+
 
 
 
