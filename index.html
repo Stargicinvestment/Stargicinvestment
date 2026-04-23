@@ -1255,10 +1255,8 @@ body {
     cryptocurrency, forex, stocks, and real estate.
   </p>
 
-  <div class="buttons">
-    <button class="btn-primary">Get Started</button>
-    <span class="btn-secondary">Login</span>
-  </div>
+  <button onclick="goRegister()">Get Started</button>
+<button onclick="goLogin()">Login</button>
 </section>
 
 <section class="analytics">
@@ -1880,6 +1878,17 @@ const observer = new IntersectionObserver((entries) => {
 document.querySelectorAll('.reveal').forEach(el => {
   observer.observe(el);
 });
+</script>
+
+    
+<script>
+function goRegister() {
+  window.location.href = "register.html";
+}
+
+function goLogin() {
+  window.location.href = "login.html";
+}
 </script>
 </body>
   </html>
