@@ -140,14 +140,64 @@ nav {
   max-width:700px;
 }
 
-/* buttons */
+   /* BUTTON WRAPPER */
 .buttons {
-  margin-top: 30px;
+  margin-top: 35px;
   display: flex;
   align-items: center;
-  gap: 20px;
-  flex-wrap: wrap; /* 🔥 prevents overflow on mobile */
+  justify-content: center;
+  gap: 25px;
 }
+
+/* 🔥 PREMIUM GREEN BUTTON */
+.btn-primary {
+  padding: 16px 40px;
+  border-radius: 50px;
+  text-decoration: none;
+
+  /* smooth luxury gradient */
+  background: linear-gradient(135deg, #6fd3a7, #3fae7a);
+
+  color: #0a0a0a;
+  font-weight: 500;
+  font-size: 16px;
+
+  /* premium depth */
+  box-shadow:
+    inset 0 1px 3px rgba(255,255,255,0.25),
+    0 8px 25px rgba(0,0,0,0.6),
+    0 0 20px rgba(111,211,167,0.25);
+
+  border: none;
+  transition: all 0.3s ease;
+}
+
+/* hover */
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 1px 4px rgba(255,255,255,0.35),
+    0 12px 35px rgba(0,0,0,0.7),
+    0 0 30px rgba(111,211,167,0.4);
+}
+
+/* click effect */
+.btn-primary:active {
+  transform: scale(0.96);
+}
+
+/* LOGIN BUTTON (TEXT STYLE) */
+.btn-secondary {
+  text-decoration: none;
+  font-size: 16px;
+  color: #cfcfcf;
+  font-weight: 400;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  color: #ffffff;
+   }
 
 /* =========================
    PREMIUM STACKED CARDS (FEATURES / WHY SECTION)
