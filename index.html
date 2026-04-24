@@ -87,12 +87,6 @@ nav{
   max-width:700px;
 }
 
-.hero p{
-  margin-top:20px;
-  color:#aaa;
-  max-width:600px;
-}
-
   .buttons {
   margin-top: 30px;
   display: flex;
@@ -364,140 +358,143 @@ footer{
     0 0 35px rgba(124,255,196,0.4);
 }
 
-/* CARDS */
-.cards{
-  display:flex;
-  flex-direction:column;
-  gap:25px;
+/* =========================
+   CARDS (CLEAN + PREMIUM)
+========================= */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* CARD */
-.feature-card{
-  background:#111;
-  border-radius:22px;
-  padding:28px 22px;
-  text-align:center;
-  box-shadow:0 10px 40px rgba(0,0,0,0.8);
-  border:1px solid rgba(255,255,255,0.05);
-  transition:all 0.3s ease;
+.feature-card {
+  background: #111;
+  border-radius: 22px;
+  padding: 28px 22px;
+  text-align: center;
+
+  border: 1px solid rgba(255,255,255,0.05);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  transition: all 0.3s ease;
 }
 
-.feature-card:hover{
-  transform:translateY(-5px);
-  border:1px solid rgba(124,255,196,0.15);
+.feature-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(124,255,196,0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.9);
 }
 
 /* CARD TITLE */
-.feature-card h3{
-  color:#fff;
-  font-size:22px;
-  margin-bottom:12px;
+.feature-card h3 {
+  color: #fff;
+  font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: 500;
 }
 
 /* CARD TEXT */
-.feature-card p{
-  color:#bdbdbd;
-  font-size:15px;
-  line-height:1.6;
-}
-.how-section{
-  text-align:center;
-  padding:80px 20px;
-  background:#000;
+.feature-card p {
+  color: #bdbdbd;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-.how-section h2{
-  color:#fff;
-  font-size:34px;
-  font-weight:300;
-  margin-bottom:40px;
+
+/* =========================
+   HOW SECTION (FIXED)
+========================= */
+.how-section {
+  text-align: center;
+  padding: 60px 20px; /* 🔥 reduced from 80px (fix top spacing issue) */
+  background: #000;
 }
 
-/* STEPS BOX */
-.steps-box{
-  background:#1a1a1a;
-  border-radius:25px;
-  padding:10px;
-  max-width:320px;
-  margin:0 auto 40px;
+.how-section h2 {
+  color: #fff;
+  font-size: 32px;
+  font-weight: 300;
+  margin-bottom: 30px;
 }
+
+
+/* =========================
+   STEPS BOX
+========================= */
+.steps-box {
+  background: #1a1a1a;
+  border-radius: 25px;
+  padding: 10px;
+  max-width: 320px;
+  margin: 0 auto 30px; /* reduced bottom spacing */
+}
+
 
 /* STEP BUTTON */
-.step{
-  padding:14px;
-  border-radius:30px;
-  color:#aaa;
-  cursor:pointer;
-  transition:0.3s;
+.step {
+  padding: 14px;
+  border-radius: 30px;
+  color: #aaa;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.step:hover {
+  color: #fff;
 }
 
 /* ACTIVE STEP */
-.step.active{
-  background:linear-gradient(135deg,#38d39f,#7CFFC4);
-  color:#000;
-  font-weight:600;
+.step.active {
+  background: linear-gradient(135deg,#38d39f,#7CFFC4);
+  color: #000;
+  font-weight: 600;
 }
 
-/* CONTENT */
-.step-content{
-  display:none;
-  max-width:400px;
-  margin:0 auto;
+
+/* =========================
+   STEP CONTENT (FIXED)
+========================= */
+.step-content {
+  display: none;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 0 10px;
 }
 
-.step-content.active{
-  display:block;
-  animation:fadeUp 0.4s ease;
+.step-content.active {
+  display: block;
+  animation: fadeUp 0.4s ease;
 }
 
-.step-content h3{
-  color:#fff;
-  font-size:26px;
-  margin-bottom:15px;
+.step-content h3 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 12px;
 }
 
-.step-content p{
-  color:#bdbdbd;
-  font-size:15px;
-  line-height:1.6;
+.step-content p {
+  color: #bdbdbd;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
-/* SMOOTH ANIMATION */
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(20px);
+
+/* =========================
+   ANIMATION (UNCHANGED BUT CLEAN)
+========================= */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  to{
-    opacity:1;
-    transform:translateY(0);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-}
-/* SECTION */
-.features-section{
-  background:#000;
-  padding:60px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:30px;
-}
-
-/* CARD */
-.feature-card{
-  background:#141414;
-  border-radius:25px;
-  padding:30px 22px;
-  text-align:left;
-  position:relative;
-  box-shadow:0 20px 60px rgba(0,0,0,0.9);
-  border:1px solid rgba(255,255,255,0.04);
-  transition:0.3s ease;
-}
-
-.feature-card:hover{
-  transform:translateY(-5px);
-  border:1px solid rgba(124,255,196,0.15);
-}
+  }
 
 /* GREEN CIRCLE */
 .icon-circle{
