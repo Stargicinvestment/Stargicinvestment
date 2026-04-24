@@ -858,11 +858,22 @@ footer {
   100% { transform: translateY(0px); }
 }
 
-/* SECTION */
+   /* =========================
+   CONTACT SECTION
+========================= */
 .contact-section{
   padding: 100px 20px;
-  text-align: center;
   background: #050505;
+  text-align: center;
+}
+
+/* GRID WRAPPER */
+.contact-wrapper{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* ITEM */
@@ -871,18 +882,21 @@ footer {
   margin: auto;
 }
 
-/* ICON BOX */
+/* ICON */
 .icon-box{
   width: 70px;
   height: 70px;
   margin: 0 auto 25px;
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.02);
+
+  backdrop-filter: blur(10px);
 
   font-size: 26px;
   color: #dcdcdc;
@@ -892,9 +906,9 @@ footer {
 
 /* HOVER */
 .contact-item:hover .icon-box{
-  transform: translateY(-5px);
-  border-color: rgba(0,255,180,0.4);
-  box-shadow: 0 10px 40px rgba(0,255,180,0.1);
+  transform: translateY(-6px) scale(1.05);
+  border-color: rgba(0,255,180,0.5);
+  box-shadow: 0 15px 50px rgba(0,255,180,0.15);
 }
 
 /* TITLE */
@@ -902,19 +916,19 @@ footer {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 10px;
+  color: #fff;
 }
 
-/* EMAIL */
+/* MAIN TEXT */
 .contact-main{
   font-size: 16px;
   color: #bdbdbd;
-  letter-spacing: 0.5px;
 }
 
-/* ADDRESS */
+/* SUB TEXT */
 .contact-sub{
-  font-size: 14px;
-  color: #888;
+  font-size: 13px;
+  color: #777;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -927,13 +941,65 @@ footer {
   margin: 60px auto;
 }
 
+
+/* =========================
+   FOOTER
+========================= */
 .footer {
   background: #050505;
   color: #aaa;
   padding: 80px 20px 40px;
-  font-family: 'Poppins', sans-serif;
 }
 
+/* GRID */
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* COLUMNS */
+.footer-col h4 {
+  color: #fff;
+  margin-bottom: 15px;
+}
+
+.footer-col a {
+  display: block;
+  color: #888;
+  margin-bottom: 10px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.footer-col a:hover {
+  color: #00ffae;
+}
+
+/* BRAND */
+.brand h3 {
+  color: #fff;
+  margin-bottom: 10px;
+}
+
+/* FIXED CONTACT (NO CONFLICT) */
+.footer-contact {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+  color: #aaa;
+}
+
+.footer-contact i {
+  color: #00ffae;
+}
+
+/* =========================
+   NEWSLETTER
+========================= */
 .newsletter-box {
   display: flex;
   gap: 10px;
@@ -960,53 +1026,28 @@ footer {
   color: #000;
   font-weight: 600;
   cursor: pointer;
-}
-
-/* GRID */
-.footer-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 40px;
-}
-
-/* Columns */
-.footer-col h4 {
-  color: #fff;
-  margin-bottom: 15px;
-}
-
-.footer-col a {
-  display: block;
-  color: #888;
-  margin-bottom: 10px;
-  text-decoration: none;
   transition: 0.3s;
 }
 
-.footer-col a:hover {
-  color: #00ffae;
+.newsletter-box button:hover{
+  transform: scale(1.05);
 }
 
-/* Brand */
-.brand h3 {
-  color: #fff;
-  margin-bottom: 10px;
+/* MOBILE FIX */
+@media (max-width: 600px){
+  .newsletter-box{
+    flex-direction: column;
+    border-radius: 20px;
+  }
+
+  .newsletter-box button{
+    width: 100%;
+  }
 }
 
-/* Contact */
-.contact-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-  color: #aaa;
-}
-
-.contact-item i {
-  color: #00ffae;
-}
-
-/* Bottom */
+/* =========================
+   FOOTER BOTTOM
+========================= */
 .footer-bottom {
   text-align: center;
   margin-top: 50px;
@@ -1014,30 +1055,7 @@ footer {
   padding-top: 20px;
   font-size: 14px;
   color: #666;
-}
-
-.reveal {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* Stagger delays */
-.reveal:nth-child(1) { transition-delay: 0.1s; }
-.reveal:nth-child(2) { transition-delay: 0.2s; }
-.reveal:nth-child(3) { transition-delay: 0.3s; }
-.reveal:nth-child(4) { transition-delay: 0.4s; }
-.reveal:nth-child(5) { transition-delay: 0.5s; }
-
-/* Faster on mobile */
-@media (max-width: 768px) {
-  .reveal {
-    transform: translateY(40px);
-    transition: all 0.7s ease;
-  }
-}
-
-
+   }
 
 </style>
 </head>
