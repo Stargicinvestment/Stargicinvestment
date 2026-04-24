@@ -463,147 +463,138 @@ body {
   position:relative;
 }
 
-/* TOP */
-.card-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+/* =========================
+   CARD VISUAL WRAPPER
+========================= */
+.card-visual {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
 }
 
-.brand{
-  font-size:12px;
-  letter-spacing:2px;
-  color:#7CFFC4;
+/* =========================
+   CREDIT CARD DESIGN
+========================= */
+.credit-card {
+  width: 320px;
+  height: 200px;
+  background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
+  border-radius: 18px;
+  position: relative;
+  padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  overflow: hidden;
+  color: #fff;
 }
 
-/* MASTERCARD STYLE */
-.mastercard{
-  position:relative;
-  width:50px;
-  height:30px;
-}
-
-.circle{
-  position:absolute;
-  width:25px;
-  height:25px;
-  border-radius:50%;
-}
-
-.red{
-  background:#ff3b3b;
-  left:0;
-}
-
-.yellow{
-  background:#ffb300;
-  right:0;
-  opacity:0.9;
-}
-
-/* CARD NUMBER */
-.card-number{
-  margin-top:40px;
-  font-size:18px;
-  letter-spacing:3px;
-  color:#ccc;
-}
-
-/* BOTTOM */
-.card-bottom{
-  position:absolute;
-  bottom:15px;
-  right:20px;
-  font-size:12px;
-  color:#aaa;
-}
-
-/* BUTTON (BLACK LIKE SCREENSHOT) */
-.dark-btn{
-  display:inline-block;
-  padding:14px 35px;
-  background:#000;
-  color:#fff;
-  border-radius:40px;
-  text-decoration:none;
-  font-size:16px;
-  font-weight:500;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
-  transition:0.3s ease;
-}
-
-/* HOVER EFFECT */
-.dark-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 15px 40px rgba(0,0,0,0.6);
-}
-/* CARD WRAPPER */
-.card-visual{
-  margin-top:40px;
-  display:flex;
-  justify-content:center;
-}
-
-/* CARD DESIGN */
-.credit-card{
-  width:320px;
-  height:200px;
-  background:linear-gradient(135deg,#0a0a0a,#1a1a1a);
-  border-radius:18px;
-  position:relative;
-  padding:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.8);
-  overflow:hidden;
-}
-
-/* LEFT SIDE BRAND */
-.card-left{
-  position:absolute;
-  left:10px;
-  top:20px;
-  transform:rotate(-90deg);
-  transform-origin:left top;
+/* TOP ROW */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* BRAND TEXT */
-.brand-text{
-  color:#ccc;
-  font-size:12px;
-  letter-spacing:2px;
+.brand {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #7CFFC4;
 }
 
-/* LOGO */
-.brand-logo{
-  margin-top:8px;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#2EC4B6,#7CFFC4);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#000;
-  font-weight:bold;
+/* MASTERCARD STYLE */
+.mastercard {
+  position: relative;
+  width: 50px;
+  height: 30px;
+}
+
+.circle {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.red {
+  background: #ff3b3b;
+  left: 0;
+}
+
+.yellow {
+  background: #ffb300;
+  right: 0;
+  opacity: 0.9;
 }
 
 /* CARD NUMBER */
-.card-number{
-  position:absolute;
-  bottom:60px;
-  left:20px;
-  color:#ccc;
-  font-size:14px;
-  letter-spacing:2px;
+.card-number {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #ccc;
 }
 
 /* VALID TEXT */
-.card-valid{
-  position:absolute;
-  bottom:30px;
-  right:20px;
-  color:#aaa;
-  font-size:12px;
+.card-valid {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  font-size: 12px;
+  color: #aaa;
 }
+
+/* =========================
+   LEFT SIDE BRAND (OPTIONAL)
+========================= */
+.card-left {
+  position: absolute;
+  left: 10px;
+  top: 20px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+}
+
+.brand-text {
+  color: #ccc;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.brand-logo {
+  margin-top: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#2EC4B6,#7CFFC4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+}
+
+/* =========================
+   DARK BUTTON
+========================= */
+.dark-btn {
+  display: inline-block;
+  padding: 14px 35px;
+  background: #000;
+  color: #fff;
+  border-radius: 40px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+}
+
+.dark-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+   }
 
 .investment-section {
   background: #0b0b0b;
