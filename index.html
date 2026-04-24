@@ -97,32 +97,64 @@ nav{
   max-width:600px;
 }
 
-/* BUTTONS */
-.buttons{
-  margin-top:30px;
-  display:flex;
-  gap:20px;
+  .buttons {
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
-.btn-primary{
-  padding:14px 30px;
-  border-radius:30px;
-  background:linear-gradient(135deg,#7CFFC4,#2EC4B6);
-  color:#000;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-  transition:0.3s;
+/* 🔥 PREMIUM MAIN BUTTON */
+.btn-primary {
+  display: inline-block;
+  padding: 16px 36px;
+  border-radius: 40px;
+  text-decoration: none;
+
+  /* gradient */
+  background: linear-gradient(135deg,#6ee7b7,#3ecf8e);
+
+  color: #000;
+  font-weight: 600;
+  font-size: 16px;
+
+  /* depth (this is what you're missing) */
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.3),
+    0 8px 20px rgba(0,0,0,0.6),
+    0 0 25px rgba(124,255,196,0.25);
+
+  border: 2px solid rgba(0,0,0,0.6);
+
+  transition: all 0.3s ease;
 }
 
-.btn-primary:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px rgba(124,255,196,0.5);
+/* hover = smooth lift */
+.btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.4),
+    0 12px 30px rgba(0,0,0,0.7),
+    0 0 35px rgba(124,255,196,0.4);
 }
 
-.btn-secondary{
-  color:#ccc;
-  cursor:pointer;
+/* click press effect */
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* 🔥 LOGIN STYLE */
+.btn-secondary {
+  display: inline-block;
+  text-decoration: none;
+  color: #ccc;
+  font-size: 16px;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  color: #fff;
 }
 
 /* CARDS SECTION */
@@ -1258,10 +1290,9 @@ body {
   </p>
 
   <div class="buttons">
-    <button class="btn-primary">Get Started</button>
-    <span class="btn-secondary">Login</span>
+  <a href="register.html" class="btn-primary">Get started</a>
+  <a href="login.html" class="btn-secondary">Login</a>
   </div>
-</section>
 
 <section class="analytics">
 
