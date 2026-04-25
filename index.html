@@ -56,74 +56,93 @@ nav{
   cursor:pointer;
 }
 
-/* HERO */
-.hero{
-  height:90vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  text-align:center;
-  padding:20px;
-  position:relative;
+  .hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  text-align: center;
+  padding: 20px;
 }
 
-/* subtle background animation */
-.hero::before{
-  content:"";
-  position:absolute;
-  width:500px;
-  height:500px;
-  background:radial-gradient(circle, rgba(124,255,196,0.2), transparent);
-  filter:blur(120px);
-  animation:float 6s ease-in-out infinite;
+/* 🔥 HEADLINE (THIS FIXES 4 LINES) */
+.hero h1 {
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1.3;
+
+  max-width: 420px; /* 🔥 THIS FORCES 4 LINES */
+  color: #eaeaea;
+
+  margin-bottom: 20px;
 }
 
-@keyframes float{
-  0%,100%{ transform:translateY(0);}
-  50%{ transform:translateY(-40px);}
+/* SUBTEXT */
+.hero p {
+  font-size: 16px;
+  color: #a8a8a8;
+
+  max-width: 420px;
+  line-height: 1.6;
+
+  margin-bottom: 35px;
 }
 
-.hero h1{
-  font-size:40px;
-  font-weight:300;
-  line-height:1.4;
-  max-width:700px;
-}
-
-.hero p{
-  margin-top:20px;
-  color:#aaa;
-  max-width:600px;
-}
 
 /* BUTTONS */
-.buttons{
-  margin-top:30px;
-  display:flex;
-  gap:20px;
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 25px;
 }
 
-.btn-primary{
-  padding:14px 30px;
-  border-radius:30px;
-  background:linear-gradient(135deg,#7CFFC4,#2EC4B6);
-  color:#000;
-  font-weight:600;
-  border:none;
-  cursor:pointer;
-  transition:0.3s;
+/* 🔥 EXACT STYLE */
+.btn-primary {
+  padding: 16px 38px;
+  border-radius: 50px;
+
+  background: linear-gradient(135deg, #7ee0b5, #4bbf8f);
+
+  color: #0a0a0a;
+  font-size: 16px;
+  font-weight: 500;
+
+  text-decoration: none;
+
+  box-shadow:
+    inset 0 2px 4px rgba(255,255,255,0.3),
+    0 10px 25px rgba(0,0,0,0.6);
+
+  transition: 0.3s ease;
 }
 
-.btn-primary:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px rgba(124,255,196,0.5);
+/* hover */
+.btn-primary:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    inset 0 2px 6px rgba(255,255,255,0.4),
+    0 15px 35px rgba(0,0,0,0.7);
 }
 
-.btn-secondary{
-  color:#ccc;
-  cursor:pointer;
+/* press */
+.btn-primary:active {
+  transform: scale(0.96);
 }
+
+/* LOGIN */
+.btn-secondary {
+  color: #cfcfcf;
+  font-size: 16px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.btn-secondary:hover {
+  color: #fff;
+}
+  
 
 /* CARDS SECTION */
 .section{
