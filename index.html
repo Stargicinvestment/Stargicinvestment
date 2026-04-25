@@ -89,6 +89,17 @@ nav{
 
   margin-bottom: 35px;
 }
+  .hero::before {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+
+  background: radial-gradient(circle, rgba(0,255,180,0.15), transparent);
+  filter: blur(120px);
+
+  z-index: -1;
+  }
 
 
 /* BUTTONS */
