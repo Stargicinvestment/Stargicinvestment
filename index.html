@@ -56,103 +56,74 @@ nav{
   cursor:pointer;
 }
 
-  .hero {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  text-align: center;
-  padding: 20px;
+/* HERO */
+.hero{
+  height:90vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:20px;
+  position:relative;
 }
 
-/* 🔥 HEADLINE (THIS FIXES 4 LINES) */
-.hero h1 {
-  font-size: 42px;
-  font-weight: 300;
-  line-height: 1.3;
-
-  max-width: 420px; /* 🔥 THIS FORCES 4 LINES */
-  color: #eaeaea;
-
-  margin-bottom: 20px;
+/* subtle background animation */
+.hero::before{
+  content:"";
+  position:absolute;
+  width:500px;
+  height:500px;
+  background:radial-gradient(circle, rgba(124,255,196,0.2), transparent);
+  filter:blur(120px);
+  animation:float 6s ease-in-out infinite;
 }
 
-/* SUBTEXT */
-.hero p {
-  font-size: 16px;
-  color: #a8a8a8;
-
-  max-width: 420px;
-  line-height: 1.6;
-
-  margin-bottom: 35px;
+@keyframes float{
+  0%,100%{ transform:translateY(0);}
+  50%{ transform:translateY(-40px);}
 }
-  .hero::before {
-  content: "";
-  position: absolute;
-  width: 500px;
-  height: 500px;
 
-  background: radial-gradient(circle, rgba(0,255,180,0.15), transparent);
-  filter: blur(120px);
+.hero h1{
+  font-size:40px;
+  font-weight:300;
+  line-height:1.4;
+  max-width:700px;
+}
 
-  z-index: -1;
-  }
+.hero p{
+  margin-top:20px;
+  color:#aaa;
+  max-width:600px;
+}
 
 /* BUTTONS */
-.buttons {
-  display: flex;
-  align-items: center;
-  gap: 25px;
+.buttons{
+  margin-top:30px;
+  display:flex;
+  gap:20px;
 }
 
-/* 🔥 EXACT STYLE */
-.btn-primary {
-  padding: 16px 38px;
-  border-radius: 50px;
-
-  background: linear-gradient(135deg, #7ee0b5, #4bbf8f);
-
-  color: #0a0a0a;
-  font-size: 16px;
-  font-weight: 500;
-
-  text-decoration: none;
-
-  box-shadow:
-    inset 0 2px 4px rgba(255,255,255,0.3),
-    0 10px 25px rgba(0,0,0,0.6);
-
-  transition: 0.3s ease;
+.btn-primary{
+  padding:14px 30px;
+  border-radius:30px;
+  background:linear-gradient(135deg,#7CFFC4,#2EC4B6);
+  color:#000;
+  font-weight:600;
+  border:none;
+  cursor:pointer;
+  transition:0.3s;
 }
 
-/* hover */
-.btn-primary:hover {
-  transform: translateY(-3px);
-  box-shadow:
-    inset 0 2px 6px rgba(255,255,255,0.4),
-    0 15px 35px rgba(0,0,0,0.7);
+.btn-primary:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 20px rgba(124,255,196,0.5);
 }
 
-/* press */
-.btn-primary:active {
-  transform: scale(0.96);
+.btn-secondary{
+  color:#ccc;
+  cursor:pointer;
 }
-
-/* LOGIN */
-.btn-secondary {
-  color: #cfcfcf;
-  font-size: 16px;
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.btn-secondary:hover {
-  color: #fff;
-}
-  
 
 /* CARDS SECTION */
 .section{
@@ -1275,25 +1246,22 @@ body {
 <body>
 
 <nav>
-  <div class="logo">Stargicinvestment</div>
-  <div class="menu">≡</div>
+  <div class="logo reveal">Stargicinvestment</div>
+  <div class="menu reveal">≡</div>
 </nav>
 
-  <section class="hero card reveal">
-  <h1>
-    Profitability is essential; it defines the future of smart investments.
-  </h1>
-
+<section class="hero reveal">
+  <h1>Profitability is essential; it defines the future of smart investments.</h1>
   <p>
     Stargicinvestment provides secure and advanced investment solutions across
     cryptocurrency, forex, stocks, and real estate.
   </p>
 
   <div class="buttons reveal">
-    <a href="register.html" class="btn-primary">Get Started</a>
-    <a href="login.html" class="btn-secondary">Login</a>
+    <button class="btn-primary">Get Started</button>
+    <span class="btn-secondary">Login</span>
   </div>
-  </section>
+</section>
 
 <section class="analytics">
 
@@ -1415,13 +1383,13 @@ body {
   </div>
 
 </section>
-<section class="how-section">
+<section class="how-section reveal">
   <h2>How it works</h2>
 
-  <div class="steps-box reveal">
+  <div class="steps-box">
     <div class="step active" data-step="1">Create Account</div>
-    <div class="step reveal" data-step="2">Make Deposit</div>
-    <div class="step reveal" data-step="3">Start Trading</div>
+    <div class="step" data-step="2">Make Deposit</div>
+    <div class="step" data-step="3">Start Trading</div>
   </div>
 
   <div class="step-content active" id="step-1">
@@ -1442,7 +1410,8 @@ body {
 <section class="features-section reveal">
 
   <!-- CARD 1 -->
-  <div class="feature-cardclass="icon-circle">
+  <div class="feature-card">
+    <div class="icon-circle">
       <img src="images/chart.png" alt="">
     </div>
     <h3>Investment Algorithm</h3>
@@ -1452,7 +1421,8 @@ body {
   </div>
 
   <!-- CARD 2 -->
-  <div class="feature-card">  <div class="icon-circle">
+  <div class="feature-card">
+    <div class="icon-circle">
       <img src="images/ai.png" alt="">
     </div>
     <h3>Automated</h3>
@@ -1462,7 +1432,8 @@ body {
   </div>
 
   <!-- CARD 3 -->
-  <div class="feature-card">  <div class="icon-circle">
+  <div class="feature-card">
+    <div class="icon-circle">
       <img src="images/security.png" alt="">
     </div>
     <h3>Reliable & Safe</h3>
@@ -1521,98 +1492,98 @@ body {
   <div class="investment-grid">
 
     <!-- Real Estate -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80" 
           alt="Real Estate"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Real Estate</h3>
         <p>Invest in high-value properties and infrastructure projects with consistent long-term returns and asset appreciation.</p>
       </div>
     </div>
 
     <!-- Gold -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80" 
           alt="Gold"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Gold</h3>
         <p>A trusted store of value, gold offers stability and protection against inflation in uncertain economic conditions.</p>
       </div>
     </div>
 
     <!-- Insurance -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" 
           alt="Insurance"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Insurance</h3>
         <p>Secure your financial future with investment-backed insurance solutions designed for risk protection and growth.</p>
       </div>
     </div>
 
     <!-- Oil & Gas -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?w=800&q=80" 
           alt="Oil & Gas"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Oil & Gas</h3>
         <p>Capitalize on global energy demand through strategic investments in oil and gas production and distribution.</p>
       </div>
     </div>
 
     <!-- Bitcoin Mining -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80" 
           alt="Bitcoin Mining"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Bitcoin Mining</h3>
         <p>Earn passive income through advanced crypto mining infrastructure powered by cutting-edge technology.</p>
       </div>
     </div>
 
     <!-- Forex Trading -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1640161704729-cbe966a08476?w=800&q=80" 
           alt="Forex Trading"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Forex Trading</h3>
         <p>Access the world’s largest financial market with AI-driven forex trading strategies and expert insights.</p>
       </div>
     </div>
 
     <!-- Agriculture -->
-    <div class="investment-card reveal">
+    <div class="investment-card">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" 
           alt="Agriculture"
           loading="lazy">
       </div>
-      <div class="card-content reveal">
+      <div class="card-content">
         <h3>Agriculture</h3>
         <p>Invest in modern agriculture and food production systems with sustainable and profitable returns.</p>
       </div>
@@ -1624,92 +1595,92 @@ body {
 <section class="faq-section reveal">
    <h2 class="faq-title reveal">Frequently Asked Questions</h2>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       What is Stargicinvestment?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Stargicinvestment is a modern investment platform offering opportunities in crypto, forex, real estate and more.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       How do I create my account?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Simply click “Start Investing”, fill in your details and verify your email.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       How do I make a deposit?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Log in to your dashboard, select deposit, choose your preferred payment method and follow the instructions provided.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       How long does a deposit take before it reflects on my dashboard?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Most deposits reflect instantly. However, depending on the payment method, it may take a few minutes to be confirmed.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       How do I make a withdrawal?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Go to your dashboard, click on withdrawal, enter the amount, and confirm your request. Processing will begin immediately.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       How long does it take to process my withdrawal?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Withdrawals are typically processed within a few hours, but in some cases may take up to 24 hours depending on verification and network conditions.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       Can I have more than one account?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       No, users are allowed to operate only one account. Multiple accounts may lead to suspension.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       Is this company properly registered?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       Yes, Stargicinvestment operates under regulatory compliance and follows standard financial and security protocols.
     </div>
   </div>
 
-  <div class="faq-item reveal">
-    <div class="faq-question reveal">
+  <div class="faq-item">
+    <div class="faq-question">
       How many times can I make a deposit?
       <span>+</span>
     </div>
-    <div class="faq-answer reveal">
+    <div class="faq-answer">
       You can make deposits as many times as you want. There is no strict limit, as long as it meets the minimum requirement.
     </div>
   </div>
@@ -1728,7 +1699,7 @@ body {
   </div>
 
   <!-- Block 2 -->
-  <div class="premium-block reveal">
+  <div class="premium-block">
     <div class="premium-image img-style-2"></div>
     <h2>Grow Your Wealth with Us</h2>
     <p>
@@ -1738,7 +1709,7 @@ body {
   </div>
 
   <!-- Block 3 -->
-  <div class="premium-block reveal">
+  <div class="premium-block">
     <div class="premium-image img-style-3"></div>
     <h2>Highly Skilled Team of Expert Crypto Traders</h2>
     <p>
@@ -1753,12 +1724,12 @@ body {
   </svg>
 </div>
 
-      <div class="contact-item reveal">
+      <div class="contact-item">
         <i class="fa-regular fa-envelope"></i>
         <span>support@stargicinvestment.com</span>
       </div>
 
-<div class="icon-box reveal">
+<div class="icon-box">
   <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
     <path d="M14 27s10-9 10-15a10 10 0 10-20 0c0 6 10 15 10 15z"/>
     <circle cx="14" cy="12" r="3"/>
@@ -1775,16 +1746,16 @@ body {
 </form>
 
   <!-- Footer Grid -->
-  <div class="footer-grid card reveal">
+  <div class="footer-grid">
 
     <!-- Brand -->
-    <div class="footer-col brand card reveal">
+    <div class="footer-col brand">
       <h3>Stargicinvestment</h3>
       <p>Delivering modern investment solutions across crypto, forex, real estate, and global markets.</p>
     </div>
 
     <!-- Main Pages -->
-    <div class="footer-col reveal">
+    <div class="footer-col">
       <h4>Main Pages</h4>
       <a href="#">Home</a>
       <a href="#">About</a>
@@ -1793,7 +1764,7 @@ body {
     </div>
 
     <!-- Legal -->
-    <div class="footer-col reveal">
+    <div class="footer-col">
       <h4>Legal</h4>
       <a href="#">Login</a>
       <a href="#">Signup</a>
@@ -1802,21 +1773,12 @@ body {
       <a href="#">Terms & Conditions</a>
     </div>
 
-    <!-- Contact -->
-    <div class="footer-col contact reveal">
-      <h4>Contact</h4>
-
-      <div class="contact-item reveal">
-        <i class="fa-solid fa-location-dot"></i>
-        <span>Company Address Here</span>
-      </div>
-
     </div>
 
   </div>
 
   <!-- Bottom -->
-  <div class="footer-bottom reveal">
+  <div class="footer-bottom">
     © 2026 Stargicinvestment. All rights reserved.
   </div>
 
