@@ -1125,34 +1125,47 @@ body {
   padding: 80px 20px 40px;
   font-family: 'Poppins', sans-serif;
 }
-
-.newsletter-box {
+/* NEWSLETTER WRAPPER */
+.newsletter {
+  max-width: 400px;
+  margin: 30px auto;
   display: flex;
-  gap: 10px;
-  background: #111;
-  padding: 8px;
-  border-radius: 50px;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+/* INPUT */
+.newsletter input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 40px;
   border: 1px solid rgba(0,255,150,0.3);
-}
-
-.newsletter-box input {
-  flex: 1;
-  background: transparent;
-  border: none;
+  background: #111;
   color: #fff;
-  padding: 14px;
   outline: none;
+  font-size: 15px;
 }
 
-.newsletter-box button {
-  background: linear-gradient(135deg, #00ffae, #00c3ff);
+/* BUTTON */
+.subscribe-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 40px;
   border: none;
-  padding: 12px 20px;
-  border-radius: 50px;
+  cursor: pointer;
+
+  background: linear-gradient(135deg, #00ffae, #00c3ff);
   color: #000;
   font-weight: 600;
-  cursor: pointer;
+
+  transition: 0.3s ease;
 }
+
+/* HOVER */
+.subscribe-btn:hover {
+  transform: translateY(-2px);
+  }
 
 /* GRID */
 .footer-grid {
@@ -1740,10 +1753,13 @@ body {
 
 <footer class="footer reveal">
 
-<form id="newsletterForm" class="newsletter-box">
-  <input id="emailInput" type="email" placeholder="Enter your email" required>
-  <button type="submit">Subscribe</button>
-</form>
+<div class="newsletter">
+  
+  <input type="email" placeholder="Enter your email" />
+
+  <button class="subscribe-btn">Subscribe</button>
+
+</div>
 
   <!-- Footer Grid -->
   <div class="footer-grid">
