@@ -75,7 +75,7 @@ nav{
   width:500px;
   height:500px;
   background:radial-gradient(circle, rgba(124,255,196,0.2), transparent);
-  filter:blur(120px);
+  filter:blur(60px);
   animation:float 6s ease-in-out infinite;
 }
 
@@ -1068,17 +1068,15 @@ body {
 }
 
 /* Animations */
-@keyframes fadeUp {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.fade-up {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.8s cubic-bezier(0.25, 1, 0.3, 1);
 }
 
-@keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-15px); }
-  100% { transform: translateY(0px); }
+.fade-up.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* SECTION */
@@ -1283,25 +1281,30 @@ body {
   }
 }
 
-/* Fix click issues */
-.dots{
-  pointer-events:none;
+html {
+  scroll-behavior: smooth;
 }
 
-.hero::before{
-  pointer-events:none;
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: #0a0a0f;
+  color: #fff;
+  overflow-x: hidden;
 }
 
-.hero-content{
-  position:relative;
-  z-index:2;
+/* GPU acceleration base */
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  box-sizing: border-box;
 }
 
-.buttons a{
-  position:relative;
-  z-index:3;
+/* Smooth performance layer */
+.gpu {
+  transform: translateZ(0);
+  will-change: transform, opacity;
 }
-
 
 
 </style>
@@ -1963,5 +1966,7 @@ window.smartsupp||(function(d) {
     </script>
 </body>
 </html>
+  
+  
   
   
