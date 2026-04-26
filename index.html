@@ -1283,6 +1283,25 @@ body {
   }
 }
 
+/* Fix click issues */
+.dots{
+  pointer-events:none;
+}
+
+.hero::before{
+  pointer-events:none;
+}
+
+.hero-content{
+  position:relative;
+  z-index:2;
+}
+
+.buttons a{
+  position:relative;
+  z-index:3;
+}
+
 
 
 </style>
