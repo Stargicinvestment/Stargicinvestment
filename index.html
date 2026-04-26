@@ -8,63 +8,102 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins', sans-serif;
+/* =========================
+   GLOBAL RESET (CLEAN)
+========================= */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+/* =========================
+   BODY
+========================= */
+body {
+  background: #050505;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* Fix weird spacing issues */
+html {
+  scroll-behavior: smooth;
+}
+
+/* =========================
+   IMAGES
+========================= */
 img {
   max-width: 100%;
   height: auto;
+  display: block; /* 🔥 removes tiny gaps */
 }
 
-body{
-  background:#050505;
-  color:#fff;
-  overflow-x:hidden;
-}
+/* =========================
+   NAVBAR (IMPROVED)
+========================= */
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-html, body {
+  padding: 16px 20px; /* slightly tighter */
   width: 100%;
-  overflow-x: hidden;
+
+  position: relative; /* prevents overlap bugs */
+  z-index: 10;
 }
 
-/* NAVBAR */
-nav{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:20px;
+/* LOGO */
+.logo {
+  font-size: 20px;
+  font-weight: 600;
+  color: #7CFFC4;
+  letter-spacing: 1px;
 }
 
-.logo{
-  font-size:20px;
-  font-weight:600;
-  color:#7CFFC4;
+/* MENU BUTTON */
+.menu {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(8px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  cursor: pointer;
+  transition: 0.3s ease;
 }
 
-.menu{
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:rgba(255,255,255,0.05);
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  cursor:pointer;
+/* HOVER EFFECT */
+.menu:hover {
+  background: rgba(124,255,196,0.15);
+  transform: scale(1.05);
 }
 
-/* HERO */
+   /* HERO (FIXED) */
 .hero{
-  height:90vh;
+  min-height: 90vh; /* 🔥 change from height → min-height */
+  
   display:flex;
   flex-direction:column;
-  justify-content:center;
+
+  justify-content:flex-start; /* 🔥 was center */
   align-items:center;
+
   text-align:center;
-  padding:20px;
+  padding:120px 20px 60px; /* 🔥 gives proper top spacing */
+
   position:relative;
 }
 
@@ -75,15 +114,25 @@ nav{
   width:500px;
   height:500px;
   background:radial-gradient(circle, rgba(124,255,196,0.2), transparent);
-  filter:blur(70px);
+  filter:blur(120px);
   animation:float 6s ease-in-out infinite;
+
+  z-index:0; /* 🔥 prevent overlay issues */
 }
 
+/* keep content above glow */
+.hero > *{
+  position:relative;
+  z-index:1;
+}
+
+/* animation */
 @keyframes float{
   0%,100%{ transform:translateY(0);}
   50%{ transform:translateY(-40px);}
 }
 
+/* title */
 .hero h1{
   font-size:40px;
   font-weight:300;
@@ -91,13 +140,7 @@ nav{
   max-width:700px;
 }
 
-.hero p{
-  margin-top:20px;
-  color:#aaa;
-  max-width:600px;
-}
-
-/* BUTTON WRAPPER */
+   /* BUTTON WRAPPER */
 .buttons {
   margin-top: 35px;
   display: flex;
@@ -154,356 +197,188 @@ nav{
 
 .btn-secondary:hover {
   color: #ffffff;
+   }
+
+/* =========================
+   PREMIUM STACKED CARDS (FEATURES / WHY SECTION)
+========================= */
+.feature-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+/* INDIVIDUAL FEATURE CARD */
+.feature-card {
+  background: #111;
+  border-radius: 22px;
+  padding: 28px 22px;
+  text-align: center;
+
+  border: 1px solid rgba(255,255,255,0.05);
+
+  box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+  transition: all 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(124,255,196,0.2);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+}
+
+.feature-card h3 {
+  color: #fff;
+  font-size: 22px;
+  margin-bottom: 12px;
+  font-weight: 500;
+}
+
+.feature-card p {
+  color: #bdbdbd;
+  font-size: 15px;
+  line-height: 1.7;
 }
 
 
-/* CARDS SECTION */
-.section{
-  padding:60px 20px;
+/* =========================
+   GRID CARDS (INVESTMENTS / ANALYTICS)
+========================= */
+.grid-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
 }
 
-.cards{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-  gap:20px;
+/* INDIVIDUAL GRID CARD */
+.card {
+  background: rgba(255,255,255,0.03);
+  border-radius: 15px;
+  padding: 20px;
+
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.05);
+
+  transition: all 0.3s ease;
 }
 
-.card{
-  background:rgba(255,255,255,0.03);
-  border-radius:15px;
-  padding:20px;
-  backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,0.05);
-  transition:0.3s;
+.card:hover {
+  transform: translateY(-10px);
+  border-color: #7CFFC4;
 }
 
-.card:hover{
-  transform:translateY(-10px);
-  border-color:#7CFFC4;
+.card h3 {
+  margin-bottom: 15px;
+  font-weight: 500;
+  color: #7CFFC4;
 }
 
-.card h3{
-  margin-bottom:10px;
-  color:#7CFFC4;
+
+/* =========================
+   ANALYTICS ELEMENTS
+========================= */
+.analytics {
+  padding: 60px 20px;
+  display: grid;
+  gap: 20px;
 }
 
-/* STATS */
-.stats{
-  display:flex;
-  justify-content:space-around;
-  margin-top:40px;
-  flex-wrap:wrap;
-  gap:20px;
+.map {
+  width: 100%;
+  opacity: 0.15;
+  filter: brightness(0) invert(1);
+  margin-bottom: 15px;
 }
 
-.stat{
-  text-align:center;
+.row {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  margin-top: 10px;
 }
 
-.stat h2{
-  color:#7CFFC4;
+.line {
+  height: 5px;
+  background: #222;
+  border-radius: 10px;
+  overflow: hidden;
 }
 
-/* FOOTER */
-footer{
-  text-align:center;
-  padding:20px;
-  color:#777;
-}
-/* SECTION */
-.analytics{
-  padding:60px 20px;
-  display:grid;
-  gap:20px;
-}
-
-/* TITLE */
-.card h3{
-  margin-bottom:20px;
-  font-weight:500;
-  color:#fff;
-}
-
-/* MAP */
-.map{
-  width:100%;
-  opacity:0.15;
-  filter:brightness(0) invert(1);
-  margin-bottom:15px;
-}
-
-/* ROW */
-.row{
-  display:flex;
-  justify-content:space-between;
-  font-size:14px;
-  margin-top:10px;
-}
-
-/* LINE */
-.line{
-  height:5px;
-  background:#222;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.line div{
-  height:100%;
-  background:linear-gradient(to right,#2EC4B6,#7CFFC4);
+.line div {
+  height: 100%;
+  background: linear-gradient(to right,#2EC4B6,#7CFFC4);
 }
 
 /* CHART */
-.chart{
-  display:flex;
-  justify-content:space-around;
-  align-items:flex-end;
-  height:180px;
-  margin-top:20px;
+.chart {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  height: 180px;
+  margin-top: 20px;
 }
 
-/* BARS */
-.bar{
-  width:26px;
-  border-radius:8px;
-  background:linear-gradient(to top,#2EC4B6,#7CFFC4);
+.bar {
+  width: 26px;
+  border-radius: 8px;
+  background: linear-gradient(to top,#2EC4B6,#7CFFC4);
 }
 
-/* LABELS */
-.bar-group{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+.bar-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.bar-group p{
-  margin-top:8px;
-  color:#aaa;
-  font-size:13px;
+.bar-group p {
+  margin-top: 8px;
+  color: #aaa;
+  font-size: 13px;
 }
 
-/* SECTION */
-.green-section{
-  background:linear-gradient(135deg,#5fd3a8,#7CFFC4);
-  padding:80px 20px;
-  display:flex;
-  justify-content:center;
-  text-align:center;
+
+/* =========================
+   STATS
+========================= */
+.stats {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 40px;
+  flex-wrap: wrap;
+  gap: 20px;
 }
 
-/* CONTENT WIDTH */
-.green-section .content{
-  max-width:600px;
+.stat {
+  text-align: center;
 }
 
-/* TITLE */
-.green-section h1{
-  font-size:30px;
-  font-weight:400;
-  color:#000;
-  line-height:1.4;
-  margin-bottom:25px;
+.stat h2 {
+  color: #7CFFC4;
 }
 
-/* TEXT */
-.green-section p{
-  color:#111;
-  font-size:14px;
-  line-height:1.7;
-  margin-bottom:20px;
+
+/* =========================
+   GENERAL SECTION SPACING
+========================= */
+.section {
+  padding: 60px 20px;
 }
 
-/* WHY SECTION */
-.why-section{
-  background:#000;
-  padding:80px 20px;
-  text-align:center;
+
+/* =========================
+   FOOTER
+========================= */
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #777;
 }
 
-/* CONTAINER */
-.why-container{
-  max-width:500px;
-  margin:0 auto;
-}
-
-/* TITLE */
-.why-section h2{
-  color:#fff;
-  font-size:32px;
-  font-weight:300;
-  margin-bottom:20px;
-}
-
-/* BUTTON */
-.cta-btn{
-  display:inline-block;
-  margin-bottom:50px;
-  padding:14px 32px;
-  border-radius:40px;
-
-  /* MAIN GRADIENT */
-  background:linear-gradient(135deg,#38d39f,#7CFFC4);
-
-  color:#000;
-  font-weight:600;
-  text-decoration:none;
-
-  /* DARK OUTLINE (this is what you're missing) */
-  border:2px solid rgba(0,0,0,0.6);
-
-  /* DEPTH SHADOW */
-  box-shadow:
-    0 8px 20px rgba(0,0,0,0.6),
-    0 0 25px rgba(124,255,196,0.25);
-
-  transition:all 0.3s ease;
-}
-
-/* HOVER EFFECT */
-.cta-btn:hover{
-  transform:translateY(-3px) scale(1.02);
-
-  box-shadow:
-    0 12px 30px rgba(0,0,0,0.7),
-    0 0 35px rgba(124,255,196,0.4);
-}
-
-/* CARDS */
-.cards{
-  display:flex;
-  flex-direction:column;
-  gap:25px;
-}
-
-/* CARD */
-.feature-card{
-  background:#111;
-  border-radius:22px;
-  padding:28px 22px;
-  text-align:center;
-  box-shadow:0 10px 40px rgba(0,0,0,0.8);
-  border:1px solid rgba(255,255,255,0.05);
-  transition:all 0.3s ease;
-}
-
-.feature-card:hover{
-  transform:translateY(-5px);
-  border:1px solid rgba(124,255,196,0.15);
-}
-
-/* CARD TITLE */
-.feature-card h3{
-  color:#fff;
-  font-size:22px;
-  margin-bottom:12px;
-}
-
-/* CARD TEXT */
-.feature-card p{
-  color:#bdbdbd;
-  font-size:15px;
-  line-height:1.6;
-}
-.how-section{
-  text-align:center;
-  padding:80px 20px;
-  background:#000;
-}
-
-.how-section h2{
-  color:#fff;
-  font-size:34px;
-  font-weight:300;
-  margin-bottom:40px;
-}
-
-/* STEPS BOX */
-.steps-box{
-  background:#1a1a1a;
-  border-radius:25px;
-  padding:10px;
-  max-width:320px;
-  margin:0 auto 40px;
-}
-
-/* STEP BUTTON */
-.step{
-  padding:14px;
-  border-radius:30px;
-  color:#aaa;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-/* ACTIVE STEP */
-.step.active{
-  background:linear-gradient(135deg,#38d39f,#7CFFC4);
-  color:#000;
-  font-weight:600;
-}
-
-/* CONTENT */
-.step-content{
-  display:none;
-  max-width:400px;
-  margin:0 auto;
-}
-
-.step-content.active{
-  display:block;
-  animation:fadeUp 0.4s ease;
-}
-
-.step-content h3{
-  color:#fff;
-  font-size:26px;
-  margin-bottom:15px;
-}
-
-.step-content p{
-  color:#bdbdbd;
-  font-size:15px;
-  line-height:1.6;
-}
-
-/* SMOOTH ANIMATION */
-@keyframes fadeUp{
-  from{
-    opacity:0;
-    transform:translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
-}
-/* SECTION */
-.features-section{
-  background:#000;
-  padding:60px 20px;
-  display:flex;
-  flex-direction:column;
-  gap:30px;
-}
-
-/* CARD */
-.feature-card{
-  background:#141414;
-  border-radius:25px;
-  padding:30px 22px;
-  text-align:left;
-  position:relative;
-  box-shadow:0 20px 60px rgba(0,0,0,0.9);
-  border:1px solid rgba(255,255,255,0.04);
-  transition:0.3s ease;
-}
-
-.feature-card:hover{
-  transform:translateY(-5px);
-  border:1px solid rgba(124,255,196,0.15);
-}
-
-/* GREEN CIRCLE */
+/* =========================
+   GREEN ICON CIRCLE
+========================= */
 .icon-circle{
   width:90px;
   height:90px;
@@ -516,50 +391,22 @@ footer{
   box-shadow:0 0 40px rgba(46,196,182,0.25);
 }
 
-/* IMAGE INSIDE CIRCLE */
 .icon-circle img{
   width:40px;
   height:40px;
   opacity:0.9;
 }
 
-/* TITLE */
-.feature-card h3{
-  color:#fff;
-  font-size:24px;
-  margin-bottom:12px;
-  font-weight:500;
-}
-
-/* TEXT */
-.feature-card p{
-  color:#bdbdbd;
-  font-size:15px;
-  line-height:1.7;
-}
-/* SECTION BACKGROUND */
-/* SECTION BACKGROUND */
-/* RESET (fixes cutting issues globally) */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  overflow-x: hidden;
-  font-family: 'Poppins', sans-serif;
-}
-
-/* SECTION */
+/* =========================
+   OFFER SECTION (CLEAN)
+========================= */
 .offer-section {
   width: 100%;
   background: linear-gradient(135deg, #6fd3a7, #4fa3ff);
-  padding: 80px 20px;
+  padding: 60px 20px 80px; /* balanced spacing */
   text-align: center;
 }
 
-/* CONTAINER (controls width) */
 .offer-container {
   max-width: 650px;
   margin: 0 auto;
@@ -573,10 +420,10 @@ body {
   line-height: 1.3;
   margin-bottom: 20px;
 
-  /* THIS FIXES CUTTING */
   word-break: keep-all;
   overflow-wrap: break-word;
 }
+
 /* TEXT */
 .offer-container p {
   font-size: 15px;
@@ -595,7 +442,7 @@ body {
   border-radius: 30px;
   font-size: 15px;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: all 0.3s ease;
 }
 
 .cta-btn:hover {
@@ -603,7 +450,14 @@ body {
   background: #111;
 }
 
-/* CARD IMAGE */
+/* CARD VISUAL */
+.card-visual {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+}
+
+/* OPTIONAL IMAGE CARD (if used) */
 .card-box {
   margin-top: 40px;
 }
@@ -614,173 +468,147 @@ body {
   border-radius: 16px;
 }
 
-/* MOBILE FIX */
+/* MOBILE */
 @media (max-width: 768px) {
   .offer-container h1 {
     font-size: 24px;
   }
+   }
+
+
+
+/* =========================
+   CARD VISUAL WRAPPER
+========================= */
+.card-visual {
+  margin-top: 40px;
+  display: flex;
+  justify-content: center;
 }
 
-/* CARD CONTAINER */
-.card-visual{
-  margin-top:60px;
-  display:flex;
-  justify-content:center;
+/* =========================
+   CREDIT CARD DESIGN
+========================= */
+.credit-card {
+  width: 320px;
+  height: 200px;
+  background: linear-gradient(135deg,#0a0a0a,#1a1a1a);
+  border-radius: 18px;
+  position: relative;
+  padding: 20px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  overflow: hidden;
+  color: #fff;
 }
 
-/* CREDIT CARD DESIGN */
-.credit-card{
-  width:320px;
-  height:200px;
-  border-radius:20px;
-  padding:20px;
-  background:linear-gradient(145deg,#111,#222);
-  color:#fff;
-  box-shadow:0 20px 60px rgba(0,0,0,0.8);
-  position:relative;
-}
-
-/* TOP */
-.card-top{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-}
-
-.brand{
-  font-size:12px;
-  letter-spacing:2px;
-  color:#7CFFC4;
-}
-
-/* MASTERCARD STYLE */
-.mastercard{
-  position:relative;
-  width:50px;
-  height:30px;
-}
-
-.circle{
-  position:absolute;
-  width:25px;
-  height:25px;
-  border-radius:50%;
-}
-
-.red{
-  background:#ff3b3b;
-  left:0;
-}
-
-.yellow{
-  background:#ffb300;
-  right:0;
-  opacity:0.9;
-}
-
-/* CARD NUMBER */
-.card-number{
-  margin-top:40px;
-  font-size:18px;
-  letter-spacing:3px;
-  color:#ccc;
-}
-
-/* BOTTOM */
-.card-bottom{
-  position:absolute;
-  bottom:15px;
-  right:20px;
-  font-size:12px;
-  color:#aaa;
-}
-
-/* BUTTON (BLACK LIKE SCREENSHOT) */
-.dark-btn{
-  display:inline-block;
-  padding:14px 35px;
-  background:#000;
-  color:#fff;
-  border-radius:40px;
-  text-decoration:none;
-  font-size:16px;
-  font-weight:500;
-  box-shadow:0 10px 30px rgba(0,0,0,0.4);
-  transition:0.3s ease;
-}
-
-/* HOVER EFFECT */
-.dark-btn:hover{
-  transform:translateY(-3px);
-  box-shadow:0 15px 40px rgba(0,0,0,0.6);
-}
-/* CARD WRAPPER */
-.card-visual{
-  margin-top:40px;
-  display:flex;
-  justify-content:center;
-}
-
-/* CARD DESIGN */
-.credit-card{
-  width:320px;
-  height:200px;
-  background:linear-gradient(135deg,#0a0a0a,#1a1a1a);
-  border-radius:18px;
-  position:relative;
-  padding:20px;
-  box-shadow:0 20px 60px rgba(0,0,0,0.8);
-  overflow:hidden;
-}
-
-/* LEFT SIDE BRAND */
-.card-left{
-  position:absolute;
-  left:10px;
-  top:20px;
-  transform:rotate(-90deg);
-  transform-origin:left top;
+/* TOP ROW */
+.card-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 /* BRAND TEXT */
-.brand-text{
-  color:#ccc;
-  font-size:12px;
-  letter-spacing:2px;
+.brand {
+  font-size: 12px;
+  letter-spacing: 2px;
+  color: #7CFFC4;
 }
 
-/* LOGO */
-.brand-logo{
-  margin-top:8px;
-  width:40px;
-  height:40px;
-  border-radius:50%;
-  background:linear-gradient(135deg,#2EC4B6,#7CFFC4);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#000;
-  font-weight:bold;
+/* MASTERCARD STYLE */
+.mastercard {
+  position: relative;
+  width: 50px;
+  height: 30px;
+}
+
+.circle {
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+}
+
+.red {
+  background: #ff3b3b;
+  left: 0;
+}
+
+.yellow {
+  background: #ffb300;
+  right: 0;
+  opacity: 0.9;
 }
 
 /* CARD NUMBER */
-.card-number{
-  position:absolute;
-  bottom:60px;
-  left:20px;
-  color:#ccc;
-  font-size:14px;
-  letter-spacing:2px;
+.card-number {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: #ccc;
 }
 
 /* VALID TEXT */
-.card-valid{
-  position:absolute;
-  bottom:30px;
-  right:20px;
-  color:#aaa;
-  font-size:12px;
+.card-valid {
+  position: absolute;
+  bottom: 30px;
+  right: 20px;
+  font-size: 12px;
+  color: #aaa;
 }
+
+/* =========================
+   LEFT SIDE BRAND (OPTIONAL)
+========================= */
+.card-left {
+  position: absolute;
+  left: 10px;
+  top: 20px;
+  transform: rotate(-90deg);
+  transform-origin: left top;
+}
+
+.brand-text {
+  color: #ccc;
+  font-size: 12px;
+  letter-spacing: 2px;
+}
+
+.brand-logo {
+  margin-top: 8px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#2EC4B6,#7CFFC4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+  font-weight: bold;
+}
+
+/* =========================
+   DARK BUTTON
+========================= */
+.dark-btn {
+  display: inline-block;
+  padding: 14px 35px;
+  background: #000;
+  color: #fff;
+  border-radius: 40px;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+  transition: all 0.3s ease;
+}
+
+.dark-btn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+   }
 
 .investment-section {
   background: #0b0b0b;
@@ -887,7 +715,9 @@ body {
   opacity: 1;
 }
 
-/* SECTION */
+   /* =========================
+   FAQ SECTION
+========================= */
 .faq-section {
   padding: 80px 20px;
   max-width: 900px;
@@ -901,6 +731,7 @@ body {
   line-height: 1.4;
   margin-bottom: 50px;
   color: #e5e5e5;
+  text-align: center;
 }
 
 /* ITEM */
@@ -909,7 +740,12 @@ body {
   padding: 20px 0;
 }
 
-/* QUESTION */
+/* LAST BORDER */
+.faq-item:last-child {
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+
+/* QUESTION ROW (FIXED ALIGNMENT) */
 .faq-question {
   display: flex;
   justify-content: space-between;
@@ -917,7 +753,7 @@ body {
   font-size: 20px;
   cursor: pointer;
   color: #ddd;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .faq-question:hover {
@@ -926,46 +762,36 @@ body {
 
 /* PLUS ICON */
 .faq-question span {
-  font-size: 28px;
-  transition: 0.3s;
+  font-size: 26px;
+  transition: transform 0.3s ease;
 }
 
-/* ANSWER */
+/* ANSWER (SMOOTHER ANIMATION) */
 .faq-answer {
   max-height: 0;
   overflow: hidden;
   color: #aaa;
   font-size: 15px;
   line-height: 1.7;
-  transition: max-height 0.4s ease;
+
+  opacity: 0;
+  transform: translateY(10px);
+
+  transition: all 0.4s ease;
 }
 
 /* ACTIVE STATE */
 .faq-item.active .faq-answer {
-  max-height: 200px;
+  max-height: 300px; /* safer for longer text */
   margin-top: 15px;
+
+  opacity: 1;
+  transform: translateY(0);
 }
 
+/* ROTATE PLUS */
 .faq-item.active .faq-question span {
   transform: rotate(45deg);
-}
-
-/* LAST BORDER */
-.faq-item:last-child {
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-
-/* RESET */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: #000;
-  font-family: 'Poppins', sans-serif;
-  color: #fff;
 }
 
 /* Section */
@@ -1082,11 +908,22 @@ body {
   100% { transform: translateY(0px); }
 }
 
-/* SECTION */
+   /* =========================
+   CONTACT SECTION
+========================= */
 .contact-section{
   padding: 100px 20px;
-  text-align: center;
   background: #050505;
+  text-align: center;
+}
+
+/* GRID WRAPPER */
+.contact-wrapper{
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px,1fr));
+  gap: 40px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
 /* ITEM */
@@ -1095,18 +932,21 @@ body {
   margin: auto;
 }
 
-/* ICON BOX */
+/* ICON */
 .icon-box{
   width: 70px;
   height: 70px;
   margin: 0 auto 25px;
   border-radius: 50%;
+
   display: flex;
   align-items: center;
   justify-content: center;
 
   border: 1px solid rgba(255,255,255,0.1);
   background: rgba(255,255,255,0.02);
+
+  backdrop-filter: blur(10px);
 
   font-size: 26px;
   color: #dcdcdc;
@@ -1116,9 +956,9 @@ body {
 
 /* HOVER */
 .contact-item:hover .icon-box{
-  transform: translateY(-5px);
-  border-color: rgba(0,255,180,0.4);
-  box-shadow: 0 10px 40px rgba(0,255,180,0.1);
+  transform: translateY(-6px) scale(1.05);
+  border-color: rgba(0,255,180,0.5);
+  box-shadow: 0 15px 50px rgba(0,255,180,0.15);
 }
 
 /* TITLE */
@@ -1126,19 +966,19 @@ body {
   font-size: 20px;
   font-weight: 500;
   margin-bottom: 10px;
+  color: #fff;
 }
 
-/* EMAIL */
+/* MAIN TEXT */
 .contact-main{
   font-size: 16px;
   color: #bdbdbd;
-  letter-spacing: 0.5px;
 }
 
-/* ADDRESS */
+/* SUB TEXT */
 .contact-sub{
-  font-size: 14px;
-  color: #888;
+  font-size: 13px;
+  color: #777;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -1151,62 +991,26 @@ body {
   margin: 60px auto;
 }
 
+
+/* =========================
+   FOOTER
+========================= */
 .footer {
   background: #050505;
   color: #aaa;
   padding: 80px 20px 40px;
-  font-family: 'Poppins', sans-serif;
 }
-/* NEWSLETTER WRAPPER */
-.newsletter {
-  max-width: 400px;
-  margin: 30px auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 15px;
-}
-
-/* INPUT */
-.newsletter input {
-  width: 100%;
-  padding: 16px 20px;
-  border-radius: 40px;
-  border: 1px solid rgba(0,255,150,0.3);
-  background: #111;
-  color: #fff;
-  outline: none;
-  font-size: 15px;
-}
-
-/* BUTTON */
-.subscribe-btn {
-  width: 100%;
-  padding: 14px;
-  border-radius: 40px;
-  border: none;
-  cursor: pointer;
-
-  background: linear-gradient(135deg, #00ffae, #00c3ff);
-  color: #000;
-  font-weight: 600;
-
-  transition: 0.3s ease;
-}
-
-/* HOVER */
-.subscribe-btn:hover {
-  transform: translateY(-2px);
-  }
 
 /* GRID */
 .footer-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 40px;
+  max-width: 1100px;
+  margin: 0 auto;
 }
 
-/* Columns */
+/* COLUMNS */
 .footer-col h4 {
   color: #fff;
   margin-bottom: 15px;
@@ -1224,14 +1028,14 @@ body {
   color: #00ffae;
 }
 
-/* Brand */
+/* BRAND */
 .brand h3 {
   color: #fff;
   margin-bottom: 10px;
 }
 
-/* Contact */
-.contact-item {
+/* FIXED CONTACT (NO CONFLICT) */
+.footer-contact {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -1239,11 +1043,61 @@ body {
   color: #aaa;
 }
 
-.contact-item i {
+.footer-contact i {
   color: #00ffae;
 }
 
-/* Bottom */
+/* =========================
+   NEWSLETTER
+========================= */
+.newsletter-box {
+  display: flex;
+  gap: 10px;
+  background: #111;
+  padding: 8px;
+  border-radius: 50px;
+  border: 1px solid rgba(0,255,150,0.3);
+}
+
+.newsletter-box input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 14px;
+  outline: none;
+}
+
+.newsletter-box button {
+  background: linear-gradient(135deg, #00ffae, #00c3ff);
+  border: none;
+  padding: 12px 20px;
+  border-radius: 50px;
+  color: #000;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.newsletter-box button:hover{
+  transform: scale(1.05);
+}
+
+/* MOBILE FIX */
+@media (max-width: 600px){
+  .newsletter-box{
+    flex-direction: column;
+    border-radius: 20px;
+  }
+
+  .newsletter-box button{
+    width: 100%;
+  }
+}
+
+/* =========================
+   FOOTER BOTTOM
+========================= */
 .footer-bottom {
   text-align: center;
   margin-top: 50px;
@@ -1251,111 +1105,7 @@ body {
   padding-top: 20px;
   font-size: 14px;
   color: #666;
-}
-
-/* Base animation */
-.reveal {
-  opacity: 0;
-  transform: translateY(60px);
-  filter: blur(6px);
-  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-/* When visible */
-.reveal.show {
-  opacity: 1;
-  transform: translateY(0);
-  filter: blur(0);
-}
-
-/* Stagger delays */
-.reveal:nth-child(1) { transition-delay: 0.1s; }
-.reveal:nth-child(2) { transition-delay: 0.2s; }
-.reveal:nth-child(3) { transition-delay: 0.3s; }
-.reveal:nth-child(4) { transition-delay: 0.4s; }
-.reveal:nth-child(5) { transition-delay: 0.5s; }
-
-/* Faster on mobile */
-@media (max-width: 768px) {
-  .reveal {
-    transform: translateY(40px);
-    transition: all 0.7s ease;
-  }
-}
-
-  /* =========================
-   🚀 PERFORMANCE BOOST (ADD THIS)
-========================= */
-
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Better text rendering */
-body {
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-}
-
-/* GPU acceleration (very important) */
-.hero,
-.hero-content,
-.footer,
-.btn-primary,
-.btn-secondary,
-.dots {
-  transform: translateZ(0);
-  backface-visibility: hidden;
-}
-
-/* Prepare animations (reduces lag) */
-*,
-*::before,
-*::after {
-  will-change: transform, opacity;
-}
-
-/* Optimize animations */
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
-/* Reduce heavy blur (IMPORTANT) */
-.hero::before {
-  filter: blur(70px); /* was 120px */
-}
-
-/* Mobile performance fix */
-@media (max-width: 768px) {
-  .dots {
-    animation-duration: 30s;
-    opacity: 0.1;
-  }
-
-  * {
-    animation-duration: 0.6s !important;
-  }
-}
-
-/* Prevent image/layout shift */
-img {
-  max-width: 100%;
-  display: block;
-}
-
-/* Smooth button interaction */
-button, a {
-  touch-action: manipulation;
-  }
-
+   }
 
 </style>
 </head>
@@ -1363,53 +1113,51 @@ button, a {
 <body>
 
 <nav>
-  <div class="logo reveal">Stargicinvestment</div>
-  <div class="menu reveal">≡</div>
+  <div class="logo">Stargicinvestment</div>
+  <div class="menu">≡</div>
 </nav>
 
-<section class="hero buttons reveal">
-  <h1>
-    Profitability is essential; it defines the future of smart investments.
-  </h1>
-
+<section class="hero">
+  <h1>Profitability is essential; it defines the future of smart investments.</h1>
   <p>
     Stargicinvestment provides secure and advanced investment solutions across
     cryptocurrency, forex, stocks, and real estate.
   </p>
 
-  <div class="buttons ">
-    <a href="register.html" class="btn-primary">Get Started</a>
-    <a href="login.html" class="btn-secondary">Login</a>
-  </div>
-</section>
+<section class="hero">
+  ...
+<div class="buttons">
+  <a href="register.html" class="btn-primary">Get started</a>
+  <a href="login.html" class="btn-secondary">Login</a>
+</div>
 
 <section class="analytics">
 
   <!-- REVENUE -->
-  <div class="card reveal">
+  <div class="card">
     <h3>Revenue by Location</h3>
 
     <img src="https://upload.wikimedia.org/wikipedia/commons/8/80/World_map_-_low_resolution.svg" class="map">
 
-    <div class="card">
+    <div class="reveal">
       <span>New York</span>
       <span>72K</span>
     </div>
     <div class="line"><div style="width:80%"></div></div>
 
-    <div class="card">
+    <div class="reveal">
       <span>San Francisco</span>
       <span>39K</span>
     </div>
     <div class="line"><div style="width:45%"></div></div>
 
-    <div class="card">
+    <div class="reveal">
       <span>Sydney</span>
       <span>25K</span>
     </div>
     <div class="line"><div style="width:30%"></div></div>
 
-    <div class="card">
+    <div class="reveal">
       <span>Singapore</span>
       <span>61K</span>
     </div>
@@ -1417,22 +1165,22 @@ button, a {
   </div>
 
   <!-- CHART -->
-  <div class="card reveal">
+  <div class="card">
     <h3>Projections vs Actual</h3>
 
     <div class="chart">
 
-      <div class="card">
+      <div class="card reveal">
         <div class="bar" style="height:120px;"></div>
         <p>Jan</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <div class="bar" style="height:80px;"></div>
         <p>Feb</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <div class="bar" style="height:140px;"></div>
         <p>Mar</p>
       </div>
@@ -1442,10 +1190,11 @@ button, a {
   </div>
 
 </section>
-<section class="green-section reveal">
+<section class="green-section">
 
-  <div class="card">
-    <h1>top-tiere provide top-tier cryptocurrency investment solutions for our clients.
+  <div class="reveal">
+    <h1>
+      We provide top-tier cryptocurrency investment solutions for our clients.
     </h1>
 
     <p>
@@ -1460,6 +1209,7 @@ button, a {
       We take pride in our solid guarantees and proven track record of success
       in the trading and investment market.
     </p>
+  </div>
     </section> <!-- END GREEN SECTION -->
 
   <section class="why-section">
@@ -1472,27 +1222,27 @@ button, a {
 
     <div class="cards">
 
-      <div class="card">
+      <div class="card reveal">
         <h3>Round-the-Clock Premium Support</h3>
         <p>Our support team is available 24/7 to assist you and guide you toward the most profitable investment opportunities.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <h3>Instant Withdrawals</h3>
         <p>Your profits can be withdrawn quickly and securely to your personal cryptocurrency wallet.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <h3>Referral Benefits</h3>
         <p>Earn up to 10% by referring investors and building a strong affiliate network.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <h3>Consistent Returns</h3>
         <p>Our expert team handles trading efficiently, ensuring your investment returns are safeguarded.</p>
       </div>
 
-      <div class="card">
+      <div class="card reveal">
         <h3>Tailored for You</h3>
         <p>Our platform adapts to your needs, with professionals managing your investments seamlessly.</p>
       </div>
@@ -1502,26 +1252,26 @@ button, a {
   </div>
 
 </section>
-<section class="how-section reveal">
+<section class="how-section">
   <h2>How it works</h2>
 
-  <div class="steps-box">
+  <div class="steps-box reveal">
     <div class="step active" data-step="1">Create Account</div>
-    <div class="step" data-step="2">Make Deposit</div>
-    <div class="step" data-step="3">Start Trading</div>
+    <div class="step reveal" data-step="2">Make Deposit</div>
+    <div class="step reveal" data-step="3">Start Trading</div>
   </div>
 
-  <div class="step-content active" id="step-1">
+  <div class="step-content active reveal" id="step-1">
     <h3>Create Account</h3>
     <p>Click on the get started button to create your secure investment account in seconds.</p>
   </div>
 
-  <div class="step-content" id="step-2">
+  <div class="step-content reveal" id="step-2">
     <h3>Make Deposit</h3>
     <p>Fund your account using your preferred payment method and get ready to start earning.</p>
   </div>
 
-  <div class="step-content" id="step-3">
+  <div class="step-content reveal" id="step-3">
     <h3>Start Trading</h3>
     <p>Our expert system begins trading immediately to generate consistent returns for you.</p>
   </div>
@@ -1529,7 +1279,7 @@ button, a {
 <section class="features-section reveal">
 
   <!-- CARD 1 -->
-  <div class="feature-card">
+  <div class="feature-card reveal">
     <div class="icon-circle">
       <img src="images/chart.png" alt="">
     </div>
@@ -1540,7 +1290,7 @@ button, a {
   </div>
 
   <!-- CARD 2 -->
-  <div class="feature-card">
+  <div class="feature-card reveal">
     <div class="icon-circle">
       <img src="images/ai.png" alt="">
     </div>
@@ -1551,7 +1301,7 @@ button, a {
   </div>
 
   <!-- CARD 3 -->
-  <div class="feature-card">
+  <div class="feature-card reveal">
     <div class="icon-circle">
       <img src="images/security.png" alt="">
     </div>
@@ -1561,49 +1311,46 @@ button, a {
     </p>
   </div>
 
-</section>
-<section class="offer-section reveal">
-  <div class="offer-container reveal">
+<section class="offer-section">
+  <div class="offer-container">
 
-    <h1>
-      Stargicinvestment Offer Card<br>
-      to Investors
-    </h1>
+    <h1>Stargicinvestment Offer Card<br>to Investors</h1>
 
     <p>
-      Stargicinvestment is committed to delivering modern financial solutions. 
-      Our investment ecosystem empowers individuals globally, including those 
-      without traditional banking access.
+      Stargicinvestment is committed to delivering modern financial solutions.
+      Our investment ecosystem empowers individuals globally.
     </p>
 
     <p>
-      With our exclusive investment card, investors gain instant access to funds, 
-      seamless global transactions, and premium financial flexibility. 
-      A minimum balance of $2,000 is required, with worldwide acceptance 
-      across millions of merchants and ATMs.
+      With our exclusive investment card, investors gain instant access to funds,
+      seamless global transactions, and premium flexibility.
     </p>
 
-    <button class="cta-btn reveal">start investing</button>
+    <button class="cta-btn">Start investing</button>
 
-    <div class="card-visual reveal">
-    <div class="credit-card reveal">
-      
-      <div class="card-top">
-        <span class="brand">STARGIC</span>
-        <div class="mastercard">
-          <span class="circle red"></span>
-          <span class="circle yellow"></span>
+    <div class="card-visual">
+      <div class="credit-card">
+
+        <div class="card-top">
+          <span class="brand">STARGIC</span>
+          <div class="mastercard">
+            <span class="circle red"></span>
+            <span class="circle yellow"></span>
+          </div>
         </div>
-      </div>
 
-      <div class="card-number">×××× 0000 ×××× 0000</div>
+        <div class="card-number">×××× 0000 ×××× 0000</div>
 
-      <div class="card-bottom">
-        <span>Valid thru 05/2029</span>
+        <div class="card-bottom">
+          <span>Valid thru 05/2029</span>
+        </div>
+
       </div>
+    </div>
 
   </div>
 </section>
+      
 <section class="investment-section reveal">
 
   <h2 class="section-title reveal">OUR SERVICES</h2>
@@ -1611,98 +1358,98 @@ button, a {
   <div class="investment-grid">
 
     <!-- Real Estate -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1568605114967-8130f3a36994?w=800&q=80" 
           alt="Real Estate"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Real Estate</h3>
         <p>Invest in high-value properties and infrastructure projects with consistent long-term returns and asset appreciation.</p>
       </div>
     </div>
 
     <!-- Gold -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1610375461246-83df859d849d?w=800&q=80" 
           alt="Gold"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Gold</h3>
         <p>A trusted store of value, gold offers stability and protection against inflation in uncertain economic conditions.</p>
       </div>
     </div>
 
     <!-- Insurance -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=800&q=80" 
           alt="Insurance"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Insurance</h3>
         <p>Secure your financial future with investment-backed insurance solutions designed for risk protection and growth.</p>
       </div>
     </div>
 
     <!-- Oil & Gas -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1516937941344-00b4e0337589?w=800&q=80" 
           alt="Oil & Gas"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Oil & Gas</h3>
         <p>Capitalize on global energy demand through strategic investments in oil and gas production and distribution.</p>
       </div>
     </div>
 
     <!-- Bitcoin Mining -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?w=800&q=80" 
           alt="Bitcoin Mining"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Bitcoin Mining</h3>
         <p>Earn passive income through advanced crypto mining infrastructure powered by cutting-edge technology.</p>
       </div>
     </div>
 
     <!-- Forex Trading -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1640161704729-cbe966a08476?w=800&q=80" 
           alt="Forex Trading"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Forex Trading</h3>
         <p>Access the world’s largest financial market with AI-driven forex trading strategies and expert insights.</p>
       </div>
     </div>
 
     <!-- Agriculture -->
-    <div class="investment-card">
+    <div class="investment-card reveal">
       <div class="card-box">
         <img 
           src="https://images.unsplash.com/photo-1500382017468-9049fed747ef?w=800&q=80" 
           alt="Agriculture"
           loading="lazy">
       </div>
-      <div class="card-content">
+      <div class="card-content reveal">
         <h3>Agriculture</h3>
         <p>Invest in modern agriculture and food production systems with sustainable and profitable returns.</p>
       </div>
@@ -1714,92 +1461,92 @@ button, a {
 <section class="faq-section reveal">
    <h2 class="faq-title reveal">Frequently Asked Questions</h2>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       What is Stargicinvestment?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Stargicinvestment is a modern investment platform offering opportunities in crypto, forex, real estate and more.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       How do I create my account?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Simply click “Start Investing”, fill in your details and verify your email.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       How do I make a deposit?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Log in to your dashboard, select deposit, choose your preferred payment method and follow the instructions provided.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       How long does a deposit take before it reflects on my dashboard?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Most deposits reflect instantly. However, depending on the payment method, it may take a few minutes to be confirmed.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       How do I make a withdrawal?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Go to your dashboard, click on withdrawal, enter the amount, and confirm your request. Processing will begin immediately.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       How long does it take to process my withdrawal?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Withdrawals are typically processed within a few hours, but in some cases may take up to 24 hours depending on verification and network conditions.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       Can I have more than one account?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       No, users are allowed to operate only one account. Multiple accounts may lead to suspension.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       Is this company properly registered?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       Yes, Stargicinvestment operates under regulatory compliance and follows standard financial and security protocols.
     </div>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question">
+  <div class="faq-item reveal">
+    <div class="faq-question reveal">
       How many times can I make a deposit?
       <span>+</span>
     </div>
-    <div class="faq-answer">
+    <div class="faq-answer reveal">
       You can make deposits as many times as you want. There is no strict limit, as long as it meets the minimum requirement.
     </div>
   </div>
@@ -1818,7 +1565,7 @@ button, a {
   </div>
 
   <!-- Block 2 -->
-  <div class="premium-block">
+  <div class="premium-block reveal">
     <div class="premium-image img-style-2"></div>
     <h2>Grow Your Wealth with Us</h2>
     <p>
@@ -1828,7 +1575,7 @@ button, a {
   </div>
 
   <!-- Block 3 -->
-  <div class="premium-block">
+  <div class="premium-block reveal">
     <div class="premium-image img-style-3"></div>
     <h2>Highly Skilled Team of Expert Crypto Traders</h2>
     <p>
@@ -1836,73 +1583,66 @@ button, a {
       to effectively manage your investments.
     </p>
   </div>
-<div class="icon-box reveal">
-  <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
-    <rect x="2" y="6" width="24" height="16" rx="2"/>
-    <path d="M2 6l12 8 12-8"/>
-  </svg>
-</div>
 
-      <div class="contact-item">
-        <i class="fa-regular fa-envelope"></i>
-        <span>support@stargicinvestment.com</span>
-      </div>
+     <section class="contact-section">
+  <div class="contact-wrapper">
 
-<div class="icon-box">
-  <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
-    <path d="M14 27s10-9 10-15a10 10 0 10-20 0c0 6 10 15 10 15z"/>
-    <circle cx="14" cy="12" r="3"/>
-  </svg>
-</div>
-
-<footer class="footer reveal">
-
-<div class="newsletter">
-  
-  <input type="email" placeholder="Enter your email" />
-
-  <button class="subscribe-btn">Subscribe</button>
-
-</div>
-
-  <!-- Footer Grid -->
-  <div class="footer-grid">
-
-    <!-- Brand -->
-    <div class="footer-col brand">
-      <h3>Stargicinvestment</h3>
-      <p>Delivering modern investment solutions across crypto, forex, real estate, and global markets.</p>
+    <div class="contact-item">
+      <div class="icon-box"><i class="fas fa-envelope"></i></div>
+      <h3>Email</h3>
+      <p class="contact-main">support@yourdomain.com</p>
+      <p class="contact-sub">24/7 SUPPORT</p>
     </div>
 
-<div class="footer-grid">
+    <div class="contact-item">
+      <div class="icon-box"><i class="fas fa-map-marker-alt"></i></div>
+      <h3>Location</h3>
+      <p class="contact-main">New York, USA</p>
+      <p class="contact-sub">GLOBAL OFFICE</p>
+    </div>
 
-  <!-- Main Pages -->
-  <div class="footer-col">
-    <h4>Main Pages</h4>
-    <a href="index.html">Home</a>
-    <a href="about.html">About</a>
-    <a href="contact.html">Contact</a>
-    <a href="plans.html">Investment Plans</a>
   </div>
 
-  <!-- Legal -->
-  <div class="footer-col">
-    <h4>Legal</h4>
-    <a href="login.html">Login</a>
-    <a href="register.html">Signup</a>
-    <a href="privacy.html">Privacy Policy</a>
-    <a href="cookies.html">Cookies</a>
-    <a href="terms.html">Terms & Conditions</a>
+  <div class="divider"></div>
+     </section>
+
+   <footer class="footer">
+
+  <div class="footer-grid">
+
+    <div class="footer-col brand">
+      <h3>Stargicinvestment</h3>
+      <p>Premium investment platform.</p>
+    </div>
+
+    <div class="footer-col">
+      <h4>Quick Links</h4>
+      <a href="#">Home</a>
+      <a href="#">Invest</a>
+      <a href="#">Contact</a>
+    </div>
+
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <div class="footer-contact"><i class="fas fa-envelope"></i> support@email.com</div>
+      <div class="footer-contact"><i class="fas fa-phone"></i> +123 456 789</div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Newsletter</h4>
+      <div class="newsletter-box">
+        <input type="email" placeholder="Your email">
+        <button>Subscribe</button>
+      </div>
+    </div>
+
   </div>
 
-</div>
-
-  <!-- Bottom -->
   <div class="footer-bottom">
     © 2026 Stargicinvestment. All rights reserved.
   </div>
 
-</footer>
+   </footer>
 
 <script>
 const steps = document.querySelectorAll(".step");
@@ -1981,21 +1721,7 @@ steps.forEach(step => {
     });
 </script>
 
-<script>
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add("show");
-    }
-  });
-}, { threshold: 0.15 });
-
-document.querySelectorAll('.reveal').forEach(el => {
-  observer.observe(el);
-});
-</script>
-
-     <script>  
+         <script>  
 var _smartsupp = _smartsupp || {};  
 _smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";  
   
@@ -2009,8 +1735,7 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';  
   s.parentNode.insertBefore(c,s);  
 })(document);  
-    </script>
+         </script>
+    
 </body>
-</html>
-  
-  
+  </html>
