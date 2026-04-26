@@ -1283,63 +1283,6 @@ body {
   }
 }
 
-.lang-wrapper{
-  width:260px;
-  margin:40px auto;
-  position:relative;
-  z-index:5;
-}
-
-.lang-selected{
-  background:#111;
-  border:1px solid rgba(124,255,196,0.2);
-  padding:16px;
-  border-radius:14px;
-  color:#ccc;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  cursor:pointer;
-  transition:0.3s;
-}
-
-.lang-selected:hover{
-  border-color:#7CFFC4;
-  box-shadow:0 0 20px rgba(124,255,196,0.15);
-}
-
-.lang-dropdown{
-  position:absolute;
-  top:110%;
-  width:100%;
-  background:#0b0b0b;
-  border-radius:14px;
-  overflow:hidden;
-  border:1px solid #1a1a1a;
-
-  opacity:0;
-  transform:translateY(10px);
-  pointer-events:none;
-  transition:0.3s;
-}
-
-.lang-dropdown.active{
-  opacity:1;
-  transform:translateY(0);
-  pointer-events:auto;
-}
-
-.lang-dropdown div{
-  padding:14px;
-  color:#bbb;
-  cursor:pointer;
-}
-
-.lang-dropdown div:hover{
-  background:#111;
-  color:#7CFFC4;
-}
-
 
 
 </style>
@@ -1362,24 +1305,6 @@ body {
  <div class="buttons">
   <a href="register.html" class="btn-primary">Get started</a>
   <a href="login.html" class="btn-secondary">Login</a>
-</div>
-</section>
-
-<section class="language">
-<div class="lang-wrapper">
-  <div class="lang-selected" onclick="toggleLang()">
-    <span id="currentLang">🌐 Select Language</span>
-    <span class="arrow">⌄</span>
-  </div>
-
-  <div class="lang-dropdown" id="langDropdown">
-    <div onclick="translatePage('en')">🇬🇧 English</div>
-    <div onclick="translatePage('fr')">🇫🇷 French</div>
-    <div onclick="translatePage('es')">🇪🇸 Spanish</div>
-    <div onclick="translatePage('de')">🇩🇪 German</div>
-    <div onclick="translatePage('ar')">🇸🇦 Arabic</div>
-    <div onclick="translatePage('zh-CN')">🇨🇳 Chinese</div>
-  </div>
 </div>
 </section>
 
@@ -2017,37 +1942,6 @@ window.smartsupp||(function(d) {
   s.parentNode.insertBefore(c,s);  
 })(document);  
     </script>
-    
-    <script>
-function toggleLang(){
-  document.getElementById("langDropdown").classList.toggle("active");
-}
-
-function translatePage(lang){
-  const current = document.getElementById("currentLang");
-  current.innerText = event.target.innerText;
-
-  const url = window.location.href;
-
-  if(lang === "en"){
-    window.location.href = url.split('?')[0];
-  } else {
-    window.location.href =
-      "https://translate.google.com/translate?sl=en&tl=" +
-      lang +
-      "&u=" +
-      encodeURIComponent(url);
-  }
-}
-
-/* close dropdown */
-document.addEventListener("click", function(e){
-  const box = document.querySelector(".lang-wrapper");
-  if(!box.contains(e.target)){
-    document.getElementById("langDropdown").classList.remove("active");
-  }
-});
-</script>
 </body>
 </html>
   
