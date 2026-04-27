@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Payment</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Poppins, sans-serif;
+
+  /* 🔥 GREEN PREMIUM BACKGROUND */
+  background: radial-gradient(circle at top, #0f3d2e, #050505 70%);
+  color:#fff;
+  text-align:center;
+  padding:20px;
+}
+
+/* IMAGE */
+.coin-img{
+  width:100px;
+  margin-top:30px;
+}
+
+/* TEXT */
+.title{
+  margin-top:20px;
+  font-size:18px;
+  color:#aaa;
+}
+
+.amount{
+  font-size:36px;
+  color:#00ffae;
+  margin:10px 0;
+  font-weight:600;
+}
+
+/* QR */
+.qr{
+  width:100%;
+  max-width:280px;
+  margin:30px auto;
+  border-radius:12px;
+}
+
+/* WALLET */
+.wallet{
+  background:#111;
+  padding:15px;
+  border-radius:10px;
+  word-break:break-all;
+  margin-top:20px;
+}
+
+/* BUTTON */
+.copy-btn{
+  margin-top:15px;
+  padding:14px 25px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+
+  background:linear-gradient(135deg,#00ffae,#00c3ff);
+  color:#000;
+  font-weight:500;
+}
+</style>
+</head>
+
+<body>
+
+<img id="coinImage" class="coin-img">
+
+<div class="title" id="titleText"></div>
+<div class="amount" id="amountText"></div>
+
+<img src="your-qr.png" class="qr">
+
+<div class="wallet" id="wallet"></div>
+
+<button class="copy-btn" onclick="copyWallet()">Copy Address</button>
+
+<script>
+// GET DATA
+const params = new URLSearchParams(window.location.search);
+const amount = params.get("amount");
+const coin = params.get("coin");
+
+// ELEMENTS
+const titleText = document.getElementById("titleText");
+const amountText = document.getElementById("amountText");
+const coinImage = document.getElementById("coinImage");
+const walletBox = document.getElementById("wallet");
+
+// 🔥 WALLET ADDRESSES (PUT YOUR REAL ONES)
+const wallets = {
+  "Bitcoin (BTC)": "196jxoawfauaQur3ztAwgmAi1X34qy4paT",
+  "Ethereum (ETH)": "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7",
+  "USDT": "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7"
+};
+
+// 🔥 IMAGES (USE REAL FILES OR LINKS)
+const images = {
+  "Bitcoin (BTC)": "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
+  "Ethereum (ETH)": "https://cryptologos.cc/logos/ethereum-eth-logo.png",
+  "USDT": "https://cryptologos.cc/logos/tether-usdt-logo.png"
+};
+
+// SET CONTENT
+coinImage.src = images[coin];
+amountText.textContent = `$${amount}`;
+
+// DYNAMIC TEXT
+if(coin === "Bitcoin (BTC)"){
+  titleText.textContent = "Make Bitcoin deposit to this wallet address";
+}
+else if(coin === "Ethereum (ETH)"){
+  titleText.textContent = "Make Ethereum deposit to this wallet address";
+}
+else if(coin === "USDT"){
+  titleText.textContent = "Make USDT deposit to this wallet address";
+}
+
+// SET WALLET
+walletBox.textContent = wallets[coin];
+
+// COPY FUNCTION
+function copyWallet(){
+  navigator.clipboard.writeText(walletBox.textContent);
+  alert("Wallet copied!");
+}
+</script>
+
+</body>
+  </html>
