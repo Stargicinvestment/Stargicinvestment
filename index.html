@@ -1083,65 +1083,31 @@ body {
 }
 
 /* SECTION */
-.contact-section{
-  padding: 100px 20px;
-  text-align: center;
-  background: #050505;
-}
-
-/* ITEM */
-.contact-item{
-  max-width: 400px;
-  margin: auto;
-}
-
-/* ICON BOX */
-.icon-box{
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 25px;
-  border-radius: 50%;
+.contact-section {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-
-  border: 1px solid rgba(255,255,255,0.1);
-  background: rgba(255,255,255,0.02);
-
-  font-size: 26px;
-  color: #dcdcdc;
-
-  transition: 0.4s ease;
+  gap: 40px;
+  text-align: center;
 }
 
-/* HOVER */
-.contact-item:hover .icon-box{
-  transform: translateY(-5px);
-  border-color: rgba(0,255,180,0.4);
-  box-shadow: 0 10px 40px rgba(0,255,180,0.1);
+.contact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* TITLE */
-.contact-item h3{
-  font-size: 20px;
-  font-weight: 500;
-  margin-bottom: 10px;
+.icon-box {
+  margin-bottom: 15px;
 }
 
-/* EMAIL */
-.contact-main{
+.contact-main {
+  text-align: center;
   font-size: 16px;
   color: #bdbdbd;
-  letter-spacing: 0.5px;
 }
 
-/* ADDRESS */
-.contact-sub{
-  font-size: 14px;
-  color: #888;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
 
 /* DIVIDER */
 .divider{
@@ -1781,19 +1747,29 @@ body {
   </svg>
 </div>
 
-      <div class="contact-item">
-        <i class="fa-regular fa-envelope"></i>
-        <span>support@stargicinvestment.com</span>
-      </div>
+<section class="contact-section">
 
-<div class="icon-box">
-  <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
-    <path d="M14 27s10-9 10-15a10 10 0 10-20 0c0 6 10 15 10 15z"/>
-    <circle cx="14" cy="12" r="3"/>
-  </svg>
-</div>
+  <div class="contact-item">
+    <div class="icon-box">
+      <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
+        <rect x="2" y="6" width="24" height="16" rx="2"/>
+        <path d="M2 6l12 8 12-8"/>
+      </svg>
+    </div>
+    <span class="contact-main">support@stargicinvestment.com</span>
+  </div>
 
+  <div class="contact-item">
+    <div class="icon-box">
+      <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
+        <path d="M14 27s10-9 10-15a10 10 0 10-20 0c0 6 10 15 10 15z"/>
+        <circle cx="14" cy="12" r="3"/>
+      </svg>
+    </div>
+    <span class="contact-main">Global Office</span>
+  </div>
 
+</section>
 
 <footer class="footer reveal">
 
