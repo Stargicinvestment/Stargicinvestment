@@ -3,288 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deposit | StargicInvestment</title>
+<title>Make Deposit</title>
 
 <style>
-
-/* GLOBAL */
-*{
+body{
   margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
+  font-family:Poppins, sans-serif;
+
+  /* 🔥 PREMIUM GREEN BACKGROUND */
+  background: radial-gradient(circle at top, #0f3d2e, #050505 70%);
+  color:#fff;
 }
 
-body{
-  background:linear-gradient(135deg,#06141f,#0b1f2e,#0f2e3f);
-  color:#fff;
+/* CENTER EVERYTHING */
+.container{
+  min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  min-height:100vh;
-  padding:15px;
+  padding:20px;
 }
 
 /* CARD */
-.card{
+.deposit-box{
   width:100%;
-  max-width:430px;
-  padding:25px;
-  border-radius:18px;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(0,255,166,0.15);
-  box-shadow:0 10px 40px rgba(0,0,0,0.6);
-  backdrop-filter:blur(10px);
-  animation:fadeIn 0.6s ease;
-}
+  max-width:400px;
 
-@keyframes fadeIn{
-  from{opacity:0; transform:translateY(20px);}
-  to{opacity:1; transform:translateY(0);}
+  background:rgba(255,255,255,0.03);
+  border-radius:20px;
+  padding:25px;
+  backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,0.05);
+
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
 }
 
 /* TITLE */
-.title{
-  font-size:24px;
-  font-weight:700;
-  color:#00ffa6;
-  text-align:center;
+.deposit-box h2{
+  font-weight:500;
+  margin-bottom:10px;
 }
 
-.sub{
-  text-align:center;
-  font-size:13px;
-  color:#9be7c4;
-  margin:10px 0 20px;
+.deposit-box p{
+  color:#aaa;
+  margin-bottom:25px;
 }
 
-/* PLAN BOX */
-.plan-box{
-  background:rgba(0,0,0,0.35);
-  border-radius:12px;
-  padding:15px;
-  margin-bottom:20px;
-  border:1px solid rgba(0,255,166,0.1);
-}
-
-.plan-box p{
-  font-size:13px;
-  margin:6px 0;
-}
-
-.plan-box strong{
-  color:#00ffa6;
-}
-
-/* WALLET CARD */
-.wallet-card{
-  background:rgba(0,0,0,0.5);
-  border:1px solid rgba(0,255,166,0.15);
-  border-radius:12px;
-  padding:12px;
-  margin-bottom:12px;
-}
-
-/* COIN NAME */
-.coin{
-  font-size:14px;
-  font-weight:600;
-  color:#00ffa6;
-  margin-bottom:6px;
-}
-
-/* ADDRESS */
-.address{
-  font-size:12px;
-  word-break:break-all;
-  color:#d4fff0;
+/* LABEL */
+label{
+  display:block;
   margin-bottom:8px;
+  font-size:14px;
 }
 
-/* COPY BUTTON */
-.copy-btn{
+select, input{
   width:100%;
-  padding:10px;
+  padding:16px;
+  border-radius:10px;
   border:none;
-  border-radius:8px;
-  background:linear-gradient(45deg,#00ffa6,#00c853);
-  color:#002b1f;
-  font-weight:600;
-  cursor:pointer;
-}
+  background:#1a1f2e;
+  color:#fff;
+  margin-bottom:20px;
+  font-size:15px;
 
-/* SUCCESS STATE */
-.copied{
-  background:#00c853 !important;
-  color:#fff !important;
+  box-sizing: border-box; /* 🔥 ensures it stays inside */
 }
-
-/* CONFIRM BUTTON */
-.confirm-btn{
+/* BUTTON */
+button{
   width:100%;
-  padding:12px;
+  padding:16px;
   border:none;
   border-radius:10px;
-  margin-top:10px;
-  background:rgba(255,255,255,0.08);
-  color:#00ffa6;
-  font-weight:600;
+  font-size:16px;
+  font-weight:500;
   cursor:pointer;
-  border:1px solid rgba(0,255,166,0.2);
+
+  background:linear-gradient(135deg,#00ffae,#00c3ff);
+  color:#000;
+
+  transition:0.3s;
 }
 
-.confirm-btn:hover{
-  background:rgba(0,255,166,0.1);
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 10px 30px rgba(0,255,174,0.3);
 }
 
-  /* ===== TRANSLATE CONTAINER ===== */
-.translate-box{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:#111827;
-  padding:6px 10px;
-  border-radius:8px;
-  border:1px solid #1f2937;
-}
-
-/* ICON */
-.translate-box i{
-  color:#00ff9d;
-  font-size:14px;
-}
-
-/* DROPDOWN */
-.goog-te-combo{
-  background:transparent !important;
-  color:#00ff9d !important;
-  border:none !important;
+/* ERROR */
+.error{
+  color:#ff4d4d;
   font-size:13px;
-  outline:none;
-  cursor:pointer;
+  margin-top:-15px;
+  margin-bottom:10px;
 }
 
-/* REMOVE GOOGLE BRANDING */
-.goog-logo-link,
-.goog-te-gadget span{
-  display:none !important;
+/* SUCCESS */
+.success{
+  text-align:center;
+  color:#00ffae;
+  margin-top:20px;
 }
-
-.goog-te-gadget{
-  color:transparent !important;
-}
-
-/* HIDE TOP BAR */
-.goog-te-banner-frame.skiptranslate{
-  display:none !important;
-}
-
-body{
-  top:0px !important;
-}
-
-/* SMOOTH HOVER */
-.translate-box:hover{
-  border-color:#00ff9d;
-  box-shadow:0 0 10px rgba(0,255,157,0.2);
-  }
-
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-  <div class="title">Secure Deposit</div>
-  <div class="sub">Send crypto using any wallet below</div>
+  <div class="deposit-box">
 
-  <!-- PLAN INFO -->
-  <div class="plan-box" id="planInfo"></div>
+    <h2>Make Deposit</h2>
+    <p>Minimum Deposit: $300</p>
 
-  <!-- BTC -->
-  <div class="wallet-card">
-    <div class="coin">BTC (Bitcoin)</div>
-    <div class="address" id="btc">196jxoawfauaQur3ztAwgmAi1X34qy4paT</div>
-    <button class="copy-btn" onclick="copyWallet('btc',this)">Copy BTC Address</button>
+    <form id="depositForm">
+
+      <label>Currency *</label>
+      <select id="currency">
+        <option value="">Choose Currency</option>
+        <option>Bitcoin (BTC)</option>
+        <option>Ethereum (ETH)</option>
+        <option>USDT</option>
+      </select>
+
+      <label>Enter Amount *</label>
+      <input type="number" id="amount" placeholder="0000.00">
+
+      <div id="error" class="error"></div>
+
+      <button type="submit">Make Deposit</button>
+
+    </form>
+
+    <div id="success" class="success"></div>
+
   </div>
-
-  <!-- ETH -->
-  <div class="wallet-card">
-    <div class="coin">ETH (BEP20)</div>
-    <div class="address" id="eth">0x85954ac3953cfd390f6c27c41cfea6a62bd149c7</div>
-    <button class="copy-btn" onclick="copyWallet('eth',this)">Copy ETH Address</button>
-  </div>
-
-  <!-- USDT -->
-  <div class="wallet-card">
-    <div class="coin">USDT (BEP20)</div>
-    <div class="address" id="usdt">0x85954ac3953cfd390f6c27c41cfea6a62bd149c7</div>
-    <button class="copy-btn" onclick="copyWallet('usdt',this)">Copy USDT Address</button>
-  </div>
-
-  <!-- USDT -->
-  <div class="wallet-card">
-    <div class="coin">XRP (XRP)</div>
-    <div class="address" id="usdt">rDZcWb9Ze5q6R4jFKXyzLu27FaRyyjrea3</div>
-    <button class="copy-btn" onclick="copyWallet('usdt',this)">Copy XRP Address</button>
-  </div>
-
-  <button class="confirm-btn" onclick="confirmPayment()">
-    I Have Sent Payment
-  </button>
 
 </div>
 
 <script>
+document.getElementById("depositForm").addEventListener("submit", function(e){
+  e.preventDefault();
 
-// LOAD PLAN
-  const plan = JSON.parse(localStorage.getItem("selectedPlan"));
+  const currency = document.getElementById("currency").value;
+  const amount = document.getElementById("amount").value;
 
-if(!plan){
-  alert("No plan selected!");
-  window.location.href = "plans.html";
-}else{
-  document.getElementById("planInfo").innerHTML = `
-    <p><strong>Plan:</strong> ${plan.name.toUpperCase()}</p>
-    <p><strong>Min:</strong> $${plan.min}</p>
-    <p><strong>Max:</strong> $${plan.max}</p>
-    <p><strong>Profit:</strong> ${plan.percent}% daily</p>
-  `;
+  if(!currency){
+    alert("Select currency");
+    return;
   }
 
-// COPY FUNCTION
-function copyWallet(id,btn){
-  const text = document.getElementById(id).innerText;
+  if(!amount || amount < 300){
+    alert("Minimum deposit is $300");
+    return;
+  }
 
-  navigator.clipboard.writeText(text);
-
-  btn.innerText = "Copied ✓";
-  btn.classList.add("copied");
-
-  setTimeout(()=>{
-    btn.innerText = "Copy " + id.toUpperCase() + " Address";
-    btn.classList.remove("copied");
-  },2000);
-}
-
-// CONFIRM
-function confirmPayment(){
-  alert("Payment submitted! Admin will verify shortly.");
-}
-
+  // 🔥 PASS DATA TO NEXT PAGE
+  window.location.href = `payment.html?amount=${amount}&coin=${currency}`;
+});
 </script>
-
-  <script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    autoDisplay: false
-  }, 'google_translate_element');
-}
-</script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
-  </html>
+</html>
