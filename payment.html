@@ -9,15 +9,13 @@
 body{
   margin:0;
   font-family:Poppins, sans-serif;
-
-  /* 🔥 GREEN PREMIUM BACKGROUND */
   background: radial-gradient(circle at top, #0f3d2e, #050505 70%);
   color:#fff;
   text-align:center;
   padding:20px;
 }
 
-/* IMAGE */
+/* COIN IMAGE */
 .coin-img{
   width:100px;
   margin-top:30px;
@@ -40,9 +38,11 @@ body{
 /* QR */
 .qr{
   width:100%;
-  max-width:280px;
+  max-width:260px;
   margin:30px auto;
   border-radius:12px;
+  background:#fff;
+  padding:10px;
 }
 
 /* WALLET */
@@ -52,6 +52,15 @@ body{
   border-radius:10px;
   word-break:break-all;
   margin-top:20px;
+  font-size:14px;
+  position:relative;
+}
+
+/* NETWORK NOTE */
+.note{
+  margin-top:8px;
+  font-size:13px;
+  color:#ffcc00;
 }
 
 /* BUTTON */
@@ -61,7 +70,6 @@ body{
   border:none;
   border-radius:10px;
   cursor:pointer;
-
   background:linear-gradient(135deg,#00ffae,#00c3ff);
   color:#000;
   font-weight:500;
@@ -76,62 +84,90 @@ body{
 <div class="title" id="titleText"></div>
 <div class="amount" id="amountText"></div>
 
-<img src="your-qr.png" class="qr">
+<img id="qrCode" class="qr">
 
 <div class="wallet" id="wallet"></div>
+<div class="note" id="networkNote"></div>
 
 <button class="copy-btn" onclick="copyWallet()">Copy Address</button>
 
 <script>
-// GET DATA
+
+// GET DATA FROM URL
 const params = new URLSearchParams(window.location.search);
-const amount = params.get("amount");
 const coin = params.get("coin");
+const amount = params.get("amount");
 
-// ELEMENTS
-const titleText = document.getElementById("titleText");
-const amountText = document.getElementById("amountText");
-const coinImage = document.getElementById("coinImage");
-const walletBox = document.getElementById("wallet");
-
-// 🔥 WALLET ADDRESSES (PUT YOUR REAL ONES)
+// WALLET ADDRESSES
 const wallets = {
-  "Bitcoin (BTC)": "196jxoawfauaQur3ztAwgmAi1X34qy4paT",
-  "Ethereum (ETH)": "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7",
-  "USDT": "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7"
+  "Bitcoin (BTC)": {
+    address: "196jxoawfauaQur3ztAwgmAi1X34qy4paT",
+    note: "Send ONLY BTC network"
+  },
+  "Ethereum (ETH)": {
+    address: "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7",
+    note: "Send ONLY BEP20 (BNB network)"
+  },
+  "USDT (BEP20)": {
+    address: "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7",
+    note: "Send ONLY BEP20 (BNB network)"
+  }
 };
 
-// 🔥 IMAGES (USE REAL FILES OR LINKS)
+// IMAGES
 const images = {
   "Bitcoin (BTC)": "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
   "Ethereum (ETH)": "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  "USDT": "https://cryptologos.cc/logos/tether-usdt-logo.png"
+  "USDT (BEP20)": "https://cryptologos.cc/logos/tether-usdt-logo.png"
 };
 
-// SET CONTENT
+// ELEMENTS
+const coinImage = document.getElementById("coinImage");
+const titleText = document.getElementById("titleText");
+const amountText = document.getElementById("amountText");
+const walletBox = document.getElementById("wallet");
+const qrCode = document.getElementById("qrCode");
+const networkNote = document.getElementById("networkNote");
+
+// VALIDATION
+if (!coin || !amount || !wallets[coin]) {
+  titleText.textContent = "Invalid payment request";
+  throw new Error("Invalid payment data");
+}
+
+// DATA
+const wallet = wallets[coin].address;
+
+// DISPLAY INFO
 coinImage.src = images[coin];
+titleText.textContent = `Deposit ${coin}`;
 amountText.textContent = `$${amount}`;
+walletBox.textContent = wallet;
+networkNote.textContent = wallets[coin].note;
 
-// DYNAMIC TEXT
-if(coin === "Bitcoin (BTC)"){
-  titleText.textContent = "Make Bitcoin deposit to this wallet address";
-}
-else if(coin === "Ethereum (ETH)"){
-  titleText.textContent = "Make Ethereum deposit to this wallet address";
-}
-else if(coin === "USDT"){
-  titleText.textContent = "Make USDT deposit to this wallet address";
+// 🔥 QR PAYMENT FORMAT (IMPROVED)
+let qrData = wallet;
+
+// Bitcoin format
+if (coin.includes("Bitcoin")) {
+  qrData = `bitcoin:${wallet}?amount=${amount}`;
 }
 
-// SET WALLET
-walletBox.textContent = wallets[coin];
+// Ethereum / USDT format (wallet dependent support)
+if (coin.includes("Ethereum") || coin.includes("USDT")) {
+  qrData = `ethereum:${wallet}?value=${amount}`;
+}
+
+// ENCODE QR SAFELY
+qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`;
 
 // COPY FUNCTION
-function copyWallet(){
-  navigator.clipboard.writeText(walletBox.textContent);
-  alert("Wallet copied!");
+function copyWallet() {
+  navigator.clipboard.writeText(wallet);
+  alert("Wallet address copied!");
 }
+
 </script>
 
 </body>
-  </html>
+</html>
