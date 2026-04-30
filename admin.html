@@ -176,10 +176,16 @@ loadWithdrawals();
   loadUsers();
 });
 
-  async function addBalance(userId, amount) {
+async function addBalance(userId, amount) {
 
   const userRef = doc(db, "users", userId);
   const snap = await getDoc(userRef);
+
+  if(!snap.exists()) {
+    alert("User not found");
+    return;
+  }
+
   const data = snap.data();
 
   let newTotal = (Number(data.invested) || 0) + amount;
@@ -200,17 +206,21 @@ loadWithdrawals();
     balance: (Number(data.balance) || 0) + amount,
     invested: newTotal,
     plan: newPlan,
+
+    // 🔥 IMPORTANT: keep mining stable
     lastUpdate: Date.now(),
-    profitStart: data.profitStart || Date.now()
+    profitStart: data.profitStart || Date.now(),
+    lockedProfit: Number(data.lockedProfit) || 0,
+    availableProfit: Number(data.availableProfit) || 0
   });
 
   await addDoc(collection(db,"transactions"),{
-    userId: userId,
+    userId,
     type: "deposit",
-    amount: amount,
+    amount,
     time: Date.now()
   });
-  }
+}
 
 
 
