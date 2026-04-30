@@ -3,264 +3,219 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Plans | StargicInvestment</title>
+<title>Pricing</title>
 
 <style>
 
-/* GLOBAL RESET */
+/* ===== RESET ===== */
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
-  font-family:'Segoe UI',sans-serif;
+  font-family:Poppins, sans-serif;
 }
 
-/* FIX WHITE FLASH + SMOOTH SCROLL */
-html, body{
-  height:100%;
-  background:#07121f; /* fallback color */
+body{
+  background:#000;
+  color:#fff;
   overflow-x:hidden;
 }
 
-/* MAIN BACKGROUND */
+/* ===== SMOOTH PERFORMANCE ===== */
 body{
-  background:linear-gradient(135deg,#07121f,#0b1f2e,#0f2e3f);
-  color:#fff;
+  transform:translateZ(0);
+  will-change:transform;
 }
 
-/* CONTAINER */
-.container{
-  max-width:1100px;
+/* ===== HERO ===== */
+.hero{
+  text-align:center;
+  padding:80px 20px 30px;
+}
+
+.hero small{
+  color:#00ffae;
+  letter-spacing:2px;
+}
+
+.hero h1{
+  font-size:42px;
+  margin:10px 0;
+}
+
+.hero p{
+  color:#aaa;
+  max-width:320px;
   margin:auto;
-  padding:20px 12px 40px;
 }
 
-/* TITLE */
-.section-title{
-  text-align:center;
-  color:#00ffa6;
-  font-size:26px;
-  margin-top:20px;
-  font-weight:700;
+/* ===== CONTAINER ===== */
+.container{
+  max-width:420px;
+  margin:auto;
+  padding:20px;
 }
 
-.section-sub{
-  text-align:center;
-  color:#9be7c4;
-  margin:10px 0 25px;
-  font-size:14px;
-}
-
-/* GRID FIXED */
-.plans{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-  gap:18px;
-}
-
-/* CARD */
+/* ===== PLAN ===== */
 .plan{
-  background:rgba(0,255,166,0.04);
-  border-radius:16px;
-  padding:22px;
-  border:1px solid rgba(0,255,166,0.12);
-  box-shadow:0 8px 20px rgba(0,0,0,0.4);
-  transition:transform 0.25s ease, box-shadow 0.25s ease;
-  position:relative;
+  background:#111;
+  border-radius:25px;
+  padding:25px;
+  margin-bottom:25px;
+  border:1px solid #1a1a1a;
+
+  transition:0.3s ease;
 }
 
-/* REMOVE HEAVY BLUR (THIS WAS CAUSING LAG) */
-.plan{
-  backdrop-filter:none;
-}
-
-/* HOVER */
 .plan:hover{
-  transform:translateY(-4px);
-  box-shadow:0 12px 30px rgba(0,255,166,0.2);
+  transform:translateY(-3px);
+  box-shadow:0 0 20px rgba(0,255,174,0.15);
 }
 
-/* TITLE */
-.plan h3{
-  font-size:18px;
-  margin-bottom:8px;
+/* ===== TITLE ===== */
+.plan h2{
+  font-size:26px;
 }
 
-/* PERCENT */
-.percent{
-  font-size:34px;
-  font-weight:bold;
-  background:linear-gradient(45deg,#00ffa6,#00c853);
-  -webkit-background-clip:text;
-  -webkit-text-fill-color:transparent;
-  margin-bottom:12px;
+/* ===== LINE ===== */
+.line{
+  height:1px;
+  background:#333;
+  margin:15px 0;
 }
 
-/* DETAILS */
-.plan p{
-  margin:5px 0;
-  font-size:13px;
-  color:#cceee0;
+/* ===== PRICE ===== */
+.price{
+  font-size:26px;
+  margin-bottom:15px;
 }
 
-.plan p strong{
-  color:#00ffa6;
-}
-
-/* BUTTON */
-.plan button{
-  margin-top:15px;
+/* ===== BUTTON ===== */
+.btn{
   width:100%;
-  padding:12px;
+  padding:15px;
   border:none;
-  border-radius:10px;
-  background:linear-gradient(45deg,#00ffa6,#00c853);
-  color:#002b1f;
-  font-weight:bold;
+  border-radius:40px;
+  font-size:15px;
+  font-weight:600;
+  background:linear-gradient(135deg,#7cffc4,#2f7d55);
+  color:#000;
   cursor:pointer;
 }
 
-/* BUTTON CLICK FEEDBACK */
-.plan button:active{
+.btn:active{
   transform:scale(0.97);
 }
 
-/* FEATURE PLAN */
-.plan:nth-child(3){
-  border:1px solid #00ffa6;
-  box-shadow:0 0 18px rgba(0,255,166,0.3);
+/* ===== FEATURES ===== */
+.features{
+  margin-top:20px;
 }
 
-/* FIX RIBBON SHIFT */
-.plan:nth-child(3)::before{
-  content:
-  position:absolute;
-  top:10px;
-  right:-35px;
-  background:#00ffa6;
-  color:#003d2b;
-  padding:4px 35px;
-  font-size:10px;
-  transform:rotate(45deg);
-  font-weight:bold;
+.features p{
+  margin:8px 0;
+  color:#bbb;
 }
 
-/* MOBILE */
-@media(max-width:500px){
-  .section-title{
-    font-size:22px;
-  }
+.features span{
+  color:#00ffae;
+  margin-right:8px;
 }
-  /* ===== TRANSLATE CONTAINER ===== */
-.translate-box{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:#111827;
-  padding:6px 10px;
-  border-radius:8px;
-  border:1px solid #1f2937;
-}
-
-/* ICON */
-.translate-box i{
-  color:#00ff9d;
-  font-size:14px;
-}
-
-/* DROPDOWN */
-.goog-te-combo{
-  background:transparent !important;
-  color:#00ff9d !important;
-  border:none !important;
-  font-size:13px;
-  outline:none;
-  cursor:pointer;
-}
-
-/* REMOVE GOOGLE BRANDING */
-.goog-logo-link,
-.goog-te-gadget span{
-  display:none !important;
-}
-
-.goog-te-gadget{
-  color:transparent !important;
-}
-
-/* HIDE TOP BAR */
-.goog-te-banner-frame.skiptranslate{
-  display:none !important;
-}
-
-body{
-  top:0px !important;
-}
-
-/* SMOOTH HOVER */
-.translate-box:hover{
-  border-color:#00ff9d;
-  box-shadow:0 0 10px rgba(0,255,157,0.2);
-  }
 
 </style>
 </head>
 
 <body>
 
+<!-- HERO -->
+<div class="hero">
+  <small>GET STARTED</small>
+  <h1>Pricing</h1>
+  <p>Adjustable and affordable pricing that grows with you</p>
+</div>
+
+<!-- PLANS -->
 <div class="container">
 
-<h2 class="section-title">Investment Plans</h2>
-<p class="section-sub">Choose a plan that matches your financial goals</p>
-
-<div class="plans">
-
   <div class="plan">
-    <h3>Starter Plan</h3>
-    <div class="percent">2%</div>
-    <p><strong>Minimum:</strong> $300</p>
-    <p><strong>Maximum:</strong> $999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('starter',300,999,2,this)">Invest Now</button>
+    <h2>Basic Plan</h2>
+    <div class="line"></div>
+    <div class="price">$300.00 USD</div>
+
+    <button class="btn" onclick="selectPlan('Basic',300,1,999,2,this)">Get started</button>
+
+    <div class="features">
+      <p><span>✔</span>Min: $300.00</p>
+      <p><span>✔</span>Max: $1999.00</p>
+      <p><span>✔</span>Daily Profit: 2.00%</p>
+      <p><span>✔</span>Duration: 7 Days</p>
+      <p><span>✔</span>Referral Bonus: 10%</p>
+    </div>
   </div>
 
   <div class="plan">
-    <h3>Silver Plan</h3>
-    <div class="percent">3%</div>
-    <p><strong>Minimum:</strong> $1,000</p>
-    <p><strong>Maximum:</strong> $9,999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('silver',1000,9999,3,this)">Invest Now</button>
+    <h2>Silver Plan</h2>
+    <div class="line"></div>
+    <div class="price">$2,000.00 USD</div>
+
+    <button class="btn" onclick="selectPlan('silver',2000,9999,2.5,this)">Get started</button>
+
+    <div class="features">
+      <p><span>✔</span>Min: $2,000.00</p>
+      <p><span>✔</span>Max: $9,999.00</p>
+      <p><span>✔</span>Daily Profit: 2.50%</p>
+      <p><span>✔</span>Duration: 7 Days</p>
+      <p><span>✔</span>Referral Bonus: 10%</p>
+    </div>
   </div>
 
   <div class="plan">
-    <h3>Elite Plan</h3>
-    <div class="percent">4%</div>
-    <p><strong>Minimum:</strong> $10,000</p>
-    <p><strong>Maximum:</strong> $49,999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('elite',10000,49999,4,this)">Invest Now</button>
+    <h2>Elite Plan</h2>
+    <div class="line"></div>
+    <div class="price">$10,000.00 USD</div>
+
+    <button class="btn" onclick="selectPlan('elite',10000,49999,3,this)">Get started</button>
+
+    <div class="features">
+      <p><span>✔</span>Min: $10,000.00</p>
+      <p><span>✔</span>Max: $49,999.00</p>
+      <p><span>✔</span>Daily Profit: 3.00%</p>
+      <p><span>✔</span>Duration: 7 Days</p>
+      <p><span>✔</span>Referral Bonus: 10%</p>
+    </div>
   </div>
 
   <div class="plan">
-    <h3>Premium Plan</h3>
-    <div class="percent">5%</div>
-    <p><strong>Minimum:</strong> $50,000</p>
-    <p><strong>Maximum:</strong> $99,999</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('premium',50000,99999,5,this)">Invest Now</button>
+    <h2>Premium Plan</h2>
+    <div class="line"></div>
+    <div class="price">$50,000.00 USD</div>
+
+    <button class="btn" onclick="selectPlan('premium',50000,99999,3.5,this)">Get started</button>
+
+    <div class="features">
+      <p><span>✔</span>Min: $50,000.00</p>
+      <p><span>✔</span>Max: $99,999.00</p>
+      <p><span>✔</span>Daily Profit: 3.50%</p>
+      <p><span>✔</span>Duration: 7 Days</p>
+      <p><span>✔</span>Referral Bonus: 10%</p>
+    </div>
   </div>
 
   <div class="plan">
-    <h3>VIP Plan</h3>
-    <div class="percent">6%</div>
-    <p><strong>Minimum:</strong> $100,000</p>
-    <p><strong>Maximum:</strong> $1,000,000</p>
-    <p><strong>Duration:</strong> 7 Days</p>
-    <button onclick="selectPlan('vip',100000,1000000,6,this)">Invest Now</button>
-  </div>
+    <h2>VIP Plan</h2>
+    <div class="line"></div>
+    <div class="price">$100,000.00 USD</div>
 
-</div>
+    <button class="btn" onclick="selectPlan('vip',100000,1000000,4,this)">Get started</button>
+
+    <div class="features">
+      <p><span>✔</span>Min: $100,000.00</p>
+      <p><span>✔</span>Max: $1,000,000.00</p>
+      <p><span>✔</span>Daily Profit: 4.00%</p>
+      <p><span>✔</span>Duration: 7 Days</p>
+      <p><span>✔</span>Referral Bonus: 10%</p>
+    </div>
+  </div>
 
 </div>
 
@@ -275,21 +230,10 @@ function selectPlan(name,min,max,percent,btn){
   }));
 
   setTimeout(()=>{
-    window.location.href = "plans.html";
+    window.location.href = "payment.html";
   },300);
 }
 </script>
-
-  <script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    autoDisplay: false
-  }, 'google_translate_element');
-}
-</script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
 </body>
 </html>
