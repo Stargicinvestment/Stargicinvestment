@@ -178,29 +178,27 @@ loadWithdrawals();
   
 
 // ✅ ADD HERE
-async function addBalance(userId, amount) {
+let newTotal = (Number(data.invested) || 0) + amount;
 
-  const userRef = doc(db, "users", userId);
-  const snap = await getDoc(userRef);
-  const data = snap.data();
+let newPlan = "Basic";
 
-  await addDoc(collection(db,"transactions"),{
-    userId: userId,
-    type: "deposit",
-    amount: amount,
-    time: Date.now()
-  });
-
-  await updateDoc(userRef,{
-    balance: (Number(data.balance) || 0) + amount,
-    invested: (Number(data.invested) || 0) + amount,
-    plan: data.plan || "starter",
-    startTime: data.startTime || Date.now(),
-    lastUpdate: Date.now(),
-    profitStart: data.profitStart || Date.now()
-  });
-
+if(newTotal >= 100000){
+  newPlan = "VIP";
+}else if(newTotal >= 50000){
+  newPlan = "Premium";
+}else if(newTotal >= 10000){
+  newPlan = "Elite";
+}else if(newTotal >= 2000){
+  newPlan = "Silver";
 }
+
+await updateDoc(userRef,{
+  balance: (Number(data.balance) || 0) + amount,
+  invested: newTotal,
+  plan: newPlan,
+  lastUpdate: Date.now(),
+  profitStart: data.profitStart || Date.now()
+});
 
 
 
