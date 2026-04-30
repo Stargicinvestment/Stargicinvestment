@@ -175,30 +175,42 @@ loadWithdrawals();
 
   loadUsers();
 });
-  
 
-// ✅ ADD HERE
-let newTotal = (Number(data.invested) || 0) + amount;
+  async function addBalance(userId, amount) {
 
-let newPlan = "Basic";
+  const userRef = doc(db, "users", userId);
+  const snap = await getDoc(userRef);
+  const data = snap.data();
 
-if(newTotal >= 100000){
-  newPlan = "VIP";
-}else if(newTotal >= 50000){
-  newPlan = "Premium";
-}else if(newTotal >= 10000){
-  newPlan = "Elite";
-}else if(newTotal >= 2000){
-  newPlan = "Silver";
-}
+  let newTotal = (Number(data.invested) || 0) + amount;
 
-await updateDoc(userRef,{
-  balance: (Number(data.balance) || 0) + amount,
-  invested: newTotal,
-  plan: newPlan,
-  lastUpdate: Date.now(),
-  profitStart: data.profitStart || Date.now()
-});
+  let newPlan = "Basic";
+
+  if(newTotal >= 100000){
+    newPlan = "VIP";
+  }else if(newTotal >= 50000){
+    newPlan = "Premium";
+  }else if(newTotal >= 10000){
+    newPlan = "Elite";
+  }else if(newTotal >= 2000){
+    newPlan = "Silver";
+  }
+
+  await updateDoc(userRef,{
+    balance: (Number(data.balance) || 0) + amount,
+    invested: newTotal,
+    plan: newPlan,
+    lastUpdate: Date.now(),
+    profitStart: data.profitStart || Date.now()
+  });
+
+  await addDoc(collection(db,"transactions"),{
+    userId: userId,
+    type: "deposit",
+    amount: amount,
+    time: Date.now()
+  });
+  }
 
 
 
