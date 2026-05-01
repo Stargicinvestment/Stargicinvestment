@@ -378,7 +378,8 @@ onSnapshot(wq,(snapshot)=>{
 
 const profitBox = document.getElementById("profitBox");
 
-if (invested > 0) {
+if (invested > 0 || lockedProfit > 0 || availableProfit > 0) {
+
   profitBox.style.display = "block";
 
   document.getElementById("profit").innerHTML = `
@@ -387,6 +388,7 @@ if (invested > 0) {
       Locked Profit: $${lockedProfit.toFixed(2)}
     </div>
   `;
+
 } else {
   profitBox.style.display = "none";
   }
