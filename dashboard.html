@@ -268,25 +268,35 @@ let miningRunning = false;
 
 
 // ✅ START LOOP
+let miningRunning = false;
+let miningInterval = null;
+
 function startMining(user){
 
-  if(miningRunning) return;
-  miningRunning = true;
-
   const userRef = doc(db,"users",user.uid);
+
+  // 🔴 prevent multiple starts
+  if(miningRunning) return;
+
+  miningRunning = true;
 
   // run immediately
   runMining(userRef);
 
-  // run every 60 seconds
-  setInterval(()=>{
-  runMining(userRef);
-}, 60000);
+  // 🔴 clear old interval if exists
+  if(miningInterval){
+    clearInterval(miningInterval);
+  }
 
-// run once after 2 seconds (avoid double fast run)
-setTimeout(()=>{
-  runMining(userRef);
-}, 2000);
+  // start ONE clean interval
+  miningInterval = setInterval(()=>{
+    runMining(userRef);
+  }, 60000);
+
+  // small initial delay run
+  setTimeout(()=>{
+    runMining(userRef);
+  }, 2000);
   }
 
 // AUTH
