@@ -221,6 +221,13 @@ async function runMining(userRef){
 
   const invested = Number(data.invested) || 0;
   const planName = data.plan;
+  if(invested <= 0){
+  await updateDoc(userRef,{
+    lockedProfit: 0,
+    lastUpdate: Date.now()
+  });
+  return;
+  }
 
   if(invested <= 0 || !planName) return;
 
