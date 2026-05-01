@@ -209,8 +209,6 @@ const plans = {
   VIP: { rate: 0.04, duration: 7 }
 };
 
-let miningRunning = false;
-
 // ✅ MINING FUNCTION
   async function runMining(userRef){
 
@@ -223,10 +221,8 @@ let miningRunning = false;
   const planName = data.plan;
   const now = Date.now();
 
-  // 🔴 NO INVESTMENT → STOP MINING (DO NOT SPAM RESET)
-  if(invested <= 0 || !planName){
-    return;
-  }
+  // 🚫 NO INVESTMENT → DO NOTHING (NO RESET)
+  if(invested <= 0 || !planName) return;
 
   const plan = plans[planName];
   if(!plan) return;
@@ -237,17 +233,14 @@ let miningRunning = false;
   let availableProfit = Number(data.availableProfit) || 0;
   let profitStart = Number(data.profitStart) || now;
 
-  // 🔥 TIME CALCULATION
   let hours = (now - last) / (1000 * 60 * 60);
   if(hours <= 0) return;
 
   let earned = invested * plan.rate * (hours / 24);
   if(!isFinite(earned) || earned <= 0) return;
 
-  // 🔥 ADD TO LOCKED PROFIT
   lockedProfit += earned;
 
-  // 🔓 UNLOCK AFTER 7 DAYS
   let daysPassed = (now - profitStart) / (1000 * 60 * 60 * 24);
 
   if(daysPassed >= 7){
@@ -262,8 +255,6 @@ let miningRunning = false;
     lastUpdate: now,
     profitStart
   });
-
-  console.log("MINED:", earned);
   }
 
 
@@ -384,7 +375,13 @@ onSnapshot(wq,(snapshot)=>{
 
     const capitalBox = document.getElementById("capitalBox");
 
-if(invested > 0 && plan){
+    if(invested > 0){
+  capitalBox.style.display = "block";
+  document.getElementById("invested").innerText =
+    "$" + invested.toFixed(2);
+}else{
+  capitalBox.style.display = "none";
+    }
 
   document.getElementById("invested").innerText =
     "$" + invested.toFixed(2);
@@ -394,7 +391,7 @@ if(invested > 0 && plan){
 
 const profitEl = document.getElementById("profit");
 
-if(invested > 0){
+if(invested > 0 && lockedProfit > 0){
   profitEl.innerHTML = `
     $${availableProfit.toFixed(2)}
     <div style="font-size:13px;color:gray;">
@@ -403,7 +400,7 @@ if(invested > 0){
   `;
 }else{
   profitEl.innerHTML = `$${availableProfit.toFixed(2)}`;
-  }
+                         }
 
   // ✅ TRANSACTIONS (OUTSIDE)
   const q = query(
