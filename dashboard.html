@@ -384,8 +384,7 @@ onSnapshot(wq,(snapshot)=>{
 
     const capitalBox = document.getElementById("capitalBox");
 
-    if(invested > 0){
-  capitalBox.style.display = "block";
+if(invested > 0 && plan){
 
   document.getElementById("invested").innerText =
     "$" + invested.toFixed(2);
