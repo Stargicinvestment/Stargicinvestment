@@ -364,43 +364,38 @@ onSnapshot(wq,(snapshot)=>{
   onSnapshot(userRef,(docSnap)=>{
 
     let d = docSnap.data();
+let balance = Number(d.balance) || 0;
+let invested = Number(d.invested) || 0;
+let availableProfit = Number(d.availableProfit) || 0;
+let lockedProfit = Number(d.lockedProfit) || 0;
 
-    let balance = Number(d.balance) || 0;
-    let invested = Number(d.invested) || 0;
-    let availableProfit = Number(d.availableProfit) || 0;
-    let lockedProfit = Number(d.lockedProfit) || 0;
+document.getElementById("balance").innerText =
+  "$" + balance.toFixed(2);
 
-    document.getElementById("balance").innerText =
-      "$" + balance.toFixed(2);
+// 🔥 CAPITAL DISPLAY
+const capitalBox = document.getElementById("capitalBox");
 
-    const capitalBox = document.getElementById("capitalBox");
-
-    if(invested > 0){
+if (invested > 0) {
   capitalBox.style.display = "block";
   document.getElementById("invested").innerText =
     "$" + invested.toFixed(2);
-}else{
+} else {
   capitalBox.style.display = "none";
-    }
+}
 
-  document.getElementById("invested").innerText =
-    "$" + invested.toFixed(2);
-}else{
-  capitalBox.style.display = "none";
-  }
-
+// 🔥 PROFIT DISPLAY RULE
 const profitEl = document.getElementById("profit");
 
-if(invested > 0 && lockedProfit > 0){
+if (invested > 0) {
   profitEl.innerHTML = `
     $${availableProfit.toFixed(2)}
     <div style="font-size:13px;color:gray;">
       Locked Profit: $${lockedProfit.toFixed(2)}
     </div>
   `;
-}else{
+} else {
   profitEl.innerHTML = `$${availableProfit.toFixed(2)}`;
-                         }
+  }
 
   // ✅ TRANSACTIONS (OUTSIDE)
   const q = query(
