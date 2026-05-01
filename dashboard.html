@@ -6,54 +6,33 @@
 <title>Dashboard</title>
 
 <style>
-:root{
-  --bg:#0b0f1a;
-  --card:#111827;
-  --text:#fff;
-  --subtext:#aaa;
-}
-
 body{
   margin:0;
   font-family:Arial;
-  background:var(--bg);
-  color:var(--text);
+  background:#0b0f1a;
+  color:#fff;
 }
 
 .header{
   display:flex;
   justify-content:space-between;
   padding:15px;
-  background:var(--card);
+  background:#111827;
 }
 
-.container{
-  padding:20px;
-}
+.container{padding:20px;}
 
 .card{
-  background:var(--card);
+  background:#111827;
   padding:20px;
   border-radius:16px;
   margin-top:20px;
 }
 
-.balance{
-  font-size:40px;
-  color:#00ff9d;
-  font-weight:bold;
-}
+.balance{color:#00ff9d;font-size:40px;font-weight:bold;}
+.profit{color:gold;font-size:30px;font-weight:bold;}
 
-.profit{
-  font-size:30px;
-  color:gold;
-  font-weight:bold;
-}
-
-.actions{
-  display:flex;
-  gap:10px;
-}
+.actions{display:flex;gap:10px;}
 
 button{
   flex:1;
@@ -84,7 +63,6 @@ button{
 
 <h2 id="welcome">Welcome</h2>
 
-<!-- BALANCE -->
 <div class="card">
   <p>Balance</p>
   <div id="balance" class="balance">$0</div>
@@ -95,13 +73,11 @@ button{
   </div>
 </div>
 
-<!-- PROFIT -->
 <div class="card">
   <p>Profit</p>
   <div id="profit" class="profit">$0</div>
 </div>
 
-<!-- ACTIONS -->
 <div class="card">
   <div class="actions">
     <button class="deposit" onclick="goDeposit()">Deposit</button>
@@ -109,13 +85,11 @@ button{
   </div>
 </div>
 
-<!-- TRANSACTIONS -->
 <div class="card">
   <h3>Transactions</h3>
   <div id="history" class="history-box"></div>
 </div>
 
-<!-- WITHDRAW -->
 <div class="card">
   <h3>Withdraw Requests</h3>
   <div id="withdrawHistory" class="history-box"></div>
@@ -124,12 +98,11 @@ button{
 </div>
 
 <script type="module">
-
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, doc, getDoc, updateDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-// 🔥 FIREBASE CONFIG (replace yours)
+// 🔥 YOUR FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "YOUR_KEY",
   authDomain: "YOUR_DOMAIN",
@@ -152,7 +125,7 @@ const plans = {
   VIP: 0.04
 };
 
-// 🔥 SAFE MINING SYSTEM
+// 🔥 SAFE MINING
 async function runMining(ref){
 
   const snap = await getDoc(ref);
@@ -171,9 +144,9 @@ async function runMining(ref){
 
   const last = Number(d.lastUpdate || now);
 
-  let hours = (now - last) / (1000 * 60 * 60);
+  let hours = (now - last) / 3600000;
   if(hours <= 0) return;
-  if(hours > 1) hours = 1; // IMPORTANT FIX
+  if(hours > 1) hours = 1;
 
   let earned = invested * rate * (hours / 24);
 
@@ -189,7 +162,7 @@ async function runMining(ref){
   });
 }
 
-// 🔥 START MINING
+// 🔥 MINING LOOP
 let interval;
 
 function startMining(user){
@@ -213,7 +186,6 @@ onAuthStateChanged(auth, async (user)=>{
   }
 
   const ref = doc(db,"users",user.uid);
-
   const snap = await getDoc(ref);
   const d = snap.data();
 
@@ -236,8 +208,6 @@ onAuthStateChanged(auth, async (user)=>{
       document.getElementById("capitalBox").style.display="block";
       document.getElementById("invested").innerText =
         "$" + invested.toFixed(2);
-    }else{
-      document.getElementById("capitalBox").style.display="none";
     }
 
     document.getElementById("profit").innerText =
@@ -254,11 +224,7 @@ onAuthStateChanged(auth, async (user)=>{
 
     snap.forEach(doc=>{
       const d = doc.data();
-      box.innerHTML += `
-        <div style="padding:10px;border-bottom:1px solid #222">
-          ${d.type} - $${d.amount}
-        </div>
-      `;
+      box.innerHTML += `<div>${d.type} - $${d.amount}</div>`;
     });
   });
 
@@ -271,17 +237,13 @@ onAuthStateChanged(auth, async (user)=>{
 
     snap.forEach(doc=>{
       const d = doc.data();
-      box.innerHTML += `
-        <div style="padding:10px;border-bottom:1px solid #222">
-          ${d.status} - $${d.amount}
-        </div>
-      `;
+      box.innerHTML += `<div>${d.status} - $${d.amount}</div>`;
     });
   });
 
 });
 
-// 🔥 ACTIONS
+// ACTIONS
 window.logout = ()=>signOut(auth);
 window.goDeposit = ()=>location.href="deposit.html";
 window.goWithdraw = ()=>location.href="withdraw.html";
