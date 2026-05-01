@@ -217,22 +217,15 @@ async function runMining(userRef){
   const snap = await getDoc(userRef);
   if(!snap.exists()) return;
 
-  const data = snap.data();
+const data = snap.data();
 
-  const invested = Number(data.invested) || 0;
-  const planName = data.plan;
-  if(invested <= 0){
-  await updateDoc(userRef,{
-    lockedProfit: 0,
-    lastUpdate: Date.now()
-  });
-  return;
-  }
+const invested = Number(data.invested) || 0;
+const planName = data.plan;
 
-  if(invested <= 0 || !planName) return;
+if(invested <= 0 || !planName) return;
 
-  const plan = plans[planName];
-  if(!plan) return;
+const plan = plans[planName];
+if(!plan) return;
 
   const now = Date.now();
   const last = Number(data.lastUpdate) || now;
