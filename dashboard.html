@@ -219,42 +219,47 @@ async function runMining(userRef){
 
   const data = snap.data();
 
-  let invested = Number(data.invested) || 0;
-  if(invested <= 0) return;
+  const invested = Number(data.invested) || 0;
+  const planName = data.plan;
 
-  if(!data.plan) return;
+  if(invested <= 0 || !planName) return;
 
-  const plan = plans[data.plan];
+  const plan = plans[planName];
   if(!plan) return;
 
-  let last = Number(data.lastUpdate) || Date.now();
-  let now = Date.now();
+  const now = Date.now();
+  const last = Number(data.lastUpdate) || now;
 
   let lockedProfit = Number(data.lockedProfit) || 0;
+  let availableProfit = Number(data.availableProfit) || 0;
 
   let profitStart = Number(data.profitStart) || now;
-  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
 
-  // ✅ UNLOCK AFTER 7 DAYS
-  if(profitDays >= 7 && lockedProfit > 0){
-    await updateDoc(userRef,{
-      availableProfit: (Number(data.availableProfit) || 0) + lockedProfit,
-      lockedProfit: 0,
-      profitStart: Date.now()
-    });
-
-    console.log("Profit unlocked");
-    return;
-  }
-
+  // ✅ CALCULATE TIME
   let hours = (now - last) / (1000 * 60 * 60);
+  if(hours <= 0) return;
+
   let earned = invested * plan.rate * (hours / 24);
 
   if(!isFinite(earned) || earned <= 0) return;
 
+  // ✅ ADD TO LOCKED PROFIT
+  lockedProfit += earned;
+
+  // ✅ CHECK 7 DAYS UNLOCK
+  let daysPassed = (now - profitStart) / (1000 * 60 * 60 * 24);
+
+  if(daysPassed >= 7){
+    availableProfit += lockedProfit;
+    lockedProfit = 0;
+    profitStart = now; // 🔥 reset cycle
+  }
+
   await updateDoc(userRef,{
-    lockedProfit: (Number(data.lockedProfit) || 0) + earned,
-    lastUpdate: now
+    lockedProfit,
+    availableProfit,
+    lastUpdate: now,
+    profitStart
   });
 
   console.log("MINED:", earned);
