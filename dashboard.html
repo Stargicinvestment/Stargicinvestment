@@ -393,16 +393,17 @@ onSnapshot(wq,(snapshot)=>{
   capitalBox.style.display = "none";
   }
 
+const profitEl = document.getElementById("profit");
+
 if(invested > 0){
-  document.getElementById("profit").innerHTML = `
+  profitEl.innerHTML = `
     $${availableProfit.toFixed(2)}
     <div style="font-size:13px;color:gray;">
       Locked Profit: $${lockedProfit.toFixed(2)}
     </div>
   `;
 }else{
-  document.getElementById("profit").innerHTML =
-    `$${availableProfit.toFixed(2)}`;
+  profitEl.innerHTML = `$${availableProfit.toFixed(2)}`;
   }
 
   // ✅ TRANSACTIONS (OUTSIDE)
