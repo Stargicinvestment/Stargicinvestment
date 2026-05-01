@@ -372,13 +372,14 @@ onSnapshot(wq,(snapshot)=>{
 
     const capitalBox = document.getElementById("capitalBox");
 
-    if(balance > 0){
-      capitalBox.style.display = "block";
-      document.getElementById("invested").innerText =
-        "$" + invested.toFixed(2);
-    }else{
-      capitalBox.style.display = "none";
-    }
+    if(invested > 0){
+  capitalBox.style.display = "block";
+
+  document.getElementById("invested").innerText =
+    "$" + invested.toFixed(2);
+}else{
+  capitalBox.style.display = "none";
+  }
 
 if(invested > 0){
   document.getElementById("profit").innerHTML = `
