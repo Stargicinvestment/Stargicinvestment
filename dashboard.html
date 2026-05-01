@@ -126,6 +126,7 @@ body{
 <div class="container">
 
   <h2 id="welcome">Welcome</h2>
+  </div> <!-- closes actions card -->
 
 <!-- BALANCE CARD -->
   <div class="card">
@@ -164,7 +165,8 @@ body{
   <div id="history" class="history-box"></div>
 </div>
   <h3>Withdraw Requests</h3>
-<div id="withdrawHistory" class="history-box"></div>
+<div id="withdrawHistory" class="history-box">
+  </div>
 
 <script type="module">
 
@@ -381,7 +383,7 @@ if (invested > 0) {
     "$" + invested.toFixed(2);
 } else {
   capitalBox.style.display = "none";
-}
+  }
 
 // 🔥 PROFIT DISPLAY RULE
 const profitEl = document.getElementById("profit");
