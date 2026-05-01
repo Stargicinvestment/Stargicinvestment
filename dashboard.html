@@ -360,6 +360,7 @@ onSnapshot(wq,(snapshot)=>{
 
     let balance = Number(d.balance) || 0;
     let invested = Number(d.invested) || 0;
+    const profitElement = document.getElementById("profit");
     let availableProfit = Number(d.availableProfit) || 0;
     let lockedProfit = Number(d.lockedProfit) || 0;
 
