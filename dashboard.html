@@ -359,7 +359,6 @@ onSnapshot(wq,(snapshot)=>{
 
     let balance = Number(d.balance) || 0;
     let invested = Number(d.invested) || 0;
-    const profitElement = document.getElementById("profit");
     let availableProfit = Number(d.availableProfit) || 0;
     let lockedProfit = Number(d.lockedProfit) || 0;
 
@@ -376,22 +375,27 @@ onSnapshot(wq,(snapshot)=>{
       capitalBox.style.display = "none";
     }
 
-const profitBox = document.getElementById("profitBox");
+    const profitBox = document.getElementById("profitBox");
+    const profitEl = document.getElementById("profit");
 
-if (invested > 0 || lockedProfit > 0 || availableProfit > 0) {
+    const hasProfitData =
+      invested > 0 || lockedProfit > 0 || availableProfit > 0;
 
-  profitBox.style.display = "block";
+    if (hasProfitData) {
+      profitBox.style.display = "block";
 
-  document.getElementById("profit").innerHTML = `
-    $${availableProfit.toFixed(2)}
-    <div style="font-size:13px;color:gray;">
-      Locked Profit: $${lockedProfit.toFixed(2)}
-    </div>
-  `;
+      profitEl.innerHTML = `
+        $${availableProfit.toFixed(2)}
+        <div style="font-size:13px;color:gray;">
+          Locked Profit: $${lockedProfit.toFixed(2)}
+        </div>
+      `;
+    } else {
+      profitBox.style.display = "none";
+      profitEl.innerHTML = "$0";
+    }
 
-} else {
-  profitBox.style.display = "none";
-  }
+});
     
   // ✅ TRANSACTIONS (OUTSIDE)
   const q = query(
