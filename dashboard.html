@@ -6,65 +6,16 @@
 <title>Dashboard</title>
 
 <style>
-  :root{
+:root{
   --bg:#0b0f1a;
   --card:#111827;
-  --text:#ffffff;
-  --subtext:#aaaaaa;
+  --text:#fff;
+  --subtext:#aaa;
 }
-
-.light-mode{
-  --bg:#f5f5f5;
-  --card:#ffffff;
-  --text:#111111;
-  --subtext:#555555;
-}
-  .card{
-  background:#111827;
-  padding:20px;
-  border-radius:16px;
-  margin-top:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.4);
-}
-
-.balance{
-  color:#00ff9d;
-  font-size:42px;
-  font-weight:bold;
-}
-
-.profit{
-  color:gold;
-  font-size:34px;
-  font-weight:bold;
-}
-
-.card p{
-  color:var(--subtext);
-}
-.goog-te-banner-frame.skiptranslate {
-  display: none !important;
-}
-
-body {
-  top: 0px !important;
-}
-
-iframe.goog-te-banner-frame {
-  display: none !important;
-}
-
-.goog-te-gadget {
-  display: none !important;
-}
-
-.goog-logo-link {
-  display: none !important;
-}
-  
-*{box-sizing:border-box;}
 
 body{
+  margin:0;
+  font-family:Arial;
   background:var(--bg);
   color:var(--text);
 }
@@ -73,46 +24,52 @@ body{
   display:flex;
   justify-content:space-between;
   padding:15px;
-  background:#111827;
+  background:var(--card);
 }
 
-.container{padding:20px;}
-
-.card p{
-  color:var(--subtext);
+.container{
+  padding:20px;
 }
 
-.balance{color:#00ff9d;font-size:40px;}
-.profit{color:gold;font-size:30px;}
+.card{
+  background:var(--card);
+  padding:20px;
+  border-radius:16px;
+  margin-top:20px;
+}
+
+.balance{
+  font-size:40px;
+  color:#00ff9d;
+  font-weight:bold;
+}
+
+.profit{
+  font-size:30px;
+  color:gold;
+  font-weight:bold;
+}
 
 .actions{
   display:flex;
   gap:10px;
-  margin-top:20px;
 }
 
-.btn{
+button{
   flex:1;
   padding:12px;
   border:none;
   border-radius:10px;
   cursor:pointer;
 }
-.history-box{
-  max-height: 250px;     /* 🔥 prevents stretching */
-  overflow-y: auto;      /* 🔥 enables scroll */
-  margin-top:10px;
-  padding-right:5px;
-}
-  
 
-/* 🔥 FIX OVERFLOW TEXT */
-.history-box div{
-  word-break: break-all;
-  overflow-wrap: break-word;
-}
-.deposit{background:#00e676;color:#000;}
+.deposit{background:#00e676;}
 .withdraw{background:#ff5252;color:#fff;}
+
+.history-box{
+  max-height:250px;
+  overflow-y:auto;
+}
 </style>
 </head>
 
@@ -125,26 +82,20 @@ body{
 
 <div class="container">
 
-  <h2 id="welcome">Welcome</h2>
-  </div> <!-- closes actions card -->
+<h2 id="welcome">Welcome</h2>
 
-<!-- BALANCE CARD -->
-  <div class="card">
+<!-- BALANCE -->
+<div class="card">
   <p>Balance</p>
   <div id="balance" class="balance">$0</div>
 
-  <!-- Capital Locked -->
   <div id="capitalBox" style="display:none;margin-top:10px;">
-    <div style="font-size:13px;color:#aaa;">
-      Capital Locked
-    </div>
-    <div id="invested" style="color:#00e676;font-size:18px;">
-      $0
-    </div>
+    <small>Capital Locked</small>
+    <div id="invested">$0</div>
   </div>
 </div>
 
-<!-- PROFIT CARD -->
+<!-- PROFIT -->
 <div class="card">
   <p>Profit</p>
   <div id="profit" class="profit">$0</div>
@@ -153,146 +104,107 @@ body{
 <!-- ACTIONS -->
 <div class="card">
   <div class="actions">
-    <button class="btn deposit" onclick="goDeposit()">Deposit</button>
-    <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
+    <button class="deposit" onclick="goDeposit()">Deposit</button>
+    <button class="withdraw" onclick="goWithdraw()">Withdraw</button>
   </div>
-
-
+</div>
 
 <!-- TRANSACTIONS -->
 <div class="card">
   <h3>Transactions</h3>
   <div id="history" class="history-box"></div>
 </div>
+
+<!-- WITHDRAW -->
+<div class="card">
   <h3>Withdraw Requests</h3>
-<div id="withdrawHistory" class="history-box">
-  </div>
+  <div id="withdrawHistory" class="history-box"></div>
+</div>
+
+</div>
 
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// CONFIG
+// 🔥 FIREBASE CONFIG (replace yours)
 const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-  authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+  apiKey: "YOUR_KEY",
+  authDomain: "YOUR_DOMAIN",
+  projectId: "YOUR_PROJECT",
+  storageBucket: "YOUR_BUCKET",
+  messagingSenderId: "YOUR_ID",
+  appId: "YOUR_APP"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
+// PLANS
 const plans = {
-  Basic: { rate: 0.02, duration: 7 },
-  Silver: { rate: 0.025, duration: 7 },
-  Elite: { rate: 0.03, duration: 7 },
-  Premium: { rate: 0.035, duration: 7 },
-  VIP: { rate: 0.04, duration: 7 }
+  Basic: 0.02,
+  Silver: 0.025,
+  Elite: 0.03,
+  Premium: 0.035,
+  VIP: 0.04
 };
 
-// ✅ MINING FUNCTION
-  async function runMining(userRef){
+// 🔥 SAFE MINING SYSTEM
+async function runMining(ref){
 
-  const snap = await getDoc(userRef);
+  const snap = await getDoc(ref);
   if(!snap.exists()) return;
 
-  const data = snap.data();
+  const d = snap.data();
 
-  const invested = Number(data.invested) || 0;
-  const planName = data.plan;
+  const invested = Number(d.invested || 0);
+  const plan = d.plan;
   const now = Date.now();
 
-  // 🚫 NO INVESTMENT → DO NOTHING (NO RESET)
-  if(invested <= 0 || !planName) return;
+  if(invested <= 0 || !plan) return;
 
-  const plan = plans[planName];
-  if(!plan) return;
+  const rate = plans[plan];
+  if(!rate) return;
 
-  const last = Number(data.lastUpdate) || now;
-
-  let lockedProfit = Number(data.lockedProfit) || 0;
-  let availableProfit = Number(data.availableProfit) || 0;
-  let profitStart = Number(data.profitStart) || now;
+  const last = Number(d.lastUpdate || now);
 
   let hours = (now - last) / (1000 * 60 * 60);
   if(hours <= 0) return;
+  if(hours > 1) hours = 1; // IMPORTANT FIX
 
-  let earned = invested * plan.rate * (hours / 24);
-  if(!isFinite(earned) || earned <= 0) return;
+  let earned = invested * rate * (hours / 24);
 
-  lockedProfit += earned;
+  let locked = Number(d.lockedProfit || 0);
+  let available = Number(d.availableProfit || 0);
 
-  let daysPassed = (now - profitStart) / (1000 * 60 * 60 * 24);
+  locked += earned;
 
-  if(daysPassed >= 7){
-    availableProfit += lockedProfit;
-    lockedProfit = 0;
-    profitStart = now;
-  }
-
-  await updateDoc(userRef,{
-    lockedProfit,
-    availableProfit,
-    lastUpdate: now,
-    profitStart
+  await updateDoc(ref,{
+    lockedProfit: locked,
+    availableProfit: available,
+    lastUpdate: now
   });
-  }
+}
 
-
-// ✅ START LOOP
-let miningRunning = false;
-let miningInterval = null;
+// 🔥 START MINING
+let interval;
 
 function startMining(user){
+  const ref = doc(db,"users",user.uid);
 
-  const userRef = doc(db,"users",user.uid);
+  if(interval) clearInterval(interval);
 
-  // 🔴 prevent multiple starts
-  if(miningRunning) return;
+  runMining(ref);
 
-  miningRunning = true;
-
-  // run immediately
-  runMining(userRef);
-
-  // 🔴 clear old interval if exists
-  if(miningInterval){
-    clearInterval(miningInterval);
-  }
-
-  // start ONE clean interval
-  miningInterval = setInterval(()=>{
-    runMining(userRef);
+  interval = setInterval(()=>{
+    runMining(ref);
   }, 60000);
+}
 
-  // small initial delay run
-  setTimeout(()=>{
-    runMining(userRef);
-  }, 2000);
-  }
-
-// AUTH
+// 🔥 AUTH
 onAuthStateChanged(auth, async (user)=>{
 
   if(!user){
@@ -300,174 +212,83 @@ onAuthStateChanged(auth, async (user)=>{
     return;
   }
 
-  const userRef = doc(db,"users",user.uid);
+  const ref = doc(db,"users",user.uid);
 
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
-
-  let data = snap.data();
-  let name = data.name || user.email.split("@")[0];
+  const snap = await getDoc(ref);
+  const d = snap.data();
 
   document.getElementById("welcome").innerText =
-    "Welcome, " + name;
-  const wq = query(
-  collection(db,"withdrawals"),
-  where("userId","==",user.uid)
-);
+    "Welcome " + (d.name || "User");
 
-onSnapshot(wq,(snapshot)=>{
-
-  let box = document.getElementById("withdrawHistory");
-  box.innerHTML = "";
-
-  if(snapshot.empty){
-    box.innerHTML = "<p style='color:gray;'>No withdraw requests</p>";
-    return;
-  }
-
-  snapshot.forEach((docSnap)=>{
-
-    let d = docSnap.data();
-
-    let color =
-      d.status === "approved" ? "lightgreen" :
-      d.status === "rejected" ? "#ff6b6b" :
-      "orange";
-
-    box.innerHTML += `
-      <div style="
-        background:#0b0f1a;
-        padding:12px;
-        margin:10px 0;
-        border-radius:10px;
-      ">
-        <div style="display:flex;justify-content:space-between;">
-          <b style="color:${color};">${d.status.toUpperCase()}</b>
-          <span>$${Number(d.amount).toFixed(2)}</span>
-        </div>
-
-        <div style="margin-top:5px;font-size:12px;color:#aaa;">
-          ${d.coin}
-        </div>
-
-        <div style="margin-top:5px;font-size:12px;color:gray;">
-          ${new Date(d.time).toLocaleString()}
-        </div>
-      </div>
-    `;
-  });
-
-});
-
-  // ✅ START MINING ONCE
   startMining(user);
 
-  // ✅ USER DATA LISTENER
-  onSnapshot(userRef,(docSnap)=>{
+  // LIVE USER DATA
+  onSnapshot(ref,(snap)=>{
 
-    let d = docSnap.data();
-let balance = Number(d.balance) || 0;
-let invested = Number(d.invested) || 0;
-let availableProfit = Number(d.availableProfit) || 0;
-let lockedProfit = Number(d.lockedProfit) || 0;
+    const d = snap.data();
 
-document.getElementById("balance").innerText =
-  "$" + balance.toFixed(2);
+    document.getElementById("balance").innerText =
+      "$" + (d.balance || 0).toFixed(2);
 
-// 🔥 CAPITAL DISPLAY
-const capitalBox = document.getElementById("capitalBox");
+    const invested = d.invested || 0;
 
-if (invested > 0) {
-  capitalBox.style.display = "block";
-  document.getElementById("invested").innerText =
-    "$" + invested.toFixed(2);
-} else {
-  capitalBox.style.display = "none";
-  }
+    if(invested > 0){
+      document.getElementById("capitalBox").style.display="block";
+      document.getElementById("invested").innerText =
+        "$" + invested.toFixed(2);
+    }else{
+      document.getElementById("capitalBox").style.display="none";
+    }
 
-// 🔥 PROFIT DISPLAY RULE
-const profitEl = document.getElementById("profit");
+    document.getElementById("profit").innerText =
+      "$" + (d.availableProfit || 0).toFixed(2);
 
-if (invested > 0) {
-  profitEl.innerHTML = `
-    $${availableProfit.toFixed(2)}
-    <div style="font-size:13px;color:gray;">
-      Locked Profit: $${lockedProfit.toFixed(2)}
-    </div>
-  `;
-} else {
-  profitEl.innerHTML = `$${availableProfit.toFixed(2)}`;
-  }
+  });
 
-  // ✅ TRANSACTIONS (OUTSIDE)
-  const q = query(
-    collection(db,"transactions"),
-    where("userId","==",user.uid)
-  );
+  // TRANSACTIONS
+  const tq = query(collection(db,"transactions"),where("userId","==",user.uid));
 
-  onSnapshot(q,(snapshot)=>{
-    let box = document.getElementById("history");
-    box.innerHTML="";
+  onSnapshot(tq,(snap)=>{
+    const box = document.getElementById("history");
+    box.innerHTML = "";
 
-    snapshot.forEach((docItem)=>{
-      let d = docItem.data();
-
-      let color = d.type === "deposit"
-        ? "lightgreen"
-        : "#ff6b6b";
-
+    snap.forEach(doc=>{
+      const d = doc.data();
       box.innerHTML += `
-      <div style="
-        background:#0b0f1a;
-        padding:12px;
-        margin:10px 0;
-        border-radius:10px;
-      ">
-        <div style="display:flex;justify-content:space-between;">
-          <b style="color:${color};">${d.type.toUpperCase()}</b>
-          <span>$${Number(d.amount).toFixed(2)}</span>
+        <div style="padding:10px;border-bottom:1px solid #222">
+          ${d.type} - $${d.amount}
         </div>
+      `;
+    });
+  });
 
-        <div style="margin-top:8px;font-size:12px;color:gray;">
-          ${new Date(d.time).toLocaleString()}
+  // WITHDRAWALS
+  const wq = query(collection(db,"withdrawals"),where("userId","==",user.uid));
+
+  onSnapshot(wq,(snap)=>{
+    const box = document.getElementById("withdrawHistory");
+    box.innerHTML = "";
+
+    snap.forEach(doc=>{
+      const d = doc.data();
+      box.innerHTML += `
+        <div style="padding:10px;border-bottom:1px solid #222">
+          ${d.status} - $${d.amount}
         </div>
-      </div>
       `;
     });
   });
 
 });
 
-  
-
-// ACTIONS
-window.logout = function(){
-  signOut(auth);
-  location.href="login.html";
-};
-
-window.goDeposit = function(){
-  location.href="deposit.html";
-};
-
-window.goWithdraw = function(){
-  location.href="withdraw.html";
-};
-
+// 🔥 ACTIONS
+window.logout = ()=>signOut(auth);
+window.goDeposit = ()=>location.href="deposit.html";
+window.goWithdraw = ()=>location.href="withdraw.html";
 
 </script>
-<div id="google_translate_element" style="display:none;"></div>
 
-<script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    autoDisplay: false
-  }, 'google_translate_element');
-}
-</script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</body>
 </html>
 
 
