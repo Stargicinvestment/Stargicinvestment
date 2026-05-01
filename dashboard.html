@@ -212,7 +212,7 @@ const plans = {
 let miningRunning = false;
 
 // ✅ MINING FUNCTION
-async function runMining(userRef){
+  async function runMining(userRef){
 
   const snap = await getDoc(userRef);
   if(!snap.exists()) return;
@@ -221,20 +221,10 @@ async function runMining(userRef){
 
   const invested = Number(data.invested) || 0;
   const planName = data.plan;
-
   const now = Date.now();
 
-  // 🔴 CASE 1: NO INVESTMENT → RESET & STOP
+  // 🔴 NO INVESTMENT → STOP MINING (DO NOT SPAM RESET)
   if(invested <= 0 || !planName){
-
-    await updateDoc(userRef,{
-      lockedProfit: 0,
-      availableProfit: 0,
-      lastUpdate: now,
-      profitStart: now
-    });
-
-    console.log("No investment - mining stopped/reset");
     return;
   }
 
@@ -242,6 +232,7 @@ async function runMining(userRef){
   if(!plan) return;
 
   const last = Number(data.lastUpdate) || now;
+
   let lockedProfit = Number(data.lockedProfit) || 0;
   let availableProfit = Number(data.availableProfit) || 0;
   let profitStart = Number(data.profitStart) || now;
@@ -253,7 +244,7 @@ async function runMining(userRef){
   let earned = invested * plan.rate * (hours / 24);
   if(!isFinite(earned) || earned <= 0) return;
 
-  // 🔥 ADD PROFIT TO LOCKED
+  // 🔥 ADD TO LOCKED PROFIT
   lockedProfit += earned;
 
   // 🔓 UNLOCK AFTER 7 DAYS
@@ -274,6 +265,7 @@ async function runMining(userRef){
 
   console.log("MINED:", earned);
   }
+
 
 // ✅ START LOOP
 function startMining(user){
