@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Payment</title>
+<title>Secure Payment</title>
 
 <style>
 body{
@@ -15,55 +15,48 @@ body{
   padding:20px;
 }
 
-/* COIN IMAGE */
 .coin-img{
-  width:100px;
-  margin-top:30px;
+  width:90px;
+  margin-top:25px;
 }
 
-/* TEXT */
 .title{
-  margin-top:20px;
+  margin-top:15px;
   font-size:18px;
   color:#aaa;
 }
 
 .amount{
-  font-size:36px;
+  font-size:34px;
   color:#00ffae;
   margin:10px 0;
   font-weight:600;
 }
 
-/* QR */
 .qr{
-  width:100%;
-  max-width:260px;
-  margin:30px auto;
+  width:260px;
+  height:260px;
+  margin:25px auto;
   border-radius:12px;
   background:#fff;
   padding:10px;
 }
 
-/* WALLET */
 .wallet{
   background:#111;
   padding:15px;
   border-radius:10px;
   word-break:break-all;
-  margin-top:20px;
-  font-size:14px;
-  position:relative;
+  margin-top:15px;
+  font-size:13px;
 }
 
-/* NETWORK NOTE */
 .note{
   margin-top:8px;
   font-size:13px;
   color:#ffcc00;
 }
 
-/* BUTTON */
 .copy-btn{
   margin-top:15px;
   padding:14px 25px;
@@ -72,7 +65,7 @@ body{
   cursor:pointer;
   background:linear-gradient(135deg,#00ffae,#00c3ff);
   color:#000;
-  font-weight:500;
+  font-weight:600;
 }
 </style>
 </head>
@@ -93,7 +86,6 @@ body{
 
 <script>
 
-// GET DATA FROM URL
 const params = new URLSearchParams(window.location.search);
 const coin = params.get("coin");
 const amount = params.get("amount");
@@ -101,27 +93,38 @@ const amount = params.get("amount");
 // WALLET ADDRESSES
 const wallets = {
   "Bitcoin (BTC)": {
-    address: "196jxoawfauaQur3ztAwgmAi1X34qy4paT",
-    note: "Send ONLY BTC network"
+    address: "bc1qjp23ze4y9l3adretjjkgwp8ysllx50fmknckaf",
+    note: "Send ONLY BTC network",
+    qrPrefix: "bitcoin:"
   },
+
   "Ethereum (ETH)": {
-    address: "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7",
-    note: "Send ONLY BEP20 (BNB network)"
+    address: "0x7e0fEcb39B9560D9B9E57aFC7C4FFDA4dC213f8F",
+    note: "Send ONLY Ethereum (ERC20)",
+    qrPrefix: "ethereum:"
   },
-  "USDT (BEP20)": {
-    address: "0x85954ac3953cfd390f6c27c41cfea6a62bd149c7",
-    note: "Send ONLY BEP20 (BNB network)"
+
+  "USDT (BSC)": {
+    address: "0x7e0fEcb39B9560D9B9E57aFC7C4FFDA4dC213f8F",
+    note: "Send ONLY BSC (BEP20)",
+    qrPrefix: "binance:"
+  },
+
+  "XRP": {
+    address: "rhBjDbWEjZM4RfTnXQApF4CWncEpbJrzBN",
+    note: "Send ONLY XRP network",
+    qrPrefix: "ripple:"
   }
 };
 
 // IMAGES
 const images = {
-  "Bitcoin (BTC)": "https://cryptologos.cc/logos/bitcoin-btc-logo.png",
-  "Ethereum (ETH)": "https://cryptologos.cc/logos/ethereum-eth-logo.png",
-  "USDT (BEP20)": "https://cryptologos.cc/logos/tether-usdt-logo.png"
+  "Bitcoin (BTC)": "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/btc.png",
+  "Ethereum (ETH)": "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/eth.png",
+  "USDT (BSC)": "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/usdt.png",
+  "XRP": "https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/128/color/xrp.png"
 };
 
-// ELEMENTS
 const coinImage = document.getElementById("coinImage");
 const titleText = document.getElementById("titleText");
 const amountText = document.getElementById("amountText");
@@ -129,43 +132,48 @@ const walletBox = document.getElementById("wallet");
 const qrCode = document.getElementById("qrCode");
 const networkNote = document.getElementById("networkNote");
 
-// VALIDATION
 if (!coin || !amount || !wallets[coin]) {
   titleText.textContent = "Invalid payment request";
   throw new Error("Invalid payment data");
 }
 
-// DATA
-const wallet = wallets[coin].address;
+const walletData = wallets[coin];
 
-// DISPLAY INFO
+// DISPLAY
 coinImage.src = images[coin];
 titleText.textContent = `Deposit ${coin}`;
 amountText.textContent = `$${amount}`;
-walletBox.textContent = wallet;
-networkNote.textContent = wallets[coin].note;
+walletBox.textContent = walletData.address;
+networkNote.textContent = walletData.note;
 
-// 🔥 QR PAYMENT FORMAT (IMPROVED)
-let qrData = wallet;
+// QR BUILD (FIXED)
+let qrData = walletData.address;
 
-// Bitcoin format
-if (coin.includes("Bitcoin")) {
-  qrData = `bitcoin:${wallet}?amount=${amount}`;
+if (walletData.qrPrefix === "bitcoin:") {
+  qrData = `bitcoin:${walletData.address}?amount=${amount}`;
 }
 
-// Ethereum / USDT format (wallet dependent support)
-if (coin.includes("Ethereum") || coin.includes("USDT")) {
-  qrData = `ethereum:${wallet}?value=${amount}`;
+if (walletData.qrPrefix === "ethereum:") {
+  qrData = `ethereum:${walletData.address}?value=${amount}`;
 }
 
-// ENCODE QR SAFELY
-qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=${encodeURIComponent(qrData)}`;
-
-// COPY FUNCTION
-function copyWallet() {
-  navigator.clipboard.writeText(wallet);
-  alert("Wallet address copied!");
+if (walletData.qrPrefix === "binance:") {
+  qrData = walletData.address; // BEP20 uses raw address QR
 }
+
+if (walletData.qrPrefix === "ripple:") {
+  qrData = `ripple:${walletData.address}?amount=${amount}`;
+}
+
+// QR IMAGE
+qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrData)}`;
+
+// COPY
+function copyWallet(){
+  navigator.clipboard.writeText(walletData.address);
+  alert("Wallet copied!");
+}
+
 
 </script>
 
