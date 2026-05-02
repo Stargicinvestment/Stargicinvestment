@@ -9,13 +9,11 @@
 body{
   margin:0;
   font-family:Poppins, sans-serif;
-
-  /* 🔥 PREMIUM GREEN BACKGROUND */
   background: radial-gradient(circle at top, #0f3d2e, #050505 70%);
   color:#fff;
 }
 
-/* CENTER EVERYTHING */
+/* CONTAINER */
 .container{
   min-height:100vh;
   display:flex;
@@ -28,28 +26,17 @@ body{
 .deposit-box{
   width:100%;
   max-width:400px;
-
   background:rgba(255,255,255,0.03);
   border-radius:20px;
   padding:25px;
   backdrop-filter:blur(10px);
   border:1px solid rgba(255,255,255,0.05);
-
   box-shadow:0 20px 60px rgba(0,0,0,0.8);
 }
 
-/* TITLE */
-.deposit-box h2{
-  font-weight:500;
-  margin-bottom:10px;
-}
+.deposit-box h2{ margin-bottom:10px; }
+.deposit-box p{ color:#aaa; margin-bottom:25px; }
 
-.deposit-box p{
-  color:#aaa;
-  margin-bottom:25px;
-}
-
-/* LABEL */
 label{
   display:block;
   margin-bottom:8px;
@@ -65,22 +52,18 @@ select, input{
   color:#fff;
   margin-bottom:20px;
   font-size:15px;
-
-  box-sizing: border-box; /* 🔥 ensures it stays inside */
+  box-sizing:border-box;
 }
-/* BUTTON */
+
 button{
   width:100%;
   padding:16px;
   border:none;
   border-radius:10px;
   font-size:16px;
-  font-weight:500;
   cursor:pointer;
-
   background:linear-gradient(135deg,#00ffae,#00c3ff);
   color:#000;
-
   transition:0.3s;
 }
 
@@ -88,28 +71,12 @@ button:hover{
   transform:translateY(-2px);
   box-shadow:0 10px 30px rgba(0,255,174,0.3);
 }
-
-/* ERROR */
-.error{
-  color:#ff4d4d;
-  font-size:13px;
-  margin-top:-15px;
-  margin-bottom:10px;
-}
-
-/* SUCCESS */
-.success{
-  text-align:center;
-  color:#00ffae;
-  margin-top:20px;
-}
 </style>
 </head>
 
 <body>
 
 <div class="container">
-
   <div class="deposit-box">
 
     <h2>Make Deposit</h2>
@@ -122,22 +89,18 @@ button:hover{
         <option value="">Choose Currency</option>
         <option>Bitcoin (BTC)</option>
         <option>Ethereum (ETH)</option>
-        <option>USDT (BEP20)</option>
+        <option>USDT (BSC)</option>
+        <option>XRP</option>
       </select>
 
       <label>Enter Amount *</label>
       <input type="number" id="amount" placeholder="0000.00">
 
-      <div id="error" class="error"></div>
-
       <button type="submit">Make Deposit</button>
 
     </form>
 
-    <div id="success" class="success"></div>
-
   </div>
-
 </div>
 
 <script>
@@ -157,8 +120,7 @@ document.getElementById("depositForm").addEventListener("submit", function(e){
     return;
   }
 
-  // 🔥 PASS DATA TO NEXT PAGE
-  window.location.href = `payment.html?amount=${amount}&coin=${currency}`;
+  window.location.href = `payment.html?coin=${encodeURIComponent(currency)}&amount=${amount}`;
 });
 </script>
 
