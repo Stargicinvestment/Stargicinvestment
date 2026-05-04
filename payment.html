@@ -168,11 +168,28 @@ if (walletData.qrPrefix === "ripple:") {
 // QR IMAGE
 qrCode.src = `https://api.qrserver.com/v1/create-qr-code/?size=260x260&data=${encodeURIComponent(qrData)}`;
 
-// COPY
-function copyWallet(){
-  navigator.clipboard.writeText(walletData.address);
-  alert("Wallet copied!");
+function copyWallet(address) {
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(address)
+      .then(() => {
+        alert("Wallet copied");
+      })
+      .catch(() => fallbackCopy(address));
+  } else {
+    fallbackCopy(address);
+  }
 }
+
+function fallbackCopy(address) {
+  const input = document.createElement("input");
+  document.body.appendChild(input);
+  input.value = address;
+  input.select();
+  document.execCommand("copy");
+  document.body.removeChild(input);
+
+  alert("Wallet copied");
+  }
 
 
 </script>
