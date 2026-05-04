@@ -8,6 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+  html {
+  scroll-behavior: smooth;
+  }
 *{
   margin:0;
   padding:0;
@@ -1223,10 +1226,14 @@ body {
 /* Base animation */
 .reveal {
   opacity: 0;
-  transform: translateY(60px);
-  filter: blur(6px);
-  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  transform: translateY(40px);
+  transition: all 0.6s ease;
 }
+
+.reveal.show {
+  opacity: 1;
+  transform: translateY(0);
+  }
 
 /* When visible */
 .reveal.show {
