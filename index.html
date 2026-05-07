@@ -1278,6 +1278,64 @@ body {
     transition: none !important;
   }
   }
+  /* MENU OVERLAY */
+.menu-overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100vh;
+  background:rgba(0,0,0,0.96);
+  backdrop-filter:blur(10px);
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  opacity:0;
+  visibility:hidden;
+  transition:0.4s ease;
+
+  z-index:9999;
+}
+
+/* OPEN MENU */
+.menu-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+/* MENU CONTENT */
+.menu-content{
+  display:flex;
+  flex-direction:column;
+  gap:25px;
+  text-align:center;
+}
+
+/* LINKS */
+.menu-content a{
+  color:#fff;
+  text-decoration:none;
+  font-size:26px;
+  font-weight:300;
+  transition:0.3s ease;
+}
+
+.menu-content a:hover{
+  color:#7CFFC4;
+  transform:translateY(-2px);
+}
+
+/* CLOSE BUTTON */
+.close-btn{
+  position:absolute;
+  top:30px;
+  right:30px;
+  font-size:40px;
+  color:#fff;
+  cursor:pointer;
+  }
 
 
 </style>
@@ -1286,8 +1344,28 @@ body {
 <body>
 
 <nav>
-  <div class="logo reveal">Stargicinvestment</div>
-  <div class="menu reveal">≡</div>
+  <!-- MENU BUTTON -->
+<div class="menu reveal" id="menuBtn">
+  ☰
+</div>
+
+<!-- MENU OVERLAY -->
+<div class="menu-overlay" id="menuOverlay">
+
+  <div class="menu-content">
+
+    <div class="close-btn" id="closeMenu">×</div>
+
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <a href="plans.html">Investment Plans</a>
+    <a href="contact.html">Contact</a>
+    <a href="login.html">Login</a>
+    <a href="register.html">Register</a>
+
+  </div>
+
+</div>
 </nav>
 
 <section class="hero reveal">
@@ -1942,6 +2020,26 @@ window.smartsupp||(function(d) {
   s.parentNode.insertBefore(c,s);  
 })(document);  
 </script>
+
+    <script>
+const menuBtn = document.getElementById("menuBtn");
+const menuOverlay = document.getElementById("menuOverlay");
+const closeMenu = document.getElementById("closeMenu");
+
+menuBtn.addEventListener("click", () => {
+  menuOverlay.classList.add("active");
+});
+
+closeMenu.addEventListener("click", () => {
+  menuOverlay.classList.remove("active");
+});
+
+menuOverlay.addEventListener("click", (e) => {
+  if(e.target === menuOverlay){
+    menuOverlay.classList.remove("active");
+  }
+});
+    </script>
     
 </body>
 </html>
