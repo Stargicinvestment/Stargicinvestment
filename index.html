@@ -8,15 +8,12 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-  html {
-  scroll-behavior: smooth;
-  }
 *{
   margin:0;
   padding:0;
   box-sizing:border-box;
   font-family:'Poppins', sans-serif;
-    }
+}
 
 img {
   max-width: 100%;
@@ -27,10 +24,7 @@ body{
   background:#050505;
   color:#fff;
   overflow-x:hidden;
-
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
-  }
+}
 
 html, body {
   width: 100%;
@@ -45,10 +39,76 @@ nav{
   padding:20px;
 }
 
-.logo{
-  font-size:20px;
-  font-weight:600;
+/* PREMIUM LOGO */
+.premium-logo{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+/* ICON BOX */
+.logo-icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+
+  background:
+    linear-gradient(145deg,#0f0f0f,#1a1a1a);
+
+  border:1px solid rgba(124,255,196,0.15);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,0.7),
+    inset 0 1px 1px rgba(255,255,255,0.04);
+}
+
+/* S LETTER */
+.logo-icon span{
   color:#7CFFC4;
+  font-size:24px;
+  font-weight:600;
+  letter-spacing:1px;
+}
+
+/* TEXT SIDE */
+.logo-text{
+  display:flex;
+  flex-direction:column;
+}
+
+/* TITLE */
+.logo-text h1{
+  font-size:20px;
+  font-weight:500;
+  color:#fff;
+  letter-spacing:1px;
+  line-height:1;
+}
+
+/* LINES */
+.logo-lines{
+  display:flex;
+  gap:6px;
+  margin-top:8px;
+}
+
+/* LINE STYLE */
+.logo-lines span{
+  width:32px;
+  height:2px;
+  border-radius:10px;
+
+  background:linear-gradient(
+    90deg,
+    #7CFFC4,
+    transparent
+  );
+
+  opacity:0.8;
 }
 
 .menu{
@@ -64,7 +124,7 @@ nav{
 
 /* HERO */
 .hero{
-  height:90svh;
+  height:90vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
@@ -81,10 +141,8 @@ nav{
   width:500px;
   height:500px;
   background:radial-gradient(circle, rgba(124,255,196,0.2), transparent);
-  filter:blur(60px);
-  animation:float 8s ease-in-out infinite;
-  will-change: transform;
-   pointer-events: none;
+  filter:blur(120px);
+  animation:float 6s ease-in-out infinite;
 }
 
 @keyframes float{
@@ -388,7 +446,7 @@ footer{
   border-radius:22px;
   padding:28px 22px;
   text-align:center;
-  box-shadow:0 8px 25px rgba(0,0,0,0.5);
+  box-shadow:0 10px 40px rgba(0,0,0,0.8);
   border:1px solid rgba(255,255,255,0.05);
   transition:all 0.3s ease;
 }
@@ -500,7 +558,7 @@ footer{
   padding:30px 22px;
   text-align:left;
   position:relative;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  box-shadow:0 20px 60px rgba(0,0,0,0.9);
   border:1px solid rgba(255,255,255,0.04);
   transition:0.3s ease;
 }
@@ -643,7 +701,7 @@ body {
   padding:20px;
   background:linear-gradient(145deg,#111,#222);
   color:#fff;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
   position:relative;
 }
 
@@ -736,7 +794,7 @@ body {
   border-radius:18px;
   position:relative;
   padding:20px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.5);
+  box-shadow:0 20px 60px rgba(0,0,0,0.8);
   overflow:hidden;
 }
 
@@ -1090,31 +1148,65 @@ body {
 }
 
 /* SECTION */
-.contact-section {
+.contact-section{
+  padding: 100px 20px;
+  text-align: center;
+  background: #050505;
+}
+
+/* ITEM */
+.contact-item{
+  max-width: 400px;
+  margin: auto;
+}
+
+/* ICON BOX */
+.icon-box{
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 25px;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 40px;
-  text-align: center;
+
+  border: 1px solid rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.02);
+
+  font-size: 26px;
+  color: #dcdcdc;
+
+  transition: 0.4s ease;
 }
 
-.contact-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* HOVER */
+.contact-item:hover .icon-box{
+  transform: translateY(-5px);
+  border-color: rgba(0,255,180,0.4);
+  box-shadow: 0 10px 40px rgba(0,255,180,0.1);
 }
 
-.icon-box {
-  margin-bottom: 15px;
+/* TITLE */
+.contact-item h3{
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 10px;
 }
 
-.contact-main {
-  text-align: center;
+/* EMAIL */
+.contact-main{
   font-size: 16px;
   color: #bdbdbd;
+  letter-spacing: 0.5px;
 }
 
+/* ADDRESS */
+.contact-sub{
+  font-size: 14px;
+  color: #888;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
 
 /* DIVIDER */
 .divider{
@@ -1230,14 +1322,10 @@ body {
 /* Base animation */
 .reveal {
   opacity: 0;
-  transform: translateY(40px);
-  transition: all 0.6s ease;
+  transform: translateY(60px);
+  filter: blur(6px);
+  transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
 }
-
-.reveal.show {
-  opacity: 1;
-  transform: translateY(0);
-  }
 
 /* When visible */
 .reveal.show {
@@ -1260,25 +1348,7 @@ body {
     transition: all 0.7s ease;
   }
 }
-
-.buttons,
-.btn-primary,
-.btn-secondary {
-  position: relative;
-  z-index: 10;
-}
-
-.hero {
-  position: relative;
-  z-index: 1;
-}
-  @media (prefers-reduced-motion: reduce) {
-  * {
-    animation: none !important;
-    transition: none !important;
-  }
-  }
-  /* MENU OVERLAY */
+/* MENU OVERLAY */
 .menu-overlay{
   position:fixed;
   top:0;
@@ -1335,14 +1405,25 @@ body {
   font-size:40px;
   color:#fff;
   cursor:pointer;
-  }
+}
 
 
 </style>
 </head>
-  <nav>
-<div class="menu reveal">≡</div>
 
+<nav>
+ <div class="logo-text">
+    <h1>Stargicinvestment</h1>
+    <div class="logo-lines">
+      <span></span>
+      <span></span>
+       <span></span>
+      <span></span>
+       <span></span>
+      <span></span>
+    </div>
+  </div>
+  
  <!-- MENU BUTTON -->
 <div class="menu reveal" id="menuBtn">
   ☰
@@ -1375,8 +1456,8 @@ body {
   </p>
 
  <div class="buttons">
-  <a href="./register.html" class="btn-primary">Get started</a>
-  <a href="./login.html" class="btn-secondary">Login</a>
+  <a href="register.html" class="btn-primary">Get started</a>
+  <a href="login.html" class="btn-secondary">Login</a>
 </div>
 </section>
 
@@ -1466,7 +1547,7 @@ body {
 
     <h2>Why Choose Us</h2>
 
-    <a href="register.html" class="cta-btn">start investing</a>
+    <a href="#" class="cta-btn">start investing</a>
 
     <div class="cards">
 
@@ -1581,8 +1662,7 @@ body {
       across millions of merchants and ATMs.
     </p>
 
-    
-    <a href="register.html" class="cta-btn">start investing</a>
+    <button class="cta-btn reveal">start investing</button>
 
     <div class="card-visual reveal">
     <div class="credit-card reveal">
@@ -1835,30 +1915,26 @@ body {
       to effectively manage your investments.
     </p>
   </div>
+<div class="icon-box reveal">
+  <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
+    <rect x="2" y="6" width="24" height="16" rx="2"/>
+    <path d="M2 6l12 8 12-8"/>
+  </svg>
+</div>
 
-<section class="contact-section">
+      <div class="contact-item">
+        <i class="fa-regular fa-envelope"></i>
+        <span>support@stargicinvestment.com</span>
+      </div>
 
-  <div class="contact-item reveal">
-    <div class="icon-box">
-      <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
-        <rect x="2" y="6" width="24" height="16" rx="2"/>
-        <path d="M2 6l12 8 12-8"/>
-      </svg>
-    </div>
-    <span class="contact-main">support@stargicinvestment.com</span>
-  </div>
+<div class="icon-box">
+  <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
+    <path d="M14 27s10-9 10-15a10 10 0 10-20 0c0 6 10 15 10 15z"/>
+    <circle cx="14" cy="12" r="3"/>
+  </svg>
+</div>
 
-  <div class="contact-item">
-    <div class="icon-box">
-      <svg width="28" height="28" fill="none" stroke="white" stroke-width="2">
-        <path d="M14 27s10-9 10-15a10 10 0 10-20 0c0 6 10 15 10 15z"/>
-        <circle cx="14" cy="12" r="3"/>
-      </svg>
-    </div>
-    <span class="contact-main">Global Office</span>
-  </div>
 
-</section>
 
 <footer class="footer reveal">
 
@@ -1997,7 +2073,7 @@ const observer = new IntersectionObserver((entries) => {
       entry.target.classList.add("show");
     }
   });
-}, { threshold: 0.08 });
+}, { threshold: 0.15 });
 
 document.querySelectorAll('.reveal').forEach(el => {
   observer.observe(el);
@@ -2018,8 +2094,8 @@ window.smartsupp||(function(d) {
   c.src='https://www.smartsuppchat.com/loader.js?';  
   s.parentNode.insertBefore(c,s);  
 })(document);  
-</script>
-
+    </script>
+    
     <script>
 const menuBtn = document.getElementById("menuBtn");
 const menuOverlay = document.getElementById("menuOverlay");
@@ -2038,14 +2114,8 @@ menuOverlay.addEventListener("click", (e) => {
     menuOverlay.classList.remove("active");
   }
 });
-    </script>
-    
+</script>
 </body>
 </html>
-  
-  
-  
-   
-  
   
   
