@@ -1,193 +1,169 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+<title>Dashboard</title><link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"><style>
 
-<style>
-  :root{
-  --bg:#0b0f1a;
-  --card:#111827;
-  --text:#ffffff;
-  --subtext:#aaaaaa;
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+  -webkit-tap-highlight-color:transparent;
 }
-
-.light-mode{
-  --bg:#f5f5f5;
-  --card:#ffffff;
-  --text:#111111;
-  --subtext:#555555;
-}
-  .card{
-  background:#111827;
-  padding:20px;
-  border-radius:16px;
-  margin-top:20px;
-  box-shadow:0 4px 15px rgba(0,0,0,0.4);
-}
-
-.balance{
-  color:#00ff9d;
-  font-size:42px;
-  font-weight:bold;
-}
-
-.profit{
-  color:gold;
-  font-size:34px;
-  font-weight:bold;
-}
-
-.card p{
-  color:var(--subtext);
-}
-.goog-te-banner-frame.skiptranslate {
-  display: none !important;
-}
-
-body {
-  top: 0px !important;
-}
-
-iframe.goog-te-banner-frame {
-  display: none !important;
-}
-
-.goog-te-gadget {
-  display: none !important;
-}
-
-.goog-logo-link {
-  display: none !important;
-}
-  
-*{box-sizing:border-box;}
 
 body{
-  background:var(--bg);
-  color:var(--text);
+  background:#02011a;
+  color:white;
+  overflow-x:hidden;
+  font-size:14px;
 }
 
-.header{
+.container{
+  width:100%;
+  max-width:480px;
+  margin:0 auto;
+  padding:14px;
+}
+
+.topbar{
   display:flex;
   justify-content:space-between;
-  padding:15px;
+  align-items:center;
+  margin-bottom:25px;
+}
+
+.logo{width:70px;}
+.menu{font-size:28px;color:#ddd;cursor:pointer;}
+
+.balance-title{font-size:18px;font-weight:700;margin-bottom:10px;}
+.balance,.profit{font-size:20px;font-weight:700;margin-bottom:8px;word-break:break-word;}
+.credit{color:#aaa;font-size:13px;}
+
+.card{
   background:#111827;
+  padding:16px;
+  border-radius:16px;
+  margin-top:15px;
 }
 
-.container{padding:20px;}
+.referral{margin-top:30px;}
+.referral h2{font-size:16px;margin-bottom:12px;}
+.referral p{color:#e4e4e4;line-height:1.4;font-size:13px;margin-bottom:12px;}
 
-.card p{
-  color:var(--subtext);
-}
+.ref-box{width:100%;display:flex;flex-direction:column;gap:10px;}
+.ref-box input{width:100%;border:none;outline:none;padding:12px;font-size:13px;border-radius:6px;}
+.ref-box button{border:none;background:#2d2cff;color:white;padding:12px;font-size:13px;border-radius:6px;cursor:pointer;}
 
-.balance{color:#00ff9d;font-size:40px;}
-.profit{color:gold;font-size:30px;}
+.actions{display:flex;gap:10px;margin-top:15px;}
+.actions button{flex:1;border:none;padding:12px;border-radius:20px;font-size:14px;color:white;cursor:pointer;}
+.deposit{background:#2d2cff;}
+.withdraw{background:#ff2d55;}
 
-.actions{
-  display:flex;
-  gap:10px;
-  margin-top:20px;
-}
-
-.btn{
-  flex:1;
-  padding:12px;
-  border:none;
+.crypto{margin-top:25px;}
+.coin{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.coin-left{
+  width:45px;
+  height:45px;
   border-radius:10px;
-  cursor:pointer;
+  overflow:hidden;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#111;
+  flex-shrink:0;
 }
-.history-box{
-  max-height: 250px;     /* 🔥 prevents stretching */
-  overflow-y: auto;      /* 🔥 enables scroll */
-  margin-top:10px;
-  padding-right:5px;
+.coin-left img{width:26px;height:26px;}
+.coin-right small{color:#2d2cff;font-size:13px;}
+.coin-right h2{font-size:18px;}
+
+.section{margin-top:25px;}
+.section h2{font-size:16px;margin-bottom:10px;}
+
+.history-box{max-height:250px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;}
+
+.tx{background:#0b1030;padding:12px;border-radius:10px;}
+.tx-top{display:flex;justify-content:space-between;align-items:center;font-size:13px;}
+.gray{color:#aaa;font-size:11px;margin-top:5px;}
+
+/* MENU */
+.overlay{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  z-index:99;
 }
-  
-
-/* 🔥 FIX OVERFLOW TEXT */
-.history-box div{
-  word-break: break-all;
-  overflow-wrap: break-word;
+.menu-box{
+  position:absolute;
+  right:0;
+  top:0;
+  width:70%;
+  height:100%;
+  background:#0b1030;
+  padding:20px;
 }
-.deposit{background:#00e676;color:#000;}
-.withdraw{background:#ff5252;color:#fff;}
-</style>
-</head>
+.menu-box a{
+  display:block;
+  color:white;
+  padding:15px 0;
+  text-decoration:none;
+  border-bottom:1px solid rgba(255,255,255,0.1);
+}
 
-<body>
-
-<div class="header">
-  <h2>Dashboard</h2>
-  <button onclick="logout()">Logout</button>
-</div>
-
-<div class="container">
-
-  <h2 id="welcome">Welcome</h2>
-
-<!-- BALANCE CARD -->
-  <div class="card">
-  <p>Balance</p>
-  <div id="balance" class="balance">$0</div>
-
-  <!-- Capital Locked -->
-  <div id="capitalBox" style="display:none;margin-top:10px;">
-    <div style="font-size:13px;color:#aaa;">
-      Capital Locked
-    </div>
-    <div id="invested" style="color:#00e676;font-size:18px;">
-      $0
-    </div>
+</style></head>
+<body><!-- MENU --><div class="overlay" id="overlay" onclick="closeMenu()">
+  <div class="menu-box" onclick="event.stopPropagation()">
+    <a href="index.html">Home</a>
+    <a href="deposit.html">Deposit</a>
+    <a href="withdraw.html">Withdraw</a>
+    <a href="#" onclick="logout()">Logout</a>
   </div>
+</div><div class="container"><div class="topbar">
+  <img src="https://i.imgur.com/6VBx3io.png" class="logo">
+  <div class="menu" onclick="openMenu()">☰</div>
+</div><h1 class="balance-title">Account Balance</h1>
+<div id="balance" class="balance">$0.00</div>
+<div id="profit" class="profit">$0.00</div>
+<div class="credit">Credit Balance</div><!-- REFERRAL --><div class="card referral">
+<h2>Referral Commissions</h2>
+<p>Invite partners and earn commissions easily.</p>
+<div class="ref-box">
+<input id="refLink" value="stargicinvestment.com" readonly>
+<button onclick="copyRef()">Copy Link</button>
 </div>
-
-<!-- PROFIT CARD -->
-<div class="card" id="profitBox" style="display:none;">
-  <p>Profit</p>
-  <div id="profit" class="profit">$0</div>
-</div>
-
-<!-- ACTIONS -->
-<div class="card">
-  <div class="actions">
-    <button class="btn deposit" onclick="goDeposit()">Deposit</button>
-    <button class="btn withdraw" onclick="goWithdraw()">Withdraw</button>
-  </div>
-
-
-
-<!-- TRANSACTIONS -->
-<div class="card">
-  <h3>Transactions</h3>
-  <div id="history" class="history-box"></div>
-</div>
-  <h3>Withdraw Requests</h3>
+</div><!-- ACTIONS --><div class="card actions">
+<button class="deposit" onclick="goDeposit()">Deposit</button>
+<button class="withdraw" onclick="goWithdraw()">Withdraw</button>
+</div><!-- CRYPTO --><div class="card crypto"><div class="coin">
+<div class="coin-left"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png"></div>
+<div class="coin-right"><small>BTC</small><h2 id="btcPrice">$0</h2></div>
+</div><div class="coin">
+<div class="coin-left"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png"></div>
+<div class="coin-right"><small>ETH</small><h2 id="ethPrice">$0</h2></div>
+</div><div class="coin">
+<div class="coin-left"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png"></div>
+<div class="coin-right"><small>USDT</small><h2 id="usdtPrice">$0</h2></div>
+</div><div class="coin">
+<div class="coin-left"><img src="https://cryptologos.cc/logos/xrp-xrp-logo.png"></div>
+<div class="coin-right"><small>XRP</small><h2 id="xrpPrice">$0</h2></div>
+</div></div><!-- TRANSACTIONS --><div class="card section">
+<h2>Transactions</h2>
+<div id="history" class="history-box"></div>
+</div><div class="card section">
+<h2>Withdraw Requests</h2>
 <div id="withdrawHistory" class="history-box"></div>
-
-<script type="module">
-
+</div></div><script>
+function openMenu(){document.getElementById('overlay').style.display='block';}
+function closeMenu(){document.getElementById('overlay').style.display='none';}
+</script><script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+import { getFirestore, doc, getDoc, updateDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
-// CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -201,272 +177,96 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const plans = {
-  Basic: { rate: 0.02, duration: 7 },
-  Silver: { rate: 0.025, duration: 7 },
-  Elite: { rate: 0.03, duration: 7 },
-  Premium: { rate: 0.035, duration: 7 },
-  VIP: { rate: 0.04, duration: 7 }
-};
+// PRICES
+async function loadPrices(){
+  try{
+    const res = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple&vs_currencies=usd');
+    const d = await res.json();
 
-let miningRunning = false;
+    btcPrice.innerText="$"+d.bitcoin.usd.toLocaleString();
+    ethPrice.innerText="$"+d.ethereum.usd.toLocaleString();
+    usdtPrice.innerText="$"+d.tether.usd.toLocaleString();
+    xrpPrice.innerText="$"+d.ripple.usd.toLocaleString();
+  }catch(e){}
+}
+loadPrices();setInterval(loadPrices,30000);
 
-// ✅ MINING FUNCTION
-async function runMining(userRef){
+// MINING
+const plans={Basic:{rate:0.02},Silver:{rate:0.025},Elite:{rate:0.03},Premium:{rate:0.035},VIP:{rate:0.04}};
+let miningRunning=false;
 
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
+async function runMining(ref){
+  const s=await getDoc(ref);
+  if(!s.exists())return;
+  const d=s.data();
 
-  const data = snap.data();
+  let invested=Number(d.invested)||0;
+  if(invested<=0||!d.plan)return;
 
-  let invested = Number(data.invested) || 0;
-  if(invested <= 0) return;
+  const plan=plans[d.plan];
+  if(!plan)return;
 
-  if(!data.plan) return;
+  let now=Date.now();
+  let last=Number(d.lastUpdate)||now;
 
-  const plan = plans[data.plan];
-  if(!plan) return;
+  let earned=invested*plan.rate*((now-last)/(1000*60*60*24));
+  if(!isFinite(earned)||earned<=0)return;
 
-  let last = Number(data.lastUpdate) || Date.now();
-  let now = Date.now();
+  await updateDoc(ref,{lockedProfit:(Number(d.lockedProfit)||0)+earned,lastUpdate:now});
+}
 
-  let lockedProfit = Number(data.lockedProfit) || 0;
-
-  let profitStart = Number(data.profitStart) || now;
-  let profitDays = (now - profitStart) / (1000 * 60 * 60 * 24);
-
-  // ✅ UNLOCK AFTER 7 DAYS
-  if(profitDays >= 7 && lockedProfit > 0){
-    await updateDoc(userRef,{
-      availableProfit: (Number(data.availableProfit) || 0) + lockedProfit,
-      lockedProfit: 0,
-      profitStart: Date.now()
-    });
-
-    console.log("Profit unlocked");
-    return;
-  }
-
-  let hours = (now - last) / (1000 * 60 * 60);
-  let earned = invested * plan.rate * (hours / 24);
-
-  if(!isFinite(earned) || earned <= 0) return;
-
-  await updateDoc(userRef,{
-    lockedProfit: (Number(data.lockedProfit) || 0) + earned,
-    lastUpdate: now
-  });
-
-  console.log("MINED:", earned);
-  }
-
-// ✅ START LOOP
 function startMining(user){
+  if(miningRunning)return;
+  miningRunning=true;
+  const ref=doc(db,"users",user.uid);
+  runMining(ref);
+  setInterval(()=>runMining(ref),60000);
+}
 
-  if(miningRunning) return;
-  miningRunning = true;
+onAuthStateChanged(auth,async(user)=>{
+  if(!user)return location.href="login.html";
 
-  const userRef = doc(db,"users",user.uid);
-
-  // run immediately
-  runMining(userRef);
-
-  // run every 60 seconds
-  setInterval(()=>{
-  runMining(userRef);
-}, 60000);
-
-// run once after 2 seconds (avoid double fast run)
-setTimeout(()=>{
-  runMining(userRef);
-}, 2000);
-  }
-
-// AUTH
-onAuthStateChanged(auth, async (user)=>{
-
-  if(!user){
-    location.href="login.html";
-    return;
-  }
-
-  const userRef = doc(db,"users",user.uid);
-
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
-
-  let data = snap.data();
-  let name = data.name || user.email.split("@")[0];
-
-  document.getElementById("welcome").innerText =
-    "Welcome, " + name;
-  const wq = query(
-  collection(db,"withdrawals"),
-  where("userId","==",user.uid)
-);
-
-onSnapshot(wq,(snapshot)=>{
-
-  let box = document.getElementById("withdrawHistory");
-  box.innerHTML = "";
-
-  if(snapshot.empty){
-    box.innerHTML = "<p style='color:gray;'>No withdraw requests</p>";
-    return;
-  }
-
-  snapshot.forEach((docSnap)=>{
-
-    let d = docSnap.data();
-
-    let color =
-      d.status === "approved" ? "lightgreen" :
-      d.status === "rejected" ? "#ff6b6b" :
-      "orange";
-
-    box.innerHTML += `
-      <div style="
-        background:#0b0f1a;
-        padding:12px;
-        margin:10px 0;
-        border-radius:10px;
-      ">
-        <div style="display:flex;justify-content:space-between;">
-          <b style="color:${color};">${d.status.toUpperCase()}</b>
-          <span>$${Number(d.amount).toFixed(2)}</span>
-        </div>
-
-        <div style="margin-top:5px;font-size:12px;color:#aaa;">
-          ${d.coin}
-        </div>
-
-        <div style="margin-top:5px;font-size:12px;color:gray;">
-          ${new Date(d.time).toLocaleString()}
-        </div>
-      </div>
-    `;
-  });
-
-});
-
-  // ✅ START MINING ONCE
+  const ref=doc(db,"users",user.uid);
   startMining(user);
 
-  // ✅ USER DATA LISTENER
-  onSnapshot(userRef,(docSnap)=>{
+  onSnapshot(ref,s=>{
+    const d=s.data();
+    balance.innerText="$"+(Number(d.balance)||0).toFixed(2);
+    profit.innerText="$"+(Number(d.availableProfit)||0).toFixed(2);
+  });
 
-    let d = docSnap.data();
-
-    let balance = Number(d.balance) || 0;
-    let invested = Number(d.invested) || 0;
-    let availableProfit = Number(d.availableProfit) || 0;
-    let lockedProfit = Number(d.lockedProfit) || 0;
-
-    document.getElementById("balance").innerText =
-      "$" + balance.toFixed(2);
-
-    const capitalBox = document.getElementById("capitalBox");
-
-    if(balance > 0){
-      capitalBox.style.display = "block";
-      document.getElementById("invested").innerText =
-        "$" + invested.toFixed(2);
-    }else{
-      capitalBox.style.display = "none";
-    }
-
-    const profitBox = document.getElementById("profitBox");
-    const profitEl = document.getElementById("profit");
-
-    const hasProfitData =
-      invested > 0 || lockedProfit > 0 || availableProfit > 0;
-
-    if (hasProfitData) {
-      profitBox.style.display = "block";
-
-      profitEl.innerHTML = `
-        $${availableProfit.toFixed(2)}
-        <div style="font-size:13px;color:gray;">
-          Locked Profit: $${lockedProfit.toFixed(2)}
-        </div>
-      `;
-    } else {
-      profitBox.style.display = "none";
-      profitEl.innerHTML = "$0";
-    }
-
-});
-    
-  // ✅ TRANSACTIONS (OUTSIDE)
-  const q = query(
-    collection(db,"transactions"),
-    where("userId","==",user.uid)
-  );
-
-  onSnapshot(q,(snapshot)=>{
-    let box = document.getElementById("history");
-    box.innerHTML="";
-
-    snapshot.forEach((docItem)=>{
-      let d = docItem.data();
-
-      let color = d.type === "deposit"
-        ? "lightgreen"
-        : "#ff6b6b";
-
-      box.innerHTML += `
-      <div style="
-        background:#0b0f1a;
-        padding:12px;
-        margin:10px 0;
-        border-radius:10px;
-      ">
-        <div style="display:flex;justify-content:space-between;">
-          <b style="color:${color};">${d.type.toUpperCase()}</b>
-          <span>$${Number(d.amount).toFixed(2)}</span>
-        </div>
-
-        <div style="margin-top:8px;font-size:12px;color:gray;">
-          ${new Date(d.time).toLocaleString()}
-        </div>
-      </div>
-      `;
+  const tq=query(collection(db,"transactions"),where("userId","==",user.uid));
+  onSnapshot(tq,s=>{
+    history.innerHTML="";
+    s.forEach(i=>{
+      const d=i.data();
+      history.innerHTML+=`<div class='tx'><div class='tx-top'><b>${d.type.toUpperCase()}</b><span>$${Number(d.amount).toFixed(2)}</span></div><div class='gray'>${new Date(d.time).toLocaleString()}</div></div>`;
     });
   });
 
+  const wq=query(collection(db,"withdrawals"),where("userId","==",user.uid));
+  onSnapshot(wq,s=>{
+    withdrawHistory.innerHTML="";
+    s.forEach(i=>{
+      const d=i.data();
+      withdrawHistory.innerHTML+=`<div class='tx'><div class='tx-top'><b>${d.status.toUpperCase()}</b><span>$${Number(d.amount).toFixed(2)}</span></div><div class='gray'>${d.coin}</div></div>`;
+    });
+  });
 });
 
-  
-
 // ACTIONS
-window.logout = function(){
-  signOut(auth);
-  location.href="login.html";
+window.goDeposit=()=>location.href="deposit.html";
+window.goWithdraw=()=>location.href="withdraw.html";
+window.logout=()=>signOut(auth).then(()=>location.href="login.html");
+
+// COPY
+window.copyRef=async()=>{
+  const i=document.getElementById("refLink");
+  await navigator.clipboard.writeText(i.value);
+  alert("Copied");
 };
-
-window.goDeposit = function(){
-  location.href="deposit.html";
-};
-
-window.goWithdraw = function(){
-  location.href="withdraw.html";
-};
-
-
-</script>
-<div id="google_translate_element" style="display:none;"></div>
-
-<script>
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    autoDisplay: false
-  }, 'google_translate_element');
-}
-</script>
-
-<script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-  </html>
+</script></body>
+      </html>
 
 
 
