@@ -227,8 +227,9 @@ onAuthStateChanged(auth,(user)=>{
       profitCard.style.display="none";
     }
 
-    if(d.photoURL) avatar.src = d.photoURL;
-  });
+    if (d.photoURL && d.photoURL !== "") {
+  avatar.src = d.photoURL + "?t=" + Date.now();
+  }
 
   refInput.value = `https://yourdomain.com/register?ref=${user.uid}`;
 });
@@ -246,23 +247,27 @@ async function loadPrices(){
 loadPrices();
 setInterval(loadPrices,30000);
 
-/* UPLOAD PHOTO */
-window.openUpload=()=>fileInput.click();
+window.openUpload = () => fileInput.click();
 
-fileInput.onchange = async (e)=>{
+fileInput.onchange = async (e) => {
   const file = e.target.files[0];
-  if(!file || !currentUser) return;
+  if (!file || !currentUser) return;
 
-  const imgRef = ref(storage,`avatars/${currentUser.uid}`);
+  const imgRef = ref(storage, `avatars/${currentUser.uid}`);
 
-  await uploadBytes(imgRef,file);
+  await uploadBytes(imgRef, file);
+
   const url = await getDownloadURL(imgRef);
 
-  await updateDoc(doc(db,"users",currentUser.uid),{
-    photoURL:url
+  // FORCE cache refresh (IMPORTANT FIX)
+  const cacheBustedUrl = url + "?t=" + Date.now();
+
+  await updateDoc(doc(db, "users", currentUser.uid), {
+    photoURL: cacheBustedUrl
   });
 
-  avatar.src=url;
+  // 🔥 UPDATE IMMEDIATELY (DON'T WAIT FOR SNAPSHOT)
+  document.getElementById("avatar").src = cacheBustedUrl;
 };
 
 /* COPY REF */
