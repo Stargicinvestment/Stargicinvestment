@@ -8,17 +8,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
 body{
   background:#02011a;
   color:white;
-  font-size:14px;
 }
 
 /* LAYOUT */
@@ -28,18 +22,18 @@ body{
   padding:16px;
 }
 
-/* TOPBAR */
 .topbar{
   display:flex;
   justify-content:space-between;
   align-items:center;
   margin-bottom:18px;
 }
+
 .logo{width:70px;}
 .menu{font-size:28px;cursor:pointer;}
 
-/* TEXT */
 h2{font-size:18px;margin-top:10px;}
+
 .balance,.profit{
   font-size:22px;
   font-weight:700;
@@ -117,9 +111,7 @@ h2{font-size:18px;margin-top:10px;}
   height:26px;
 }
 
-.coin h3{
-  font-size:15px;
-}
+.coin h3{font-size:15px;}
 
 /* TX */
 .tx{
@@ -139,56 +131,16 @@ h2{font-size:18px;margin-top:10px;}
 .green{color:#00ff88;}
 .red{color:#ff4d4d;}
 .orange{color:orange;}
-
-/* MENU */
-.overlay{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,0.6);
-  display:none;
-  z-index:99;
-}
-
-.menu-box{
-  position:absolute;
-  right:0;
-  top:0;
-  width:70%;
-  height:100%;
-  background:#0b1030;
-  padding:20px;
-}
-
-.menu-box a{
-  display:block;
-  color:white;
-  padding:15px 0;
-  text-decoration:none;
-  border-bottom:1px solid rgba(255,255,255,0.1);
-}
 </style>
 </head>
 
 <body>
 
-<!-- MENU -->
-<div class="overlay" id="overlay" onclick="closeMenu()">
-  <div class="menu-box" onclick="event.stopPropagation()">
-    <a href="index.html">Home</a>
-    <a href="deposit.html">Deposit</a>
-    <a href="withdraw.html">Withdraw</a>
-    <a href="#" onclick="logout()">Logout</a>
-  </div>
-</div>
-
 <div class="container">
 
 <div class="topbar">
   <img src="https://i.imgur.com/6VBx3io.png" class="logo">
-  <div class="menu" onclick="openMenu()">☰</div>
+  <div class="menu">☰</div>
 </div>
 
 <h2>Account Balance</h2>
@@ -238,24 +190,18 @@ h2{font-size:18px;margin-top:10px;}
 
 </div>
 
-<!-- TRANSACTIONS -->
+<!-- TX -->
 <div class="card">
   <h3>Transactions</h3>
   <div id="history"></div>
 </div>
 
-<!-- WITHDRAW -->
 <div class="card">
   <h3>Withdraw Requests</h3>
   <div id="withdrawHistory"></div>
 </div>
 
 </div>
-
-<script>
-function openMenu(){document.getElementById("overlay").style.display="block";}
-function closeMenu(){document.getElementById("overlay").style.display="none";}
-</script>
 
 <script type="module">
 
@@ -273,27 +219,35 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* ELEMENTS */
-const balanceEl=document.getElementById("balance");
-const profitEl=document.getElementById("profit");
-const historyEl=document.getElementById("history");
-const withdrawEl=document.getElementById("withdrawHistory");
+/* FIXED ELEMENTS (IMPORTANT) */
+const balanceEl = document.getElementById("balance");
+const profitEl = document.getElementById("profit");
+const historyEl = document.getElementById("history");
+const withdrawEl = document.getElementById("withdrawHistory");
+
+const btcPrice = document.getElementById("btcPrice");
+const ethPrice = document.getElementById("ethPrice");
+const usdtPrice = document.getElementById("usdtPrice");
+const xrpPrice = document.getElementById("xrpPrice");
+const refLink = document.getElementById("refLink");
 
 /* PRICES */
 async function loadPrices(){
-  const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple&vs_currencies=usd");
-  const d=await r.json();
+  try{
+    const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple&vs_currencies=usd");
+    const d = await r.json();
 
-  btcPrice.innerText="$"+d.bitcoin.usd;
-  ethPrice.innerText="$"+d.ethereum.usd;
-  usdtPrice.innerText="$"+d.tether.usd;
-  xrpPrice.innerText="$"+d.ripple.usd;
+    btcPrice.innerText = "$"+d.bitcoin.usd.toLocaleString();
+    ethPrice.innerText = "$"+d.ethereum.usd.toLocaleString();
+    usdtPrice.innerText = "$"+d.tether.usd.toLocaleString();
+    xrpPrice.innerText = "$"+d.ripple.usd.toLocaleString();
+  }catch(e){}
 }
 loadPrices();
 setInterval(loadPrices,30000);
 
-/* PLANS */
-const plans={
+/* MINING */
+const plans = {
   Basic:{rate:0.02},
   Silver:{rate:0.025},
   Elite:{rate:0.03},
@@ -301,24 +255,23 @@ const plans={
   VIP:{rate:0.04}
 };
 
-/* MINING FIX */
 async function mine(ref){
-  const s=await getDoc(ref);
+  const s = await getDoc(ref);
   if(!s.exists()) return;
 
-  const d=s.data();
+  const d = s.data();
 
-  const invested=Number(d.invested)||0;
+  const invested = Number(d.invested)||0;
   if(!invested || !d.plan) return;
 
-  const plan=plans[d.plan];
+  const plan = plans[d.plan];
   if(!plan) return;
 
-  const now=Date.now();
-  const last=Number(d.lastUpdate)||now;
+  const now = Date.now();
+  const last = Number(d.lastUpdate)||now;
 
-  const earned=invested*plan.rate*((now-last)/(1000*60*60*24));
-  if(!earned || earned<=0) return;
+  const earned = invested * plan.rate * ((now-last)/(1000*60*60*24));
+  if(!isFinite(earned) || earned<=0) return;
 
   await updateDoc(ref,{
     lockedProfit:(Number(d.lockedProfit)||0)+earned,
@@ -327,26 +280,32 @@ async function mine(ref){
   });
 }
 
-/* START MINING */
 function startMining(user){
-  const ref=doc(db,"users",user.uid);
+  const ref = doc(db,"users",user.uid);
   mine(ref);
   setInterval(()=>mine(ref),60000);
 }
 
-/* AUTH */
+/* AUTH (FIXED - NO AUTO LOGOUT BUG) */
 onAuthStateChanged(auth,(user)=>{
-  if(!user) return location.href="login.html";
+  if(!user){
+    setTimeout(()=>{
+      if(!auth.currentUser){
+        location.href="login.html";
+      }
+    },2000);
+    return;
+  }
 
-  const ref=doc(db,"users",user.uid);
+  const ref = doc(db,"users",user.uid);
   startMining(user);
 
   onSnapshot(ref,s=>{
-    const d=s.data();
+    const d = s.data();
 
-    balanceEl.innerText="$"+(Number(d.balance)||0).toFixed(2);
+    balanceEl.innerText = "$"+(Number(d.balance)||0).toFixed(2);
 
-    profitEl.innerHTML=`
+    profitEl.innerHTML = `
       $${(Number(d.availableProfit)||0).toFixed(2)}
       <div style="font-size:12px;color:gray;">
         Mining: $${(Number(d.lockedProfit)||0).toFixed(2)}
@@ -354,12 +313,12 @@ onAuthStateChanged(auth,(user)=>{
     `;
   });
 
-  /* TX */
+  /* TRANSACTIONS */
   onSnapshot(query(collection(db,"transactions"),where("userId","==",user.uid)),s=>{
     historyEl.innerHTML="";
     s.forEach(i=>{
       const d=i.data();
-      const color=d.type==="deposit"?"green":"red";
+      const color = d.type==="deposit"?"green":"red";
 
       historyEl.innerHTML+=`
       <div class="tx">
@@ -377,7 +336,7 @@ onAuthStateChanged(auth,(user)=>{
     withdrawEl.innerHTML="";
     s.forEach(i=>{
       const d=i.data();
-      const color=d.status==="approved"?"green":d.status==="rejected"?"red":"orange";
+      const color = d.status==="approved"?"green":d.status==="rejected"?"red":"orange";
 
       withdrawEl.innerHTML+=`
       <div class="tx">
