@@ -8,9 +8,17 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
 
-body{background:#02011a;color:white;}
+body{
+  background:#0b0f1a;
+  color:white;
+}
 
 .container{
   max-width:430px;
@@ -18,24 +26,27 @@ body{background:#02011a;color:white;}
   padding:16px;
 }
 
-.topbar{
+/* HEADER */
+.header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:18px;
+  padding:10px 0;
 }
 
-.logo{width:70px;}
-.menu{font-size:28px;cursor:pointer;}
+.logo{width:65px;}
+.menu{font-size:26px;cursor:pointer;}
 
+/* BALANCE */
 h2{font-size:18px;margin-top:10px;}
 
-.balance,.profit{
-  font-size:22px;
+.balance{
+  font-size:32px;
   font-weight:700;
-  margin:6px 0;
+  color:#00ff9d;
 }
 
+/* PROFIT */
 .card{
   background:#111827;
   padding:14px;
@@ -43,47 +54,31 @@ h2{font-size:18px;margin-top:10px;}
   margin-top:14px;
 }
 
-.ref-box{
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  margin-top:10px;
-}
-
-.ref-box input{
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  outline:none;
-}
-
-.ref-box button{
-  padding:12px;
-  border:none;
-  border-radius:8px;
-  background:#2d2cff;
-  color:white;
+.profit{
+  font-size:22px;
+  font-weight:700;
+  color:gold;
 }
 
 /* ACTIONS */
 .actions{
   display:flex;
   gap:10px;
-  margin-top:12px;
 }
 
-.actions button{
+button{
   flex:1;
   padding:12px;
   border:none;
-  border-radius:12px;
+  border-radius:10px;
   font-weight:600;
-  color:white;
+  cursor:pointer;
 }
 
-.deposit{background:#2d2cff;}
-.withdraw{background:#ff2d55;}
+.deposit{background:#2d2cff;color:white;}
+.withdraw{background:#ff2d55;color:white;}
 
+/* CRYPTO */
 .crypto-grid{
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -100,8 +95,28 @@ h2{font-size:18px;margin-top:10px;}
 }
 
 .coin img{width:26px;height:26px;}
-.coin h3{font-size:15px;}
+.coin h3{font-size:14px;}
 
+/* REF */
+.ref{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.ref input{
+  padding:12px;
+  border:none;
+  border-radius:8px;
+  outline:none;
+}
+
+.ref button{
+  background:#2d2cff;
+  color:white;
+}
+
+/* TX */
 .tx{
   background:#0b1030;
   padding:12px;
@@ -109,12 +124,16 @@ h2{font-size:18px;margin-top:10px;}
   margin-top:10px;
 }
 
-.tx-top{display:flex;justify-content:space-between;}
-.gray{color:#aaa;font-size:12px;margin-top:5px;}
+.tx-top{
+  display:flex;
+  justify-content:space-between;
+}
 
-.green{color:#00ff88;}
-.red{color:#ff4d4d;}
-.orange{color:orange;}
+.gray{
+  color:#aaa;
+  font-size:12px;
+  margin-top:5px;
+}
 </style>
 </head>
 
@@ -122,50 +141,55 @@ h2{font-size:18px;margin-top:10px;}
 
 <div class="container">
 
-<div class="topbar">
-  <img src="https://i.imgur.com/6VBx3io.png" class="logo">
-  <div class="menu">☰</div>
-</div>
-
-<h2>Account Balance</h2>
-<div id="balance" class="balance">$0.00</div>
-<div id="profit" class="profit">$0.00</div>
-
-<!-- REFERRAL -->
-<div class="card">
-  <h3>Referral Program</h3>
-  <p>Invite users and earn commissions.</p>
-
-  <div class="ref-box">
-    <input id="refLink" value="https://stargicinvestment.com" readonly>
-    <button onclick="copyRef()">Copy Link</button>
+  <div class="header">
+    <img src="https://i.imgur.com/6VBx3io.png" class="logo">
+    <div class="menu">☰</div>
   </div>
-</div>
 
-<!-- ACTIONS -->
-<div class="card actions">
-  <button class="deposit" onclick="goDeposit()">Deposit</button>
-  <button class="withdraw" onclick="goWithdraw()">Withdraw</button>
-</div>
+  <h2>Account Balance</h2>
+  <div id="balance" class="balance">$0.00</div>
 
-<!-- CRYPTO -->
-<div class="card crypto-grid">
-  <div class="coin"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png"><h3 id="btcPrice">$0</h3></div>
-  <div class="coin"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png"><h3 id="ethPrice">$0</h3></div>
-  <div class="coin"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png"><h3 id="usdtPrice">$0</h3></div>
-  <div class="coin"><img src="https://cryptologos.cc/logos/xrp-xrp-logo.png"><h3 id="xrpPrice">$0</h3></div>
-</div>
+  <!-- PROFIT (ONLY SHOW WHEN REAL DATA EXISTS) -->
+  <div id="profitCard" class="card" style="display:none;">
+    <h3>Profit Overview</h3>
+    <div id="profit" class="profit">$0.00</div>
+    <div id="locked" style="font-size:12px;color:#aaa;margin-top:5px;"></div>
+  </div>
 
-<!-- TX -->
-<div class="card">
-  <h3>Transactions</h3>
-  <div id="history"></div>
-</div>
+  <!-- CRYPTO PRICES -->
+  <div class="card crypto-grid">
+    <div class="coin"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png"><h3 id="btc">$0</h3></div>
+    <div class="coin"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png"><h3 id="eth">$0</h3></div>
+    <div class="coin"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png"><h3 id="usdt">$0</h3></div>
+    <div class="coin"><img src="https://cryptologos.cc/logos/xrp-xrp-logo.png"><h3 id="xrp">$0</h3></div>
+  </div>
 
-<div class="card">
-  <h3>Withdraw Requests</h3>
-  <div id="withdrawHistory"></div>
-</div>
+  <!-- REFERRAL -->
+  <div class="card">
+    <h3>Referral Program</h3>
+    <div class="ref">
+      <input id="refLink" value="https://stargicinvestment.com/ref" readonly>
+      <button onclick="copyRef()">Copy Link</button>
+    </div>
+  </div>
+
+  <!-- ACTIONS -->
+  <div class="card actions">
+    <button class="deposit" onclick="goDeposit()">Deposit</button>
+    <button class="withdraw" onclick="goWithdraw()">Withdraw</button>
+  </div>
+
+  <!-- TRANSACTIONS -->
+  <div class="card">
+    <h3>Transactions</h3>
+    <div id="history"></div>
+  </div>
+
+  <!-- WITHDRAWALS -->
+  <div class="card">
+    <h3>Withdraw Requests</h3>
+    <div id="withdrawHistory"></div>
+  </div>
 
 </div>
 
@@ -173,25 +197,17 @@ h2{font-size:18px;margin-top:10px;}
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { 
-  getAuth,
-  onAuthStateChanged,
-  signOut,
-  setPersistence,
-  browserLocalPersistence
+  getAuth, onAuthStateChanged, signOut,
+  setPersistence, browserLocalPersistence
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  collection,
-  query,
-  where,
-  onSnapshot
+  doc, onSnapshot,
+  collection, query, where
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-/* ✅ YOUR FIREBASE CONFIG (RESTORED) */
+/* ✅ YOUR FIREBASE CONFIG (FILLED) */
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -205,109 +221,78 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* FIX LOGIN STABILITY */
 setPersistence(auth, browserLocalPersistence);
 
 /* ELEMENTS */
 const balanceEl = document.getElementById("balance");
+const profitCard = document.getElementById("profitCard");
 const profitEl = document.getElementById("profit");
+const lockedEl = document.getElementById("locked");
+
+const btc = document.getElementById("btc");
+const eth = document.getElementById("eth");
+const usdt = document.getElementById("usdt");
+const xrp = document.getElementById("xrp");
+
 const historyEl = document.getElementById("history");
 const withdrawEl = document.getElementById("withdrawHistory");
 const refLink = document.getElementById("refLink");
 
-/* PRICES */
+/* CRYPTO PRICES */
 async function loadPrices(){
   try{
     const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple&vs_currencies=usd");
     const d = await r.json();
 
-    btcPrice.innerText="$"+d.bitcoin.usd.toLocaleString();
-    ethPrice.innerText="$"+d.ethereum.usd.toLocaleString();
-    usdtPrice.innerText="$"+d.tether.usd.toLocaleString();
-    xrpPrice.innerText="$"+d.ripple.usd.toLocaleString();
+    btc.innerText="$"+d.bitcoin.usd.toLocaleString();
+    eth.innerText="$"+d.ethereum.usd.toLocaleString();
+    usdt.innerText="$"+d.tether.usd.toLocaleString();
+    xrp.innerText="$"+d.ripple.usd.toLocaleString();
   }catch(e){}
 }
 loadPrices();
 setInterval(loadPrices,30000);
 
-/* MINING SYSTEM (FIXED SAFE) */
-const plans={
-  Basic:{rate:0.02},
-  Silver:{rate:0.025},
-  Elite:{rate:0.03},
-  Premium:{rate:0.035},
-  VIP:{rate:0.04}
-};
-
-async function mine(ref){
-  const s = await getDoc(ref);
-  if(!s.exists()) return;
-
-  const d = s.data();
-
-  const invested = Number(d.invested)||0;
-  if(!invested || !d.plan) return;
-
-  const plan = plans[d.plan];
-  if(!plan) return;
-
-  const now = Date.now();
-  const last = Number(d.lastUpdate)||now;
-
-  const earned = invested * plan.rate * ((now-last)/(1000*60*60*24));
-  if(!earned || earned<=0) return;
-
-  await updateDoc(ref,{
-    lockedProfit:(Number(d.lockedProfit)||0)+earned,
-    availableProfit:(Number(d.availableProfit)||0)+earned,
-    lastUpdate:now
-  });
-}
-
-function startMining(user){
-  const ref = doc(db,"users",user.uid);
-  mine(ref);
-
-  // prevent multiple intervals
-  if(window.miningInterval) clearInterval(window.miningInterval);
-
-  window.miningInterval = setInterval(()=>mine(ref),60000);
-}
-
-/* AUTH FIX (NO AUTO LOGOUT BUG) */
+/* AUTH */
 onAuthStateChanged(auth,(user)=>{
 
   if(!user){
-    return; // DO NOT REDIRECT IMMEDIATELY
+    location.href="login.html";
+    return;
   }
 
   const ref = doc(db,"users",user.uid);
-  startMining(user);
 
-  onSnapshot(ref,(s)=>{
-    const d = s.data();
+  onSnapshot(ref,(snap)=>{
+    const d = snap.data();
     if(!d) return;
 
-    balanceEl.innerText="$"+(Number(d.balance)||0).toFixed(2);
+    const balance = Number(d.balance)||0;
+    const profit = Number(d.availableProfit)||0;
+    const locked = Number(d.lockedProfit)||0;
 
-    profitEl.innerHTML=`
-      $${(Number(d.availableProfit)||0).toFixed(2)}
-      <div style="font-size:12px;color:gray;">
-        Mining: $${(Number(d.lockedProfit)||0).toFixed(2)}
-      </div>
-    `;
+    balanceEl.innerText="$"+balance.toFixed(2);
+
+    /* ONLY SHOW PROFIT IF REAL ACTIVITY EXISTS */
+    if(balance > 0 || profit > 0 || locked > 0){
+      profitCard.style.display="block";
+      profitEl.innerText="$"+profit.toFixed(2);
+      lockedEl.innerText="Locked: $"+locked.toFixed(2);
+    }else{
+      profitCard.style.display="none";
+    }
   });
 
-  onSnapshot(query(collection(db,"transactions"),where("userId","==",user.uid)),(s)=>{
+  /* TRANSACTIONS */
+  onSnapshot(query(collection(db,"transactions"),where("userId","==",user.uid)),(snap)=>{
     historyEl.innerHTML="";
-    s.forEach(i=>{
-      const d=i.data();
-      const color=d.type==="deposit"?"green":"red";
+    snap.forEach(docu=>{
+      const d = docu.data();
 
       historyEl.innerHTML+=`
       <div class="tx">
         <div class="tx-top">
-          <b class="${color}">${d.type.toUpperCase()}</b>
+          <b>${d.type.toUpperCase()}</b>
           <span>$${Number(d.amount).toFixed(2)}</span>
         </div>
         <div class="gray">${new Date(d.time).toLocaleString()}</div>
@@ -315,16 +300,16 @@ onAuthStateChanged(auth,(user)=>{
     });
   });
 
-  onSnapshot(query(collection(db,"withdrawals"),where("userId","==",user.uid)),(s)=>{
+  /* WITHDRAWALS */
+  onSnapshot(query(collection(db,"withdrawals"),where("userId","==",user.uid)),(snap)=>{
     withdrawEl.innerHTML="";
-    s.forEach(i=>{
-      const d=i.data();
-      const color=d.status==="approved"?"green":d.status==="rejected"?"red":"orange";
+    snap.forEach(docu=>{
+      const d = docu.data();
 
       withdrawEl.innerHTML+=`
       <div class="tx">
         <div class="tx-top">
-          <b class="${color}">${d.status.toUpperCase()}</b>
+          <b>${d.status.toUpperCase()}</b>
           <span>$${Number(d.amount).toFixed(2)}</span>
         </div>
         <div class="gray">${d.coin}</div>
@@ -343,4 +328,4 @@ window.logout=()=>signOut(auth).then(()=>location.href="login.html");
 </script>
 
 </body>
-  </html>
+</html>
