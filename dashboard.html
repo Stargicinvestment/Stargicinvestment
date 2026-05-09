@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Full Dashboard</title>
+<title>Dashboard</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
 
@@ -13,23 +13,24 @@
 body{
   background:#0b0f1a;
   color:#fff;
-  padding:18px;
+  padding:16px;
 }
 
-.container{max-width:430px;margin:auto}
+.container{
+  max-width:430px;
+  margin:auto;
+}
 
-/* HEADER */
 .header{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:20px;
 }
 
 .brand{
   display:flex;
-  align-items:center;
   gap:10px;
+  align-items:center;
   cursor:pointer;
 }
 
@@ -43,15 +44,13 @@ body{
 
 .menu{font-size:26px}
 
-/* BALANCE */
 .balance{
-  font-size:36px;
+  font-size:34px;
   font-weight:700;
   color:#00ff9d;
-  margin-top:6px;
+  margin-top:8px;
 }
 
-/* CARD */
 .card{
   background:#111827;
   padding:14px;
@@ -59,15 +58,16 @@ body{
   margin-top:14px;
 }
 
-/* PROFIT */
 .profit{
-  color:gold;
   font-size:20px;
   font-weight:700;
+  color:gold;
 }
 
-/* BUTTONS */
-.actions{display:flex;gap:10px}
+.actions{
+  display:flex;
+  gap:10px;
+}
 
 button{
   flex:1;
@@ -81,17 +81,25 @@ button{
 .deposit{background:#2d2cff;color:#fff}
 .withdraw{background:#ff2d55;color:#fff}
 
-/* TX */
 .tx{
   background:#0b1030;
   padding:10px;
   border-radius:10px;
-  margin-top:8px;
-  font-size:13px;
+  margin-top:10px;
+  font-size:14px;
 }
 
-/* SMALL */
 .small{font-size:12px;color:#aaa}
+.crypto{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.coin{
+  background:#0b1030;
+  padding:10px;
+  border-radius:10px;
+}
 </style>
 </head>
 
@@ -105,22 +113,29 @@ button{
       <img id="avatar" class="avatar" src="https://i.imgur.com/6VBx3io.png">
       <div>
         <b>Dashboard</b>
-        <div class="small">Tap photo</div>
+        <div class="small">Tap photo to change</div>
       </div>
     </div>
-
     <div class="menu">☰</div>
   </div>
 
   <!-- BALANCE -->
-  <div>Balance</div>
+  <div>Account Balance</div>
   <div id="balance" class="balance">$0.00</div>
 
   <!-- PROFIT -->
-  <div id="profitCard" class="card" style="display:none">
+  <div id="profitCard" class="card" style="display:none;">
     <div>Profit</div>
     <div id="profit" class="profit">$0.00</div>
     <div id="locked" class="small"></div>
+  </div>
+
+  <!-- CRYPTO -->
+  <div class="card crypto">
+    <div class="coin">BTC <b id="btc">$0</b></div>
+    <div class="coin">ETH <b id="eth">$0</b></div>
+    <div class="coin">USDT <b id="usdt">$0</b></div>
+    <div class="coin">XRP <b id="xrp">$0</b></div>
   </div>
 
   <!-- ACTIONS -->
@@ -132,9 +147,9 @@ button{
   <!-- REF -->
   <div class="card">
     <div>Referral Link</div>
-    <input id="ref" style="width:100%;padding:10px;border-radius:8px;border:none;margin-top:8px;" readonly>
+    <input id="ref" readonly style="width:100%;padding:10px;margin-top:8px;border-radius:8px;border:none;">
     <button onclick="copyRef()" style="margin-top:10px;width:100%;background:#2d2cff;color:#fff;padding:10px;border:none;border-radius:8px;">
-      Copy Referral
+      Copy
     </button>
   </div>
 
@@ -142,12 +157,6 @@ button{
   <div class="card">
     <h3>Transactions</h3>
     <div id="history"></div>
-  </div>
-
-  <!-- WITHDRAW -->
-  <div class="card">
-    <h3>Withdrawals</h3>
-    <div id="withdrawals"></div>
   </div>
 
 </div>
@@ -161,7 +170,7 @@ import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/
 import { getFirestore, doc, onSnapshot, updateDoc, getDoc, collection, query, where } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
 
-/* 🔥 YOUR FIREBASE CONFIG */
+/* YOUR FIREBASE CONFIG */
 const firebaseConfig = {
   apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
   authDomain: "stargicinvestment.firebaseapp.com",
@@ -176,7 +185,7 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
 
-/* ELEMENTS */
+/* UI */
 const balanceEl = document.getElementById("balance");
 const profitCard = document.getElementById("profitCard");
 const profitEl = document.getElementById("profit");
@@ -185,127 +194,146 @@ const avatar = document.getElementById("avatar");
 const fileInput = document.getElementById("file");
 const refInput = document.getElementById("ref");
 const historyEl = document.getElementById("history");
-const withdrawEl = document.getElementById("withdrawals");
 
-let userRef;
-let currentUser;
+let userData = null;
+let miningStarted = false;
 
-/* 🔥 MINING ENGINE */
-async function mine() {
-  if (!userRef) return;
+/* ======================
+   🔥 MINING SYSTEM (FIXED)
+====================== */
+async function mine(userRef){
 
   const snap = await getDoc(userRef);
-  if (!snap.exists()) return;
+  if(!snap.exists()) return;
 
   const d = snap.data();
 
-  const balance = Number(d.balance || 0);
-  if (balance <= 0) return;
+  const invested = Number(d.invested || 0);
+  if(invested <= 0) return;
 
   const now = Date.now();
-  const last = d.lastUpdate || now;
+  const last = Number(d.lastUpdate || now);
 
   const hours = (now - last) / 3600000;
-  if (hours < 1) return;
+  if(hours < 1) return;
 
-  const rate = 0.02; // 2% daily
-  const earned = balance * rate * (hours / 24);
+  const earned = invested * 0.02 * (hours / 24);
 
-  if (earned <= 0) return;
+  if(!isFinite(earned) || earned <= 0) return;
 
-  await updateDoc(userRef, {
-    availableProfit: (d.availableProfit || 0) + earned,
-    lockedProfit: (d.lockedProfit || 0) + earned,
+  await updateDoc(userRef,{
+    lockedProfit: (Number(d.lockedProfit)||0) + earned,
     lastUpdate: now
   });
 }
 
-/* AUTH */
-onAuthStateChanged(auth, async (user) => {
-  if (!user) return location.href = "login.html";
+function startMining(user){
+  if(miningStarted) return;
+  miningStarted = true;
 
-  currentUser = user;
-  userRef = doc(db, "users", user.uid);
+  const ref = doc(db,"users",user.uid);
 
-  /* referral */
+  mine(ref);
+  setInterval(()=>mine(ref),60000);
+}
+
+/* ======================
+   LIVE CRYPTO PRICES
+====================== */
+async function loadPrices(){
+  const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple&vs_currencies=usd");
+  const d = await r.json();
+
+  document.getElementById("btc").innerText="$"+d.bitcoin.usd.toLocaleString();
+  document.getElementById("eth").innerText="$"+d.ethereum.usd.toLocaleString();
+  document.getElementById("usdt").innerText="$"+d.tether.usd.toLocaleString();
+  document.getElementById("xrp").innerText="$"+d.ripple.usd.toLocaleString();
+}
+loadPrices();
+setInterval(loadPrices,20000);
+
+/* ======================
+   AUTH SYSTEM
+====================== */
+onAuthStateChanged(auth,(user)=>{
+  if(!user){
+    location.href="login.html";
+    return;
+  }
+
+  const userRef = doc(db,"users",user.uid);
+
   refInput.value = `https://yourdomain.com/register?ref=${user.uid}`;
 
-  /* run mining */
-  mine();
-  setInterval(mine, 60000);
+  startMining(user);
 
-  /* user data */
-  onSnapshot(userRef, (snap) => {
+  /* USER DATA */
+  onSnapshot(userRef,(snap)=>{
     const d = snap.data();
-    if (!d) return;
+    if(!d) return;
 
-    balanceEl.innerText = "$" + (d.balance || 0).toFixed(2);
+    const balance = Number(d.balance||0);
+    const profit = Number(d.availableProfit||0);
+    const locked = Number(d.lockedProfit||0);
 
-    if (d.balance > 0 || d.availableProfit > 0) {
-      profitCard.style.display = "block";
-      profitEl.innerText = "$" + (d.availableProfit || 0).toFixed(2);
-      lockedEl.innerText = "Locked: $" + (d.lockedProfit || 0).toFixed(2);
-    } else {
-      profitCard.style.display = "none";
+    balanceEl.innerText="$"+balance.toFixed(2);
+
+    if(balance>0 || profit>0 || locked>0){
+      profitCard.style.display="block";
+      profitEl.innerText="$"+profit.toFixed(2);
+      lockedEl.innerText="Locked: $"+locked.toFixed(2);
+    }else{
+      profitCard.style.display="none";
     }
 
-    if (d.photoURL) avatar.src = d.photoURL + "?t=" + Date.now();
+    if(d.photoURL){
+      avatar.src = d.photoURL + "?t=" + Date.now();
+    }
   });
 
-  /* transactions */
-  onSnapshot(query(collection(db, "transactions"), where("userId", "==", user.uid)), (snap) => {
-    historyEl.innerHTML = "";
-    snap.forEach(doc => {
+  /* TRANSACTIONS */
+  const q = query(collection(db,"transactions"),where("userId","==",user.uid));
+
+  onSnapshot(q,(snap)=>{
+    historyEl.innerHTML="";
+    snap.forEach(doc=>{
       const d = doc.data();
+
       historyEl.innerHTML += `
         <div class="tx">
           <b>${d.type}</b> - $${d.amount}
           <div class="small">${new Date(d.time).toLocaleString()}</div>
-        </div>`;
-    });
-  });
-
-  /* withdrawals */
-  onSnapshot(query(collection(db, "withdrawals"), where("userId", "==", user.uid)), (snap) => {
-    withdrawEl.innerHTML = "";
-    snap.forEach(doc => {
-      const d = doc.data();
-      withdrawEl.innerHTML += `
-        <div class="tx">
-          <b>${d.status}</b> - $${d.amount}
-        </div>`;
+        </div>
+      `;
     });
   });
 });
 
-/* PROFILE UPLOAD */
-window.openUpload = () => fileInput.click();
+/* ======================
+   PROFILE UPLOAD FIX
+====================== */
+window.openUpload = ()=>fileInput.click();
 
-fileInput.onchange = async (e) => {
+fileInput.onchange = async (e)=>{
   const file = e.target.files[0];
-  if (!file || !currentUser) return;
+  if(!file || !auth.currentUser) return;
 
-  const imgRef = ref(storage, `avatars/${currentUser.uid}`);
-  await uploadBytes(imgRef, file);
+  const imgRef = ref(storage,`avatars/${auth.currentUser.uid}`);
 
+  await uploadBytes(imgRef,file);
   const url = await getDownloadURL(imgRef);
 
-  await updateDoc(userRef, {
-    photoURL: url
+  await updateDoc(doc(db,"users",auth.currentUser.uid),{
+    photoURL:url
   });
 
   avatar.src = url;
 };
 
-/* COPY */
-window.copyRef = () => {
-  navigator.clipboard.writeText(refInput.value);
-  alert("Copied");
-};
-
 /* NAV */
-window.goDeposit = () => location.href = "deposit.html";
-window.goWithdraw = () => location.href = "withdraw.html";
+window.goDeposit=()=>location.href="deposit.html";
+window.goWithdraw=()=>location.href="withdraw.html";
+window.copyRef=()=>navigator.clipboard.writeText(refInput.value);
 
 </script>
 
