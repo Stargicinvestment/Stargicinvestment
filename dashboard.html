@@ -8,17 +8,9 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
-body{
-  background:#02011a;
-  color:white;
-}
+body{background:#02011a;color:white;}
 
 .container{
   max-width:430px;
@@ -73,6 +65,7 @@ h2{font-size:18px;margin-top:10px;}
   color:white;
 }
 
+/* ACTIONS */
 .actions{
   display:flex;
   gap:10px;
@@ -106,11 +99,7 @@ h2{font-size:18px;margin-top:10px;}
   gap:10px;
 }
 
-.coin img{
-  width:26px;
-  height:26px;
-}
-
+.coin img{width:26px;height:26px;}
 .coin h3{font-size:15px;}
 
 .tx{
@@ -120,17 +109,12 @@ h2{font-size:18px;margin-top:10px;}
   margin-top:10px;
 }
 
-.tx-top{
-  display:flex;
-  justify-content:space-between;
-}
-
+.tx-top{display:flex;justify-content:space-between;}
 .gray{color:#aaa;font-size:12px;margin-top:5px;}
 
 .green{color:#00ff88;}
 .red{color:#ff4d4d;}
 .orange{color:orange;}
-
 </style>
 </head>
 
@@ -145,7 +129,6 @@ h2{font-size:18px;margin-top:10px;}
 
 <h2>Account Balance</h2>
 <div id="balance" class="balance">$0.00</div>
-
 <div id="profit" class="profit">$0.00</div>
 
 <!-- REFERRAL -->
@@ -154,7 +137,7 @@ h2{font-size:18px;margin-top:10px;}
   <p>Invite users and earn commissions.</p>
 
   <div class="ref-box">
-    <input id="refLink" value="stargicinvestment.com" readonly>
+    <input id="refLink" value="https://stargicinvestment.com" readonly>
     <button onclick="copyRef()">Copy Link</button>
   </div>
 </div>
@@ -167,27 +150,10 @@ h2{font-size:18px;margin-top:10px;}
 
 <!-- CRYPTO -->
 <div class="card crypto-grid">
-
-  <div class="coin">
-    <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png">
-    <h3 id="btcPrice">$0</h3>
-  </div>
-
-  <div class="coin">
-    <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png">
-    <h3 id="ethPrice">$0</h3>
-  </div>
-
-  <div class="coin">
-    <img src="https://cryptologos.cc/logos/tether-usdt-logo.png">
-    <h3 id="usdtPrice">$0</h3>
-  </div>
-
-  <div class="coin">
-    <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png">
-    <h3 id="xrpPrice">$0</h3>
-  </div>
-
+  <div class="coin"><img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png"><h3 id="btcPrice">$0</h3></div>
+  <div class="coin"><img src="https://cryptologos.cc/logos/ethereum-eth-logo.png"><h3 id="ethPrice">$0</h3></div>
+  <div class="coin"><img src="https://cryptologos.cc/logos/tether-usdt-logo.png"><h3 id="usdtPrice">$0</h3></div>
+  <div class="coin"><img src="https://cryptologos.cc/logos/xrp-xrp-logo.png"><h3 id="xrpPrice">$0</h3></div>
 </div>
 
 <!-- TX -->
@@ -206,32 +172,48 @@ h2{font-size:18px;margin-top:10px;}
 <script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-import { getFirestore, doc, getDoc, updateDoc, collection, query, where, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { 
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  setPersistence,
+  browserLocalPersistence
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-/* FIREBASE */
-const app = initializeApp({
-  apiKey:"YOUR_API_KEY",
-  authDomain:"YOUR_AUTH_DOMAIN",
-  projectId:"YOUR_PROJECT_ID"
-});
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc,
+  collection,
+  query,
+  where,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
+/* ✅ YOUR FIREBASE CONFIG (RESTORED) */
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.appspot.com",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-/* SAFE DOM */
-const $ = (id)=>document.getElementById(id);
+/* FIX LOGIN STABILITY */
+setPersistence(auth, browserLocalPersistence);
 
-const balanceEl = $("balance");
-const profitEl = $("profit");
-const historyEl = $("history");
-const withdrawEl = $("withdrawHistory");
-
-const btcPrice = $("btcPrice");
-const ethPrice = $("ethPrice");
-const usdtPrice = $("usdtPrice");
-const xrpPrice = $("xrpPrice");
-const refLink = $("refLink");
+/* ELEMENTS */
+const balanceEl = document.getElementById("balance");
+const profitEl = document.getElementById("profit");
+const historyEl = document.getElementById("history");
+const withdrawEl = document.getElementById("withdrawHistory");
+const refLink = document.getElementById("refLink");
 
 /* PRICES */
 async function loadPrices(){
@@ -243,13 +225,12 @@ async function loadPrices(){
     ethPrice.innerText="$"+d.ethereum.usd.toLocaleString();
     usdtPrice.innerText="$"+d.tether.usd.toLocaleString();
     xrpPrice.innerText="$"+d.ripple.usd.toLocaleString();
-
   }catch(e){}
 }
 loadPrices();
 setInterval(loadPrices,30000);
 
-/* PLANS */
+/* MINING SYSTEM (FIXED SAFE) */
 const plans={
   Basic:{rate:0.02},
   Silver:{rate:0.025},
@@ -258,50 +239,46 @@ const plans={
   VIP:{rate:0.04}
 };
 
-/* MINING (FIXED STABLE) */
 async function mine(ref){
-  try{
-    const s = await getDoc(ref);
-    if(!s.exists()) return;
+  const s = await getDoc(ref);
+  if(!s.exists()) return;
 
-    const d = s.data();
+  const d = s.data();
 
-    const invested = Number(d.invested)||0;
-    if(invested<=0 || !d.plan) return;
+  const invested = Number(d.invested)||0;
+  if(!invested || !d.plan) return;
 
-    const plan = plans[d.plan];
-    if(!plan) return;
+  const plan = plans[d.plan];
+  if(!plan) return;
 
-    const now = Date.now();
-    const last = Number(d.lastUpdate)||now;
+  const now = Date.now();
+  const last = Number(d.lastUpdate)||now;
 
-    const earned = invested * plan.rate * ((now-last)/(1000*60*60*24));
-    if(!isFinite(earned) || earned<=0) return;
+  const earned = invested * plan.rate * ((now-last)/(1000*60*60*24));
+  if(!earned || earned<=0) return;
 
-    await updateDoc(ref,{
-      lockedProfit:(Number(d.lockedProfit)||0)+earned,
-      availableProfit:(Number(d.availableProfit)||0)+earned,
-      lastUpdate:now
-    });
-
-  }catch(e){
-    console.log("mine error",e);
-  }
+  await updateDoc(ref,{
+    lockedProfit:(Number(d.lockedProfit)||0)+earned,
+    availableProfit:(Number(d.availableProfit)||0)+earned,
+    lastUpdate:now
+  });
 }
 
-/* START MINING */
 function startMining(user){
   const ref = doc(db,"users",user.uid);
   mine(ref);
-  setInterval(()=>mine(ref),60000);
+
+  // prevent multiple intervals
+  if(window.miningInterval) clearInterval(window.miningInterval);
+
+  window.miningInterval = setInterval(()=>mine(ref),60000);
 }
 
-/* AUTH SAFE (NO FAKE LOGOUT) */
+/* AUTH FIX (NO AUTO LOGOUT BUG) */
 onAuthStateChanged(auth,(user)=>{
 
   if(!user){
-    console.log("waiting auth...");
-    return;
+    return; // DO NOT REDIRECT IMMEDIATELY
   }
 
   const ref = doc(db,"users",user.uid);
@@ -321,12 +298,11 @@ onAuthStateChanged(auth,(user)=>{
     `;
   });
 
-  /* TRANSACTIONS */
   onSnapshot(query(collection(db,"transactions"),where("userId","==",user.uid)),(s)=>{
     historyEl.innerHTML="";
     s.forEach(i=>{
       const d=i.data();
-      const color = d.type==="deposit"?"green":"red";
+      const color=d.type==="deposit"?"green":"red";
 
       historyEl.innerHTML+=`
       <div class="tx">
@@ -339,14 +315,11 @@ onAuthStateChanged(auth,(user)=>{
     });
   });
 
-  /* WITHDRAW */
   onSnapshot(query(collection(db,"withdrawals"),where("userId","==",user.uid)),(s)=>{
     withdrawEl.innerHTML="";
     s.forEach(i=>{
       const d=i.data();
-      const color =
-        d.status==="approved"?"green":
-        d.status==="rejected"?"red":"orange";
+      const color=d.status==="approved"?"green":d.status==="rejected"?"red":"orange";
 
       withdrawEl.innerHTML+=`
       <div class="tx">
@@ -370,4 +343,4 @@ window.logout=()=>signOut(auth).then(()=>location.href="login.html");
 </script>
 
 </body>
-</html>
+  </html>
