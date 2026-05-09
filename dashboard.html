@@ -824,12 +824,25 @@ window.goWithdraw = ()=>{
   location.href="withdraw.html";
 };
 
-window.copyRef = ()=>{
+window.copyRef = async () => {
+  const text = document.getElementById("ref").value;
 
-  navigator.clipboard
-  .writeText(refInput.value);
+  try {
+    // modern method
+    await navigator.clipboard.writeText(text);
+    alert("Copied successfully");
+  } catch (err) {
 
-  alert("Copied");
+    // fallback method (VERY IMPORTANT for Android)
+    const input = document.createElement("input");
+    document.body.appendChild(input);
+    input.value = text;
+    input.select();
+    document.execCommand("copy");
+    document.body.removeChild(input);
+
+    alert("Copied successfully");
+  }
 };
 
 window.logout = ()=>{
