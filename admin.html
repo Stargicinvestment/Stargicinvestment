@@ -73,6 +73,8 @@ input{
 
 <script type="module">
 
+  console.log("Admin dashboard loaded");
+  
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
@@ -248,16 +250,18 @@ function loadUsers(){
 
           <input type="number" id="bal-${id}" placeholder="Add amount">
 
-          <br>
           <button class="add" onclick="updateBalance('${id}')">Add Balance</button>
           <button class="delete" onclick="deleteUser('${id}')">Delete</button>
         </div>
       `;
     });
 
-    list.innerHTML = html;
+    list.innerHTML = html || "<p>No users found</p>";
+
+  }, (error)=>{
+    console.log("Users error:", error);
   });
-      }
+}
 
 
 // ✅ BUTTON HANDLER
