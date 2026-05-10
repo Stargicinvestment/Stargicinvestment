@@ -446,25 +446,30 @@ document.getElementById("saveProfileBtn")
 
 /* PASSWORD RESET */
 
-document.getElementById("resetBtn")
-.addEventListener("click", async()=>{
+document.getElementById("resetBtn").addEventListener("click", async () => {
 
-  if(!currentUser) return;
+  try {
 
-  try{
+    const email = auth.currentUser?.email;
 
-    await sendPasswordResetEmail(
-      auth,
-      currentUser.email
-    );
+    if (!email) {
+      alert("No email found. Please login again.");
+      return;
+    }
 
-    passwordMsg.innerHTML =
-      "<span class='success'>Reset email sent successfully</span>";
+    await sendPasswordResetEmail(auth, email);
 
-  }catch(error){
+    alert("Password reset email sent. Check inbox or spam.");
 
-    passwordMsg.innerHTML =
-      `<span class='error'>${error.message}</span>`;
+  } catch (error) {
+    console.error(error);
+    alert(error.message);
+  
+  } finally {
+
+    // 🔥 always restore button
+    btn.innerText = "Reset Password";
+    btn.disabled = false;
   }
 
 });
