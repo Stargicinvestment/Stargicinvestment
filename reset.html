@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reset Password</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#0b0f1a;
+  font-family:Poppins,sans-serif;
+  color:white;
+}
+
+.card{
+  width:90%;
+  max-width:380px;
+  background:#111827;
+  padding:20px;
+  border-radius:16px;
+  text-align:center;
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:10px;
+  background:#0b1030;
+  color:white;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  margin-top:15px;
+  border:none;
+  border-radius:10px;
+  background:#2d2cff;
+  color:white;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.msg{
+  margin-top:10px;
+  font-size:14px;
+  color:#aaa;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+  <h2>Reset Password</h2>
+
+  <input type="password" id="newPassword" placeholder="Enter new password">
+
+  <button id="btn">Change Password</button>
+
+  <div class="msg" id="msg"></div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  getAuth,
+  confirmPasswordReset,
+  verifyPasswordResetCode
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+/* Firebase config (same as yours) */
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.appspot.com",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+const msg = document.getElementById("msg");
+const btn = document.getElementById("btn");
+
+/* Get reset code from URL */
+const params = new URLSearchParams(window.location.search);
+const oobCode = params.get("oobCode");
+
+/* Validate link */
+if (!oobCode) {
+  msg.innerText = "Invalid reset link";
+  btn.disabled = true;
+}
+
+/* Optional check */
+verifyPasswordResetCode(auth, oobCode)
+  .then(() => {
+    msg.innerText = "Enter your new password";
+  })
+  .catch(() => {
+    msg.innerText = "This link is expired or invalid";
+    btn.disabled = true;
+  });
+
+/* Reset password */
+btn.addEventListener("click", async () => {
+
+  const newPassword = document.getElementById("newPassword").value;
+
+  if (!newPassword || newPassword.length < 6) {
+    msg.innerText = "Password must be at least 6 characters";
+    return;
+  }
+
+  try {
+
+    btn.innerText = "Updating...";
+    btn.disabled = true;
+
+    await confirmPasswordReset(auth, oobCode, newPassword);
+
+    msg.innerText = "Password updated successfully!";
+
+    setTimeout(() => {
+      window.location.href = "login.html";
+    }, 2000);
+
+  } catch (error) {
+
+    console.error(error);
+    msg.innerText = error.message;
+
+    btn.innerText = "Change Password";
+    btn.disabled = false;
+  }
+
+});
+
+</script>
+
+</body>
+                      </html>
