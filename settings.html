@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Settings</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:'Poppins',sans-serif;
+}
+
+body{
+  background:#0b0f1a;
+  color:white;
+  padding:16px;
+}
+
+.container{
+  max-width:420px;
+  margin:auto;
+  padding-bottom:40px;
+}
+
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:20px;
+}
+
+.title{
+  font-size:24px;
+  font-weight:700;
+}
+
+.card{
+  background:#111827;
+  border-radius:16px;
+  padding:16px;
+  margin-top:16px;
+}
+
+.profile{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.avatar{
+  width:80px;
+  height:80px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid #2d2cff;
+}
+
+.name{
+  font-size:20px;
+  font-weight:600;
+}
+
+.email{
+  color:#aaa;
+  font-size:14px;
+}
+
+input{
+  width:100%;
+  margin-top:10px;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  background:#0b1030;
+  color:white;
+  outline:none;
+}
+
+button{
+  width:100%;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  margin-top:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.save-btn{
+  background:#2d2cff;
+  color:white;
+}
+
+.password-btn{
+  background:#00aa66;
+  color:white;
+}
+
+.logout-btn{
+  background:#ff2d55;
+  color:white;
+}
+
+.verify-btn{
+  background:orange;
+  color:white;
+}
+
+.small{
+  font-size:13px;
+  color:#aaa;
+  margin-top:8px;
+}
+
+.status{
+  margin-top:10px;
+  font-size:14px;
+}
+
+.row{
+  display:flex;
+  gap:10px;
+}
+
+.menu-item{
+  background:#0b1030;
+  padding:14px;
+  border-radius:12px;
+  margin-top:10px;
+  cursor:pointer;
+}
+
+.success{
+  color:#00ff9d;
+}
+
+.error{
+  color:#ff6b6b;
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <div class="title">Settings</div>
+  </div>
+
+  <!-- PROFILE -->
+  <div class="card">
+
+    <div class="profile">
+
+      <img
+        id="avatar"
+        class="avatar"
+        src="https://i.imgur.com/6VBx3io.png"
+      >
+
+      <div>
+        <div id="displayName" class="name">
+          Loading...
+        </div>
+
+        <div id="email" class="email">
+          Loading...
+        </div>
+
+        <div id="verifyStatus" class="small">
+        </div>
+      </div>
+
+    </div>
+
+    <button
+      class="verify-btn"
+      id="verifyBtn"
+      style="display:none;"
+    >
+      Send Verification Email
+    </button>
+
+  </div>
+
+  <!-- EDIT PROFILE -->
+  <div class="card">
+
+    <h3>Edit Profile</h3>
+
+    <input
+      type="text"
+      id="fullName"
+      placeholder="Full Name"
+    >
+
+    <input
+      type="tel"
+      id="phone"
+      placeholder="Phone Number"
+    >
+
+    <input
+      type="text"
+      id="country"
+      placeholder="Country"
+    >
+
+    <button class="save-btn" id="saveProfileBtn">
+      Save Changes
+    </button>
+
+    <div id="profileMsg" class="status"></div>
+
+  </div>
+
+  <!-- CHANGE PASSWORD -->
+  <div class="card">
+
+    <h3>Password</h3>
+
+    <div class="small">
+      Send a password reset link to your email.
+    </div>
+
+    <button class="password-btn" id="resetBtn">
+      Reset Password
+    </button>
+
+    <div id="passwordMsg" class="status"></div>
+
+  </div>
+
+  <!-- PROFILE PHOTO -->
+  <div class="card">
+
+    <h3>Profile Photo</h3>
+
+    <input type="file" id="photoInput">
+
+    <button class="save-btn" id="uploadBtn">
+      Upload Photo
+    </button>
+
+    <div id="photoMsg" class="status"></div>
+
+  </div>
+
+  <!-- QUICK MENU -->
+  <div class="card">
+
+    <h3>Quick Menu</h3>
+
+    <div
+      class="menu-item"
+      onclick="location.href='dashboard.html'"
+    >
+      Dashboard
+    </div>
+
+    <div
+      class="menu-item"
+      onclick="location.href='deposit.html'"
+    >
+      Deposit
+    </div>
+
+    <div
+      class="menu-item"
+      onclick="location.href='withdraw.html'"
+    >
+      Withdraw
+    </div>
+
+  </div>
+
+  <!-- LOGOUT -->
+  <div class="card">
+
+    <button class="logout-btn" id="logoutBtn">
+      Logout
+    </button>
+
+  </div>
+
+</div>
+
+<script type="module">
+
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut,
+  sendPasswordResetEmail,
+  sendEmailVerification
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  updateDoc
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+}
+from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+/* FIREBASE */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.appspot.com",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+};
+
+const app = initializeApp(firebaseConfig);
+
+const auth = getAuth(app);
+const db = getFirestore(app);
+const storage = getStorage(app);
+
+/* ELEMENTS */
+
+const avatar = document.getElementById("avatar");
+const displayName = document.getElementById("displayName");
+const emailEl = document.getElementById("email");
+const verifyStatus = document.getElementById("verifyStatus");
+const verifyBtn = document.getElementById("verifyBtn");
+
+const fullNameInput = document.getElementById("fullName");
+const phoneInput = document.getElementById("phone");
+const countryInput = document.getElementById("country");
+
+const profileMsg = document.getElementById("profileMsg");
+const passwordMsg = document.getElementById("passwordMsg");
+const photoMsg = document.getElementById("photoMsg");
+
+const photoInput = document.getElementById("photoInput");
+
+let currentUser = null;
+
+/* AUTH */
+
+onAuthStateChanged(auth, async(user)=>{
+
+  if(!user){
+    location.href = "login.html";
+    return;
+  }
+
+  currentUser = user;
+
+  emailEl.innerText = user.email;
+
+  if(user.emailVerified){
+
+    verifyStatus.innerHTML =
+      "<span class='success'>Verified Account</span>";
+
+  }else{
+
+    verifyStatus.innerHTML =
+      "<span class='error'>Email Not Verified</span>";
+
+    verifyBtn.style.display = "block";
+  }
+
+  const userRef = doc(db,"users",user.uid);
+
+  const snap = await getDoc(userRef);
+
+  if(snap.exists()){
+
+    const data = snap.data();
+
+    displayName.innerText =
+      data.fullName || "User";
+
+    fullNameInput.value =
+      data.fullName || "";
+
+    phoneInput.value =
+      data.phone || "";
+
+    countryInput.value =
+      data.country || "";
+
+    if(data.photoURL){
+      avatar.src = data.photoURL;
+    }
+  }
+
+});
+
+/* SAVE PROFILE */
+
+document.getElementById("saveProfileBtn")
+.addEventListener("click", async()=>{
+
+  if(!currentUser) return;
+
+  try{
+
+    await updateDoc(
+      doc(db,"users",currentUser.uid),
+      {
+        fullName: fullNameInput.value,
+        phone: phoneInput.value,
+        country: countryInput.value
+      }
+    );
+
+    displayName.innerText =
+      fullNameInput.value;
+
+    profileMsg.innerHTML =
+      "<span class='success'>Profile updated successfully</span>";
+
+  }catch(error){
+
+    profileMsg.innerHTML =
+      `<span class='error'>${error.message}</span>`;
+  }
+
+});
+
+/* PASSWORD RESET */
+
+document.getElementById("resetBtn")
+.addEventListener("click", async()=>{
+
+  if(!currentUser) return;
+
+  try{
+
+    await sendPasswordResetEmail(
+      auth,
+      currentUser.email
+    );
+
+    passwordMsg.innerHTML =
+      "<span class='success'>Reset email sent successfully</span>";
+
+  }catch(error){
+
+    passwordMsg.innerHTML =
+      `<span class='error'>${error.message}</span>`;
+  }
+
+});
+
+/* EMAIL VERIFICATION */
+
+verifyBtn.addEventListener("click", async()=>{
+
+  try{
+
+    await sendEmailVerification(currentUser);
+
+    alert("Verification email sent.");
+
+  }catch(error){
+
+    alert(error.message);
+  }
+
+});
+
+/* PROFILE PHOTO */
+
+document.getElementById("uploadBtn")
+.addEventListener("click", async()=>{
+
+  if(!currentUser) return;
+
+  const file = photoInput.files[0];
+
+  if(!file){
+
+    photoMsg.innerHTML =
+      "<span class='error'>Please select a photo</span>";
+
+    return;
+  }
+
+  try{
+
+    const storageRef = ref(
+      storage,
+      `avatars/${currentUser.uid}`
+    );
+
+    await uploadBytes(storageRef,file);
+
+    const url =
+      await getDownloadURL(storageRef);
+
+    await updateDoc(
+      doc(db,"users",currentUser.uid),
+      {
+        photoURL:url
+      }
+    );
+
+    avatar.src = url;
+
+    photoMsg.innerHTML =
+      "<span class='success'>Photo uploaded successfully</span>";
+
+  }catch(error){
+
+    photoMsg.innerHTML =
+      `<span class='error'>${error.message}</span>`;
+  }
+
+});
+
+/* LOGOUT */
+
+document.getElementById("logoutBtn")
+.addEventListener("click", ()=>{
+
+  signOut(auth);
+
+  location.href = "login.html";
+
+});
+
+</script>
+
+</body>
+  </html>
