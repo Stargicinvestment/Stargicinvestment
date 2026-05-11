@@ -80,7 +80,7 @@ button:hover{
   <div class="deposit-box">
 
     <h2>Make Deposit</h2>
-    <p>Minimum Deposit: $300</p>
+    <p>Minimum Deposit: $200</p>
 
     <form id="depositForm">
 
@@ -115,8 +115,8 @@ document.getElementById("depositForm").addEventListener("submit", function(e){
     return;
   }
 
-  if(!amount || amount < 300){
-    alert("Minimum deposit is $300");
+  if(!amount || amount < 200){
+    alert("Minimum deposit is $200");
     return;
   }
 
