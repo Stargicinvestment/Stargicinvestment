@@ -189,8 +189,7 @@ input{
       >
 
       <div>
-        <b>Dashboard</b>
-        
+  <b id="welcomeText">Welcome 👋</b>
       </div>
 
     </div>
@@ -613,6 +612,8 @@ onAuthStateChanged(auth,async(user)=>{
     if(!snap.exists()) return;
 
     const d = snap.data();
+    document.getElementById("welcomeText").innerText =
+  "Welcome, " + (d.fullName || d.name || "User");
 
     const balance =
       Number(d.balance)||0;
