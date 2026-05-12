@@ -2148,6 +2148,14 @@ menuOverlay.addEventListener("click", (e) => {
   }
 });
     </script>
+
+    <script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("/Stargicinvestment/sw.js")
+    .then(() => console.log("Service Worker registered"))
+    .catch(err => console.log("SW failed:", err));
+}
+</script>
     
 </body>
   </html>
