@@ -1435,6 +1435,63 @@ button{
   -webkit-user-select:auto;
   user-select:auto;
 }
+  
+.premium-location-btn{
+    width:100%;
+    background:#fff;
+    border:none;
+    border-radius:18px;
+    padding:18px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    box-shadow:0 6px 20px rgba(0,0,0,0.08);
+    cursor:pointer;
+    margin:15px 0;
+    transition:0.3s;
+}
+
+.premium-location-btn:hover{
+    transform:translateY(-3px);
+}
+
+.icon{
+    width:55px;
+    height:55px;
+    background:linear-gradient(135deg,#0d6efd,#0047b3);
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#fff;
+    font-size:24px;
+}
+
+.btn-text{
+    flex:1;
+    text-align:left;
+    margin-left:15px;
+}
+
+.small-text{
+    display:block;
+    font-size:12px;
+    color:#7b8794;
+    margin-bottom:4px;
+}
+
+.big-text{
+    font-size:17px;
+    font-weight:600;
+    color:#111827;
+}
+
+.arrow{
+    font-size:28px;
+    color:#0d6efd;
+    font-weight:bold;
+}
+
 
 </style>
 </head>
@@ -1964,8 +2021,18 @@ button{
         <circle cx="14" cy="12" r="3"/>
       </svg>
     </div>
-    <span class="contact-main">Global Office</span>
-  </div>
+    <button class="premium-location-btn" onclick="openLocation()">
+
+    <span class="icon">🌍</span>
+
+    <div class="btn-text">
+        <span class="small-text">Global Access</span>
+        <span class="big-text">Our Office</span>
+    </div>
+
+    <span class="arrow">›</span>
+
+    </button>
 
 </section>
 
@@ -2176,6 +2243,26 @@ window.addEventListener("beforeinstallprompt", (e) => {
     deferredPrompt = null;
   });
 });</script>
+
+    <script>
+
+function openLocation(){
+
+    document.getElementById("locationPopup").classList.add("active");
+
+    document.getElementById("overlay").classList.add("active");
+
+}
+
+function closeLocation(){
+
+    document.getElementById("locationPopup").classList.remove("active");
+
+    document.getElementById("overlay").classList.remove("active");
+
+}
+
+    </script>
     
 </body>
   </html>
