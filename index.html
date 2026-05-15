@@ -1527,6 +1527,23 @@ body {
     }
 
 }
+  
+
+/* Disable selection generally */
+body{
+  -webkit-user-select:none;
+  user-select:none;
+  -webkit-touch-callout:none;
+}
+
+/* Allow forms and buttons to work normally */
+input,
+textarea,
+button{
+  -webkit-user-select:auto;
+  user-select:auto;
+}
+  
 
 
 </style>
