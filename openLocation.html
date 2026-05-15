@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Binance Style Global Office</title>
+<title>Stargicinvestment Global Office</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
 <style>
 
@@ -18,232 +18,131 @@
 }
 
 body{
-    background:#0b0e11;
+    background:
+    radial-gradient(circle at top,#1f2430 0%,#0b0e11 60%);
+    min-height:100vh;
     overflow-x:hidden;
+    color:#fff;
 }
 
-/* ================= FLOAT BUTTON ================= */
+/* ================= BACKGROUND EFFECT ================= */
 
-.open-location-btn{
-
+.bg-light{
     position:fixed;
+    width:500px;
+    height:500px;
+    border-radius:50%;
 
-    right:20px;
-    bottom:20px;
+    background:
+    rgba(240,185,11,0.08);
 
+    filter:blur(120px);
+
+    z-index:-1;
+}
+
+.bg1{
+    top:-120px;
+    left:-100px;
+}
+
+.bg2{
+    bottom:-120px;
+    right:-100px;
+}
+
+/* ================= NAVBAR ================= */
+
+.navbar{
+    width:100%;
+    padding:20px 32px;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    position:sticky;
+    top:0;
+
+    background:
+    rgba(11,14,17,0.82);
+
+    backdrop-filter:blur(14px);
+
+    border-bottom:
+    1px solid rgba(255,255,255,0.05);
+
+    z-index:999;
+}
+
+.logo{
     display:flex;
     align-items:center;
     gap:14px;
-
-    background:#f0b90b;
-
-    color:#111;
-
-    border:none;
-
-    padding:14px 20px;
-
-    border-radius:18px;
-
-    cursor:pointer;
-
-    font-weight:700;
-
-    z-index:5000;
-
-    box-shadow:
-    0 10px 35px rgba(240,185,11,0.25);
-
-    transition:0.3s;
-
 }
 
-.open-location-btn:hover{
+.logo-box{
+    width:48px;
+    height:48px;
 
-    transform:translateY(-3px);
+    border-radius:16px;
 
-}
-
-.btn-icon{
-
-    width:46px;
-    height:46px;
-
-    border-radius:14px;
-
-    background:#111;
-
-    color:#f0b90b;
+    background:
+    linear-gradient(135deg,#f0b90b,#ffd95a);
 
     display:flex;
     align-items:center;
     justify-content:center;
 
+    color:#111;
     font-size:22px;
-
-}
-
-.btn-text{
-    text-align:left;
-}
-
-.btn-small{
-
-    display:block;
-
-    font-size:11px;
-
-    opacity:0.7;
-
-    letter-spacing:1px;
-
-}
-
-.btn-big{
-
-    display:block;
-
-    margin-top:2px;
-
-    font-size:17px;
-
-}
-
-/* ================= OVERLAY ================= */
-
-.overlay{
-
-    position:fixed;
-
-    inset:0;
-
-    background:rgba(0,0,0,0.7);
-
-    backdrop-filter:blur(6px);
-
-    opacity:0;
-    visibility:hidden;
-
-    transition:0.35s;
-
-    z-index:4000;
-
-}
-
-.overlay.active{
-
-    opacity:1;
-    visibility:visible;
-
-}
-
-/* ================= PANEL ================= */
-
-.location-popup{
-
-    position:fixed;
-
-    top:0;
-    right:-100%;
-
-    width:100%;
-    max-width:460px;
-    height:100vh;
-
-    background:#181a20;
-
-    overflow-y:auto;
-
-    transition:0.4s ease;
-
-    z-index:4500;
+    font-weight:900;
 
     box-shadow:
-    -10px 0 40px rgba(0,0,0,0.45);
-
+    0 10px 25px rgba(240,185,11,0.25);
 }
 
-.location-popup.active{
-    right:0;
+.logo-text h2{
+    font-size:19px;
+    font-weight:800;
 }
 
-/* ================= HEADER ================= */
-
-.popup-header{
-
-    padding:30px 24px;
-
-    border-bottom:
-    1px solid rgba(255,255,255,0.06);
-
-    background:#1e2329;
-
-    position:relative;
-
+.logo-text span{
+    color:#8b96a5;
+    font-size:12px;
 }
 
-.close-btn{
+/* ================= HERO ================= */
 
-    position:absolute;
-
-    top:22px;
-    right:22px;
-
-    width:42px;
-    height:42px;
-
-    border:none;
-
-    border-radius:12px;
-
-    background:#2b3139;
-
-    color:#fff;
-
-    font-size:22px;
-
-    cursor:pointer;
-
-    transition:0.3s;
-
+.hero{
+    text-align:center;
+    padding:90px 24px 60px;
 }
 
-.close-btn:hover{
-
-    background:#353b45;
-
-}
-
-/* ================= STATUS ================= */
-
-.live-status{
-
+.live-badge{
     display:inline-flex;
     align-items:center;
     gap:10px;
 
-    background:
-    rgba(240,185,11,0.12);
-
-    color:#f0b90b;
-
-    border:
-    1px solid rgba(240,185,11,0.15);
-
-    padding:10px 14px;
+    padding:12px 20px;
 
     border-radius:50px;
 
-    font-size:12px;
+    background:
+    rgba(240,185,11,0.10);
 
+    border:
+    1px solid rgba(240,185,11,0.16);
+
+    color:#f0b90b;
+
+    font-size:12px;
     font-weight:700;
 
-    margin-bottom:22px;
-
+    margin-bottom:30px;
 }
 
 .dot{
-
     width:8px;
     height:8px;
 
@@ -252,461 +151,569 @@ body{
     background:#16c784;
 
     box-shadow:
-    0 0 10px #16c784;
-
+    0 0 12px #16c784;
 }
 
-/* ================= TITLE ================= */
+.hero h1{
+    font-size:58px;
+    line-height:1.1;
+    font-weight:900;
 
-.popup-header h2{
-
-    color:#fff;
-
-    font-size:30px;
-
-    font-weight:800;
-
-    line-height:1.3;
-
-    margin-bottom:14px;
-
+    max-width:850px;
+    margin:auto auto 24px;
 }
 
-.popup-header p{
+.hero p{
+    max-width:760px;
+    margin:auto;
 
     color:#b7bdc6;
 
-    font-size:15px;
-
-    line-height:1.9;
-
+    line-height:2;
+    font-size:16px;
 }
 
-/* ================= CONTENT ================= */
+/* ================= STATS BAR ================= */
 
-.location-content{
-    padding:24px;
+.top-stats{
+    max-width:1200px;
+    margin:0 auto 50px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+
+    padding:0 24px;
+}
+
+.top-stat{
+    background:
+    linear-gradient(
+        180deg,
+        rgba(30,35,41,0.95),
+        rgba(20,24,30,0.98)
+    );
+
+    border:
+    1px solid rgba(255,255,255,0.06);
+
+    border-radius:28px;
+
+    padding:28px;
+
+    text-align:center;
+
+    transition:0.35s ease;
+}
+
+.top-stat:hover{
+    transform:translateY(-6px);
+
+    border-color:
+    rgba(240,185,11,0.28);
+
+    box-shadow:
+    0 20px 45px rgba(0,0,0,0.35);
+}
+
+.top-stat h2{
+    color:#f0b90b;
+    font-size:34px;
+    margin-bottom:10px;
+}
+
+.top-stat span{
+    color:#aeb4bc;
+    font-size:14px;
+}
+
+/* ================= MAIN GRID ================= */
+
+.container{
+    max-width:1250px;
+    margin:auto;
+    padding:0 24px 80px;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:24px;
 }
 
 /* ================= CARD ================= */
 
-.location-card{
+.card{
+    position:relative;
 
-    background:#1e2329;
+    overflow:hidden;
 
-    border-radius:24px;
-
-    padding:24px;
+    background:
+    linear-gradient(
+        180deg,
+        rgba(30,35,41,0.98),
+        rgba(18,21,27,0.98)
+    );
 
     border:
-    1px solid rgba(255,255,255,0.04);
-
-}
-
-/* ================= INFO ITEM ================= */
-
-.info-item{
-
-    display:flex;
-
-    align-items:flex-start;
-
-    gap:16px;
-
-    padding:18px 0;
-
-    border-bottom:
     1px solid rgba(255,255,255,0.05);
 
+    border-radius:30px;
+
+    padding:32px;
+
+    transition:0.4s ease;
+
+    box-shadow:
+    0 15px 45px rgba(0,0,0,0.25);
 }
 
-.info-item:last-child{
-    border-bottom:none;
+.card::before{
+    content:"";
+
+    position:absolute;
+    top:0;
+    left:0;
+
+    width:100%;
+    height:4px;
+
+    background:
+    linear-gradient(
+        90deg,
+        #f0b90b,
+        transparent
+    );
+}
+
+.card:hover{
+    transform:translateY(-8px);
+
+    border-color:
+    rgba(240,185,11,0.25);
+
+    box-shadow:
+    0 25px 55px rgba(0,0,0,0.45);
 }
 
 /* ================= ICON ================= */
 
-.info-icon{
+.card-icon{
+    width:68px;
+    height:68px;
 
-    width:52px;
-    height:52px;
-
-    min-width:52px;
-
-    border-radius:16px;
+    border-radius:20px;
 
     background:
-    rgba(240,185,11,0.1);
+    rgba(240,185,11,0.10);
 
     display:flex;
     align-items:center;
     justify-content:center;
 
-    font-size:22px;
-
     color:#f0b90b;
 
+    font-size:30px;
+
+    margin-bottom:24px;
 }
 
 /* ================= TEXT ================= */
 
-.info-text{
-    flex:1;
-}
-
-.info-label{
-
-    color:#848e9c;
-
-    font-size:12px;
+.card-label{
+    color:#8c96a3;
 
     text-transform:uppercase;
 
     letter-spacing:1px;
 
-    margin-bottom:8px;
+    font-size:12px;
 
+    margin-bottom:12px;
 }
 
-.info-value{
+.card-value{
+    font-size:19px;
+    line-height:1.8;
+    font-weight:700;
 
     color:#fff;
 
-    font-size:16px;
-
-    line-height:1.8;
-
-    font-weight:600;
-
     word-break:break-word;
-
+    overflow-wrap:anywhere;
 }
 
-/* ================= TRUST BOX ================= */
+/* ================= TRUST SECTION ================= */
 
-.trust-box{
+.trust{
+    margin-top:34px;
 
-    margin-top:22px;
+    background:
+    linear-gradient(
+        135deg,
+        rgba(30,35,41,0.98),
+        rgba(16,18,23,0.98)
+    );
 
-    background:#1e2329;
+    border-radius:34px;
+
+    border:
+    1px solid rgba(255,255,255,0.05);
+
+    padding:40px;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+.trust::before{
+    content:"";
+
+    position:absolute;
+    top:-120px;
+    right:-120px;
+
+    width:300px;
+    height:300px;
+
+    border-radius:50%;
+
+    background:
+    rgba(240,185,11,0.06);
+
+    filter:blur(30px);
+}
+
+.trust h2{
+    font-size:36px;
+    margin-bottom:20px;
+}
+
+.trust p{
+    max-width:900px;
+
+    color:#b7bdc6;
+
+    line-height:2;
+
+    font-size:15px;
+}
+
+/* ================= FEATURES ================= */
+
+.features{
+    margin-top:36px;
+
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+
+    gap:20px;
+}
+
+.feature{
+    background:#242a33;
 
     border-radius:24px;
 
     padding:24px;
-
-    border:
-    1px solid rgba(255,255,255,0.04);
-
 }
 
-.trust-box h3{
-
-    color:#fff;
-
-    font-size:20px;
-
-    margin-bottom:14px;
-
-}
-
-.trust-box p{
-
-    color:#b7bdc6;
-
-    line-height:1.9;
-
-    font-size:14px;
-
-}
-
-/* ================= STATS ================= */
-
-.stats{
-
-    display:grid;
-
-    grid-template-columns:1fr 1fr;
-
-    gap:14px;
-
-    margin-top:20px;
-
-}
-
-.stat{
-
-    background:#2b3139;
-
-    padding:18px;
-
-    border-radius:18px;
-
-}
-
-.stat h4{
-
+.feature h3{
     color:#f0b90b;
-
-    font-size:22px;
-
-    margin-bottom:6px;
-
+    margin-bottom:10px;
 }
 
-.stat span{
-
-    color:#b7bdc6;
-
-    font-size:13px;
-
-    line-height:1.5;
-
+.feature p{
+    color:#aeb4bc;
+    font-size:14px;
+    line-height:1.8;
 }
 
-/* ================= VERIFIED ================= */
+/* ================= BADGES ================= */
 
-.verify{
-
+.badges{
     display:flex;
     flex-wrap:wrap;
-    gap:12px;
+    gap:14px;
 
-    margin-top:22px;
-
+    margin-top:36px;
 }
 
-.verify span{
+.badges span{
+    background:#242a33;
 
-    background:#2b3139;
+    border:
+    1px solid rgba(255,255,255,0.05);
 
-    color:#fff;
-
-    padding:12px 16px;
+    padding:14px 18px;
 
     border-radius:50px;
 
+    color:#fff;
+
     font-size:13px;
-
     font-weight:600;
+}
 
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+
+    padding:35px 20px;
+
+    border-top:
+    1px solid rgba(255,255,255,0.05);
+
+    color:#7f8a99;
+
+    font-size:14px;
 }
 
 /* ================= MOBILE ================= */
 
-@media(max-width:520px){
+@media(max-width:768px){
 
-    .location-popup{
-        max-width:100%;
+    .hero{
+        padding-top:70px;
     }
 
-    .popup-header h2{
-        font-size:26px;
+    .hero h1{
+        font-size:38px;
     }
 
-    .stats{
-        grid-template-columns:1fr;
+    .trust{
+        padding:28px;
+    }
+
+    .trust h2{
+        font-size:28px;
+    }
+
+    .navbar{
+        padding:18px 20px;
     }
 
 }
 
 </style>
 </head>
+
 <body>
 
-<!-- ================= OVERLAY ================= -->
+<!-- BACKGROUND LIGHT -->
 
-<div class="overlay" id="overlay" onclick="closeLocation()"></div>
+<div class="bg-light bg1"></div>
+<div class="bg-light bg2"></div>
 
-<!-- ================= PANEL ================= -->
+<!-- NAVBAR -->
 
-<div class="location-popup" id="locationPopup">
+<div class="navbar">
 
-    <!-- HEADER -->
+    <div class="logo">
 
-    <div class="popup-header">
-
-        <button class="close-btn" onclick="closeLocation()">
-            ×
-        </button>
-
-        <div class="live-status">
-
-            <div class="dot"></div>
-
-            SUPPORT ACTIVE
-
+        <div class="logo-box">
+            ✦
         </div>
 
-        <h2>
-            Global Financial Operations
-        </h2>
-
-        <p>
-            Secure digital investment infrastructure
-            delivering seamless financial services
-            and global market accessibility.
-        </p>
+        <div class="logo-text">
+            <h2>Stargicinvestment</h2>
+            <span>Global Financial Operations</span>
+        </div>
 
     </div>
 
-    <!-- CONTENT -->
+</div>
 
-    <div class="location-content">
+<!-- HERO -->
 
-        <!-- MAIN CARD -->
+<section class="hero">
 
-        <div class="location-card">
+    <div class="live-badge">
 
-            <!-- LOCATION -->
+        <div class="dot"></div>
 
-            <div class="info-item">
+        SECURE SUPPORT ACTIVE
 
-                <div class="info-icon">
-                    📍
-                </div>
+    </div>
 
-                <div class="info-text">
+    <h1>
+        Premium Global Financial Infrastructure
+    </h1>
 
-                    <div class="info-label">
-                        Headquarters
-                    </div>
+    <p>
+        Advanced digital investment infrastructure delivering secure global access, 
+        premium financial technology, modern asset management solutions, and worldwide market connectivity.
+    </p>
 
-                    <div class="info-value">
-                        London Financial District,
-                        United Kingdom
-                    </div>
+</section>
 
-                </div>
+<!-- TOP STATS -->
 
+<div class="top-stats">
+
+    <div class="top-stat">
+        <h2>24/7</h2>
+        <span>Dedicated Customer Assistance</span>
+    </div>
+
+    <div class="top-stat">
+        <h2>150+</h2>
+        <span>Countries Supported Worldwide</span>
+    </div>
+
+    <div class="top-stat">
+        <h2>256-bit</h2>
+        <span>Advanced Security Encryption</span>
+    </div>
+
+    <div class="top-stat">
+        <h2>Global</h2>
+        <span>Financial Market Accessibility</span>
+    </div>
+
+</div>
+
+<!-- MAIN -->
+
+<div class="container">
+
+    <div class="grid">
+
+        <!-- LOCATION -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                📍
             </div>
 
-            <!-- EMAIL -->
-
-            <div class="info-item">
-
-                <div class="info-icon">
-                    ✉️
-                </div>
-
-                <div class="info-text">
-
-                    <div class="info-label">
-                        Support Email
-                    </div>
-
-                    <div class="info-value">
-                        support@stargicinvestment.com
-                    </div>
-
-                </div>
-
+            <div class="card-label">
+                Headquarters
             </div>
 
-            <!-- HOURS -->
-
-            <div class="info-item">
-
-                <div class="info-icon">
-                    ⏰
-                </div>
-
-                <div class="info-text">
-
-                    <div class="info-label">
-                        Operational Hours
-                    </div>
-
-                    <div class="info-value">
-                        Monday - Friday
-                        09:00 AM - 06:00 PM
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- COVERAGE -->
-
-            <div class="info-item">
-
-                <div class="info-icon">
-                    🌐
-                </div>
-
-                <div class="info-text">
-
-                    <div class="info-label">
-                        Service Coverage
-                    </div>
-
-                    <div class="info-value">
-                        USA • Europe • Africa • Asia
-                    </div>
-
-                </div>
-
+            <div class="card-value">
+                London Financial District,<br>
+                United Kingdom
             </div>
 
         </div>
 
-        <!-- TRUST -->
+        <!-- EMAIL -->
 
-        <div class="trust-box">
+        <div class="card">
 
-            <h3>
-                Trusted Digital Finance Platform
-            </h3>
-
-            <p>
-                Stargicinvestment provides secure and
-                innovative digital financial services
-                designed to support users globally through
-                a reliable and modern investment platform.
-            </p>
-
-            <!-- STATS -->
-
-            <div class="stats">
-
-                <div class="stat">
-
-                    <h4>24/7</h4>
-
-                    <span>
-                        Customer Assistance
-                    </span>
-
-                </div>
-
-                <div class="stat">
-
-                    <h4>Global</h4>
-
-                    <span>
-                        Market Accessibility
-                    </span>
-
-                </div>
-
+            <div class="card-icon">
+                ✉️
             </div>
 
-            <!-- VERIFIED -->
-
-            <div class="verify">
-
-                <span>
-                    Secure Platform
-                </span>
-
-                <span>
-                    Worldwide Access
-                </span>
-
-                <span>
-                    Online Support
-                </span>
-
+            <div class="card-label">
+                Support Email
             </div>
+
+            <div class="card-value">
+                support@stargicinvestment.com
+            </div>
+
+        </div>
+
+        <!-- HOURS -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                ⏰
+            </div>
+
+            <div class="card-label">
+                Operational Hours
+            </div>
+
+            <div class="card-value">
+                Monday - Friday<br>
+                09:00 AM - 06:00 PM
+            </div>
+
+        </div>
+
+        <!-- COVERAGE -->
+
+        <div class="card">
+
+            <div class="card-icon">
+                🌐
+            </div>
+
+            <div class="card-label">
+                Service Coverage
+            </div>
+
+            <div class="card-value">
+                USA • Europe • Africa • Asia
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- TRUST SECTION -->
+
+    <div class="trust">
+
+        <h2>
+            Trusted Digital Finance Platform
+        </h2>
+
+        <p>
+            Stargicinvestment delivers premium financial technology solutions designed for global investors seeking secure digital asset accessibility, modern investment infrastructure, and seamless worldwide financial connectivity through a highly protected and advanced digital ecosystem.
+        </p>
+
+        <!-- FEATURES -->
+
+        <div class="features">
+
+            <div class="feature">
+                <h3>Advanced Security</h3>
+                <p>
+                    Multi-layer infrastructure protection with premium encryption technology.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Global Accessibility</h3>
+                <p>
+                    Worldwide market accessibility and modern digital financial connectivity.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Premium Support</h3>
+                <p>
+                    Dedicated professional assistance designed for seamless user experience.
+                </p>
+            </div>
+
+            <div class="feature">
+                <h3>Modern Infrastructure</h3>
+                <p>
+                    High-performance digital systems optimized for secure operations.
+                </p>
+            </div>
+
+        </div>
+
+        <!-- BADGES -->
+
+        <div class="badges">
+
+            <span>Secure Platform</span>
+            <span>Worldwide Access</span>
+            <span>Premium Technology</span>
+            <span>Modern Infrastructure</span>
+            <span>Encrypted Security</span>
+            <span>Financial Innovation</span>
 
         </div>
 
@@ -714,35 +721,11 @@ body{
 
 </div>
 
-<!-- ================= SCRIPT ================= -->
+<!-- FOOTER -->
 
-<script>
-
-function openLocation(){
-
-    document
-    .getElementById("locationPopup")
-    .classList.add("active");
-
-    document
-    .getElementById("overlay")
-    .classList.add("active");
-
-}
-
-function closeLocation(){
-
-    document
-    .getElementById("locationPopup")
-    .classList.remove("active");
-
-    document
-    .getElementById("overlay")
-    .classList.remove("active");
-
-}
-
-</script>
+<div class="footer">
+    © 2026 Stargicinvestment — All Rights Reserved
+</div>
 
 </body>
-  </html>
+    </html>
