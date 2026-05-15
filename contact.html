@@ -4,136 +4,453 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Contact Us - StargicInvestment</title>
+<title>Premium Contact - StargicInvestment</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
-body{
-  margin:0;
-  font-family:Poppins;
-  background:#0b0f1a;
-  color:#fff;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
 }
 
-/* HERO */
+body{
+    background:#0b0e11;
+    color:#fff;
+    overflow-x:hidden;
+}
+
+/* ================= HERO ================= */
+
 .hero{
-  height:260px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  background:linear-gradient(to right,#020617,#0b0f1a);
+
+    position:relative;
+
+    height:420px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    overflow:hidden;
+
+    background:
+    linear-gradient(
+        rgba(0,0,0,0.7),
+        rgba(0,0,0,0.8)
+    ),
+
+    url('https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80');
+
+    background-size:cover;
+    background-position:center;
+}
+
+.hero::before{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    radial-gradient(
+        circle at top right,
+        rgba(240,185,11,0.18),
+        transparent 40%
+    );
+}
+
+.hero-content{
+    position:relative;
+    z-index:2;
 }
 
 .hero h1{
-  font-size:30px;
+
+    font-size:58px;
+
+    font-weight:800;
+
+    margin-bottom:18px;
+
+    line-height:1.1;
 }
 
-/* SECTION */
-.section{
-  max-width:1100px;
-  margin:auto;
-  padding:60px 20px;
+.hero p{
+
+    color:#d1d5db;
+
+    font-size:18px;
+
+    max-width:760px;
+
+    line-height:1.8;
+
+    margin:auto;
 }
+
+/* ================= SECTION ================= */
+
+.section{
+
+    max-width:1250px;
+
+    margin:auto;
+
+    padding:80px 20px;
+}
+
+/* ================= GRID ================= */
+
+.grid{
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(320px,1fr));
+
+    gap:30px;
+}
+
+/* ================= CARD ================= */
 
 .card{
-  background:#111827;
-  border-radius:12px;
-  overflow:hidden;
-  margin-bottom:40px;
-  box-shadow:0 10px 30px rgba(0,0,0,0.6);
-  transition:0.3s;
+
+    position:relative;
+
+    background:#181a20;
+
+    border-radius:28px;
+
+    overflow:hidden;
+
+    border:
+    1px solid rgba(255,255,255,0.06);
+
+    transition:0.4s ease;
+
+    box-shadow:
+    0 15px 45px rgba(0,0,0,0.35);
 }
 
 .card:hover{
-  transform:translateY(-6px);
+
+    transform:
+    translateY(-10px);
+
+    border-color:
+    rgba(240,185,11,0.35);
+
+    box-shadow:
+    0 20px 60px rgba(240,185,11,0.15);
 }
 
-.card img{
-  width:100%;
-  height:240px;
-  object-fit:cover;
+/* ================= IMAGE ================= */
+
+.card-image{
+
+    position:relative;
+
+    height:260px;
+
+    overflow:hidden;
 }
 
-/* TEXT */
+.card-image img{
+
+    width:100%;
+    height:100%;
+
+    object-fit:cover;
+
+    transition:0.5s ease;
+}
+
+.card:hover img{
+
+    transform:scale(1.08);
+}
+
+.card-image::after{
+
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+        transparent,
+        rgba(0,0,0,0.7)
+    );
+}
+
+/* ================= CONTENT ================= */
+
 .content{
-  padding:25px;
+
+    padding:28px;
+}
+
+.badge{
+
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+
+    background:
+    rgba(240,185,11,0.12);
+
+    color:#f0b90b;
+
+    border:
+    1px solid rgba(240,185,11,0.18);
+
+    padding:8px 14px;
+
+    border-radius:50px;
+
+    font-size:12px;
+
+    font-weight:700;
+
+    margin-bottom:18px;
 }
 
 .content h2{
-  color:#00ff9d;
-  margin-bottom:10px;
+
+    font-size:26px;
+
+    margin-bottom:16px;
+
+    font-weight:800;
+
+    line-height:1.4;
 }
 
-/* BUTTON */
+.content p{
+
+    color:#b7bdc6;
+
+    line-height:1.9;
+
+    font-size:15px;
+}
+
+/* ================= BUTTON ================= */
+
 .btn{
-  display:inline-block;
-  margin-top:15px;
-  background:#00ff9d;
-  color:#021018;
-  padding:12px 25px;
-  border-radius:8px;
-  font-weight:600;
-  cursor:pointer;
-  text-decoration:none;
+
+    display:inline-flex;
+    align-items:center;
+    gap:12px;
+
+    margin-top:24px;
+
+    background:
+    linear-gradient(
+        135deg,
+        #f0b90b,
+        #ffd54f
+    );
+
+    color:#111;
+
+    text-decoration:none;
+
+    padding:14px 22px;
+
+    border-radius:16px;
+
+    font-weight:800;
+
+    font-size:14px;
+
+    border:none;
+
+    cursor:pointer;
+
+    transition:0.35s ease;
+
+    box-shadow:
+    0 10px 25px rgba(240,185,11,0.28);
 }
 
 .btn:hover{
-  box-shadow:0 0 20px #00ff9d;
+
+    transform:
+    translateY(-3px);
+
+    box-shadow:
+    0 16px 35px rgba(240,185,11,0.38);
 }
 
-  /* ===== TRANSLATE CONTAINER ===== */
+/* ================= SUPPORT PANEL ================= */
+
+.support-panel{
+
+    margin-top:70px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #181a20,
+        #1e2329
+    );
+
+    border-radius:32px;
+
+    padding:40px;
+
+    border:
+    1px solid rgba(255,255,255,0.06);
+
+    display:grid;
+
+    grid-template-columns:
+    repeat(auto-fit,minmax(260px,1fr));
+
+    gap:30px;
+}
+
+.panel-box{
+
+    background:#111418;
+
+    border-radius:24px;
+
+    padding:30px;
+
+    border:
+    1px solid rgba(255,255,255,0.05);
+}
+
+.panel-icon{
+
+    width:64px;
+    height:64px;
+
+    border-radius:18px;
+
+    background:
+    rgba(240,185,11,0.12);
+
+    color:#f0b90b;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+
+    margin-bottom:20px;
+}
+
+.panel-box h3{
+
+    font-size:22px;
+
+    margin-bottom:14px;
+}
+
+.panel-box p{
+
+    color:#b7bdc6;
+
+    line-height:1.8;
+
+    font-size:15px;
+}
+
+/* ================= TRANSLATE ================= */
+
+.translate-wrap{
+
+    position:fixed;
+
+    top:20px;
+    right:20px;
+
+    z-index:9999;
+}
+
 .translate-box{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  background:#111827;
-  padding:6px 10px;
-  border-radius:8px;
-  border:1px solid #1f2937;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+
+    background:#181a20;
+
+    border:
+    1px solid rgba(255,255,255,0.08);
+
+    padding:10px 14px;
+
+    border-radius:16px;
+
+    backdrop-filter:blur(10px);
 }
 
-/* ICON */
-.translate-box i{
-  color:#00ff9d;
-  font-size:14px;
-}
-
-/* DROPDOWN */
 .goog-te-combo{
-  background:transparent !important;
-  color:#00ff9d !important;
-  border:none !important;
-  font-size:13px;
-  outline:none;
-  cursor:pointer;
+
+    background:transparent !important;
+
+    border:none !important;
+
+    color:#f0b90b !important;
+
+    outline:none;
+
+    font-size:13px;
+
+    cursor:pointer;
 }
 
-/* REMOVE GOOGLE BRANDING */
 .goog-logo-link,
 .goog-te-gadget span{
-  display:none !important;
+    display:none !important;
 }
 
 .goog-te-gadget{
-  color:transparent !important;
+    color:transparent !important;
 }
 
-/* HIDE TOP BAR */
 .goog-te-banner-frame.skiptranslate{
-  display:none !important;
+    display:none !important;
 }
 
 body{
-  top:0px !important;
+    top:0 !important;
 }
 
-/* SMOOTH HOVER */
-.translate-box:hover{
-  border-color:#00ff9d;
-  box-shadow:0 0 10px rgba(0,255,157,0.2);
+/* ================= MOBILE ================= */
+
+@media(max-width:768px){
+
+    .hero{
+        height:340px;
+        padding:20px;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .hero p{
+        font-size:15px;
+    }
+
+    .support-panel{
+        padding:24px;
+    }
+
 }
 
 </style>
@@ -141,70 +458,194 @@ body{
 
 <body>
 
-<!-- HERO -->
-<div class="hero">
-  <h1>Contact Our Team</h1>
+<!-- TRANSLATE -->
+
+<div class="translate-wrap">
+
+    <div class="translate-box">
+
+        🌐
+
+        <div id="google_translate_element"></div>
+
+    </div>
+
 </div>
+
+<!-- HERO -->
+
+<div class="hero">
+
+    <div class="hero-content">
+
+        <h1>
+            Premium Global Support
+        </h1>
+
+        <p>
+            Experience elite financial assistance, secure communication,
+            and world-class investment guidance tailored for modern investors.
+        </p>
+
+    </div>
+
+</div>
+
+<!-- SECTION -->
 
 <div class="section">
 
-<!-- IMAGE 1 -->
-<div class="card">
-  <img src="https://images.unsplash.com/photo-1556740749-887f6717d7e4?auto=format&fit=crop&w=1200&q=80">
-  <div class="content">
-    <h2>Professional Financial Guidance</h2>
-    <p>
-    Our expert advisors are dedicated to providing strategic financial guidance tailored to your investment goals. 
-    Whether you're exploring cryptocurrency, global markets, or long-term asset growth, our team ensures you receive 
-    precise, data-driven insights to maximize your returns and minimize risk exposure.
-    </p>
-  </div>
+    <div class="grid">
+
+        <!-- CARD 1 -->
+
+        <div class="card">
+
+            <div class="card-image">
+
+                <img src="https://images.unsplash.com/photo-1579621970795-87facc2f976d?auto=format&fit=crop&w=1400&q=80">
+
+            </div>
+
+            <div class="content">
+
+                <div class="badge">
+                    📊 Financial Experts
+                </div>
+
+                <h2>
+                    Elite Investment Advisory
+                </h2>
+
+                <p>
+                    Gain access to premium financial intelligence,
+                    advanced market strategies, and expert portfolio
+                    management designed for long-term profitability.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- CARD 2 -->
+
+        <div class="card">
+
+            <div class="card-image">
+
+                <img src="https://images.unsplash.com/photo-1556155092-490a1ba16284?auto=format&fit=crop&w=1400&q=80">
+
+            </div>
+
+            <div class="content">
+
+                <div class="badge">
+                    🔐 Secure Communication
+                </div>
+
+                <h2>
+                    Encrypted Client Protection
+                </h2>
+
+                <p>
+                    Your financial data and communications remain fully
+                    protected with enterprise-grade security systems
+                    and encrypted infrastructure.
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- CARD 3 -->
+
+        <div class="card">
+
+            <div class="card-image">
+
+                <img src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1400&q=80">
+
+            </div>
+
+            <div class="content">
+
+                <div class="badge">
+                    🌍 Global Access
+                </div>
+
+                <h2>
+                    International Support Network
+                </h2>
+
+                <p>
+                    Connect with our worldwide support team for rapid
+                    assistance, multilingual guidance, and seamless
+                    financial operations across regions.
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- SUPPORT PANEL -->
+
+    <div class="support-panel">
+
+        <div class="panel-box">
+
+            <div class="panel-icon">
+                💬
+            </div>
+
+            <h3>
+                24/7 Live Assistance
+            </h3>
+
+            <p>
+                Our dedicated support specialists are available around
+                the clock to provide immediate assistance whenever needed.
+            </p>
+
+            <button class="btn" onclick="openLiveChat()">
+
+                Start Live Support →
+
+            </button>
+
+        </div>
+
+        <div class="panel-box">
+
+            <div class="panel-icon">
+                📍
+            </div>
+
+            <h3>
+                Global Headquarters
+            </h3>
+
+            <p>
+                London Financial District, United Kingdom.
+                Delivering world-class digital investment solutions
+                with trusted global infrastructure.
+            </p>
+
+            <a href="openLocation.html" class="btn">
+
+                Open Office Page →
+
+            </a>
+
+        </div>
+
+    </div>
+
 </div>
 
-<!-- IMAGE 2 -->
-<div class="card">
-  <img src="https://images.unsplash.com/photo-1551434678-e076c223a692?auto=format&fit=crop&w=1200&q=80">
-  <div class="content">
-    <h2>Secure Communication Channels</h2>
-    <p>
-    We prioritize your privacy and security with encrypted communication systems that protect your personal and 
-    financial data. Every interaction with our platform is safeguarded by advanced security infrastructure to ensure 
-    complete confidentiality and trust.
-    </p>
-  </div>
-</div>
+<!-- SMARTSUPP -->
 
-<!-- IMAGE 3 -->
-<div class="card">
-  <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=1200&q=80">
-  <div class="content">
-    <h2>Global Support Network</h2>
-    <p>
-    Our international support team operates across multiple regions, ensuring that assistance is always available 
-    regardless of your location. We are committed to delivering timely responses and professional support tailored 
-    to your needs.
-    </p>
-  </div>
-</div>
-
-<!-- IMAGE 4 -->
-<div class="card">
-  <img src="https://images.unsplash.com/photo-1587614382346-4ec70e388b28?auto=format&fit=crop&w=1200&q=80">
-  <div class="content">
-    <h2>24/7 Live Support</h2>
-    <p>
-    Contact us through our live support for instant response anytime. Our team is always ready to assist you with 
-    account inquiries, investment guidance, and technical support.
-    </p>
-
-    <!-- 🔥 WORKING BUTTON -->
-    <button class="btn" onclick="openLiveChat()">Start Live Support</button>
-  </div>
-</div>
-
-</div>
-
-<!-- ✅ SMARTSUPP (PUT BEFORE </body>) -->
 <script>
 var _smartsupp = _smartsupp || {};
 _smartsupp.key = "bffcb95bd0ca9d6e2dfb08df93f29c4afc203347";
@@ -221,21 +662,32 @@ window.smartsupp||(function(d) {
 })(document);
 </script>
 
-<!-- ✅ OPEN CHAT FUNCTION -->
+<!-- OPEN CHAT -->
+
 <script>
 function openLiveChat() {
-  if (window.smartsupp) {
-    smartsupp('chat:open');
-  }
+
+    if(window.smartsupp){
+
+        smartsupp('chat:open');
+
+    }
+
 }
 </script>
 
-  <script>
+<!-- GOOGLE TRANSLATE -->
+
+<script>
 function googleTranslateElementInit() {
-  new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    autoDisplay: false
-  }, 'google_translate_element');
+
+    new google.translate.TranslateElement({
+
+        pageLanguage:'en',
+        autoDisplay:false
+
+    }, 'google_translate_element');
+
 }
 </script>
 
