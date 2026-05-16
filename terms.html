@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Terms & Conditions - StargicInvestment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Inter',sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#07090d;
+    color:#fff;
+    overflow-x:hidden;
+    line-height:1.7;
+}
+
+/* ===== BACKGROUND ===== */
+
+.bg-glow{
+    position:fixed;
+    border-radius:50%;
+    filter:blur(100px);
+    z-index:-1;
+}
+
+.bg1{
+    width:500px;
+    height:500px;
+    background:rgba(240,185,11,0.10);
+    top:-200px;
+    right:-150px;
+}
+
+.bg2{
+    width:400px;
+    height:400px;
+    background:rgba(255,215,100,0.07);
+    bottom:-150px;
+    left:-100px;
+}
+
+/* ===== HERO ===== */
+
+.hero{
+    padding:120px 20px 90px;
+    text-align:center;
+    background:
+    linear-gradient(
+        135deg,
+        #07090d,
+        #10141c,
+        #151b24
+    );
+    border-bottom:1px solid rgba(255,255,255,0.06);
+    position:relative;
+    overflow:hidden;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(
+        circle at top right,
+        rgba(240,185,11,0.12),
+        transparent 40%
+    );
+}
+
+.hero-content{
+    max-width:950px;
+    margin:auto;
+    position:relative;
+    z-index:2;
+}
+
+.hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    background:rgba(240,185,11,0.10);
+    border:1px solid rgba(240,185,11,0.15);
+    color:#f0b90b;
+    padding:12px 22px;
+    border-radius:50px;
+    font-size:13px;
+    font-weight:700;
+    margin-bottom:28px;
+    backdrop-filter:blur(10px);
+}
+
+.hero h1{
+    font-size:68px;
+    line-height:1.05;
+    margin-bottom:25px;
+    font-weight:800;
+    letter-spacing:-2px;
+
+    word-break:break-word;
+}
+
+.hero p{
+    color:#b7bdc6;
+    font-size:18px;
+    line-height:2;
+    max-width:760px;
+    margin:auto;
+}
+
+/* ===== CONTAINER ===== */
+
+.container{
+    max-width:1250px;
+    margin:auto;
+    padding:80px 20px;
+}
+
+/* ===== GRID ===== */
+
+.grid{
+    display:grid;
+    grid-template-columns:300px 1fr;
+    gap:30px;
+    align-items:start;
+}
+
+/* ===== SIDEBAR ===== */
+
+.sidebar{
+    position:sticky;
+    top:25px;
+    background:rgba(17,22,31,0.85);
+    backdrop-filter:blur(16px);
+    border-radius:30px;
+    padding:28px;
+    border:1px solid rgba(255,255,255,0.05);
+    box-shadow:
+    0 15px 50px rgba(0,0,0,0.4);
+}
+
+.sidebar h3{
+    font-size:22px;
+    margin-bottom:24px;
+}
+
+.sidebar a{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    color:#cfd5de;
+    padding:15px 16px;
+    border-radius:16px;
+    margin-bottom:10px;
+    transition:0.3s;
+    font-size:14px;
+    font-weight:500;
+}
+
+.sidebar a:hover{
+    background:rgba(240,185,11,0.08);
+    color:#f0b90b;
+    transform:translateX(4px);
+}
+
+/* ===== CONTENT ===== */
+
+.content{
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+}
+
+/* ===== CARD ===== */
+
+.card{
+    background:rgba(17,22,31,0.92);
+    backdrop-filter:blur(16px);
+
+    border-radius:34px;
+    padding:42px;
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    box-shadow:
+    0 18px 55px rgba(0,0,0,0.35);
+
+    overflow:hidden;
+    position:relative;
+}
+
+.card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:1px;
+
+    background:
+    linear-gradient(
+        90deg,
+        transparent,
+        rgba(240,185,11,0.4),
+        transparent
+    );
+}
+
+.card-header{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    margin-bottom:24px;
+    flex-wrap:wrap;
+}
+
+.card-icon{
+    width:70px;
+    height:70px;
+    min-width:70px;
+
+    border-radius:22px;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(240,185,11,0.16),
+        rgba(255,215,100,0.05)
+    );
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+
+    color:#f0b90b;
+}
+
+.card-header h2{
+    font-size:34px;
+    font-weight:800;
+    line-height:1.3;
+
+    word-break:break-word;
+}
+
+.card p{
+    color:#b7bdc6;
+    font-size:15px;
+    line-height:2;
+    margin-bottom:20px;
+
+    word-break:break-word;
+}
+
+/* ===== FEATURES ===== */
+
+.feature-list{
+    display:grid;
+    gap:18px;
+    margin-top:25px;
+}
+
+.feature{
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+
+    background:#1a212d;
+
+    border-radius:24px;
+
+    padding:22px;
+
+    border:1px solid rgba(255,255,255,0.04);
+
+    transition:0.3s;
+}
+
+.feature:hover{
+    transform:translateY(-4px);
+    border-color:rgba(240,185,11,0.16);
+}
+
+.feature-check{
+    width:42px;
+    height:42px;
+    min-width:42px;
+
+    border-radius:14px;
+
+    background:rgba(240,185,11,0.12);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:#f0b90b;
+    font-weight:800;
+}
+
+.feature span{
+    color:#d6dce5;
+    font-size:14px;
+    line-height:1.9;
+
+    word-break:break-word;
+}
+
+/* ===== STATS ===== */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:22px;
+}
+
+.stat{
+    background:
+    linear-gradient(
+        145deg,
+        #1a212d,
+        #121821
+    );
+
+    border-radius:28px;
+    padding:35px 25px;
+    text-align:center;
+
+    border:1px solid rgba(255,255,255,0.05);
+
+    box-shadow:
+    0 10px 30px rgba(0,0,0,0.25);
+}
+
+.stat h3{
+    font-size:42px;
+    color:#f0b90b;
+    margin-bottom:10px;
+
+    word-break:break-word;
+}
+
+.stat p{
+    margin:0;
+    color:#b7bdc6;
+}
+
+/* ===== CONTACT ===== */
+
+.contact-box{
+    background:
+    linear-gradient(
+        135deg,
+        #f0b90b,
+        #ffd54f
+    );
+
+    border-radius:36px;
+
+    padding:55px;
+
+    color:#111;
+
+    box-shadow:
+    0 25px 60px rgba(240,185,11,0.25);
+}
+
+.contact-box h2{
+    font-size:42px;
+    margin-bottom:20px;
+    font-weight:800;
+
+    word-break:break-word;
+}
+
+.contact-box p{
+    color:#111;
+    line-height:2;
+    margin-bottom:30px;
+}
+
+.contact-btn{
+    display:inline-flex;
+    align-items:center;
+    gap:14px;
+
+    background:#111;
+    color:#f0b90b;
+
+    text-decoration:none;
+
+    padding:16px 28px;
+
+    border-radius:18px;
+
+    font-weight:700;
+
+    transition:0.3s;
+}
+
+.contact-btn:hover{
+    transform:translateY(-4px);
+}
+
+/* ===== FOOTER ===== */
+
+.footer{
+    text-align:center;
+    padding:40px 20px;
+    color:#7f8792;
+    border-top:1px solid rgba(255,255,255,0.05);
+    margin-top:70px;
+    font-size:14px;
+}
+
+/* ===== MOBILE ===== */
+
+@media(max-width:1000px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .sidebar{
+        position:relative;
+        top:0;
+    }
+
+}
+
+@media(max-width:768px){
+
+    .hero{
+        padding:100px 18px 70px;
+    }
+
+    .hero h1{
+        font-size:42px;
+        letter-spacing:-1px;
+    }
+
+    .hero p{
+        font-size:15px;
+        line-height:1.9;
+    }
+
+    .card{
+        padding:30px 22px;
+        border-radius:28px;
+    }
+
+    .card-header h2{
+        font-size:28px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .contact-box{
+        padding:35px 24px;
+        border-radius:28px;
+    }
+
+    .contact-box h2{
+        font-size:30px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="bg-glow bg1"></div>
+<div class="bg-glow bg2"></div>
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="hero-badge">
+            ⚖️ Legal Transparency & User Protection
+        </div>
+
+        <h1>
+            Terms & Conditions
+        </h1>
+
+        <p>
+            These Terms & Conditions govern your access to and use of
+            StargicInvestment services, digital infrastructure, financial
+            resources, and platform features.
+        </p>
+
+    </div>
+
+</section>
+
+<div class="container">
+
+    <div class="grid">
+
+        <!-- SIDEBAR -->
+
+        <div class="sidebar">
+
+            <h3>Quick Navigation</h3>
+
+            <a href="#usage">📘 Platform Usage</a>
+            <a href="#security">🔒 Security & Privacy</a>
+            <a href="#responsibility">⚠️ User Responsibilities</a>
+            <a href="#transactions">💳 Transactions</a>
+            <a href="#compliance">🌍 Compliance</a>
+            <a href="#support">📞 Support</a>
+
+        </div>
+
+        <!-- CONTENT -->
+
+        <div class="content">
+
+            <!-- CARD -->
+
+            <div class="card" id="usage">
+
+                <div class="card-header">
+
+                    <div class="card-icon">📘</div>
+
+                    <h2>Platform Usage</h2>
+
+                </div>
+
+                <p>
+                    StargicInvestment provides secure financial infrastructure,
+                    digital investment tools, market accessibility systems,
+                    and customer support services for global users.
+                </p>
+
+                <div class="feature-list">
+
+                    <div class="feature">
+                        <div class="feature-check">✓</div>
+                        <span>
+                            Users must provide accurate account information.
+                        </span>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-check">✓</div>
+                        <span>
+                            Fraudulent activities and unauthorized access are prohibited.
+                        </span>
+                    </div>
+
+                    <div class="feature">
+                        <div class="feature-check">✓</div>
+                        <span>
+                            Users are responsible for account security and credentials.
+                        </span>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- SECURITY -->
+
+            <div class="card" id="security">
+
+                <div class="card-header">
+
+                    <div class="card-icon">🔒</div>
+
+                    <h2>Security & Privacy</h2>
+
+                </div>
+
+                <p>
+                    Our infrastructure uses advanced encryption technologies,
+                    continuous monitoring systems, and secure communication channels.
+                </p>
+
+            </div>
+
+            <!-- STATS -->
+
+            <div class="stats">
+
+                <div class="stat">
+                    <h3>256-Bit</h3>
+                    <p>SSL Security Protection</p>
+                </div>
+
+                <div class="stat">
+                    <h3>24/7</h3>
+                    <p>Infrastructure Monitoring</p>
+                </div>
+
+                <div class="stat">
+                    <h3>Global</h3>
+                    <p>Digital Market Accessibility</p>
+                </div>
+
+            </div>
+
+            <!-- RESPONSIBILITY -->
+
+            <div class="card" id="responsibility">
+
+                <div class="card-header">
+
+                    <div class="card-icon">⚠️</div>
+
+                    <h2>User Responsibilities</h2>
+
+                </div>
+
+                <p>
+                    Users must comply with applicable digital and financial regulations.
+                </p>
+
+            </div>
+
+            <!-- TRANSACTIONS -->
+
+            <div class="card" id="transactions">
+
+                <div class="card-header">
+
+                    <div class="card-icon">💳</div>
+
+                    <h2>Transactions & Services</h2>
+
+                </div>
+
+                <p>
+                    Transaction processing times may vary depending on network activity,
+                    verification procedures, and infrastructure maintenance.
+                </p>
+
+            </div>
+
+            <!-- COMPLIANCE -->
+
+            <div class="card" id="compliance">
+
+                <div class="card-header">
+
+                    <div class="card-icon">🌍</div>
+
+                    <h2>International Compliance</h2>
+
+                </div>
+
+                <p>
+                    Continued usage of the platform indicates acceptance
+                    of these Terms & Conditions and related policies.
+                </p>
+
+            </div>
+
+            <!-- CONTACT -->
+
+            <div class="contact-box" id="support">
+
+                <h2>
+                    Need Assistance?
+                </h2>
+
+                <p>
+                    Contact our support team for questions related to
+                    platform policies, legal information, or account assistance.
+                </p>
+
+                <a href="contact.html" class="contact-btn">
+                    Contact Support →
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<div class="footer">
+
+    © 2026 StargicInvestment. All Rights Reserved.
+
+</div>
+
+</body>
+  </html>
