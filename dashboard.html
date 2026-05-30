@@ -598,8 +598,8 @@ onAuthStateChanged(auth,async(user)=>{
   startMining(user);
 
   const userRef =
-    doc(db,"users")
-
+  doc(db, "users", user.uid);
+  
   /* REF LINK */
 
   refInput.value =
