@@ -24997,16 +24997,46 @@ nr599erV15RyP8ZW0S6Zf9oCA0rOMYn7yNfvPi61lyV0Kfy7ncdx/R+fISM7cycV+buBZQYcxj1k
   </div>
 </div>
 
-<!-- LIVE TICKER -->
-<div class="ticker" id="ticker">
-  <div class="ticker-inner">
-    <span class="ticker-label">Live Markets</span>
-    <div class="ticker-coin"><span class="tsym">BTC</span><span class="tprice" id="p-btc">$64,230.50</span><span class="up" id="c-btc">+2.40%</span></div>
-    <div class="ticker-coin"><span class="tsym">ETH</span><span class="tprice" id="p-eth">$3,450.20</span><span class="up" id="c-eth">+1.80%</span></div>
-    <div class="ticker-coin"><span class="tsym">BNB</span><span class="tprice" id="p-bnb">$580.45</span><span class="dn" id="c-bnb">-0.50%</span></div>
-    <div class="ticker-coin"><span class="tsym">SOL</span><span class="tprice" id="p-sol">$145.20</span><span class="up" id="c-sol">+5.20%</span></div>
-  </div>
+<div style="
+width:100%;
+background:#0f172a;
+border-top:1px solid #1e293b;
+border-bottom:1px solid #1e293b;
+overflow:hidden;
+padding:14px 0;
+white-space:nowrap;
+position:relative;
+">
+
+<div id="cryptoTicker" style="
+display:inline-flex;
+align-items:center;
+gap:50px;
+color:white;
+font-size:14px;
+font-weight:600;
+padding-left:100%;
+animation:scrollTicker 35s linear infinite;
+">
+
+Loading crypto prices...
+
 </div>
+
+</div>
+
+<style>
+
+@keyframes scrollTicker{
+0%{
+transform:translateX(0);
+}
+100%{
+transform:translateX(-100%);
+}
+}
+
+</style>
 
 <!-- HOW IT WORKS -->
 <section class="how" id="how">
@@ -25136,6 +25166,85 @@ slides[currentSlide].style.opacity = "1";
 }
 
 setInterval(showNextSlide, 6000);
+
+  </script>
+
+  <script>
+
+async function updateCryptoTicker(){
+
+try{
+
+const response = await fetch(
+'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,binancecoin,ripple,dogecoin,cardano,tron,avalanche-2,chainlink&vs_currencies=usd&include_24hr_change=true'
+);
+
+const data = await response.json();
+
+const coins = [
+['BTC', data.bitcoin],
+['ETH', data.ethereum],
+['SOL', data.solana],
+['BNB', data.binancecoin],
+['XRP', data.ripple],
+['DOGE', data.dogecoin],
+['ADA', data.cardano],
+['TRX', data.tron],
+['AVAX', data['avalanche-2']],
+['LINK', data.chainlink]
+];
+
+let html = '';
+
+coins.forEach(([symbol, coin])=>{
+
+const price = coin.usd.toLocaleString();
+
+const change = coin.usd_24h_change
+? coin.usd_24h_change.toFixed(2)
+: 0;
+
+const color =
+change >= 0
+? '#22c55e'
+: '#ef4444';
+
+html += `
+<div style="display:flex;align-items:center;gap:8px;">
+<span style="color:#facc15;font-weight:700;">
+${symbol}
+</span>
+
+<span>
+$${price}
+</span>
+
+<span style="color:${color};font-weight:700;">
+${change >= 0 ? '▲' : '▼'}
+${Math.abs(change)}%
+</span>
+</div>
+`;
+
+});
+
+document.getElementById('cryptoTicker').innerHTML =
+html + html + html;
+
+}catch(error){
+
+document.getElementById('cryptoTicker').innerHTML =
+'Unable to load crypto prices';
+
+console.error(error);
+
+}
+
+}
+
+updateCryptoTicker();
+
+setInterval(updateCryptoTicker,30000);
 
   </script>
 </body>
