@@ -494,93 +494,71 @@ setInterval(loadPrices,30000);
 async function runMining(userRef){
 
   const snap = await getDoc(userRef);
-
   if(!snap.exists()) return;
 
   const data = snap.data();
 
-  let invested =
-    Number(data.invested)||0;
+  const invested = Number(data.invested || 0);
+  if(invested <= 0) return;
 
-  if(invested<=0) return;
+  const rate = Number(data.rate || 0);
+  const now = Date.now();
 
-  if(!data.plan) return;
+  let lastUpdate = Number(data.lastUpdate || now);
+  let lockedProfit = Number(data.lockedProfit || 0);
+  let availableProfit = Number(data.availableProfit || 0);
+  let unlockDate = Number(data.unlockDate || 0);
 
-  const plan = plans[data.plan];
+  /* -----------------------------
+     1. CALCULATE PROFIT
+  ------------------------------*/
 
-  if(!plan) return;
+  const hours = (now - lastUpdate) / (1000 * 60 * 60);
 
-  let now = Date.now();
+  const earned = invested * rate * (hours / 24);
 
-  let last =
-    Number(data.lastUpdate)||now;
+  if(isFinite(earned) && earned > 0){
 
-  let lockedProfit =
-    Number(data.lockedProfit)||0;
+    lockedProfit += earned;
 
-  let profitStart =
-    Number(data.profitStart)||now;
-
-  let days =
-    (now-profitStart)/(1000*60*60*24);
-
-  /* UNLOCK */
-
-  if(days>=7 && lockedProfit>0){
-
-    await updateDoc(userRef,{
-
-      availableProfit:
-        (Number(data.availableProfit)||0)
-        + lockedProfit,
-
-      lockedProfit:0,
-      profitStart:Date.now()
-
-    });
-
-    return;
+    lastUpdate = now;
   }
 
-  let hours =
-    (now-last)/(1000*60*60);
+  /* -----------------------------
+     2. UNLOCK EVERY 7 DAYS
+  ------------------------------*/
 
-  let earned =
-    invested*plan.rate*(hours/24);
+  if(now >= unlockDate && lockedProfit > 0){
 
-  if(!isFinite(earned)||earned<=0) return;
+    availableProfit += lockedProfit;
+    lockedProfit = 0;
 
-  await updateDoc(userRef,{
+    unlockDate = now + 7 * 24 * 60 * 60 * 1000;
+  }
 
-    lockedProfit:
-      (Number(data.lockedProfit)||0)
-      + earned,
+  /* -----------------------------
+     3. SAVE BACK TO FIRESTORE
+  ------------------------------*/
 
-    lastUpdate:now
-
+  await updateDoc(userRef, {
+    lockedProfit,
+    availableProfit,
+    lastUpdate,
+    unlockDate
   });
-}
+  }
 
 /* START MINING */
-
 function startMining(user){
 
-  if(miningRunning) return;
-
-  miningRunning = true;
-
-  const userRef =
-    doc(db,"users",user.uid);
+  const userRef = doc(db,"users",user.uid);
 
   runMining(userRef);
 
+  // run every 2 minutes (safe + low Firebase cost)
   setInterval(()=>{
     runMining(userRef);
-  },60000);
-
-  setTimeout(()=>{
-    runMining(userRef);
-  },2000);
+  }, 120000);
 }
 
 /* AUTH */
