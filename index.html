@@ -107,6 +107,30 @@ transform:translateX(0);
 transform:translateX(-100%);
 }
 }
+  #lang-wrapper {
+  position: fixed; /* stays on screen */
+  top: 15px;
+  left: 15px;
+  z-index: 9999; /* stays above everything */
+  background: #ffffff;
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.lang-btn {
+  cursor: pointer;
+  margin: 3px;
+  padding: 6px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background: #fff;
+  display: inline-block;
+  font-size: 14px;
+}
+.lang-btn:hover {
+  background: #f0f0f0;
+  }
 </style>
 </head>
 <body>
@@ -24978,6 +25002,17 @@ nr599erV15RyP8ZW0S6Zf9oCA0rOMYn7yNfvPi61lyV0Kfy7ncdx/R+fISM7cycV+buBZQYcxj1k
   </div>
 </section>
 
+  <div id="lang-wrapper">
+  <span class="lang-btn" onclick="doGTranslate('en|en')">🇬🇧 EN</span>
+  <span class="lang-btn" onclick="doGTranslate('en|es')">🇪🇸 ES</span>
+  <span class="lang-btn" onclick="doGTranslate('en|it')">🇮🇹 IT</span>
+  <span class="lang-btn" onclick="doGTranslate('en|ro')">🇷🇴 RO</span>
+  <span class="lang-btn" onclick="doGTranslate('en|fr')">🇫🇷 FR</span>
+</div>
+
+<!-- Hidden Google Translate box -->
+<div id="google_translate_element" style="display:none"></div>
+
 <!-- FEATURES -->
 <div class="features" id="features">
   <div class="card">
@@ -25252,6 +25287,24 @@ window.smartsupp||(function(d) {
   s.parentNode.insertBefore(c,s);  
 })(document);  
   </script>
+
+  <script type="text/javascript">
+function googleTranslateElementInit() {
+  new google.translate.TranslateElement({
+    pageLanguage: 'en',
+    includedLanguages: 'en,es,it,ro,fr'
+  }, 'google_translate_element');
+}
+
+function doGTranslate(lang_pair) {
+  var select = document.querySelector('.goog-te-combo');
+  if(select) {
+    select.value = lang_pair.split('|')[1];
+    select.dispatchEvent(new Event('change'));
+  }
+}
+</script>
+<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   
 </body>
 </html>
