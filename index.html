@@ -106,31 +106,15 @@ transform:translateX(0);
 100%{
 transform:translateX(-100%);
 }
-}
-  #lang-wrapper {
-  position: fixed; /* stays on screen */
-  top: 15px;
-  left: 15px;
-  z-index: 9999; /* stays above everything */
-  background: #ffffff;
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-}
-
-.lang-btn {
-  cursor: pointer;
-  margin: 3px;
-  padding: 6px 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background: #fff;
-  display: inline-block;
-  font-size: 14px;
-}
-.lang-btn:hover {
-  background: #f0f0f0;
   }
+/* Clean language button */
+#clean-lang {
+  position: fixed; top: 20px; right: 20px; z-index: 99999;
+  background: #222; color: #fff; padding: 8px 12px; border-radius: 20px;
+  font-size: 14px; cursor: pointer; border: none;
+}
+#lang-list div { padding: 6px 10px; cursor: pointer; border-radius: 5px; }
+#lang-list div:hover { background: #f0f0f0; }
 </style>
 </head>
 <body>
@@ -25002,16 +24986,22 @@ nr599erV15RyP8ZW0S6Zf9oCA0rOMYn7yNfvPi61lyV0Kfy7ncdx/R+fISM7cycV+buBZQYcxj1k
   </div>
 </section>
 
-  <div id="lang-wrapper">
-  <span class="lang-btn" onclick="doGTranslate('en|en')">🇬🇧 EN</span>
-  <span class="lang-btn" onclick="doGTranslate('en|es')">🇪🇸 ES</span>
-  <span class="lang-btn" onclick="doGTranslate('en|it')">🇮🇹 IT</span>
-  <span class="lang-btn" onclick="doGTranslate('en|ro')">🇷🇴 RO</span>
-  <span class="lang-btn" onclick="doGTranslate('en|fr')">🇫🇷 FR</span>
-</div>
-
-<!-- Hidden Google Translate box -->
+  <!-- Hidden Google element -->
 <div id="google_translate_element" style="display:none"></div>
+
+<button id="clean-lang" onclick="toggleLangs()">🌐 Language</button>
+<div id="lang-list" style="display:none; position:fixed; top:55px; right:20px; background:#fff; border:1px solid #ddd; border-radius:8px; padding:10px; z-index:99999; max-height:300px; overflow-y:auto;">
+  <div onclick="doGTranslate('en|en')">🇬🇧 English</div>
+  <div onclick="doGTranslate('en|de')">🇩🇪 German</div>
+  <div onclick="doGTranslate('en|ro')">🇷🇴 Romanian</div>
+  <div onclick="doGTranslate('en|es')">🇪🇸 Spanish</div>
+  <div onclick="doGTranslate('en|fr')">🇫🇷 French</div>
+  <div onclick="doGTranslate('en|it')">🇮🇹 Italian</div>
+  <div onclick="doGTranslate('en|pt')">🇵🇹 Portuguese</div>
+  <div onclick="doGTranslate('en|ru')">🇷🇺 Russian</div>
+  <div onclick="doGTranslate('en|ar')">🇸🇦 Arabic</div>
+  <div onclick="doGTranslate('en|zh-CN')">🇨🇳 Chinese</div>
+</div>
 
 <!-- FEATURES -->
 <div class="features" id="features">
@@ -25288,23 +25278,54 @@ window.smartsupp||(function(d) {
 })(document);  
   </script>
 
-  <script type="text/javascript">
+  <script>
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
-    pageLanguage: 'en',
-    includedLanguages: 'en,es,it,ro,fr'
+    pageLanguage: 'en', // your site language
+    includedLanguages: 'en,de,ro,es,fr,it,pt,ru,ar,zh-CN', // add more here
+    autoDisplay: false
   }, 'google_translate_element');
 }
 
-function doGTranslate(lang_pair) {
+// AUTO DETECT + TRANSLATE ON LOAD
+window.addEventListener('load', function() {
+  var userLang = navigator.language || navigator.userLanguage; // "de-DE", "ro-RO"
+  var langCode = userLang.toLowerCase(); // "de-de", "ro-ro"
+
+  var supported = ['en','de','ro','es','fr','it','pt','ru','ar','zh-cn'];
+
+  // Check full code first "de-de", then just "de"
+  var shortCode = langCode.split('-')[0];
+
+  setTimeout(function(){
+    if(supported.includes(langCode)){
+      doGTranslate('en|' + langCode);
+    } else if(supported.includes(shortCode)){
+      doGTranslate('en|' + shortCode);
+    }
+    // if English or not supported, do nothing
+  }, 1500);
+});
+
+function doGTranslate(lang_pair){
+  var lang = lang_pair.split('|')[1];
   var select = document.querySelector('.goog-te-combo');
-  if(select) {
-    select.value = lang_pair.split('|')[1];
+  if(select){
+    select.value = lang;
     select.dispatchEvent(new Event('change'));
   }
+  document.getElementById('lang-list').style.display = 'none';
+}
+
+function toggleLangs(){
+  var list = document.getElementById('lang-list');
+  list.style.display = list.style.display === 'block'? 'none' : 'block';
 }
 </script>
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+<!-- Hide Google banner -->
+<style>.goog-te-banner-frame,.goog-te-gadget-icon, #goog-gt-tt,.goog-te-balloon-frame {display:none!important;} body {top:0!important;}</style>
+<script src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
   
 </body>
 </html>
