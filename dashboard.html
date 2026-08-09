@@ -489,77 +489,236 @@ async function loadPrices(){
 loadPrices();
 setInterval(loadPrices,30000);
 
-/* MINING */
+  /* ================================
+   CONTINUOUS 7-DAY PROFIT ENGINE
+   ================================ */
 
-async function runMining(userRef){
+const DAY =
+  24 * 60 * 60 * 1000;
 
-  const snap = await getDoc(userRef);
-  if(!snap.exists()) return;
+const CYCLE =
+  7 * DAY;
 
-  const data = snap.data();
+let miningTimer = null;
 
-  const invested = Number(data.invested || 0);
-  if(invested <= 0) return;
 
-  const rate = Number(data.rate || 0);
-  const now = Date.now();
+/*
+  Calculate and update the user's
+  simulated investment profit.
+*/
 
-  let lastUpdate = Number(data.lastUpdate || now);
-  let lockedProfit = Number(data.lockedProfit || 0);
-  let availableProfit = Number(data.availableProfit || 0);
-  let unlockDate = Number(data.unlockDate || 0);
+async function runMining(userRef) {
 
-  /* -----------------------------
-     1. CALCULATE PROFIT
-  ------------------------------*/
+  try {
 
-  const hours = (now - lastUpdate) / (1000 * 60 * 60);
+    const snap =
+      await getDoc(userRef);
 
-  const earned = invested * rate * (hours / 24);
+    if (!snap.exists()) return;
 
-  if(isFinite(earned) && earned > 0){
+    const data =
+      snap.data();
 
-    lockedProfit += earned;
+    const invested =
+      Number(data.invested || 0);
 
-    lastUpdate = now;
+    const rate =
+      Number(data.rate || 0);
+
+    if (invested <= 0 || rate <= 0) {
+      return;
+    }
+
+    const now =
+      Date.now();
+
+    let cycleStart =
+      Number(
+        data.cycleStart ||
+        data.profitStart ||
+        data.startTime ||
+        0
+      );
+
+    /*
+      First investment.
+    */
+
+    if (!cycleStart) {
+
+      cycleStart = now;
+
+      await updateDoc(userRef, {
+
+        cycleStart: cycleStart,
+
+        profitStart: cycleStart,
+
+        lastUpdate: now,
+
+        lockedProfit: 0,
+
+        availableProfit:
+          Number(data.availableProfit || 0)
+
+      });
+
+      return;
+    }
+
+
+    /*
+      Make sure cycleStart is not
+      accidentally in the future.
+    */
+
+    if (cycleStart > now) {
+      cycleStart = now;
+    }
+
+
+    let availableProfit =
+      Number(data.availableProfit || 0);
+
+    /*
+      Calculate how much time has passed
+      since the current 7-day cycle began.
+    */
+
+    const elapsed =
+      now - cycleStart;
+
+    const completedCycles =
+      Math.floor(elapsed / CYCLE);
+
+
+    /*
+      ============================
+      COMPLETED 7-DAY CYCLES
+      ============================
+    */
+
+    if (completedCycles > 0) {
+
+      /*
+        Profit for one complete cycle:
+
+        principal × daily rate × 7
+      */
+
+      const cycleProfit =
+        invested * rate * 7;
+
+      const completedProfit =
+        cycleProfit * completedCycles;
+
+      availableProfit +=
+        completedProfit;
+
+      /*
+        Move the cycle forward exactly
+        7 days at a time.
+
+        We DON'T use "now + 7 days"
+        because that could lose elapsed time.
+      */
+
+      cycleStart +=
+        completedCycles * CYCLE;
+    }
+
+
+    /*
+      ============================
+      CURRENT LOCKED PROFIT
+      ============================
+    */
+
+    const currentElapsed =
+      Math.max(0, now - cycleStart);
+
+    const currentDays =
+      currentElapsed / DAY;
+
+    const lockedProfit =
+      invested *
+      rate *
+      currentDays;
+
+
+    /*
+      ============================
+      SAVE
+      ============================
+    */
+
+    await updateDoc(userRef, {
+
+      availableProfit:
+        Number(
+          availableProfit.toFixed(8)
+        ),
+
+      lockedProfit:
+        Number(
+          lockedProfit.toFixed(8)
+        ),
+
+      cycleStart:
+        cycleStart,
+
+      lastUpdate:
+        now
+
+    });
+
+  } catch (error) {
+
+    console.error(
+      "Mining calculation error:",
+      error
+    );
+
   }
+}
 
-  /* -----------------------------
-     2. UNLOCK EVERY 7 DAYS
-  ------------------------------*/
 
-  if(now >= unlockDate && lockedProfit > 0){
+/*
+  START MINING
+*/
 
-    availableProfit += lockedProfit;
-    lockedProfit = 0;
+function startMining(user) {
 
-    unlockDate = now + 7 * 24 * 60 * 60 * 1000;
-  }
+  const userRef =
+    doc(db, "users", user.uid);
 
-  /* -----------------------------
-     3. SAVE BACK TO FIRESTORE
-  ------------------------------*/
-
-  await updateDoc(userRef, {
-    lockedProfit,
-    availableProfit,
-    lastUpdate,
-    unlockDate
-  });
-  }
-
-/* START MINING */
-function startMining(user){
-
-  const userRef = doc(db,"users",user.uid);
+  /*
+    Calculate immediately.
+  */
 
   runMining(userRef);
 
-  // run every 2 minutes (safe + low Firebase cost)
-  setInterval(()=>{
-    runMining(userRef);
-  }, 120000);
+  /*
+    Check periodically.
+
+    The interval does NOT determine
+    how much profit is earned.
+
+    Timestamps determine the profit.
+  */
+
+  if (miningTimer) {
+    clearInterval(miningTimer);
+  }
+
+  miningTimer =
+    setInterval(() => {
+
+      runMining(userRef);
+
+    }, 120000);
 }
+
 
 /* AUTH */
 
