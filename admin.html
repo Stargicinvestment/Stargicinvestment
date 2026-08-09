@@ -177,52 +177,168 @@ loadWithdrawals();
 
   loadUsers();
 });
-
 async function addBalance(userId, amount) {
 
   const userRef = doc(db, "users", userId);
   const snap = await getDoc(userRef);
 
-  if(!snap.exists()) {
+  if (!snap.exists()) {
     alert("User not found");
     return;
   }
 
   const data = snap.data();
 
-  let newTotal = (Number(data.invested) || 0) + amount;
+  const oldInvested = Number(data.invested || 0);
+  const oldRate = Number(data.rate || 0);
 
-  let newPlan = "Basic";
+  const now = Date.now();
+  const DAY = 24 * 60 * 60 * 1000;
+  const CYCLE = 7 * DAY;
 
-  if(newTotal >= 100000){
-    newPlan = "VIP";
-  }else if(newTotal >= 50000){
-    newPlan = "Premium";
-  }else if(newTotal >= 10000){
-    newPlan = "Elite";
-  }else if(newTotal >= 2000){
-    newPlan = "Silver";
+  /*
+    Determine the existing plan/rate.
+
+    We DO NOT automatically change the plan just
+    because the invested amount increases.
+  */
+
+  let plan = data.plan || "Basic";
+  let rate = oldRate;
+
+  const planRates = {
+    Basic: 0.02,
+    Silver: 0.025,
+    Elite: 0.03,
+    Premium: 0.035,
+    VIP: 0.04,
+
+    basic: 0.02,
+    silver: 0.025,
+    elite: 0.03,
+    premium: 0.035,
+    vip: 0.04
+  };
+
+  if (!rate || rate <= 0) {
+    rate = planRates[plan] || 0.02;
   }
 
-  await updateDoc(userRef,{
-    balance: (Number(data.balance) || 0) + amount,
-    invested: newTotal,
-    plan: newPlan,
+  /*
+    If there is already an investment,
+    calculate everything earned up to NOW
+    before changing the principal.
+  */
 
-    // 🔥 IMPORTANT: keep mining stable
-    lastUpdate: Date.now(),
-    profitStart: data.profitStart || Date.now(),
-    lockedProfit: Number(data.lockedProfit) || 0,
-    availableProfit: Number(data.availableProfit) || 0
+  let availableProfit =
+    Number(data.availableProfit || 0);
+
+  let lockedProfit =
+    Number(data.lockedProfit || 0);
+
+  let cycleStart =
+    Number(data.cycleStart || data.profitStart || 0);
+
+  if (oldInvested > 0 && cycleStart > 0) {
+
+    const elapsed =
+      Math.max(0, now - cycleStart);
+
+    const completedCycles =
+      Math.floor(elapsed / CYCLE);
+
+    /*
+      Move every completed cycle into
+      available profit.
+    */
+
+    if (completedCycles > 0) {
+
+      const cycleProfit =
+        oldInvested * rate * 7;
+
+      availableProfit +=
+        cycleProfit * completedCycles;
+
+      cycleStart +=
+        completedCycles * CYCLE;
+
+      lockedProfit = 0;
+    }
+
+    /*
+      Calculate the current unfinished cycle.
+    */
+
+    const currentElapsed =
+      Math.max(0, now - cycleStart);
+
+    const currentDays =
+      currentElapsed / DAY;
+
+    lockedProfit =
+      oldInvested * rate * currentDays;
+  }
+
+  /*
+    NEW INVESTED TOTAL
+  */
+
+  const newInvested =
+    oldInvested + amount;
+
+  /*
+    Start a fresh cycle using the NEW total.
+
+    Any profit already earned before the top-up
+    is preserved in lockedProfit.
+  */
+
+  const newCycleStart = now;
+
+  await updateDoc(userRef, {
+
+    balance:
+      (Number(data.balance) || 0) + amount,
+
+    invested:
+      newInvested,
+
+    plan:
+      plan,
+
+    rate:
+      rate,
+
+    cycleStart:
+      newCycleStart,
+
+    profitStart:
+      newCycleStart,
+
+    lastUpdate:
+      now,
+
+    lockedProfit:
+      Number(lockedProfit.toFixed(8)),
+
+    availableProfit:
+      Number(availableProfit.toFixed(8))
+
   });
 
-  await addDoc(collection(db,"transactions"),{
-    userId,
+  await addDoc(collection(db, "transactions"), {
+
+    userId: userId,
+
     type: "deposit",
-    amount,
-    time: Date.now()
+
+    amount: amount,
+
+    time: now
+
   });
-}
+  }
 
 
 
