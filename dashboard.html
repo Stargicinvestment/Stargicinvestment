@@ -2,18 +2,17 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dashboard - Demo</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{
+  box-sizing:border-box;
   margin:0;
   padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
+  font-family:Poppins,sans-serif;
 }
 
 body{
@@ -23,12 +22,10 @@ body{
 }
 
 .container{
-  max-width:420px;
+  max-width:430px;
   margin:auto;
-  padding-bottom:30px;
+  padding-bottom:40px;
 }
-
-/* HEADER */
 
 .header{
   display:flex;
@@ -41,7 +38,6 @@ body{
   display:flex;
   align-items:center;
   gap:10px;
-  cursor:pointer;
 }
 
 .avatar{
@@ -52,40 +48,98 @@ body{
   border:2px solid #2d2cff;
 }
 
-.menu{
-  font-size:26px;
+.settings{
+  color:#fff;
+  text-decoration:none;
+  background:#2d2cff;
+  padding:8px 13px;
+  border-radius:8px;
+  font-size:13px;
 }
 
-/* TEXT */
-
-.small{
-  font-size:12px;
+.balance-label{
   color:#aaa;
+  font-size:13px;
 }
 
 .balance{
   font-size:36px;
   font-weight:700;
   color:#00ff9d;
-  margin-top:8px;
+  margin-top:4px;
 }
-
-.profit{
-  font-size:22px;
-  font-weight:700;
-  color:gold;
-}
-
-/* CARD */
 
 .card{
   background:#111827;
-  padding:16px;
   border-radius:16px;
+  padding:16px;
   margin-top:16px;
 }
 
-/* BUTTONS */
+.mining-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.small{
+  color:#aaa;
+  font-size:12px;
+}
+
+.plan{
+  color:#8da2ff;
+  font-size:18px;
+  font-weight:600;
+  margin-top:3px;
+}
+
+.status{
+  background:#123d2d;
+  color:#00ff9d;
+  padding:5px 9px;
+  border-radius:20px;
+  font-size:10px;
+  font-weight:600;
+}
+
+.capital{
+  color:#00ff9d;
+  font-size:25px;
+  font-weight:700;
+  margin-top:4px;
+}
+
+.rate{
+  color:#ffd700;
+  font-weight:600;
+}
+
+.profit{
+  color:#ffd700;
+  font-size:23px;
+  font-weight:700;
+}
+
+.progress{
+  height:8px;
+  background:#202738;
+  border-radius:20px;
+  margin-top:14px;
+  overflow:hidden;
+}
+
+.progress-bar{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,#2d2cff,#00ff9d);
+}
+
+.next{
+  color:#aaa;
+  font-size:11px;
+  margin-top:8px;
+}
 
 .actions{
   display:flex;
@@ -93,83 +147,52 @@ body{
 }
 
 button{
-  flex:1;
+  border:0;
   padding:12px;
-  border:none;
   border-radius:10px;
   font-weight:600;
   cursor:pointer;
 }
 
 .deposit{
+  flex:1;
   background:#2d2cff;
-  color:white;
+  color:#fff;
 }
 
 .withdraw{
-  background:#ff2d55;
-  color:white;
+  flex:1;
+  background:#ff3155;
+  color:#fff;
 }
-
-/* CRYPTO */
-
-.crypto{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
-}
-
-.coin{
-  background:#0b1030;
-  padding:12px;
-  border-radius:12px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-  font-size:14px;
-}
-
-.coin img{
-  width:24px;
-  height:24px;
-}
-
-/* INPUT */
 
 input{
   width:100%;
   padding:12px;
-  margin-top:10px;
-  border:none;
+  border:0;
   border-radius:10px;
+  margin-top:10px;
   outline:none;
 }
-
-/* TX */
 
 .tx{
   background:#0b1030;
   padding:12px;
-  border-radius:12px;
-  margin-top:10px;
+  border-radius:10px;
+  margin-top:9px;
 }
 
 .tx-top{
   display:flex;
   justify-content:space-between;
-  align-items:center;
 }
 
-.history-box{
-  max-height:250px;
-  overflow-y:auto;
+.demo{
+  color:#ffcc00;
+  font-size:11px;
+  margin-top:18px;
+  text-align:center;
 }
-  body, * {
-  -webkit-user-select: none; /* Chrome / Safari */
-  -ms-user-select: none;     /* IE/Edge */
-  user-select: none;         /* Standard */
-  }
-
 </style>
 </head>
 
@@ -177,11 +200,9 @@ input{
 
 <div class="container">
 
-  <!-- HEADER -->
   <div class="header">
 
-    <div class="brand" onclick="openUpload()">
-
+    <div class="brand">
       <img
         id="avatar"
         class="avatar"
@@ -189,141 +210,127 @@ input{
       >
 
       <div>
-  <b id="welcomeText">Welcome 👋</b>
+        <b id="welcome">Welcome 👋</b>
       </div>
-
     </div>
-<div class="menu">
-  <a href="settings.html"
-     style="
-       color:white;
-       text-decoration:none;
-       font-size:16px;
-       background:#2d2cff;
-       padding:8px 14px;
-       border-radius:8px;
-     ">
-     Settings
-  </a>
-</div>
+
+    <a class="settings" href="settings.html">
+      Settings
+    </a>
 
   </div>
 
-  <!-- BALANCE -->
-  <div>Account Balance</div>
+
+  <div class="balance-label">
+    Account Balance
+  </div>
 
   <div id="balance" class="balance">
     $0.00
   </div>
 
-  <!-- INVESTED -->
-  <div
-    id="capitalBox"
-    class="card"
-    style="display:none;"
-  >
 
-    <div>Capital Locked</div>
+  <!-- MINING -->
 
-    <div
-      id="invested"
-      style="
-      color:#00ff9d;
-      font-size:22px;
-      font-weight:700;
-      margin-top:8px;
-      "
-    >
-      $0.00
+  <div id="miningBox" class="card" style="display:none;">
+
+    <div class="mining-head">
+
+      <div>
+        <div class="small">
+          Current Mining Plan
+        </div>
+
+        <div id="plan" class="plan">
+          -
+        </div>
+      </div>
+
+      <div id="status" class="status">
+        MINING
+      </div>
+
+    </div>
+
+
+    <div style="margin-top:16px">
+
+      <div class="small">
+        Total Mining Capital
+      </div>
+
+      <div id="capital" class="capital">
+        $0.00
+      </div>
+
+    </div>
+
+
+    <div style="margin-top:12px">
+
+      <div class="small">
+        Current Rate
+      </div>
+
+      <div id="rate" class="rate">
+        0%
+      </div>
+
+    </div>
+
+
+    <div style="margin-top:12px">
+
+      <div class="small">
+        Simulated Profit
+      </div>
+
+      <div id="profit" class="profit">
+        $0.00
+      </div>
+
+    </div>
+
+
+    <div class="progress">
+      <div id="progressBar" class="progress-bar"></div>
+    </div>
+
+    <div id="next" class="next">
+      Mining active
     </div>
 
   </div>
 
-  <!-- PROFIT -->
-  <div
-    id="profitBox"
-    class="card"
-    style="display:none;"
-  >
-
-    <div>Profit</div>
-
-    <div
-      id="profit"
-      class="profit"
-    >
-      $0.00
-    </div>
-
-    <div
-      id="locked"
-      class="small"
-      style="margin-top:8px;"
-    >
-    </div>
-
-  </div>
-
-  <!-- CRYPTO -->
-  <div class="card crypto">
-
-    <div class="coin">
-      <img src="https://cryptologos.cc/logos/bitcoin-btc-logo.png">
-      <div>
-        <div>BTC</div>
-        <b id="btc">$0</b>
-      </div>
-    </div>
-
-    <div class="coin">
-      <img src="https://cryptologos.cc/logos/ethereum-eth-logo.png">
-      <div>
-        <div>ETH</div>
-        <b id="eth">$0</b>
-      </div>
-    </div>
-
-    <div class="coin">
-      <img src="https://cryptologos.cc/logos/tether-usdt-logo.png">
-      <div>
-        <div>USDT</div>
-        <b id="usdt">$0</b>
-      </div>
-    </div>
-
-    <div class="coin">
-      <img src="https://cryptologos.cc/logos/xrp-xrp-logo.png">
-      <div>
-        <div>XRP</div>
-        <b id="xrp">$0</b>
-      </div>
-    </div>
-
-  </div>
 
   <!-- ACTIONS -->
+
   <div class="card actions">
 
     <button
       class="deposit"
-      onclick="goDeposit()"
+      onclick="location.href='deposit.html'"
     >
       Deposit
     </button>
 
     <button
       class="withdraw"
-      onclick="goWithdraw()"
+      onclick="location.href='withdraw.html'"
     >
       Withdraw
     </button>
 
   </div>
 
-  <!-- REF -->
+
+  <!-- REFERRAL -->
+
   <div class="card">
 
-    <div>Referral Link</div>
+    <div>
+      Referral Link
+    </div>
 
     <input
       id="ref"
@@ -331,680 +338,566 @@ input{
     >
 
     <button
-      onclick="copyRef()"
       style="
-      margin-top:10px;
-      width:100%;
-      background:#2d2cff;
-      color:white;
+        width:100%;
+        margin-top:10px;
+        background:#2d2cff;
+        color:white;
       "
+      onclick="copyReferral()"
     >
       Copy Referral
     </button>
 
   </div>
 
+
   <!-- TRANSACTIONS -->
+
   <div class="card">
 
-    <h3>Transactions</h3>
+    <h3>
+      Transactions
+    </h3>
 
-    <div
-      id="history"
-      class="history-box"
-    ></div>
+    <div id="transactions"></div>
 
   </div>
 
-  <!-- WITHDRAWS -->
-  <div class="card">
 
-    <h3>Withdraw Requests</h3>
-
-    <div
-      id="withdrawHistory"
-      class="history-box"
-    ></div>
-
+  <div class="demo">
+    DEMO/SIMULATION MODE — values shown here are for testing only.
   </div>
 
 </div>
 
-<!-- FILE INPUT -->
-<input
-  type="file"
-  id="file"
-  hidden
->
 
 <script type="module">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import {
+  initializeApp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getAuth,
-  onAuthStateChanged,
-  signOut
+  onAuthStateChanged
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   getFirestore,
   doc,
-  getDoc,
-  updateDoc,
+  onSnapshot,
   collection,
   query,
   where,
-  onSnapshot
+  onSnapshot as listenCollection
 }
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-import {
-  getStorage,
-  ref,
-  uploadBytes,
-  getDownloadURL
-}
-from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
-
-/* FIREBASE */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-  authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+
+  apiKey:
+    "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+
+  authDomain:
+    "stargicinvestment.firebaseapp.com",
+
+  projectId:
+    "stargicinvestment",
+
+  storageBucket:
+    "stargicinvestment.appspot.com",
+
+  messagingSenderId:
+    "1053305294931",
+
+  appId:
+    "1:1053305294931:web:87cba3260a83030e56f6a6"
+
 };
 
-const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+const app =
+  initializeApp(firebaseConfig);
 
-/* ELEMENTS */
+const auth =
+  getAuth(app);
 
-const balanceEl = document.getElementById("balance");
-const investedEl = document.getElementById("invested");
-const capitalBox = document.getElementById("capitalBox");
+const db =
+  getFirestore(app);
 
-const profitBox = document.getElementById("profitBox");
-const profitEl = document.getElementById("profit");
-const lockedEl = document.getElementById("locked");
-
-const avatar = document.getElementById("avatar");
-const fileInput = document.getElementById("file");
-
-const historyEl = document.getElementById("history");
-const withdrawEl = document.getElementById("withdrawHistory");
-
-const refInput = document.getElementById("ref");
-
-let currentUser = null;
-let miningRunning = false;
-
-/* PLANS */
-
-const plans = {
-  Basic:{rate:0.02,duration:7},
-  Silver:{rate:0.025,duration:7},
-  Elite:{rate:0.03,duration:7},
-  Premium:{rate:0.035,duration:7},
-  VIP:{rate:0.04,duration:7}
-};
-
-/* LIVE COIN PRICES */
-
-async function loadPrices(){
-
-  try{
-
-    const r = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,tether,ripple&vs_currencies=usd"
-    );
-
-    const d = await r.json();
-
-    document.getElementById("btc").innerText =
-      "$"+d.bitcoin.usd.toLocaleString();
-
-    document.getElementById("eth").innerText =
-      "$"+d.ethereum.usd.toLocaleString();
-
-    document.getElementById("usdt").innerText =
-      "$"+d.tether.usd.toLocaleString();
-
-    document.getElementById("xrp").innerText =
-      "$"+d.ripple.usd.toLocaleString();
-
-  }catch(e){
-    console.log(e);
-  }
-}
-
-loadPrices();
-setInterval(loadPrices,30000);
-
-  /* ================================
-   CONTINUOUS 7-DAY PROFIT ENGINE
-   ================================ */
 
 const DAY =
   24 * 60 * 60 * 1000;
 
-const CYCLE =
-  7 * DAY;
 
-let miningTimer = null;
+/*
+  PLAN TABLE
+*/
+
+const PLANS = [
+
+  {
+    name:"Basic",
+    min:1,
+    max:1999.99,
+    rate:0.02
+  },
+
+  {
+    name:"Silver",
+    min:2000,
+    max:9999.99,
+    rate:0.025
+  },
+
+  {
+    name:"Elite",
+    min:10000,
+    max:49999.99,
+    rate:0.03
+  },
+
+  {
+    name:"Premium",
+    min:50000,
+    max:99999.99,
+    rate:0.035
+  },
+
+  {
+    name:"VIP",
+    min:100000,
+    max:1000000,
+    rate:0.04
+  }
+
+];
+
+
+function number(value){
+
+  const n = Number(value);
+
+  return Number.isFinite(n)
+    ? n
+    : 0;
+
+}
+
+
+function getPlan(capital){
+
+  return PLANS.find(
+    plan =>
+      capital >= plan.min &&
+      capital <= plan.max
+  ) || null;
+
+}
 
 
 /*
-  Calculate and update the user's
-  simulated investment profit.
+  Calculate current simulated profit
+  from the ONE combined capital.
 */
 
-async function runMining(userRef) {
+function calculateMining(data){
 
-  try {
+  const capital =
+    number(data.miningCapital);
 
-    const snap =
-      await getDoc(userRef);
+  const start =
+    number(data.miningStartTime);
 
-    if (!snap.exists()) return;
+  const plan =
+    getPlan(capital);
 
-    const data =
-      snap.data();
+  if(
+    capital <= 0 ||
+    !plan ||
+    !start
+  ){
 
-    const invested =
-      Number(data.invested || 0);
+    return null;
 
-    const rate =
-      Number(data.rate || 0);
+  }
 
-    if (invested <= 0 || rate <= 0) {
+
+  const elapsed =
+    Math.max(
+      0,
+      Date.now() - start
+    );
+
+  const days =
+    elapsed / DAY;
+
+
+  const profit =
+    capital *
+    plan.rate *
+    days;
+
+
+  return {
+
+    capital,
+    plan:plan.name,
+    rate:plan.rate,
+    profit
+
+  };
+
+}
+
+
+/*
+  AUTH
+*/
+
+onAuthStateChanged(
+  auth,
+  user => {
+
+    if(!user){
+
+      location.href =
+        "login.html";
+
       return;
+
     }
 
-    const now =
-      Date.now();
 
-    let cycleStart =
-      Number(
-        data.cycleStart ||
-        data.profitStart ||
-        data.startTime ||
-        0
+    const userRef =
+      doc(
+        db,
+        "users",
+        user.uid
       );
 
-    /*
-      First investment.
-    */
 
-    if (!cycleStart) {
-
-      cycleStart = now;
-
-      await updateDoc(userRef, {
-
-        cycleStart: cycleStart,
-
-        profitStart: cycleStart,
-
-        lastUpdate: now,
-
-        lockedProfit: 0,
-
-        availableProfit:
-          Number(data.availableProfit || 0)
-
-      });
-
-      return;
-    }
+    document.getElementById(
+      "ref"
+    ).value =
+      location.origin +
+      location.pathname
+        .replace(
+          "dashboard.html",
+          "register.html"
+        ) +
+      "?ref=" +
+      user.uid;
 
 
-    /*
-      Make sure cycleStart is not
-      accidentally in the future.
-    */
+    onSnapshot(
+      userRef,
+      snapshot => {
 
-    if (cycleStart > now) {
-      cycleStart = now;
-    }
+        if(!snapshot.exists()){
 
+          return;
 
-    let availableProfit =
-      Number(data.availableProfit || 0);
-
-    /*
-      Calculate how much time has passed
-      since the current 7-day cycle began.
-    */
-
-    const elapsed =
-      now - cycleStart;
-
-    const completedCycles =
-      Math.floor(elapsed / CYCLE);
+        }
 
 
-    /*
-      ============================
-      COMPLETED 7-DAY CYCLES
-      ============================
-    */
-
-    if (completedCycles > 0) {
-
-      /*
-        Profit for one complete cycle:
-
-        principal × daily rate × 7
-      */
-
-      const cycleProfit =
-        invested * rate * 7;
-
-      const completedProfit =
-        cycleProfit * completedCycles;
-
-      availableProfit +=
-        completedProfit;
-
-      /*
-        Move the cycle forward exactly
-        7 days at a time.
-
-        We DON'T use "now + 7 days"
-        because that could lose elapsed time.
-      */
-
-      cycleStart +=
-        completedCycles * CYCLE;
-    }
+        const data =
+          snapshot.data();
 
 
-    /*
-      ============================
-      CURRENT LOCKED PROFIT
-      ============================
-    */
-
-    const currentElapsed =
-      Math.max(0, now - cycleStart);
-
-    const currentDays =
-      currentElapsed / DAY;
-
-    const lockedProfit =
-      invested *
-      rate *
-      currentDays;
+        document.getElementById(
+          "welcome"
+        ).textContent =
+          "Welcome, " +
+          (
+            data.fullName ||
+            data.name ||
+            "User"
+          );
 
 
-    /*
-      ============================
-      SAVE
-      ============================
-    */
+        document.getElementById(
+          "balance"
+        ).textContent =
+          "$" +
+          number(
+            data.balance
+          ).toFixed(2);
 
-    await updateDoc(userRef, {
 
-      availableProfit:
-        Number(
-          availableProfit.toFixed(8)
+        if(data.photoURL){
+
+          document.getElementById(
+            "avatar"
+          ).src =
+            data.photoURL;
+
+        }
+
+
+        renderMining(data);
+
+      }
+    );
+
+
+    const txQuery =
+      query(
+        collection(
+          db,
+          "transactions"
         ),
+        where(
+          "userId",
+          "==",
+          user.uid
+        )
+      );
 
-      lockedProfit:
-        Number(
-          lockedProfit.toFixed(8)
-        ),
 
-      cycleStart:
-        cycleStart,
+    listenCollection(
+      txQuery,
+      snapshot => {
 
-      lastUpdate:
-        now
+        const box =
+          document.getElementById(
+            "transactions"
+          );
 
-    });
+        box.innerHTML = "";
 
-  } catch (error) {
 
-    console.error(
-      "Mining calculation error:",
-      error
+        if(snapshot.empty){
+
+          box.innerHTML =
+            '<div class="tx">No transactions yet.</div>';
+
+          return;
+
+        }
+
+
+        snapshot.forEach(
+          item => {
+
+            const d =
+              item.data();
+
+
+            box.innerHTML += `
+
+              <div class="tx">
+
+                <div class="tx-top">
+
+                  <b>
+                    ${String(
+                      d.type || "transaction"
+                    ).toUpperCase()}
+                  </b>
+
+                  <span>
+                    $${number(
+                      d.amount
+                    ).toFixed(2)}
+                  </span>
+
+                </div>
+
+              </div>
+
+            `;
+
+          }
+        );
+
+      }
     );
 
   }
+);
+
+
+/*
+  RENDER MINING
+*/
+
+function renderMining(data){
+
+  const mining =
+    calculateMining(data);
+
+
+  const box =
+    document.getElementById(
+      "miningBox"
+    );
+
+
+  if(!mining){
+
+    box.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  box.style.display =
+    "block";
+
+
+  document.getElementById(
+    "plan"
+  ).textContent =
+    mining.plan;
+
+
+  document.getElementById(
+    "capital"
+  ).textContent =
+    "$" +
+    mining.capital.toFixed(2);
+
+
+  document.getElementById(
+    "rate"
+  ).textContent =
+    (
+      mining.rate * 100
+    ).toFixed(2) +
+    "% daily";
+
+
+  document.getElementById(
+    "profit"
+  ).textContent =
+    "$" +
+    mining.profit.toFixed(2);
+
+
+  /*
+    Visual seven-day cycle.
+  */
+
+  const start =
+    number(
+      data.miningStartTime
+    );
+
+
+  const elapsed =
+    Math.max(
+      0,
+      Date.now() - start
+    );
+
+
+  const cycle =
+    7 * DAY;
+
+
+  const progress =
+    Math.min(
+      100,
+      (elapsed % cycle) /
+      cycle *
+      100
+    );
+
+
+  document.getElementById(
+    "progressBar"
+  ).style.width =
+    progress + "%";
+
+
+  const remaining =
+    cycle -
+    (elapsed % cycle);
+
+
+  const hours =
+    Math.floor(
+      remaining /
+      (60 * 60 * 1000)
+    );
+
+
+  const minutes =
+    Math.floor(
+      (
+        remaining %
+        (60 * 60 * 1000)
+      ) /
+      (60 * 1000)
+    );
+
+
+  document.getElementById(
+    "next"
+  ).textContent =
+    "Current cycle: " +
+    hours +
+    "h " +
+    minutes +
+    "m remaining";
+
 }
 
 
 /*
-  START MINING
+  Refresh displayed simulated profit.
 */
 
-function startMining(user) {
+setInterval(
+  async() => {
 
-  const userRef =
-    doc(db, "users", user.uid);
-
-  /*
-    Calculate immediately.
-  */
-
-  runMining(userRef);
-
-  /*
-    Check periodically.
-
-    The interval does NOT determine
-    how much profit is earned.
-
-    Timestamps determine the profit.
-  */
-
-  if (miningTimer) {
-    clearInterval(miningTimer);
-  }
-
-  miningTimer =
-    setInterval(() => {
-
-      runMining(userRef);
-
-    }, 120000);
-}
-
-
-/* AUTH */
-
-onAuthStateChanged(auth,async(user)=>{
-
-  if(!user){
-
-    location.href="login.html";
-    return;
-  }
-
-  currentUser = user;
-
-  startMining(user);
-
-  const userRef =
-  doc(db, "users", user.uid);
-  
-  /* REF LINK */
-
-  refInput.value =
-    `https://stargicinvestment.github.io/Stargicinvestment`;
-
-  /* USER DATA */
-
-  onSnapshot(userRef,(snap)=>{
-
-    if(!snap.exists()) return;
-
-    const d = snap.data();
-    document.getElementById("welcomeText").innerText =
-  "Welcome, " + (d.fullName || d.name || "User");
-
-    const balance =
-      Number(d.balance)||0;
-
-    const invested =
-      Number(d.invested)||0;
-
-    const availableProfit =
-      Number(d.availableProfit)||0;
-
-    const lockedProfit =
-      Number(d.lockedProfit)||0;
-
-    balanceEl.innerText =
-      "$"+balance.toFixed(2);
-
-    /* INVESTED */
-
-    if(invested>0){
-
-      capitalBox.style.display =
-        "block";
-
-      investedEl.innerText =
-        "$"+invested.toFixed(2);
-
-    }else{
-
-      capitalBox.style.display =
-        "none";
-    }
-
-    /* PROFIT */
-
-    if(
-      invested>0 ||
-      availableProfit>0 ||
-      lockedProfit>0
-    ){
-
-      profitBox.style.display =
-        "block";
-
-      profitEl.innerText =
-        "$"+availableProfit.toFixed(2);
-
-      lockedEl.innerText =
-        "Locked Profit: $"+
-        lockedProfit.toFixed(2);
-
-    }else{
-
-      profitBox.style.display =
-        "none";
-    }
-
-    /* PROFILE PHOTO */
-
-    if(d.photoURL){
-
-      avatar.src =
-        d.photoURL+"?t="+Date.now();
-    }
-
-  });
-
-  /* TRANSACTIONS */
-
-  const txQuery = query(
-    collection(db,"transactions"),
-    where("userId","==",user.uid)
-  );
-
-  onSnapshot(txQuery,(snapshot)=>{
-
-    historyEl.innerHTML="";
-
-    if(snapshot.empty){
-
-      historyEl.innerHTML=`
-      <div class="tx">
-        No transactions yet
-      </div>
-      `;
+    if(!auth.currentUser){
 
       return;
+
     }
 
-    snapshot.forEach((docItem)=>{
+    /*
+      Firestore remains the source of
+      the capital/start timestamp.
+      The displayed profit is recalculated
+      from those values.
+    */
 
-      const d = docItem.data();
+  },
+  60000
+);
 
-      const color =
-        d.type==="deposit"
-        ? "lightgreen"
-        : "#ff6b6b";
 
-      historyEl.innerHTML += `
+/*
+  COPY REFERRAL
+*/
 
-      <div class="tx">
+window.copyReferral =
+  async function(){
 
-        <div class="tx-top">
+    const value =
+      document.getElementById(
+        "ref"
+      ).value;
 
-          <b style="color:${color}">
-            ${d.type.toUpperCase()}
-          </b>
+    await navigator.clipboard.writeText(
+      value
+    );
 
-          <span>
-            $${Number(d.amount).toFixed(2)}
-          </span>
+    alert("Referral copied.");
 
-        </div>
-
-        <div class="small">
-          ${new Date(d.time).toLocaleString()}
-        </div>
-
-      </div>
-      `;
-    });
-  });
-
-  /* WITHDRAWALS */
-
-  const withdrawQuery = query(
-    collection(db,"withdrawals"),
-    where("userId","==",user.uid)
-  );
-
-  onSnapshot(withdrawQuery,(snapshot)=>{
-
-    withdrawEl.innerHTML="";
-
-    if(snapshot.empty){
-
-      withdrawEl.innerHTML=`
-      <div class="tx">
-        No withdraw requests
-      </div>
-      `;
-
-      return;
-    }
-
-    snapshot.forEach((docSnap)=>{
-
-      const d = docSnap.data();
-
-      const color =
-        d.status==="approved"
-        ? "lightgreen"
-        : d.status==="rejected"
-        ? "#ff6b6b"
-        : "orange";
-
-      withdrawEl.innerHTML += `
-
-      <div class="tx">
-
-        <div class="tx-top">
-
-          <b style="color:${color}">
-            ${d.status.toUpperCase()}
-          </b>
-
-          <span>
-            $${Number(d.amount).toFixed(2)}
-          </span>
-
-        </div>
-
-        <div class="small">
-          ${d.coin}
-        </div>
-
-        <div class="small">
-          ${new Date(d.time).toLocaleString()}
-        </div>
-
-      </div>
-      `;
-    });
-  });
-
-});
-
-/* PROFILE UPLOAD */
-
-window.openUpload = ()=>{
-  fileInput.click();
-};
-
-fileInput.onchange = async(e)=>{
-
-  const file = e.target.files[0];
-
-  if(!file || !currentUser) return;
-
-  const imgRef =
-    ref(storage,
-    `avatars/${currentUser.uid}`);
-
-  await uploadBytes(imgRef,file);
-
-  const url =
-    await getDownloadURL(imgRef);
-
-  await updateDoc(
-    doc(db,"users",currentUser.uid),
-    {
-      photoURL:url
-    }
-  );
-
-  avatar.src = url;
-};
-
-/* ACTIONS */
-
-window.goDeposit = ()=>{
-  location.href="deposit.html";
-};
-
-window.goWithdraw = ()=>{
-  location.href="withdraw.html";
-};
-
-window.copyRef = async () => {
-  const text = document.getElementById("ref").value;
-
-  try {
-    // modern method
-    await navigator.clipboard.writeText(text);
-    alert("Copied successfully");
-  } catch (err) {
-
-    // fallback method (VERY IMPORTANT for Android)
-    const input = document.createElement("input");
-    document.body.appendChild(input);
-    input.value = text;
-    input.select();
-    document.execCommand("copy");
-    document.body.removeChild(input);
-
-    alert("Copied successfully");
-  }
-};
-
-window.logout = ()=>{
-
-  signOut(auth);
-
-  location.href="login.html";
-};
+  };
 
 </script>
 
