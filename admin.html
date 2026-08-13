@@ -6,6 +6,10 @@
 <title>Admin Dashboard</title>
 
 <style>
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
   font-family:Arial,sans-serif;
@@ -22,33 +26,24 @@ body{
 }
 
 .container{
-  padding:15px;
   max-width:700px;
   margin:auto;
+  padding:15px;
 }
 
 .card{
   background:#1f2937;
-  padding:15px;
+  padding:16px;
   margin-bottom:12px;
-  border-radius:10px;
-}
-
-input,select{
-  width:100%;
-  padding:12px;
-  margin:6px 0 12px;
-  border:none;
-  border-radius:7px;
-  box-sizing:border-box;
+  border-radius:12px;
 }
 
 button{
-  padding:9px 14px;
+  padding:9px 13px;
   border:none;
   border-radius:6px;
   cursor:pointer;
-  margin-top:5px;
+  margin-top:6px;
 }
 
 .add{
@@ -58,7 +53,7 @@ button{
 
 .delete{
   background:#ef4444;
-  color:#fff;
+  color:white;
 }
 
 .approve{
@@ -68,7 +63,19 @@ button{
 
 .reject{
   background:#ef4444;
-  color:#fff;
+  color:white;
+}
+
+.copy{
+  background:#374151;
+  color:white;
+}
+
+input{
+  padding:10px;
+  border-radius:6px;
+  border:none;
+  width:140px;
 }
 
 .small{
@@ -76,11 +83,16 @@ button{
   font-size:13px;
 }
 
-.status{
-  padding:10px;
-  background:#111827;
-  border-radius:8px;
-  margin-bottom:20px;
+.green{
+  color:#4ade80;
+}
+
+.yellow{
+  color:#facc15;
+}
+
+.blue{
+  color:#60a5fa;
 }
 </style>
 </head>
@@ -88,730 +100,530 @@ button{
 <body>
 
 <div class="header">
-  <h2>Admin Dashboard</h2>
+  <h2>Demo Admin</h2>
   <button onclick="logout()">Logout</button>
 </div>
 
 <div class="container">
 
-  <div id="status" class="status">
-    Checking admin...
-  </div>
-
-  <!-- CREATE INVESTMENT -->
-
   <div class="card">
-
-    <h3>Create Investment</h3>
-
-    <label>User ID</label>
-
-    <input
-      id="investmentUser"
-      type="text"
-      placeholder="Enter user's UID"
-    >
-
-    <label>Amount</label>
-
-    <input
-      id="investmentAmount"
-      type="number"
-      min="1"
-      step="0.01"
-      placeholder="Enter amount"
-    >
-
-    <label>Plan</label>
-
-    <select id="investmentPlan">
-
-      <option value="Basic">
-        Basic — 2%
-      </option>
-
-      <option value="Silver">
-        Silver — 2.5%
-      </option>
-
-      <option value="Elite">
-        Elite — 3%
-      </option>
-
-      <option value="Premium">
-        Premium — 3.5%
-      </option>
-
-      <option value="VIP">
-        VIP — 4%
-      </option>
-
-    </select>
-
-    <button
-      class="add"
-      onclick="createInvestment()"
-    >
-      Create Investment
-    </button>
-
+    <b>Simulation Mode</b>
+    <p class="small">
+      This dashboard controls simulated/demo balances and profits.
+    </p>
+    <div id="status">Checking admin...</div>
   </div>
-
-
-  <!-- USERS -->
 
   <h3>Users</h3>
-
   <div id="usersList"></div>
 
-
-  <!-- INVESTMENTS -->
-
-  <h3>Investments</h3>
-
-  <div id="investmentsList"></div>
-
-
-  <!-- WITHDRAWALS -->
-
   <h3>Withdraw Requests</h3>
-
   <div id="withdrawList"></div>
 
 </div>
-
 
 <script type="module">
 
 import {
   initializeApp
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getAuth,
   onAuthStateChanged,
   signOut
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 import {
   getFirestore,
   doc,
   getDoc,
   collection,
-  onSnapshot,
   addDoc,
   updateDoc,
-  deleteDoc
-}
-from
-"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  deleteDoc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
-/* =========================
+/* ================================
    FIREBASE
-========================= */
+================================ */
 
 const firebaseConfig = {
-
-  apiKey:
-  "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-
-  authDomain:
-  "stargicinvestment.firebaseapp.com",
-
-  projectId:
-  "stargicinvestment",
-
-  storageBucket:
-  "stargicinvestment.appspot.com",
-
-  messagingSenderId:
-  "1053305294931",
-
-  appId:
-  "1:1053305294931:web:87cba3260a83030e56f6a6"
-
+  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+  authDomain: "stargicinvestment.firebaseapp.com",
+  projectId: "stargicinvestment",
+  storageBucket: "stargicinvestment.appspot.com",
+  messagingSenderId: "1053305294931",
+  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
 };
 
+const app = initializeApp(firebaseConfig);
 
-const app =
-initializeApp(firebaseConfig);
-
-const auth =
-getAuth(app);
-
-const db =
-getFirestore(app);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 
-/* =========================
-   PLAN CONFIGURATION
-========================= */
+/* ================================
+   PLAN SYSTEM
+================================ */
 
-const PLANS = {
+function getPlan(total){
 
-  Basic:{
-    rate:0.02,
-    min:1,
-    max:1999
-  },
+  total = Number(total) || 0;
 
-  Silver:{
-    rate:0.025,
-    min:2000,
-    max:9999
-  },
-
-  Elite:{
-    rate:0.03,
-    min:10000,
-    max:49999
-  },
-
-  Premium:{
-    rate:0.035,
-    min:50000,
-    max:99999
-  },
-
-  VIP:{
-    rate:0.04,
-    min:100000,
-    max:1000000
+  if(total >= 100000){
+    return {
+      name:"VIP",
+      rate:0.04
+    };
   }
 
-};
-
-
-/* =========================
-   ADMIN CHECK
-========================= */
-
-onAuthStateChanged(
-  auth,
-  async(user)=>{
-
-    if(!user){
-
-      document.getElementById(
-        "status"
-      ).innerText =
-      "Not logged in";
-
-      return;
-    }
-
-
-    const userRef =
-    doc(db,"users",user.uid);
-
-
-    const snap =
-    await getDoc(userRef);
-
-
-    if(!snap.exists()){
-
-      document.getElementById(
-        "status"
-      ).innerText =
-      "Admin profile not found";
-
-      return;
-    }
-
-
-    const data =
-    snap.data();
-
-
-    if(!data.admin){
-
-      document.getElementById(
-        "status"
-      ).innerText =
-      "Access Denied ❌";
-
-      return;
-    }
-
-
-    document.getElementById(
-      "status"
-    ).innerText =
-    "Welcome Admin ✅";
-
-
-    loadUsers();
-
-    loadInvestments();
-
-    loadWithdrawals();
-
+  if(total >= 50000){
+    return {
+      name:"Premium",
+      rate:0.035
+    };
   }
-);
+
+  if(total >= 10000){
+    return {
+      name:"Elite",
+      rate:0.03
+    };
+  }
+
+  if(total >= 2000){
+    return {
+      name:"Silver",
+      rate:0.025
+    };
+  }
+
+  return {
+    name:"Basic",
+    rate:0.02
+  };
+}
 
 
-/* =========================
-   CREATE INVESTMENT
-========================= */
+/* ================================
+   TIME
+================================ */
 
-window.createInvestment =
-async function(){
-
-  try{
-
-    const userId =
-    document.getElementById(
-      "investmentUser"
-    ).value.trim();
+const DAY = 24 * 60 * 60 * 1000;
+const CYCLE = 7 * DAY;
 
 
-    const amount =
+/* ================================
+   FINALIZE CURRENT PROFIT
+================================ */
+
+async function finalizeCurrentProfit(data, now){
+
+  const invested =
+    Number(data.invested || 0);
+
+  const rate =
+    Number(data.rate || 0);
+
+  let availableProfit =
+    Number(data.availableProfit || 0);
+
+  let lockedProfit =
+    Number(data.lockedProfit || 0);
+
+  let cycleStart =
     Number(
-      document.getElementById(
-        "investmentAmount"
-      ).value
+      data.cycleStart ||
+      data.profitStart ||
+      0
     );
 
-
-    const plan =
-    document.getElementById(
-      "investmentPlan"
-    ).value;
-
-
-    if(!userId){
-
-      alert("Enter user ID");
-
-      return;
-    }
+  if(
+    invested <= 0 ||
+    rate <= 0 ||
+    cycleStart <= 0
+  ){
+    return {
+      availableProfit,
+      lockedProfit,
+      cycleStart: now
+    };
+  }
 
 
-    if(!Number.isFinite(amount) || amount <= 0){
-
-      alert("Enter a valid amount");
-
-      return;
-    }
+  if(cycleStart > now){
+    cycleStart = now;
+  }
 
 
-    const planData =
-    PLANS[plan];
+  const elapsed =
+    now - cycleStart;
+
+  const completedCycles =
+    Math.floor(elapsed / CYCLE);
 
 
-    if(
-      amount < planData.min ||
-      amount > planData.max
-    ){
+  /*
+    Every completed 7-day cycle
+    becomes withdrawable.
+  */
 
-      alert(
-        `${plan} accepts $${planData.min} - $${planData.max}`
-      );
+  if(completedCycles > 0){
 
-      return;
-    }
+    const cycleProfit =
+      invested *
+      rate *
+      7;
+
+    availableProfit +=
+      cycleProfit * completedCycles;
+
+    cycleStart +=
+      completedCycles * CYCLE;
+
+    lockedProfit = 0;
+  }
 
 
-    const userRef =
+  /*
+    Profit currently inside
+    the unfinished cycle.
+  */
+
+  const currentElapsed =
+    Math.max(
+      0,
+      now - cycleStart
+    );
+
+  const currentDays =
+    currentElapsed / DAY;
+
+  lockedProfit =
+    invested *
+    rate *
+    currentDays;
+
+
+  return {
+    availableProfit,
+    lockedProfit,
+    cycleStart
+  };
+}
+
+
+/* ================================
+   ADD DEMO BALANCE
+================================ */
+
+async function addBalance(userId, amount){
+
+  const userRef =
     doc(db,"users",userId);
 
-
-    const userSnap =
+  const snap =
     await getDoc(userRef);
 
+  if(!snap.exists()){
+    throw new Error("User not found");
+  }
 
-    if(!userSnap.exists()){
+  const data =
+    snap.data();
 
-      alert("User does not exist");
+  const oldInvested =
+    Number(data.invested || 0);
 
-      return;
-    }
+  const oldBalance =
+    Number(data.balance || 0);
 
-
-    const now =
+  const now =
     Date.now();
 
 
-    /*
-      Each investment gets its
-      OWN record and OWN cycle.
-    */
+  /*
+    First calculate all profit earned
+    by the OLD capital.
+  */
 
-    await addDoc(
-      collection(db,"investments"),
-      {
-
-        userId:userId,
-
-        amount:amount,
-
-        plan:plan,
-
-        rate:planData.rate,
-
-        startTime:now,
-
-        cycleStart:now,
-
-        lockedProfit:0,
-
-        availableProfit:0,
-
-        status:"active",
-
-        createdAt:now
-
-      }
+  const finalized =
+    await finalizeCurrentProfit(
+      data,
+      now
     );
 
 
-    /*
-      Keep the user's displayed
-      balance synchronized.
-    */
+  /*
+    Add the new capital.
+  */
 
-    const userData =
-    userSnap.data();
+  const newInvested =
+    oldInvested + amount;
+
+  const newBalance =
+    oldBalance + amount;
 
 
-    await updateDoc(
-      userRef,
-      {
+  /*
+    Determine the plan from the
+    TOTAL invested amount.
+  */
 
-        balance:
-        Number(userData.balance || 0)
-        + amount
+  const plan =
+    getPlan(newInvested);
 
-      }
+
+  /*
+    New total capital starts
+    a fresh cycle at the current time.
+  */
+
+  await updateDoc(userRef,{
+
+    balance:newBalance,
+
+    invested:newInvested,
+
+    plan:plan.name,
+
+    rate:plan.rate,
+
+    cycleStart:now,
+
+    profitStart:now,
+
+    lastUpdate:now,
+
+    availableProfit:
+      Number(
+        finalized.availableProfit.toFixed(8)
+      ),
+
+    lockedProfit:0
+  });
+
+
+  /*
+    Transaction record.
+  */
+
+  await addDoc(
+    collection(db,"transactions"),
+    {
+      userId:userId,
+      type:"deposit",
+      amount:amount,
+      time:now,
+      demo:true
+    }
+  );
+}
+
+
+/* ================================
+   LOAD USERS
+================================ */
+
+function loadUsers(){
+
+  const list =
+    document.getElementById(
+      "usersList"
     );
 
+  onSnapshot(
+    collection(db,"users"),
+    snapshot=>{
 
-    /*
-      Transaction history.
-    */
+      let html = "";
 
-    await addDoc(
-      collection(db,"transactions"),
-      {
+      snapshot.forEach(docSnap=>{
 
-        userId:userId,
+        const u =
+          docSnap.data();
 
-        type:"deposit",
+        const id =
+          docSnap.id;
 
-        amount:amount,
+        if(u.admin){
+          return;
+        }
 
-        plan:plan,
+        const invested =
+          Number(u.invested || 0);
 
-        time:now
+        const balance =
+          Number(u.balance || 0);
 
-      }
+        const available =
+          Number(
+            u.availableProfit || 0
+          );
+
+        const locked =
+          Number(
+            u.lockedProfit || 0
+          );
+
+        const rate =
+          Number(u.rate || 0) * 100;
+
+
+        html += `
+
+        <div class="card">
+
+          <p>
+            <b>Email:</b>
+            ${u.email || "N/A"}
+          </p>
+
+          <p>
+            <b>Balance:</b>
+            <span class="green">
+              $${balance.toFixed(2)}
+            </span>
+          </p>
+
+          <p>
+            <b>Capital Locked:</b>
+            <span class="blue">
+              $${invested.toFixed(2)}
+            </span>
+          </p>
+
+          <p>
+            <b>Plan:</b>
+            ${u.plan || "Basic"}
+          </p>
+
+          <p>
+            <b>Rate:</b>
+            ${rate.toFixed(2)}% daily
+          </p>
+
+          <p>
+            <b>Available Profit:</b>
+            <span class="green">
+              $${available.toFixed(2)}
+            </span>
+          </p>
+
+          <p>
+            <b>Locked Profit:</b>
+            <span class="yellow">
+              $${locked.toFixed(2)}
+            </span>
+          </p>
+
+          <input
+            type="number"
+            id="bal-${id}"
+            placeholder="Add amount"
+            min="0"
+            step="0.01"
+          >
+
+          <button
+            class="add"
+            onclick="updateBalance('${id}')"
+          >
+            Add Balance
+          </button>
+
+          <button
+            class="delete"
+            onclick="deleteUser('${id}')"
+          >
+            Delete
+          </button>
+
+        </div>
+        `;
+      });
+
+      list.innerHTML =
+        html ||
+        "<p>No users found</p>";
+
+    },
+    error=>{
+      console.error(
+        "Users error:",
+        error
+      );
+    }
+  );
+}
+
+
+/* ================================
+   UPDATE BALANCE BUTTON
+================================ */
+
+const processing = {};
+
+window.updateBalance =
+async function(id){
+
+  if(processing[id]){
+    return;
+  }
+
+  processing[id] = true;
+
+  try{
+
+    const input =
+      document.getElementById(
+        `bal-${id}`
+      );
+
+    const amount =
+      Number(input.value);
+
+    if(
+      !Number.isFinite(amount) ||
+      amount <= 0
+    ){
+      alert("Enter a valid amount.");
+      return;
+    }
+
+    await addBalance(
+      id,
+      amount
     );
 
+    input.value = "";
 
     alert(
-      "Investment created successfully"
+      "Demo balance added successfully."
     );
-
-
-    document.getElementById(
-      "investmentAmount"
-    ).value="";
-
 
   }catch(error){
 
     console.error(error);
 
     alert(
-      "Error creating investment: "
-      + error.message
+      "Error: " +
+      error.message
     );
 
-  }
+  }finally{
 
+    processing[id] = false;
+  }
 };
 
 
-/* =========================
-   LOAD USERS
-========================= */
-
-function loadUsers(){
-
-  const list =
-  document.getElementById(
-    "usersList"
-  );
-
-
-  onSnapshot(
-    collection(db,"users"),
-    snapshot=>{
-
-      let html="";
-
-
-      snapshot.forEach(
-        docSnap=>{
-
-          const u =
-          docSnap.data();
-
-          const id =
-          docSnap.id;
-
-
-          html += `
-
-          <div class="card">
-
-            <b>
-              ${u.email || "No email"}
-            </b>
-
-            <p class="small">
-              UID: ${id}
-            </p>
-
-            <p>
-              Balance:
-              $${Number(
-                u.balance || 0
-              ).toFixed(2)}
-            </p>
-
-            <button
-              class="delete"
-              onclick="deleteUser('${id}')"
-            >
-              Delete
-            </button>
-
-          </div>
-
-          `;
-
-        }
-      );
-
-
-      list.innerHTML =
-      html ||
-      "<p>No users found</p>";
-
-    }
-  );
-
-}
-
-
-/* =========================
-   LOAD INVESTMENTS
-========================= */
-
-function loadInvestments(){
-
-  const list =
-  document.getElementById(
-    "investmentsList"
-  );
-
-
-  onSnapshot(
-    collection(db,"investments"),
-    snapshot=>{
-
-      let html="";
-
-
-      snapshot.forEach(
-        docSnap=>{
-
-          const d =
-          docSnap.data();
-
-
-          html += `
-
-          <div class="card">
-
-            <p>
-              <b>User:</b>
-              ${d.userId}
-            </p>
-
-            <p>
-              <b>Amount:</b>
-              $${Number(
-                d.amount || 0
-              ).toFixed(2)}
-            </p>
-
-            <p>
-              <b>Plan:</b>
-              ${d.plan}
-            </p>
-
-            <p>
-              <b>Rate:</b>
-              ${(Number(
-                d.rate || 0
-              ) * 100).toFixed(2)}%
-            </p>
-
-            <p>
-              <b>Status:</b>
-              ${d.status}
-            </p>
-
-            <p>
-              <b>Locked Profit:</b>
-              $${Number(
-                d.lockedProfit || 0
-              ).toFixed(2)}
-            </p>
-
-            <p>
-              <b>Available Profit:</b>
-              $${Number(
-                d.availableProfit || 0
-              ).toFixed(2)}
-            </p>
-
-            <p class="small">
-              Started:
-              ${new Date(
-                d.startTime
-              ).toLocaleString()}
-            </p>
-
-          </div>
-
-          `;
-
-        }
-      );
-
-
-      list.innerHTML =
-      html ||
-      "<p>No investments yet</p>";
-
-    }
-  );
-
-}
-
-
-/* =========================
-   LOAD WITHDRAWALS
-========================= */
-
-function loadWithdrawals(){
-
-  const list =
-  document.getElementById(
-    "withdrawList"
-  );
-
-
-  onSnapshot(
-    collection(db,"withdrawals"),
-    snapshot=>{
-
-      let html="";
-
-
-      snapshot.forEach(
-        docSnap=>{
-
-          const d =
-          docSnap.data();
-
-          const id =
-          docSnap.id;
-
-
-          html += `
-
-          <div class="card">
-
-            <p>
-              <b>User:</b>
-              ${d.userId}
-            </p>
-
-            <p>
-              <b>Amount:</b>
-              $${Number(
-                d.amount || 0
-              ).toFixed(2)}
-            </p>
-
-            <p>
-              <b>Coin:</b>
-              ${d.coin || "N/A"}
-            </p>
-
-            <p>
-              <b>Status:</b>
-              ${d.status || "pending"}
-            </p>
-
-            ${
-              d.status === "pending"
-              ?
-
-              `
-              <button
-                class="approve"
-                onclick="approveWithdraw('${id}')"
-              >
-                Approve
-              </button>
-
-              <button
-                class="reject"
-                onclick="rejectWithdraw('${id}')"
-              >
-                Reject
-              </button>
-              `
-
-              :
-
-              ""
-            }
-
-          </div>
-
-          `;
-
-        }
-      );
-
-
-      list.innerHTML =
-      html ||
-      "<p>No withdrawal requests</p>";
-
-    }
-  );
-
-}
-
-
-/* =========================
+/* ================================
    DELETE USER
-========================= */
+================================ */
 
 window.deleteUser =
 async function(id){
@@ -821,86 +633,422 @@ async function(id){
       "Delete this user?"
     )
   ){
-
     return;
   }
 
+  try{
 
-  await deleteDoc(
-    doc(db,"users",id)
-  );
+    await deleteDoc(
+      doc(db,"users",id)
+    );
 
+    alert("User deleted.");
 
-  alert("User deleted");
+  }catch(error){
 
+    console.error(error);
+
+    alert(
+      "Could not delete user."
+    );
+  }
 };
 
 
-/* =========================
-   WITHDRAW ACTIONS
-========================= */
+/* ================================
+   WITHDRAWALS
+================================ */
 
-window.approveWithdraw =
-async function(id){
+function loadWithdrawals(){
 
-  await updateDoc(
-    doc(
-      db,
-      "withdrawals",
-      id
-    ),
-    {
-      status:"approved",
-      processedAt:Date.now()
+  const list =
+    document.getElementById(
+      "withdrawList"
+    );
+
+  onSnapshot(
+    collection(db,"withdrawals"),
+    snapshot=>{
+
+      let html = "";
+
+      snapshot.forEach(docSnap=>{
+
+        const d =
+          docSnap.data();
+
+        const id =
+          docSnap.id;
+
+        const status =
+          d.status || "pending";
+
+        const statusColor =
+          status === "approved"
+          ? "lightgreen"
+          : status === "rejected"
+          ? "red"
+          : "orange";
+
+
+        html += `
+
+        <div class="card">
+
+          <p>
+            <b>User:</b>
+            ${d.userId || "N/A"}
+          </p>
+
+          <p>
+            <b>Amount:</b>
+            $${Number(
+              d.amount || 0
+            ).toFixed(2)}
+          </p>
+
+          <p>
+            <b>Coin:</b>
+            ${d.coin || "N/A"}
+          </p>
+
+          <p>
+            <b>Wallet:</b><br>
+
+            <span class="small">
+              ${d.wallet || "N/A"}
+            </span>
+          </p>
+
+          <button
+            class="copy"
+            onclick="copyWallet('${d.wallet || ""}')"
+          >
+            Copy Wallet
+          </button>
+
+          <p>
+            <b>Status:</b>
+
+            <span style="
+              color:${statusColor};
+            ">
+              ${status}
+            </span>
+          </p>
+
+          ${
+            status === "pending"
+            ? `
+
+              <button
+                class="approve"
+                onclick="
+                  approveWithdraw(
+                    '${id}',
+                    '${d.userId}',
+                    ${Number(d.amount || 0)}
+                  )
+                "
+              >
+                Approve
+              </button>
+
+              <button
+                class="reject"
+                onclick="
+                  rejectWithdraw('${id}')
+                "
+              >
+                Reject
+              </button>
+
+            `
+            : ""
+          }
+
+        </div>
+
+        `;
+      });
+
+      list.innerHTML =
+        html ||
+        "<p>No withdrawal requests.</p>";
+
     }
   );
+}
 
 
-  alert(
-    "Withdrawal approved"
-  );
+/* ================================
+   APPROVE WITHDRAWAL
+================================ */
 
+const approving = {};
+
+window.approveWithdraw =
+async function(
+  id,
+  userId,
+  amount
+){
+
+  if(approving[id]){
+    return;
+  }
+
+  approving[id] = true;
+
+  try{
+
+    const userRef =
+      doc(db,"users",userId);
+
+    const withdrawRef =
+      doc(db,"withdrawals",id);
+
+
+    const userSnap =
+      await getDoc(userRef);
+
+    if(!userSnap.exists()){
+      throw new Error(
+        "User not found."
+      );
+    }
+
+    const data =
+      userSnap.data();
+
+
+    if(data.admin){
+      throw new Error(
+        "Admin account cannot withdraw."
+      );
+    }
+
+
+    const available =
+      Number(
+        data.availableProfit || 0
+      );
+
+
+    if(
+      amount <= 0 ||
+      amount > available
+    ){
+      throw new Error(
+        "Insufficient available demo profit."
+      );
+    }
+
+
+    /*
+      Deduct only from available profit.
+    */
+
+    await updateDoc(
+      userRef,
+      {
+        availableProfit:
+          Number(
+            (available - amount)
+            .toFixed(8)
+          )
+      }
+    );
+
+
+    /*
+      Mark request approved.
+    */
+
+    await updateDoc(
+      withdrawRef,
+      {
+        status:"approved",
+        processedAt:Date.now()
+      }
+    );
+
+
+    /*
+      Transaction.
+    */
+
+    await addDoc(
+      collection(db,"transactions"),
+      {
+        userId:userId,
+        type:"withdraw",
+        amount:amount,
+        time:Date.now(),
+        demo:true
+      }
+    );
+
+
+    alert(
+      "Demo withdrawal approved."
+    );
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      error.message
+    );
+
+  }finally{
+
+    approving[id] = false;
+  }
 };
 
+
+/* ================================
+   REJECT
+================================ */
 
 window.rejectWithdraw =
 async function(id){
 
-  await updateDoc(
-    doc(
-      db,
-      "withdrawals",
-      id
-    ),
-    {
-      status:"rejected",
-      processedAt:Date.now()
-    }
-  );
+  try{
 
+    await updateDoc(
+      doc(db,"withdrawals",id),
+      {
+        status:"rejected",
+        processedAt:Date.now()
+      }
+    );
 
-  alert(
-    "Withdrawal rejected"
-  );
+    alert(
+      "Withdrawal rejected."
+    );
 
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Could not reject withdrawal."
+    );
+  }
 };
 
 
-/* =========================
+/* ================================
+   COPY WALLET
+================================ */
+
+window.copyWallet =
+async function(address){
+
+  try{
+
+    await navigator.clipboard
+      .writeText(address);
+
+    alert("Copied!");
+
+  }catch(error){
+
+    alert(
+      "Copy failed."
+    );
+  }
+};
+
+
+/* ================================
    LOGOUT
-========================= */
+================================ */
 
-window.logout =
-function(){
+window.logout = async function(){
 
-  signOut(auth);
+  await signOut(auth);
 
   location.href =
-  "login.html";
-
+    "login.html";
 };
+
+
+/* ================================
+   ADMIN AUTH
+================================ */
+
+onAuthStateChanged(
+  auth,
+  async user=>{
+
+    const status =
+      document.getElementById(
+        "status"
+      );
+
+    if(!user){
+
+      status.innerText =
+        "Not logged in.";
+
+      return;
+    }
+
+
+    try{
+
+      const ref =
+        doc(db,"users",user.uid);
+
+      const snap =
+        await getDoc(ref);
+
+
+      if(!snap.exists()){
+
+        status.innerText =
+          "User data not found.";
+
+        return;
+      }
+
+
+      const data =
+        snap.data();
+
+
+      if(!data.admin){
+
+        status.innerText =
+          "Access Denied ❌";
+
+        return;
+      }
+
+
+      status.innerText =
+        "Welcome Admin ✅";
+
+
+      loadUsers();
+
+      loadWithdrawals();
+
+    }catch(error){
+
+      console.error(error);
+
+      status.innerText =
+        "Admin verification failed.";
+    }
+  }
+);
 
 </script>
 
 </body>
-        </html>
+  </html>
