@@ -2,14 +2,13 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>Demo Admin</title>
+<title>StargicInvestment Admin</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
-
 *{
   box-sizing:border-box;
   margin:0;
@@ -24,54 +23,56 @@ body{
 }
 
 .container{
-  max-width:650px;
+  max-width:700px;
   margin:auto;
 }
 
+.header,
 .card{
   background:#111827;
-  padding:20px;
   border-radius:18px;
+  padding:20px;
   margin-bottom:18px;
 }
 
-h1{
+.header h1{
   font-size:24px;
+}
+
+.header p{
+  color:#9ca3af;
+  font-size:13px;
+  margin-top:5px;
 }
 
 h2{
   font-size:18px;
-  margin-bottom:14px;
-}
-
-p{
-  color:#aaa;
-  font-size:12px;
+  margin-bottom:15px;
 }
 
 label{
   display:block;
   color:#aaa;
-  font-size:12px;
-  margin-top:12px;
-  margin-bottom:5px;
+  font-size:13px;
+  margin:12px 0 6px;
 }
 
 input,
+select{
+  width:100%;
+  padding:13px;
+  border:0;
+  outline:0;
+  border-radius:10px;
+  background:#0b1020;
+  color:#fff;
+}
+
 button{
   width:100%;
   padding:13px;
   border:0;
   border-radius:10px;
-}
-
-input{
-  background:#0b1020;
-  color:#fff;
-  outline:none;
-}
-
-button{
   margin-top:12px;
   cursor:pointer;
   font-weight:600;
@@ -87,22 +88,22 @@ button{
   color:#00130d;
 }
 
-.red{
-  background:#ff3155;
-  color:#fff;
-}
-
 .orange{
   background:#ff9d00;
   color:#111;
 }
 
+.red{
+  background:#ff3155;
+  color:#fff;
+}
+
 .status{
   background:#0b1020;
-  padding:15px;
   border-radius:12px;
-  line-height:1.9;
-  margin-top:15px;
+  padding:15px;
+  line-height:2;
+  font-size:14px;
 }
 
 .value{
@@ -112,14 +113,13 @@ button{
 
 .warning{
   color:#ffcc00;
-  font-size:11px;
+  font-size:12px;
   line-height:1.6;
 }
 
 .hidden{
   display:none;
 }
-
 </style>
 </head>
 
@@ -127,16 +127,9 @@ button{
 
 <div class="container">
 
-<div class="card">
-
-  <h1>
-    Demo Mining Admin
-  </h1>
-
-  <p>
-    Simulation controller for testing the dashboard.
-  </p>
-
+<div class="header">
+  <h1>Demo Admin Panel</h1>
+  <p>StargicInvestment testing / simulation</p>
 </div>
 
 
@@ -144,126 +137,150 @@ button{
 
 <div class="card">
 
-  <h2>
-    Select Test User
-  </h2>
+<h2>Select User</h2>
 
-  <label>
-    Firebase User UID
-  </label>
+<label>Firebase User UID</label>
 
-  <input
-    id="uid"
-    placeholder="Paste user UID"
-  >
+<input
+  id="uid"
+  placeholder="Paste user UID"
+>
 
-  <button
-    class="blue"
-    onclick="loadUser()"
-  >
-    LOAD USER
-  </button>
+<button
+  class="blue"
+  onclick="loadUser()"
+>
+LOAD USER
+</button>
 
 </div>
 
 
-<!-- STATUS -->
+<!-- USER STATUS -->
 
 <div
-  id="statusCard"
+  id="userCard"
   class="card hidden"
 >
 
-  <h2>
-    Mining Status
-  </h2>
+<h2>User Status</h2>
 
-  <div
-    id="status"
-    class="status"
-  ></div>
+<div
+  id="status"
+  class="status"
+></div>
 
 </div>
 
 
-<!-- ADD CAPITAL -->
+<!-- BALANCE -->
 
 <div
-  id="capitalCard"
+  id="balanceCard"
   class="card hidden"
 >
 
-  <h2>
-    Add Demo Capital
-  </h2>
+<h2>Demo Balance</h2>
 
-  <label>
-    Amount
-  </label>
+<label>Amount</label>
 
-  <input
-    id="amount"
-    type="number"
-    min="0"
-    step="0.01"
-    placeholder="5000"
-  >
+<input
+  id="amount"
+  type="number"
+  min="0"
+  step="0.01"
+  placeholder="500"
+>
 
-  <button
-    class="green"
-    onclick="addCapital()"
-  >
-    ADD TO MINING CAPITAL
-  </button>
+<button
+  class="green"
+  onclick="addBalance()"
+>
+ADD BALANCE
+</button>
+
+<button
+  class="red"
+  onclick="subtractBalance()"
+>
+SUBTRACT BALANCE
+</button>
 
 </div>
 
 
-<!-- CONTROLS -->
+<!-- MINING CAPITAL -->
 
 <div
-  id="controls"
+  id="miningCard"
   class="card hidden"
 >
 
-  <h2>
-    Mining Controls
-  </h2>
+<h2>Mining Capital</h2>
 
-  <button
-    class="blue"
-    onclick="startMining()"
-  >
-    START / RESET MINING
-  </button>
+<p style="color:#aaa;font-size:13px;line-height:1.6;">
+Adding mining capital increases the existing capital.
+The applicable plan is automatically selected from the TOTAL capital.
+</p>
 
-  <button
-    class="orange"
-    onclick="resetMiningTime()"
-  >
-    RESET MINING TIMER
-  </button>
+<label>Mining Capital To Add</label>
 
-  <button
-    class="red"
-    onclick="stopMining()"
-  >
-    STOP MINING
-  </button>
+<input
+  id="capitalAmount"
+  type="number"
+  min="0"
+  step="0.01"
+  placeholder="5000"
+>
+
+<button
+  class="green"
+  onclick="addMiningCapital()"
+>
+ADD CAPITAL & START / UPDATE MINING
+</button>
+
+<button
+  class="orange"
+  onclick="restartMiningCycle()"
+>
+RESTART CURRENT MINING CYCLE
+</button>
+
+<button
+  class="red"
+  onclick="stopMining()"
+>
+STOP DEMO MINING
+</button>
+
+</div>
+
+
+<!-- RESET -->
+
+<div
+  id="resetCard"
+  class="card hidden"
+>
+
+<h2>Demo Controls</h2>
+
+<button
+  class="red"
+  onclick="resetMiningProfit()"
+>
+RESET MINING PROFIT
+</button>
 
 </div>
 
 
 <div class="card">
 
-  <div class="warning">
-
-    DEMO MODE ONLY. This panel creates simulation
-    values for testing the dashboard. It should not
-    be used to represent real deposits, real mining,
-    guaranteed returns, or customer investment funds.
-
-  </div>
+<div class="warning">
+DEMO/SIMULATION ONLY. These values are test data and do not represent real deposits, real mining, or guaranteed investment returns.
+</div>
 
 </div>
 
@@ -291,6 +308,10 @@ from
 "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 
+/* =====================================
+   FIREBASE
+===================================== */
+
 const firebaseConfig = {
 
   apiKey:
@@ -309,10 +330,9 @@ const firebaseConfig = {
     "1053305294931",
 
   appId:
-    "1:1053305294931:web:87cba3260a83030e56f6a6"
+    "1:1053305294931:web:87cba3260a83030e56a6"
 
 };
-
 
 const app =
   initializeApp(firebaseConfig);
@@ -321,41 +341,37 @@ const db =
   getFirestore(app);
 
 
-let selectedUID =
-  null;
+/* =====================================
+   PLAN TIERS
+===================================== */
 
-
-/*
-  EXACT PLAN TABLE
-*/
-
-const PLANS = [
+const PLAN_TIERS = [
 
   {
     name:"Basic",
     min:1,
-    max:1999.99,
+    max:1999,
     rate:0.02
   },
 
   {
     name:"Silver",
     min:2000,
-    max:9999.99,
+    max:9999,
     rate:0.025
   },
 
   {
     name:"Elite",
     min:10000,
-    max:49999.99,
+    max:49999,
     rate:0.03
   },
 
   {
     name:"Premium",
     min:50000,
-    max:99999.99,
+    max:99999,
     rate:0.035
   },
 
@@ -369,20 +385,58 @@ const PLANS = [
 ];
 
 
-function getPlan(capital){
+/* =====================================
+   VARIABLES
+===================================== */
 
-  return PLANS.find(
-    p =>
-      capital >= p.min &&
-      capital <= p.max
-  ) || null;
+let selectedUID = null;
+
+
+/* =====================================
+   NUMBER HELPER
+===================================== */
+
+function number(value){
+
+  const n =
+    Number(value);
+
+  return Number.isFinite(n)
+    ? n
+    : 0;
 
 }
 
 
-/*
-  LOAD USER
-*/
+/* =====================================
+   DETERMINE PLAN FROM TOTAL CAPITAL
+===================================== */
+
+function getPlan(capital){
+
+  for(
+    const tier of PLAN_TIERS
+  ){
+
+    if(
+      capital >= tier.min &&
+      capital <= tier.max
+    ){
+
+      return tier;
+
+    }
+
+  }
+
+  return null;
+
+}
+
+
+/* =====================================
+   LOAD USER
+===================================== */
 
 window.loadUser =
 async function(){
@@ -393,72 +447,51 @@ async function(){
       .value
       .trim();
 
-
   if(!uid){
 
-    alert(
-      "Enter a Firebase UID."
-    );
+    alert("Enter the Firebase UID.");
 
     return;
 
   }
 
-
-  const userRef =
-    doc(
-      db,
-      "users",
-      uid
-    );
-
-
   try{
+
+    const userRef =
+      doc(
+        db,
+        "users",
+        uid
+      );
 
     const snap =
       await getDoc(userRef);
 
-
     if(!snap.exists()){
 
       alert(
-        "User was not found."
+        "User document not found."
       );
 
       return;
 
     }
 
-
     selectedUID =
       uid;
 
+    showCards();
 
-    document
-      .getElementById("statusCard")
-      .classList
-      .remove("hidden");
-
-
-    document
-      .getElementById("capitalCard")
-      .classList
-      .remove("hidden");
-
-
-    document
-      .getElementById("controls")
-      .classList
-      .remove("hidden");
-
-
-    renderStatus(
+    showUser(
       snap.data()
     );
 
   }catch(error){
 
+    console.error(error);
+
     alert(
+      "Could not load user: " +
       error.message
     );
 
@@ -467,22 +500,152 @@ async function(){
 };
 
 
-/*
-  USER REF
-*/
+/* =====================================
+   SHOW ADMIN CONTROLS
+===================================== */
 
-function userRef(){
+function showCards(){
+
+  document
+    .getElementById("userCard")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("balanceCard")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("miningCard")
+    .classList.remove("hidden");
+
+  document
+    .getElementById("resetCard")
+    .classList.remove("hidden");
+
+}
+
+
+/* =====================================
+   DISPLAY USER
+===================================== */
+
+function showUser(data){
+
+  const balance =
+    number(data.balance);
+
+  const capital =
+    number(data.invested);
+
+  const rate =
+    number(data.rate);
+
+  const availableProfit =
+    number(data.availableProfit);
+
+  const lockedProfit =
+    number(data.lockedProfit);
+
+  document
+    .getElementById("status")
+    .innerHTML = `
+
+      Name:
+      <span class="value">
+        ${escapeHTML(
+          data.fullName ||
+          data.name ||
+          "User"
+        )}
+      </span>
+
+      <br>
+
+      Balance:
+      <span class="value">
+        $${balance.toFixed(2)}
+      </span>
+
+      <br>
+
+      Mining Capital:
+      <span class="value">
+        $${capital.toFixed(2)}
+      </span>
+
+      <br>
+
+      Plan:
+      <span class="value">
+        ${data.plan || "None"}
+      </span>
+
+      <br>
+
+      Rate:
+      <span class="value">
+        ${(rate * 100).toFixed(2)}%
+      </span>
+
+      <br>
+
+      Available Profit:
+      <span class="value">
+        $${availableProfit.toFixed(2)}
+      </span>
+
+      <br>
+
+      Locked Profit:
+      <span class="value">
+        $${lockedProfit.toFixed(2)}
+      </span>
+
+      <br>
+
+      Mining:
+      <span class="value">
+        ${
+          capital > 0 && rate > 0
+          ? "ACTIVE"
+          : "INACTIVE"
+        }
+      </span>
+
+    `;
+
+}
+
+
+/* =====================================
+   ESCAPE HTML
+===================================== */
+
+function escapeHTML(value){
+
+  return String(value)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;")
+    .replaceAll("'","&#039;");
+
+}
+
+
+/* =====================================
+   GET USER REF
+===================================== */
+
+function getUserRef(){
 
   if(!selectedUID){
 
-    alert(
-      "Load a user first."
-    );
+    alert("Load a user first.");
 
     return null;
 
   }
-
 
   return doc(
     db,
@@ -493,111 +656,26 @@ function userRef(){
 }
 
 
-/*
-  DISPLAY STATUS
-*/
+/* =====================================
+   ADD BALANCE
+===================================== */
 
-function renderStatus(data){
-
-  const capital =
-    Number(
-      data.miningCapital || 0
-    );
-
-
-  const plan =
-    getPlan(capital);
-
-
-  document.getElementById(
-    "status"
-  ).innerHTML = `
-
-    Name:
-    <span class="value">
-      ${
-        data.fullName ||
-        data.name ||
-        "User"
-      }
-    </span>
-
-    <br>
-
-    Balance:
-    <span class="value">
-      $${Number(
-        data.balance || 0
-      ).toFixed(2)}
-    </span>
-
-    <br>
-
-    Mining Capital:
-    <span class="value">
-      $${capital.toFixed(2)}
-    </span>
-
-    <br>
-
-    Plan:
-    <span class="value">
-      ${plan ? plan.name : "Inactive"}
-    </span>
-
-    <br>
-
-    Rate:
-    <span class="value">
-      ${
-        plan
-        ? (plan.rate * 100).toFixed(2) + "%"
-        : "0%"
-      }
-    </span>
-
-    <br>
-
-    Mining:
-    <span class="value">
-      ${
-        plan &&
-        data.miningStartTime
-        ? "ACTIVE"
-        : "INACTIVE"
-      }
-    </span>
-
-  `;
-
-}
-
-
-/*
-  ADD CAPITAL
-*/
-
-window.addCapital =
+window.addBalance =
 async function(){
 
-  const ref =
-    userRef();
+  const userRef =
+    getUserRef();
 
-  if(!ref) return;
-
+  if(!userRef) return;
 
   const amount =
-    Number(
+    number(
       document
         .getElementById("amount")
         .value
     );
 
-
-  if(
-    !Number.isFinite(amount) ||
-    amount <= 0
-  ){
+  if(amount <= 0){
 
     alert(
       "Enter a valid amount."
@@ -607,82 +685,41 @@ async function(){
 
   }
 
-
   try{
 
     const snap =
-      await getDoc(ref);
+      await getDoc(userRef);
 
+    if(!snap.exists()){
+
+      alert("User not found.");
+
+      return;
+
+    }
 
     const data =
       snap.data();
 
+    const oldBalance =
+      number(data.balance);
 
-    const oldCapital =
-      Number(
-        data.miningCapital || 0
-      );
-
-
-    const newCapital =
-      Number(
-        (
-          oldCapital +
-          amount
-        ).toFixed(2)
-      );
-
-
-    const plan =
-      getPlan(newCapital);
-
-
-    /*
-      If this is the first capital,
-      start mining immediately.
-
-      If mining is already running,
-      preserve the original start time.
-    */
-
-    const existingStart =
-      Number(
-        data.miningStartTime || 0
-      );
-
-
-    const start =
-      existingStart ||
-      Date.now();
-
+    const newBalance =
+      oldBalance +
+      amount;
 
     await updateDoc(
-      ref,
+      userRef,
       {
 
-        miningCapital:
-          newCapital,
-
-        miningPlan:
-          plan
-            ? plan.name
-            : null,
-
-        miningRate:
-          plan
-            ? plan.rate
-            : 0,
-
-        miningStartTime:
-          start
+        balance:
+          Number(
+            newBalance.toFixed(2)
+          )
 
       }
     );
 
-
-    /*
-      Record the demo transaction.
-    */
 
     await addDoc(
       collection(
@@ -695,7 +732,7 @@ async function(){
           selectedUID,
 
         type:
-          "demo_capital_added",
+          "demo_balance_credit",
 
         amount:
           amount,
@@ -711,28 +748,17 @@ async function(){
 
 
     alert(
-      "Capital added. New plan: " +
-      (
-        plan
-          ? plan.name
-          : "Inactive"
-      )
+      `Balance is now $${newBalance.toFixed(2)}`
     );
 
-
-    document.getElementById(
-      "amount"
-    ).value = "";
-
-
-    await refresh();
+    refreshUser();
 
   }catch(error){
 
     console.error(error);
 
     alert(
-      "Could not add capital: " +
+      "Balance update failed: " +
       error.message
     );
 
@@ -741,43 +767,184 @@ async function(){
 };
 
 
-/*
-  START / RESET
-*/
+/* =====================================
+   SUBTRACT BALANCE
+===================================== */
 
-window.startMining =
+window.subtractBalance =
 async function(){
 
-  const ref =
-    userRef();
+  const userRef =
+    getUserRef();
 
-  if(!ref) return;
+  if(!userRef) return;
 
+  const amount =
+    number(
+      document
+        .getElementById("amount")
+        .value
+    );
+
+  if(amount <= 0){
+
+    alert(
+      "Enter a valid amount."
+    );
+
+    return;
+
+  }
 
   try{
 
     const snap =
-      await getDoc(ref);
+      await getDoc(userRef);
 
+    const data =
+      snap.data();
+
+    const oldBalance =
+      number(data.balance);
+
+    const newBalance =
+      Math.max(
+        0,
+        oldBalance - amount
+      );
+
+    await updateDoc(
+      userRef,
+      {
+
+        balance:
+          Number(
+            newBalance.toFixed(2)
+          )
+
+      }
+    );
+
+
+    await addDoc(
+      collection(
+        db,
+        "transactions"
+      ),
+      {
+
+        userId:
+          selectedUID,
+
+        type:
+          "demo_balance_debit",
+
+        amount:
+          amount,
+
+        time:
+          Date.now(),
+
+        createdAt:
+          serverTimestamp()
+
+      }
+    );
+
+
+    alert(
+      `Balance is now $${newBalance.toFixed(2)}`
+    );
+
+    refreshUser();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Balance update failed: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/* =====================================
+   ADD MINING CAPITAL
+===================================== */
+
+window.addMiningCapital =
+async function(){
+
+  const userRef =
+    getUserRef();
+
+  if(!userRef) return;
+
+  const amount =
+    number(
+      document
+        .getElementById("capitalAmount")
+        .value
+    );
+
+  if(amount <= 0){
+
+    alert(
+      "Enter a valid mining amount."
+    );
+
+    return;
+
+  }
+
+  try{
+
+    const snap =
+      await getDoc(userRef);
+
+    if(!snap.exists()){
+
+      alert("User not found.");
+
+      return;
+
+    }
 
     const data =
       snap.data();
 
 
-    const capital =
+    /* Existing capital */
+
+    const oldCapital =
+      number(data.invested);
+
+
+    /* ADD — DO NOT REPLACE */
+
+    const totalCapital =
       Number(
-        data.miningCapital || 0
+        (
+          oldCapital +
+          amount
+        ).toFixed(2)
       );
 
 
-    const plan =
-      getPlan(capital);
+    /* Automatically determine tier */
+
+    const tier =
+      getPlan(totalCapital);
 
 
-    if(!plan){
+    if(!tier){
 
       alert(
-        "Mining capital must be between $1 and $1,000,000."
+        "This total capital is outside the configured plan range."
       );
 
       return;
@@ -789,34 +956,108 @@ async function(){
       Date.now();
 
 
+    /*
+      If mining wasn't active before,
+      start a new cycle.
+
+      If it was already active,
+      preserve the existing cycle.
+    */
+
+    const oldCycleStart =
+      number(data.cycleStart);
+
+
+    const cycleStart =
+      oldCapital > 0 &&
+      oldCycleStart > 0
+        ? oldCycleStart
+        : now;
+
+
     await updateDoc(
-      ref,
+      userRef,
       {
 
-        miningPlan:
-          plan.name,
+        invested:
+          totalCapital,
 
-        miningRate:
-          plan.rate,
+        plan:
+          tier.name,
 
-        miningStartTime:
+        rate:
+          tier.rate,
+
+        cycleStart:
+          cycleStart,
+
+        profitStart:
+          cycleStart,
+
+        startTime:
+          cycleStart,
+
+        lastUpdate:
           now
 
       }
     );
 
 
-    alert(
-      plan.name +
-      " demo mining started."
+    /*
+      Record the simulated capital event.
+    */
+
+    await addDoc(
+      collection(
+        db,
+        "transactions"
+      ),
+      {
+
+        userId:
+          selectedUID,
+
+        type:
+          "demo_mining_capital",
+
+        amount:
+          amount,
+
+        totalCapital:
+          totalCapital,
+
+        plan:
+          tier.name,
+
+        rate:
+          tier.rate,
+
+        time:
+          now,
+
+        createdAt:
+          serverTimestamp()
+
+      }
     );
 
 
-    await refresh();
+    alert(
+      `Mining capital: $${totalCapital.toFixed(2)}
+Plan: ${tier.name}
+Rate: ${(tier.rate * 100).toFixed(2)}%`
+    );
+
+
+    refreshUser();
 
   }catch(error){
 
+    console.error(error);
+
     alert(
+      "Mining setup failed: " +
       error.message
     );
 
@@ -825,99 +1066,247 @@ async function(){
 };
 
 
-/*
-  RESET TIMER
-*/
+/* =====================================
+   RESTART CYCLE
+===================================== */
 
-window.resetMiningTime =
+window.restartMiningCycle =
 async function(){
 
-  const ref =
-    userRef();
+  const userRef =
+    getUserRef();
 
-  if(!ref) return;
+  if(!userRef) return;
 
+  try{
 
-  await updateDoc(
-    ref,
-    {
+    const snap =
+      await getDoc(userRef);
 
-      miningStartTime:
-        Date.now()
+    const data =
+      snap.data();
+
+    const capital =
+      number(data.invested);
+
+    if(capital <= 0){
+
+      alert(
+        "There is no mining capital."
+      );
+
+      return;
 
     }
-  );
 
+    const tier =
+      getPlan(capital);
 
-  alert(
-    "Mining timer reset."
-  );
+    if(!tier){
 
+      alert(
+        "Capital is outside the configured tiers."
+      );
 
-  await refresh();
+      return;
+
+    }
+
+    const now =
+      Date.now();
+
+    await updateDoc(
+      userRef,
+      {
+
+        plan:
+          tier.name,
+
+        rate:
+          tier.rate,
+
+        cycleStart:
+          now,
+
+        profitStart:
+          now,
+
+        startTime:
+          now,
+
+        lastUpdate:
+          now,
+
+        availableProfit:
+          0,
+
+        lockedProfit:
+          0
+
+      }
+    );
+
+    alert(
+      "Mining cycle restarted."
+    );
+
+    refreshUser();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Could not restart mining."
+    );
+
+  }
 
 };
 
 
-/*
-  STOP MINING
-*/
+/* =====================================
+   STOP MINING
+===================================== */
 
 window.stopMining =
 async function(){
 
-  const ref =
-    userRef();
+  const userRef =
+    getUserRef();
 
-  if(!ref) return;
+  if(!userRef) return;
 
+  try{
 
-  await updateDoc(
-    ref,
-    {
+    await updateDoc(
+      userRef,
+      {
 
-      miningStartTime:
-        0,
+        invested:
+          0,
 
-      miningPlan:
-        null,
+        rate:
+          0,
 
-      miningRate:
-        0
+        plan:
+          null,
 
-    }
-  );
+        cycleStart:
+          0,
 
+        profitStart:
+          0,
 
-  alert(
-    "Demo mining stopped."
-  );
+        startTime:
+          0,
 
+        lockedProfit:
+          0,
 
-  await refresh();
+        lastUpdate:
+          Date.now()
+
+      }
+    );
+
+    alert(
+      "Demo mining stopped."
+    );
+
+    refreshUser();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Could not stop mining."
+    );
+
+  }
 
 };
 
 
-/*
-  REFRESH
-*/
+/* =====================================
+   RESET PROFIT
+===================================== */
 
-async function refresh(){
+window.resetMiningProfit =
+async function(){
 
-  const ref =
-    userRef();
+  const userRef =
+    getUserRef();
 
-  if(!ref) return;
+  if(!userRef) return;
 
+  try{
+
+    const now =
+      Date.now();
+
+    await updateDoc(
+      userRef,
+      {
+
+        availableProfit:
+          0,
+
+        lockedProfit:
+          0,
+
+        cycleStart:
+          now,
+
+        profitStart:
+          now,
+
+        startTime:
+          now,
+
+        lastUpdate:
+          now
+
+      }
+    );
+
+    alert(
+      "Demo mining profit reset."
+    );
+
+    refreshUser();
+
+  }catch(error){
+
+    console.error(error);
+
+    alert(
+      "Could not reset profit."
+    );
+
+  }
+
+};
+
+
+/* =====================================
+   REFRESH USER
+===================================== */
+
+async function refreshUser(){
+
+  const userRef =
+    getUserRef();
+
+  if(!userRef) return;
 
   const snap =
-    await getDoc(ref);
-
+    await getDoc(userRef);
 
   if(snap.exists()){
 
-    renderStatus(
+    showUser(
       snap.data()
     );
 
@@ -928,4 +1317,4 @@ async function refresh(){
 </script>
 
 </body>
-    </html>
+  </html>
