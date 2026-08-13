@@ -2,1053 +2,930 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin Dashboard</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Demo Admin</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
+
 *{
   box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Poppins,sans-serif;
 }
 
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#0b0f1a;
-  color:white;
-}
-
-.header{
-  padding:15px;
-  background:#111827;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
+  background:#070b14;
+  color:#fff;
+  padding:20px;
 }
 
 .container{
-  max-width:700px;
+  max-width:650px;
   margin:auto;
-  padding:15px;
 }
 
 .card{
-  background:#1f2937;
-  padding:16px;
-  margin-bottom:12px;
-  border-radius:12px;
+  background:#111827;
+  padding:20px;
+  border-radius:18px;
+  margin-bottom:18px;
 }
 
+h1{
+  font-size:24px;
+}
+
+h2{
+  font-size:18px;
+  margin-bottom:14px;
+}
+
+p{
+  color:#aaa;
+  font-size:12px;
+}
+
+label{
+  display:block;
+  color:#aaa;
+  font-size:12px;
+  margin-top:12px;
+  margin-bottom:5px;
+}
+
+input,
 button{
-  padding:9px 13px;
-  border:none;
-  border-radius:6px;
-  cursor:pointer;
-  margin-top:6px;
-}
-
-.add{
-  background:#22c55e;
-  color:#000;
-}
-
-.delete{
-  background:#ef4444;
-  color:white;
-}
-
-.approve{
-  background:#22c55e;
-  color:#000;
-}
-
-.reject{
-  background:#ef4444;
-  color:white;
-}
-
-.copy{
-  background:#374151;
-  color:white;
+  width:100%;
+  padding:13px;
+  border:0;
+  border-radius:10px;
 }
 
 input{
-  padding:10px;
-  border-radius:6px;
-  border:none;
-  width:140px;
+  background:#0b1020;
+  color:#fff;
+  outline:none;
 }
 
-.small{
-  color:#9ca3af;
-  font-size:13px;
-}
-
-.green{
-  color:#4ade80;
-}
-
-.yellow{
-  color:#facc15;
+button{
+  margin-top:12px;
+  cursor:pointer;
+  font-weight:600;
 }
 
 .blue{
-  color:#60a5fa;
+  background:#2d2cff;
+  color:#fff;
 }
+
+.green{
+  background:#00d99a;
+  color:#00130d;
+}
+
+.red{
+  background:#ff3155;
+  color:#fff;
+}
+
+.orange{
+  background:#ff9d00;
+  color:#111;
+}
+
+.status{
+  background:#0b1020;
+  padding:15px;
+  border-radius:12px;
+  line-height:1.9;
+  margin-top:15px;
+}
+
+.value{
+  color:#00ff9d;
+  font-weight:600;
+}
+
+.warning{
+  color:#ffcc00;
+  font-size:11px;
+  line-height:1.6;
+}
+
+.hidden{
+  display:none;
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <h2>Demo Admin</h2>
-  <button onclick="logout()">Logout</button>
-</div>
-
 <div class="container">
 
-  <div class="card">
-    <b>Simulation Mode</b>
-    <p class="small">
-      This dashboard controls simulated/demo balances and profits.
-    </p>
-    <div id="status">Checking admin...</div>
-  </div>
+<div class="card">
 
-  <h3>Users</h3>
-  <div id="usersList"></div>
+  <h1>
+    Demo Mining Admin
+  </h1>
 
-  <h3>Withdraw Requests</h3>
-  <div id="withdrawList"></div>
+  <p>
+    Simulation controller for testing the dashboard.
+  </p>
 
 </div>
+
+
+<!-- USER -->
+
+<div class="card">
+
+  <h2>
+    Select Test User
+  </h2>
+
+  <label>
+    Firebase User UID
+  </label>
+
+  <input
+    id="uid"
+    placeholder="Paste user UID"
+  >
+
+  <button
+    class="blue"
+    onclick="loadUser()"
+  >
+    LOAD USER
+  </button>
+
+</div>
+
+
+<!-- STATUS -->
+
+<div
+  id="statusCard"
+  class="card hidden"
+>
+
+  <h2>
+    Mining Status
+  </h2>
+
+  <div
+    id="status"
+    class="status"
+  ></div>
+
+</div>
+
+
+<!-- ADD CAPITAL -->
+
+<div
+  id="capitalCard"
+  class="card hidden"
+>
+
+  <h2>
+    Add Demo Capital
+  </h2>
+
+  <label>
+    Amount
+  </label>
+
+  <input
+    id="amount"
+    type="number"
+    min="0"
+    step="0.01"
+    placeholder="5000"
+  >
+
+  <button
+    class="green"
+    onclick="addCapital()"
+  >
+    ADD TO MINING CAPITAL
+  </button>
+
+</div>
+
+
+<!-- CONTROLS -->
+
+<div
+  id="controls"
+  class="card hidden"
+>
+
+  <h2>
+    Mining Controls
+  </h2>
+
+  <button
+    class="blue"
+    onclick="startMining()"
+  >
+    START / RESET MINING
+  </button>
+
+  <button
+    class="orange"
+    onclick="resetMiningTime()"
+  >
+    RESET MINING TIMER
+  </button>
+
+  <button
+    class="red"
+    onclick="stopMining()"
+  >
+    STOP MINING
+  </button>
+
+</div>
+
+
+<div class="card">
+
+  <div class="warning">
+
+    DEMO MODE ONLY. This panel creates simulation
+    values for testing the dashboard. It should not
+    be used to represent real deposits, real mining,
+    guaranteed returns, or customer investment funds.
+
+  </div>
+
+</div>
+
+</div>
+
 
 <script type="module">
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-
-import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 
 import {
   getFirestore,
   doc,
   getDoc,
-  collection,
-  addDoc,
   updateDoc,
-  deleteDoc,
-  onSnapshot
-} from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+  addDoc,
+  collection,
+  serverTimestamp
+}
+from
+"https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-
-/* ================================
-   FIREBASE
-================================ */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
-  authDomain: "stargicinvestment.firebaseapp.com",
-  projectId: "stargicinvestment",
-  storageBucket: "stargicinvestment.appspot.com",
-  messagingSenderId: "1053305294931",
-  appId: "1:1053305294931:web:87cba3260a83030e56f6a6"
+
+  apiKey:
+    "AIzaSyDGsQ3Q7JHVvNlKAQi3l5HSZBZrP_fVoBk",
+
+  authDomain:
+    "stargicinvestment.firebaseapp.com",
+
+  projectId:
+    "stargicinvestment",
+
+  storageBucket:
+    "stargicinvestment.appspot.com",
+
+  messagingSenderId:
+    "1053305294931",
+
+  appId:
+    "1:1053305294931:web:87cba3260a83030e56f6a6"
+
 };
 
-const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
-const db = getFirestore(app);
+const app =
+  initializeApp(firebaseConfig);
+
+const db =
+  getFirestore(app);
 
 
-/* ================================
-   PLAN SYSTEM
-================================ */
+let selectedUID =
+  null;
 
-function getPlan(total){
 
-  total = Number(total) || 0;
+/*
+  EXACT PLAN TABLE
+*/
 
-  if(total >= 100000){
-    return {
-      name:"VIP",
-      rate:0.04
-    };
-  }
+const PLANS = [
 
-  if(total >= 50000){
-    return {
-      name:"Premium",
-      rate:0.035
-    };
-  }
-
-  if(total >= 10000){
-    return {
-      name:"Elite",
-      rate:0.03
-    };
-  }
-
-  if(total >= 2000){
-    return {
-      name:"Silver",
-      rate:0.025
-    };
-  }
-
-  return {
+  {
     name:"Basic",
+    min:1,
+    max:1999.99,
     rate:0.02
-  };
+  },
+
+  {
+    name:"Silver",
+    min:2000,
+    max:9999.99,
+    rate:0.025
+  },
+
+  {
+    name:"Elite",
+    min:10000,
+    max:49999.99,
+    rate:0.03
+  },
+
+  {
+    name:"Premium",
+    min:50000,
+    max:99999.99,
+    rate:0.035
+  },
+
+  {
+    name:"VIP",
+    min:100000,
+    max:1000000,
+    rate:0.04
+  }
+
+];
+
+
+function getPlan(capital){
+
+  return PLANS.find(
+    p =>
+      capital >= p.min &&
+      capital <= p.max
+  ) || null;
+
 }
 
 
-/* ================================
-   TIME
-================================ */
+/*
+  LOAD USER
+*/
 
-const DAY = 24 * 60 * 60 * 1000;
-const CYCLE = 7 * DAY;
+window.loadUser =
+async function(){
+
+  const uid =
+    document
+      .getElementById("uid")
+      .value
+      .trim();
 
 
-/* ================================
-   FINALIZE CURRENT PROFIT
-================================ */
+  if(!uid){
 
-async function finalizeCurrentProfit(data, now){
-
-  const invested =
-    Number(data.invested || 0);
-
-  const rate =
-    Number(data.rate || 0);
-
-  let availableProfit =
-    Number(data.availableProfit || 0);
-
-  let lockedProfit =
-    Number(data.lockedProfit || 0);
-
-  let cycleStart =
-    Number(
-      data.cycleStart ||
-      data.profitStart ||
-      0
+    alert(
+      "Enter a Firebase UID."
     );
 
-  if(
-    invested <= 0 ||
-    rate <= 0 ||
-    cycleStart <= 0
-  ){
-    return {
-      availableProfit,
-      lockedProfit,
-      cycleStart: now
-    };
+    return;
+
   }
 
-
-  if(cycleStart > now){
-    cycleStart = now;
-  }
-
-
-  const elapsed =
-    now - cycleStart;
-
-  const completedCycles =
-    Math.floor(elapsed / CYCLE);
-
-
-  /*
-    Every completed 7-day cycle
-    becomes withdrawable.
-  */
-
-  if(completedCycles > 0){
-
-    const cycleProfit =
-      invested *
-      rate *
-      7;
-
-    availableProfit +=
-      cycleProfit * completedCycles;
-
-    cycleStart +=
-      completedCycles * CYCLE;
-
-    lockedProfit = 0;
-  }
-
-
-  /*
-    Profit currently inside
-    the unfinished cycle.
-  */
-
-  const currentElapsed =
-    Math.max(
-      0,
-      now - cycleStart
-    );
-
-  const currentDays =
-    currentElapsed / DAY;
-
-  lockedProfit =
-    invested *
-    rate *
-    currentDays;
-
-
-  return {
-    availableProfit,
-    lockedProfit,
-    cycleStart
-  };
-}
-
-
-/* ================================
-   ADD DEMO BALANCE
-================================ */
-
-async function addBalance(userId, amount){
 
   const userRef =
-    doc(db,"users",userId);
-
-  const snap =
-    await getDoc(userRef);
-
-  if(!snap.exists()){
-    throw new Error("User not found");
-  }
-
-  const data =
-    snap.data();
-
-  const oldInvested =
-    Number(data.invested || 0);
-
-  const oldBalance =
-    Number(data.balance || 0);
-
-  const now =
-    Date.now();
-
-
-  /*
-    First calculate all profit earned
-    by the OLD capital.
-  */
-
-  const finalized =
-    await finalizeCurrentProfit(
-      data,
-      now
+    doc(
+      db,
+      "users",
+      uid
     );
 
-
-  /*
-    Add the new capital.
-  */
-
-  const newInvested =
-    oldInvested + amount;
-
-  const newBalance =
-    oldBalance + amount;
-
-
-  /*
-    Determine the plan from the
-    TOTAL invested amount.
-  */
-
-  const plan =
-    getPlan(newInvested);
-
-
-  /*
-    New total capital starts
-    a fresh cycle at the current time.
-  */
-
-  await updateDoc(userRef,{
-
-    balance:newBalance,
-
-    invested:newInvested,
-
-    plan:plan.name,
-
-    rate:plan.rate,
-
-    cycleStart:now,
-
-    profitStart:now,
-
-    lastUpdate:now,
-
-    availableProfit:
-      Number(
-        finalized.availableProfit.toFixed(8)
-      ),
-
-    lockedProfit:0
-  });
-
-
-  /*
-    Transaction record.
-  */
-
-  await addDoc(
-    collection(db,"transactions"),
-    {
-      userId:userId,
-      type:"deposit",
-      amount:amount,
-      time:now,
-      demo:true
-    }
-  );
-}
-
-
-/* ================================
-   LOAD USERS
-================================ */
-
-function loadUsers(){
-
-  const list =
-    document.getElementById(
-      "usersList"
-    );
-
-  onSnapshot(
-    collection(db,"users"),
-    snapshot=>{
-
-      let html = "";
-
-      snapshot.forEach(docSnap=>{
-
-        const u =
-          docSnap.data();
-
-        const id =
-          docSnap.id;
-
-        if(u.admin){
-          return;
-        }
-
-        const invested =
-          Number(u.invested || 0);
-
-        const balance =
-          Number(u.balance || 0);
-
-        const available =
-          Number(
-            u.availableProfit || 0
-          );
-
-        const locked =
-          Number(
-            u.lockedProfit || 0
-          );
-
-        const rate =
-          Number(u.rate || 0) * 100;
-
-
-        html += `
-
-        <div class="card">
-
-          <p>
-            <b>Email:</b>
-            ${u.email || "N/A"}
-          </p>
-
-          <p>
-            <b>Balance:</b>
-            <span class="green">
-              $${balance.toFixed(2)}
-            </span>
-          </p>
-
-          <p>
-            <b>Capital Locked:</b>
-            <span class="blue">
-              $${invested.toFixed(2)}
-            </span>
-          </p>
-
-          <p>
-            <b>Plan:</b>
-            ${u.plan || "Basic"}
-          </p>
-
-          <p>
-            <b>Rate:</b>
-            ${rate.toFixed(2)}% daily
-          </p>
-
-          <p>
-            <b>Available Profit:</b>
-            <span class="green">
-              $${available.toFixed(2)}
-            </span>
-          </p>
-
-          <p>
-            <b>Locked Profit:</b>
-            <span class="yellow">
-              $${locked.toFixed(2)}
-            </span>
-          </p>
-
-          <input
-            type="number"
-            id="bal-${id}"
-            placeholder="Add amount"
-            min="0"
-            step="0.01"
-          >
-
-          <button
-            class="add"
-            onclick="updateBalance('${id}')"
-          >
-            Add Balance
-          </button>
-
-          <button
-            class="delete"
-            onclick="deleteUser('${id}')"
-          >
-            Delete
-          </button>
-
-        </div>
-        `;
-      });
-
-      list.innerHTML =
-        html ||
-        "<p>No users found</p>";
-
-    },
-    error=>{
-      console.error(
-        "Users error:",
-        error
-      );
-    }
-  );
-}
-
-
-/* ================================
-   UPDATE BALANCE BUTTON
-================================ */
-
-const processing = {};
-
-window.updateBalance =
-async function(id){
-
-  if(processing[id]){
-    return;
-  }
-
-  processing[id] = true;
 
   try{
 
-    const input =
-      document.getElementById(
-        `bal-${id}`
+    const snap =
+      await getDoc(userRef);
+
+
+    if(!snap.exists()){
+
+      alert(
+        "User was not found."
       );
 
-    const amount =
-      Number(input.value);
-
-    if(
-      !Number.isFinite(amount) ||
-      amount <= 0
-    ){
-      alert("Enter a valid amount.");
       return;
+
     }
 
-    await addBalance(
-      id,
-      amount
-    );
 
-    input.value = "";
+    selectedUID =
+      uid;
 
-    alert(
-      "Demo balance added successfully."
+
+    document
+      .getElementById("statusCard")
+      .classList
+      .remove("hidden");
+
+
+    document
+      .getElementById("capitalCard")
+      .classList
+      .remove("hidden");
+
+
+    document
+      .getElementById("controls")
+      .classList
+      .remove("hidden");
+
+
+    renderStatus(
+      snap.data()
     );
 
   }catch(error){
 
-    console.error(error);
-
     alert(
-      "Error: " +
       error.message
     );
 
-  }finally{
-
-    processing[id] = false;
   }
+
 };
 
 
-/* ================================
-   DELETE USER
-================================ */
+/*
+  USER REF
+*/
 
-window.deleteUser =
-async function(id){
+function userRef(){
 
-  if(
-    !confirm(
-      "Delete this user?"
-    )
-  ){
-    return;
-  }
-
-  try{
-
-    await deleteDoc(
-      doc(db,"users",id)
-    );
-
-    alert("User deleted.");
-
-  }catch(error){
-
-    console.error(error);
+  if(!selectedUID){
 
     alert(
-      "Could not delete user."
+      "Load a user first."
     );
+
+    return null;
+
   }
-};
 
 
-/* ================================
-   WITHDRAWALS
-================================ */
-
-function loadWithdrawals(){
-
-  const list =
-    document.getElementById(
-      "withdrawList"
-    );
-
-  onSnapshot(
-    collection(db,"withdrawals"),
-    snapshot=>{
-
-      let html = "";
-
-      snapshot.forEach(docSnap=>{
-
-        const d =
-          docSnap.data();
-
-        const id =
-          docSnap.id;
-
-        const status =
-          d.status || "pending";
-
-        const statusColor =
-          status === "approved"
-          ? "lightgreen"
-          : status === "rejected"
-          ? "red"
-          : "orange";
-
-
-        html += `
-
-        <div class="card">
-
-          <p>
-            <b>User:</b>
-            ${d.userId || "N/A"}
-          </p>
-
-          <p>
-            <b>Amount:</b>
-            $${Number(
-              d.amount || 0
-            ).toFixed(2)}
-          </p>
-
-          <p>
-            <b>Coin:</b>
-            ${d.coin || "N/A"}
-          </p>
-
-          <p>
-            <b>Wallet:</b><br>
-
-            <span class="small">
-              ${d.wallet || "N/A"}
-            </span>
-          </p>
-
-          <button
-            class="copy"
-            onclick="copyWallet('${d.wallet || ""}')"
-          >
-            Copy Wallet
-          </button>
-
-          <p>
-            <b>Status:</b>
-
-            <span style="
-              color:${statusColor};
-            ">
-              ${status}
-            </span>
-          </p>
-
-          ${
-            status === "pending"
-            ? `
-
-              <button
-                class="approve"
-                onclick="
-                  approveWithdraw(
-                    '${id}',
-                    '${d.userId}',
-                    ${Number(d.amount || 0)}
-                  )
-                "
-              >
-                Approve
-              </button>
-
-              <button
-                class="reject"
-                onclick="
-                  rejectWithdraw('${id}')
-                "
-              >
-                Reject
-              </button>
-
-            `
-            : ""
-          }
-
-        </div>
-
-        `;
-      });
-
-      list.innerHTML =
-        html ||
-        "<p>No withdrawal requests.</p>";
-
-    }
+  return doc(
+    db,
+    "users",
+    selectedUID
   );
+
 }
 
 
-/* ================================
-   APPROVE WITHDRAWAL
-================================ */
+/*
+  DISPLAY STATUS
+*/
 
-const approving = {};
+function renderStatus(data){
 
-window.approveWithdraw =
-async function(
-  id,
-  userId,
-  amount
-){
+  const capital =
+    Number(
+      data.miningCapital || 0
+    );
 
-  if(approving[id]){
+
+  const plan =
+    getPlan(capital);
+
+
+  document.getElementById(
+    "status"
+  ).innerHTML = `
+
+    Name:
+    <span class="value">
+      ${
+        data.fullName ||
+        data.name ||
+        "User"
+      }
+    </span>
+
+    <br>
+
+    Balance:
+    <span class="value">
+      $${Number(
+        data.balance || 0
+      ).toFixed(2)}
+    </span>
+
+    <br>
+
+    Mining Capital:
+    <span class="value">
+      $${capital.toFixed(2)}
+    </span>
+
+    <br>
+
+    Plan:
+    <span class="value">
+      ${plan ? plan.name : "Inactive"}
+    </span>
+
+    <br>
+
+    Rate:
+    <span class="value">
+      ${
+        plan
+        ? (plan.rate * 100).toFixed(2) + "%"
+        : "0%"
+      }
+    </span>
+
+    <br>
+
+    Mining:
+    <span class="value">
+      ${
+        plan &&
+        data.miningStartTime
+        ? "ACTIVE"
+        : "INACTIVE"
+      }
+    </span>
+
+  `;
+
+}
+
+
+/*
+  ADD CAPITAL
+*/
+
+window.addCapital =
+async function(){
+
+  const ref =
+    userRef();
+
+  if(!ref) return;
+
+
+  const amount =
+    Number(
+      document
+        .getElementById("amount")
+        .value
+    );
+
+
+  if(
+    !Number.isFinite(amount) ||
+    amount <= 0
+  ){
+
+    alert(
+      "Enter a valid amount."
+    );
+
     return;
+
   }
 
-  approving[id] = true;
 
   try{
 
-    const userRef =
-      doc(db,"users",userId);
+    const snap =
+      await getDoc(ref);
 
-    const withdrawRef =
-      doc(db,"withdrawals",id);
-
-
-    const userSnap =
-      await getDoc(userRef);
-
-    if(!userSnap.exists()){
-      throw new Error(
-        "User not found."
-      );
-    }
 
     const data =
-      userSnap.data();
+      snap.data();
 
 
-    if(data.admin){
-      throw new Error(
-        "Admin account cannot withdraw."
-      );
-    }
-
-
-    const available =
+    const oldCapital =
       Number(
-        data.availableProfit || 0
+        data.miningCapital || 0
       );
 
 
-    if(
-      amount <= 0 ||
-      amount > available
-    ){
-      throw new Error(
-        "Insufficient available demo profit."
+    const newCapital =
+      Number(
+        (
+          oldCapital +
+          amount
+        ).toFixed(2)
       );
-    }
+
+
+    const plan =
+      getPlan(newCapital);
 
 
     /*
-      Deduct only from available profit.
+      If this is the first capital,
+      start mining immediately.
+
+      If mining is already running,
+      preserve the original start time.
     */
 
+    const existingStart =
+      Number(
+        data.miningStartTime || 0
+      );
+
+
+    const start =
+      existingStart ||
+      Date.now();
+
+
     await updateDoc(
-      userRef,
+      ref,
       {
-        availableProfit:
-          Number(
-            (available - amount)
-            .toFixed(8)
-          )
+
+        miningCapital:
+          newCapital,
+
+        miningPlan:
+          plan
+            ? plan.name
+            : null,
+
+        miningRate:
+          plan
+            ? plan.rate
+            : 0,
+
+        miningStartTime:
+          start
+
       }
     );
 
 
     /*
-      Mark request approved.
-    */
-
-    await updateDoc(
-      withdrawRef,
-      {
-        status:"approved",
-        processedAt:Date.now()
-      }
-    );
-
-
-    /*
-      Transaction.
+      Record the demo transaction.
     */
 
     await addDoc(
-      collection(db,"transactions"),
+      collection(
+        db,
+        "transactions"
+      ),
       {
-        userId:userId,
-        type:"withdraw",
-        amount:amount,
-        time:Date.now(),
-        demo:true
+
+        userId:
+          selectedUID,
+
+        type:
+          "demo_capital_added",
+
+        amount:
+          amount,
+
+        time:
+          Date.now(),
+
+        createdAt:
+          serverTimestamp()
+
       }
     );
 
 
     alert(
-      "Demo withdrawal approved."
+      "Capital added. New plan: " +
+      (
+        plan
+          ? plan.name
+          : "Inactive"
+      )
     );
+
+
+    document.getElementById(
+      "amount"
+    ).value = "";
+
+
+    await refresh();
 
   }catch(error){
 
     console.error(error);
+
+    alert(
+      "Could not add capital: " +
+      error.message
+    );
+
+  }
+
+};
+
+
+/*
+  START / RESET
+*/
+
+window.startMining =
+async function(){
+
+  const ref =
+    userRef();
+
+  if(!ref) return;
+
+
+  try{
+
+    const snap =
+      await getDoc(ref);
+
+
+    const data =
+      snap.data();
+
+
+    const capital =
+      Number(
+        data.miningCapital || 0
+      );
+
+
+    const plan =
+      getPlan(capital);
+
+
+    if(!plan){
+
+      alert(
+        "Mining capital must be between $1 and $1,000,000."
+      );
+
+      return;
+
+    }
+
+
+    const now =
+      Date.now();
+
+
+    await updateDoc(
+      ref,
+      {
+
+        miningPlan:
+          plan.name,
+
+        miningRate:
+          plan.rate,
+
+        miningStartTime:
+          now
+
+      }
+    );
+
+
+    alert(
+      plan.name +
+      " demo mining started."
+    );
+
+
+    await refresh();
+
+  }catch(error){
 
     alert(
       error.message
     );
 
-  }finally{
-
-    approving[id] = false;
   }
+
 };
 
 
-/* ================================
-   REJECT
-================================ */
+/*
+  RESET TIMER
+*/
 
-window.rejectWithdraw =
-async function(id){
+window.resetMiningTime =
+async function(){
 
-  try{
+  const ref =
+    userRef();
 
-    await updateDoc(
-      doc(db,"withdrawals",id),
-      {
-        status:"rejected",
-        processedAt:Date.now()
-      }
-    );
-
-    alert(
-      "Withdrawal rejected."
-    );
-
-  }catch(error){
-
-    console.error(error);
-
-    alert(
-      "Could not reject withdrawal."
-    );
-  }
-};
+  if(!ref) return;
 
 
-/* ================================
-   COPY WALLET
-================================ */
+  await updateDoc(
+    ref,
+    {
 
-window.copyWallet =
-async function(address){
+      miningStartTime:
+        Date.now()
 
-  try{
-
-    await navigator.clipboard
-      .writeText(address);
-
-    alert("Copied!");
-
-  }catch(error){
-
-    alert(
-      "Copy failed."
-    );
-  }
-};
-
-
-/* ================================
-   LOGOUT
-================================ */
-
-window.logout = async function(){
-
-  await signOut(auth);
-
-  location.href =
-    "login.html";
-};
-
-
-/* ================================
-   ADMIN AUTH
-================================ */
-
-onAuthStateChanged(
-  auth,
-  async user=>{
-
-    const status =
-      document.getElementById(
-        "status"
-      );
-
-    if(!user){
-
-      status.innerText =
-        "Not logged in.";
-
-      return;
     }
+  );
 
 
-    try{
-
-      const ref =
-        doc(db,"users",user.uid);
-
-      const snap =
-        await getDoc(ref);
+  alert(
+    "Mining timer reset."
+  );
 
 
-      if(!snap.exists()){
+  await refresh();
 
-        status.innerText =
-          "User data not found.";
-
-        return;
-      }
+};
 
 
-      const data =
-        snap.data();
+/*
+  STOP MINING
+*/
+
+window.stopMining =
+async function(){
+
+  const ref =
+    userRef();
+
+  if(!ref) return;
 
 
-      if(!data.admin){
+  await updateDoc(
+    ref,
+    {
 
-        status.innerText =
-          "Access Denied ❌";
+      miningStartTime:
+        0,
 
-        return;
-      }
+      miningPlan:
+        null,
 
+      miningRate:
+        0
 
-      status.innerText =
-        "Welcome Admin ✅";
-
-
-      loadUsers();
-
-      loadWithdrawals();
-
-    }catch(error){
-
-      console.error(error);
-
-      status.innerText =
-        "Admin verification failed.";
     }
+  );
+
+
+  alert(
+    "Demo mining stopped."
+  );
+
+
+  await refresh();
+
+};
+
+
+/*
+  REFRESH
+*/
+
+async function refresh(){
+
+  const ref =
+    userRef();
+
+  if(!ref) return;
+
+
+  const snap =
+    await getDoc(ref);
+
+
+  if(snap.exists()){
+
+    renderStatus(
+      snap.data()
+    );
+
   }
-);
+
+}
 
 </script>
 
 </body>
-  </html>
+    </html>
