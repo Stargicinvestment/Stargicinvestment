@@ -482,16 +482,18 @@ async function(){
     userSnap.data();
 
 
-    await updateDoc(
-      userRef,
-      {
+await updateDoc(
+  userRef,
+  {
+    balance:
+    Number(userData.balance || 0)
+    + amount,
 
-        balance:
-        Number(userData.balance || 0)
-        + amount
-
-      }
-    );
+    capitalLocked:
+    Number(userData.capitalLocked || 0)
+    + amount
+  }
+);
 
 
     /*
