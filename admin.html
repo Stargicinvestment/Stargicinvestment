@@ -486,19 +486,21 @@ async function(){
 
 
     await updateDoc(
-      userRef,
-      {
+  userRef,
+  {
+    balance:
+    Number(userData.balance || 0)
+    + amount,
 
-        balance:
-        Number(userData.balance || 0)
-        + amount,
+    capitalLocked:
+    Number(userData.capitalLocked || 0)
+    + amount,
 
-        capitalLocked:
-        Number(userData.capitalLocked || 0)
-        + amount
-
-      }
-    );
+    invested:
+    Number(userData.invested || 0)
+    + amount
+  }
+);
 
 
     /*
