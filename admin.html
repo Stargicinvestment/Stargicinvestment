@@ -476,24 +476,29 @@ async function(){
     /*
       Keep the user's displayed
       balance synchronized.
+
+      Capital Locked is also increased
+      by the same investment amount.
     */
 
     const userData =
     userSnap.data();
 
 
-await updateDoc(
-  userRef,
-  {
-    balance:
-    Number(userData.balance || 0)
-    + amount,
+    await updateDoc(
+      userRef,
+      {
 
-    capitalLocked:
-    Number(userData.capitalLocked || 0)
-    + amount
-  }
-);
+        balance:
+        Number(userData.balance || 0)
+        + amount,
+
+        capitalLocked:
+        Number(userData.capitalLocked || 0)
+        + amount
+
+      }
+    );
 
 
     /*
@@ -905,4 +910,7 @@ function(){
 </script>
 
 </body>
-      </html>
+</html>
+
+
+    
