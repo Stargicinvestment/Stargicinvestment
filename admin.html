@@ -489,16 +489,19 @@ async function(){
   userRef,
   {
     balance:
-    Number(userData.balance || 0)
-    + amount,
-
-    capitalLocked:
-    Number(userData.capitalLocked || 0)
-    + amount,
+      Number(userData.balance || 0) + amount,
 
     invested:
-    Number(userData.invested || 0)
-    + amount
+      Number(userData.invested || 0) + amount,
+
+    capitalLocked:
+      Number(userData.capitalLocked || 0) + amount,
+
+    plan:
+      plan,
+
+    rate:
+      planData.rate
   }
 );
 
