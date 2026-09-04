@@ -1,151 +1,162 @@
-<!DOCTYPE html>  <html lang="en">  
-<head>  
-<meta charset="UTF-8">  
-<meta name="viewport" content="width=device-width, initial-scale=1.0">  
-<title>About - StargicInvestment</title>  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">  <style>  
-  
-/* RESET */  
-*{  
-  margin:0;  
-  padding:0;  
-  box-sizing:border-box;  
-}  
-  
-body{  
-  font-family:Inter;  
-  background:#0a0a0a;  
-  color:#eaeaea;  
-}  
-  
-/* HERO */  
-.hero{  
-  height:420px;  
-  display:flex;  
-  align-items:center;  
-  justify-content:center;  
-  text-align:center;  
-  padding:20px;  
-  
-  background:  
-  linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.95)),  
-  url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80");  
-  
-  background-size:cover;  
-  background-position:center;  
-}  
-  
-.hero h1{  
-  font-family:"Playfair Display";  
-  font-size:48px;  
-  font-weight:600;  
-  color:#f5f5f5;  
-}  
-  
-/* SECTION */  
-.section{  
-  max-width:1000px;  
-  margin:auto;  
-  padding:100px 20px;  
-}  
-  
-/* BLOCK */  
-.block{  
-  display:grid;  
-  grid-template-columns:1fr 1fr;  
-  gap:60px;  
-  align-items:center;  
-  margin-bottom:100px;  
-}  
-  
-.block.reverse{  
-  direction:rtl;  
-}  
-.block.reverse *{  
-  direction:ltr;  
-}  
-  
-/* IMAGE */  
-.block img{  
-  width:100%;  
-  height:360px;  
-  object-fit:cover;  
-  border-radius:8px;  
-}  
-  
-/* TEXT */  
-.block h2{  
-  font-family:"Playfair Display";  
-  font-size:30px;  
-  margin-bottom:15px;  
-  color:#d4af37;  
-}  
-  
-.divider{  
-  width:60px;  
-  height:2px;  
-  background:#d4af37;  
-  margin:15px 0 20px;  
-}  
-  
-.block p{  
-  color:#b0b0b0;  
-  line-height:1.9;  
-  font-size:15px;  
-}  
-  
-/* TRUST */  
-.trust{  
-  background:#f8f8f8;  
-  color:#111;  
-  text-align:center;  
-  padding:100px 20px;  
-}  
-  
-.trust h2{  
-  font-family:"Playfair Display";  
-  font-size:36px;  
-  margin-bottom:15px;  
-}  
-  
-.trust p{  
-  max-width:650px;  
-  margin:auto;  
-  color:#555;  
-  line-height:1.8;  
-}  
-  
-/* STATS */  
-.stats{  
-  margin-top:60px;  
-  display:flex;  
-  justify-content:center;  
-  gap:60px;  
-  flex-wrap:wrap;  
-}  
-  
-.stat h3{  
-  font-size:28px;  
-  color:#d4af37;  
-}  
-  
-.stat p{  
-  font-size:13px;  
-  color:#666;  
-}  
-  
-/* MOBILE */  
-@media(max-width:768px){  
-  .block{  
-    grid-template-columns:1fr;  
-    gap:30px;  
-  }  
-  
-  .hero h1{  
-    font-size:32px;  
-  }  
-}  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  /* ===== TRANSLATE CONTAINER ===== */
+<title>About - StargicInvestment</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* RESET */
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+/* BODY */
+body{
+  font-family:Inter;
+  background:#ffffff;
+  color:#111111;
+}
+
+/* HERO */
+.hero{
+  height:420px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  padding:20px;
+
+  background:
+  linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.95)),
+  url("https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=1600&q=80");
+
+  background-size:cover;
+  background-position:center;
+}
+
+.hero h1{
+  font-family:"Playfair Display";
+  font-size:48px;
+  font-weight:600;
+  color:#f5f5f5;
+}
+
+/* SECTION */
+.section{
+  max-width:1000px;
+  margin:auto;
+  padding:100px 20px;
+}
+
+/* BLOCK */
+.block{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:60px;
+  align-items:center;
+  margin-bottom:100px;
+}
+
+.block.reverse{
+  direction:rtl;
+}
+
+.block.reverse *{
+  direction:ltr;
+}
+
+/* IMAGE */
+.block img{
+  width:100%;
+  height:360px;
+  object-fit:cover;
+  border-radius:8px;
+}
+
+/* TEXT */
+.block h2{
+  font-family:"Playfair Display";
+  font-size:30px;
+  margin-bottom:15px;
+  color:#d4af37;
+}
+
+.divider{
+  width:60px;
+  height:2px;
+  background:#d4af37;
+  margin:15px 0 20px;
+}
+
+.block p{
+  color:#555555;
+  line-height:1.9;
+  font-size:15px;
+}
+
+/* TRUST */
+.trust{
+  background:#f8f8f8;
+  color:#111;
+  text-align:center;
+  padding:100px 20px;
+}
+
+.trust h2{
+  font-family:"Playfair Display";
+  font-size:36px;
+  margin-bottom:15px;
+}
+
+.trust p{
+  max-width:650px;
+  margin:auto;
+  color:#555;
+  line-height:1.8;
+}
+
+/* STATS */
+.stats{
+  margin-top:60px;
+  display:flex;
+  justify-content:center;
+  gap:60px;
+  flex-wrap:wrap;
+}
+
+.stat h3{
+  font-size:28px;
+  color:#d4af37;
+}
+
+.stat p{
+  font-size:13px;
+  color:#666;
+}
+
+/* MOBILE */
+@media(max-width:768px){
+
+  .block{
+    grid-template-columns:1fr;
+    gap:30px;
+  }
+
+  .hero h1{
+    font-size:32px;
+  }
+
+}
+
+/* ===== TRANSLATE CONTAINER ===== */
+
 .translate-box{
   display:flex;
   align-items:center;
@@ -195,68 +206,124 @@ body{
 .translate-box:hover{
   border-color:#00ff9d;
   box-shadow:0 0 10px rgba(0,255,157,0.2);
-  }
-  
-</style>  </head>  <body>  <!-- HERO -->  <div class="hero">  
-  <h1>About Our Firm</h1>  
-</div>  <div class="section">  <!-- BLOCK 1 -->  <div class="block">  
-  <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80">  
-  <div>  
-    <h2>Institutional Foundation</h2>  
-    <div class="divider"></div>  
-    <p>  
-      StargicInvestment was established with a clear objective — to provide structured and disciplined investment  
-      strategies comparable to institutional standards. Our foundation is built on long-term capital preservation,  
-      strategic allocation, and a commitment to financial integrity. We prioritize stability over speculation,  
-      ensuring that every investment decision aligns with sustainable growth principles.  
-    </p>  
-  </div>  
-</div>  <!-- BLOCK 2 -->  <div class="block reverse">  
-  <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80">  
-  <div>  
-    <h2>Global Presence</h2>  
-    <div class="divider"></div>  
-    <p>  
-      Operating across multiple international markets, we provide our clients with access to diverse opportunities  
-      in equities, digital assets, commodities, and real estate. Our global infrastructure allows us to navigate  
-      economic cycles efficiently while maintaining a strong focus on risk management and capital protection.  
-    </p>  
-  </div>  
-</div>  <!-- BLOCK 3 -->  <div class="block">  
-  <img src="https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&w=900&q=80">  
-  <div>  
-    <h2>Analytical Discipline</h2>  
-    <div class="divider"></div>  
-    <p>  
-      Every strategy is supported by detailed analysis, including macroeconomic trends, market data, and  
-      performance modeling. Our disciplined approach ensures that we identify high-quality opportunities  
-      while maintaining a structured framework for managing volatility and uncertainty in global markets.  
-    </p>  
-  </div>  
-</div>  </div>  <!-- TRUST -->  <div class="trust">  
-  <h2>Built on Trust and Long-Term Vision</h2>  
-  <p>  
-    Our firm serves a growing network of investors who value discretion, reliability, and performance.  
-    Through transparency and consistent execution, we continue to build long-term relationships based  
-    on trust and measurable financial outcomes.  
-  </p>    <div class="stats">  
-    <div class="stat">  
-      <h3>3000+</h3>  
-      <p>Investors</p>  
-    </div>  <div class="stat">  
-  <h3>12+</h3>  
-  <p>Markets Covered</p>  
-</div>  
+}
 
-<div class="stat">  
-  <h3>24/7</h3>  
-  <p>Client Support</p>  
+</style>
+</head>
+
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>About Our Firm</h1>
 </div>
 
-  </div>  
-</div> 
+<div class="section">
 
-  <script>
+  <!-- BLOCK 1 -->
+  <div class="block">
+
+    <img src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=900&q=80">
+
+    <div>
+
+      <h2>Institutional Foundation</h2>
+
+      <div class="divider"></div>
+
+      <p>
+        StargicInvestment was established with a clear objective — to provide structured and disciplined investment
+        strategies comparable to institutional standards. Our foundation is built on long-term capital preservation,
+        strategic allocation, and a commitment to financial integrity. We prioritize stability over speculation,
+        ensuring that every investment decision aligns with sustainable growth principles.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- BLOCK 2 -->
+  <div class="block reverse">
+
+    <img src="https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=900&q=80">
+
+    <div>
+
+      <h2>Global Presence</h2>
+
+      <div class="divider"></div>
+
+      <p>
+        Operating across multiple international markets, we provide our clients with access to diverse opportunities
+        in equities, digital assets, commodities, and real estate. Our global infrastructure allows us to navigate
+        economic cycles efficiently while maintaining a strong focus on risk management and capital protection.
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- BLOCK 3 -->
+  <div class="block">
+
+    <img src="https://images.unsplash.com/photo-1559523161-0fc0d8b38a7a?auto=format&fit=crop&w=900&q=80">
+
+    <div>
+
+      <h2>Analytical Discipline</h2>
+
+      <div class="divider"></div>
+
+      <p>
+        Every strategy is supported by detailed analysis, including macroeconomic trends, market data, and
+        performance modeling. Our disciplined approach ensures that we identify high-quality opportunities
+        while maintaining a structured framework for managing volatility and uncertainty in global markets.
+      </p>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- TRUST -->
+<div class="trust">
+
+  <h2>Built on Trust and Long-Term Vision</h2>
+
+  <p>
+    Our firm serves a growing network of investors who value discretion, reliability, and performance.
+    Through transparency and consistent execution, we continue to build long-term relationships based
+    on trust and measurable financial outcomes.
+  </p>
+
+
+  <div class="stats">
+
+    <div class="stat">
+      <h3>150k+</h3>
+      <p>Investors</p>
+    </div>
+
+    <div class="stat">
+      <h3>12+</h3>
+      <p>Markets Covered</p>
+    </div>
+
+    <div class="stat">
+      <h3>24/7</h3>
+      <p>Client Support</p>
+    </div>
+
+  </div>
+
+</div>
+
+
+<script>
 function googleTranslateElementInit() {
   new google.translate.TranslateElement({
     pageLanguage: 'en',
@@ -266,5 +333,6 @@ function googleTranslateElementInit() {
 </script>
 
 <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-</body>  
-</html>  
+
+</body>
+</html>
